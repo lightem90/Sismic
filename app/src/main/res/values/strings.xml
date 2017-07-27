@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Sismic</string>
+    <string name="title_home">Home</string>
+    <string name="title_history">Storico</string>
+    <string name="title_profile">Profilo</string>
+    <string name="new_report_btn_str">Nuovo Report</string>
+    <string name="view_history_btn_str">Storico</string>
+    <string name="et_name_hint">Nome</string>
+    <string name="et_surname_hint">Cognome</string>
+    <string name="et_email_hint">Email</string>
+    <string name="et_phone_hint">Telefono</string>
+    <string name="et_qualification_hint">Qualificazione</string>
+    <string name="et_register_hint">Riferimento Albo</string>
+    <string name="et_address_hint">Indirizzo</string>
+</resources>
