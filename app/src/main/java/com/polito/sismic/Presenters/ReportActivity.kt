@@ -27,5 +27,8 @@ class ReportActivity : AppCompatActivity(), StepperLayout.StepperListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_report)
         stepperLayout.setListener(this);
+
+        fabtoolbar.hide()
+        fabtoolbar_fab.setOnClickListener(View.OnClickListener { fabtoolbar.show() })
     }
 }
