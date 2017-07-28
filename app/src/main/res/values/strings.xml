@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Sismic</string>
     <string name="title_home">Home</string>
-    <string name="title_history">Storico</string>
+    <string name="i_graph_history">Storico</string>
     <string name="title_profile">Profilo</string>
     <string name="new_report_btn_str">Nuovo Report</string>
     <string name="view_history_btn_str">Storico</string>
@@ -12,4 +12,10 @@
     <string name="et_qualification_hint">Qualificazione</string>
     <string name="et_register_hint">Riferimento Albo</string>
     <string name="et_address_hint">Indirizzo</string>
+    <string name="i_reorder_history">Riordina</string>
+    <string name="reorder_history_az">a-z</string>
+    <string name="reorder_history_za">z-a</string>
+    <string name="reorder_history_date_asc">data ascendente</string>
+    <string name="reorder_history_date_desc">data discendente</string>
+    <string name="i_profile_logout">Logout</string>
 </resources>

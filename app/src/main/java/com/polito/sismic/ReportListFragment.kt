@@ -3,6 +3,7 @@ package com.polito.sismic
 import android.app.Fragment
 import android.os.Bundle
 import android.view.*
+import kotlinx.android.synthetic.main.report_list_fragment.*
 
 
 /**
@@ -16,7 +17,8 @@ class ReportListFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true);
+        setHasOptionsMenu(true)
+        history_container.adapter = ReportAdapter()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

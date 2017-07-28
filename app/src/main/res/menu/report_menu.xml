@@ -5,13 +5,31 @@
     <item
         android:id="@+id/reorder"
         android:icon="@drawable/ic_show_chart_black_24dp"
-        android:title="@string/title_history"
+        android:title="@string/i_graph_history"
         compat:showAsAction="always" />
 
     <item
-        android:id="@+id/graphs"
-        android:icon="@drawable/ic_show_chart_black_24dp"
-        android:title="@string/title_profile"
-        compat:showAsAction="ifRoom" />
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:title="@string/i_reorder_history"
+        android:icon="@drawable/ic_reorder_black_24dp"
+        compat:showAsAction="always" >
+
+        <menu>
+
+            <item android:id="@+id/reorder_history_az"
+                android:title="@string/reorder_history_az" />
+
+            <item android:id="@+id/reorder_history_za"
+                android:title="@string/reorder_history_za" />
+
+            <item android:id="@+id/reorder_history_date_asc"
+                android:title="@string/reorder_history_date_asc" />
+
+            <item android:id="@+id/reorder_history_date_desc"
+                android:title="@string/reorder_history_date_desc" />
+
+        </menu>
+    </item>
 
 </menu>
