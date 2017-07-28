@@ -1,8 +1,9 @@
-package com.polito.sismic
+package com.polito.sismic.Presenters
 
 import android.app.Fragment
 import android.os.Bundle
 import android.view.*
+import com.polito.sismic.R
 
 
 /**

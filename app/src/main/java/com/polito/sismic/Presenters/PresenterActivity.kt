@@ -1,11 +1,10 @@
-package com.polito.sismic
+package com.polito.sismic.Presenters
 
 import android.app.Fragment
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
-import android.view.Menu
-import android.view.MenuInflater
+import com.polito.sismic.R
 import kotlinx.android.synthetic.main.activity_presenter.*
 
 class PresenterActivity : AppCompatActivity() {
