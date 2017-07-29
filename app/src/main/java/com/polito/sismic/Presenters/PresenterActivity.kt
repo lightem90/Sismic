@@ -12,20 +12,19 @@ import kotlinx.android.synthetic.main.activity_presenter.*
 
 class PresenterActivity : AppCompatActivity() {
 
-    private var  mFragmentProvider: FragmentProvider = FragmentProvider()
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_home -> {
-                pushFragment(mFragmentProvider.GetHomeFragment())
+                pushFragment(FragmentProvider.GetHomeFragment())
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_history -> {
-                pushFragment(mFragmentProvider.GetReportListFragment())
+                pushFragment(FragmentProvider.GetReportListFragment())
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_profile -> {
-                pushFragment(mFragmentProvider.GetProfileFragment())
+                pushFragment(FragmentProvider.GetProfileFragment())
                 return@OnNavigationItemSelectedListener true
             }
         }
@@ -55,7 +54,7 @@ class PresenterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_presenter)
 
-        pushFragment(mFragmentProvider.GetHomeFragment())
+        pushFragment(FragmentProvider.GetHomeFragment())
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
     }
 }

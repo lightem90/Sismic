@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.*
 import com.polito.sismic.Domain.DatabaseProvider
 import com.polito.sismic.Interactors.DatabaseInteractor
+import com.polito.sismic.Presenters.Adapters.ReportAdapter
 import com.polito.sismic.R
 import kotlinx.android.synthetic.main.report_list_fragment.*
 
@@ -45,7 +46,7 @@ class ReportListFragment : Fragment() {
 
         history_container.layoutManager = LinearLayoutManager(activity)
         //TODO lambda
-        var adapter = ReportAdapter(mDbInteractor!!.getExampleDTOs()){ print("${it.title} Clicked")}
+        var adapter = ReportAdapter(mDbInteractor.getExampleDTOs()) { print("${it.title} Clicked") }
         history_container.adapter = adapter
     }
 

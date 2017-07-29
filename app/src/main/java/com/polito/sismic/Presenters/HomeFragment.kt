@@ -1,9 +1,12 @@
 package com.polito.sismic.Presenters
 
 import android.app.Fragment
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
+import com.polito.sismic.Interactors.FragmentProvider
 import com.polito.sismic.R
+import kotlinx.android.synthetic.main.home_fragment.view.*
 
 /**
  * Created by Matteo on 27/07/2017.
@@ -11,7 +14,22 @@ import com.polito.sismic.R
 class HomeFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.home_fragment, container, false)
+        val view = inflater.inflate(R.layout.home_fragment, container, false)
+
+        view.new_report.setOnClickListener {  startActivity(Intent(activity, ReportActivity::class.java))  }
+        view.view_history.setOnClickListener {  viewHistoryFragment()  }
+
+        return view
+    }
+
+    private fun viewHistoryFragment()
+    {
+        if (fragmentManager != null) {
+            val ft = fragmentManager.beginTransaction()
+            if (ft != null) {
+                ft.replace(R.id.frame_canvas, FragmentProvider.GetReportListFragment()).commit()
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -34,3 +52,4 @@ class HomeFragment : Fragment() {
         setHasOptionsMenu(true);
     }
 }
+

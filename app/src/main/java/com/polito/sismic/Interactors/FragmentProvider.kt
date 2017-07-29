@@ -10,32 +10,23 @@ import com.polito.sismic.Presenters.ReportListFragment
  */
 class FragmentProvider {
 
-    val homeFragment = HomeFragment()
-    val profileFragment = ProfileFragment()
-    val reportListFragment = ReportListFragment()
+    companion object {
+
+        private val homeFragment = HomeFragment()
+        private val profileFragment = ProfileFragment()
+        private val reportListFragment = ReportListFragment()
 
 
-    fun GetHomeFragment() : Fragment
-    {
-        when {
-            homeFragment != null -> return homeFragment
-            else -> return HomeFragment()
+        fun GetHomeFragment(): Fragment {
+            return homeFragment
         }
-    }
 
-    fun GetProfileFragment() : Fragment
-    {
-        when {
-            homeFragment != null -> return profileFragment
-            else -> return ProfileFragment()
+        fun GetProfileFragment(): Fragment {
+            return profileFragment
         }
-    }
 
-    fun GetReportListFragment() : Fragment
-    {
-        when {
-            homeFragment != null -> return reportListFragment
-            else -> return ReportListFragment()
+        fun GetReportListFragment(): Fragment {
+            return reportListFragment
         }
     }
 

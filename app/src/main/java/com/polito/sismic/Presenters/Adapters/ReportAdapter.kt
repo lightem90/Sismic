@@ -1,4 +1,4 @@
-package com.polito.sismic.Presenters
+package com.polito.sismic.Presenters.Adapters
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
