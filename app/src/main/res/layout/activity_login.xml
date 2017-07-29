@@ -64,6 +64,13 @@
 
             </android.support.design.widget.TextInputLayout>
 
+            <android.support.v7.widget.AppCompatCheckBox
+                android:layout_gravity="right"
+                android:id="@+id/remember_me_check"
+                android:text="@string/remember_me"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
             <Button
                 android:id="@+id/email_sign_in_button"
                 style="?android:textAppearanceSmall"

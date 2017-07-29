@@ -24,14 +24,13 @@
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Sign in</string>
-    <string name="action_register">Register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
-    <string name="error_incorrect_password">This password is incorrect</string>
-    <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
-    </string>
+    <string name="action_sign_in">Login</string>
+    <string name="action_register">Registrazione</string>
+    <string name="action_sign_in_short">Login</string>
+    <string name="error_invalid_email">Indirizzo email invalido</string>
+    <string name="error_invalid_password">Password troppo corta</string>
+    <string name="error_incorrect_password">Password sbagliata</string>
+    <string name="error_field_required">Campo obbligatorio</string>
+    <string name="permission_rationale">"Permesso di accedere ai contatti per autocompletamento indirizzi email."</string>
+    <string name="remember_me">Resta connesso</string>
 </resources>
