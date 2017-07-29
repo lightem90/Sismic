@@ -1,4 +1,4 @@
-package com.polito.sismic.Presenters.Adapters
+package com.polito.sismic.Presenters
 
 import android.os.Bundle
 import android.support.annotation.Nullable

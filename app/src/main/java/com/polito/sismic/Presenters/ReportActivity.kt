@@ -1,16 +1,17 @@
 package com.polito.sismic.Presenters
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import android.widget.Toast
+import android.support.v7.app.AppCompatActivity
 import com.polito.sismic.Presenters.Adapters.ReportFragmentsAdapter
 import com.polito.sismic.R
-import com.stepstone.stepper.StepperLayout
-import com.stepstone.stepper.VerificationError
 import kotlinx.android.synthetic.main.activity_report.*
 
 class ReportActivity : AppCompatActivity() {
+
+    //Nasconde la toolbar dopo un click sul layout del fragment
+    fun hideToolbar() {
+        fabtoolbar.show()
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,8 +20,8 @@ class ReportActivity : AppCompatActivity() {
         //stepperLayout.setListener(this);
         stepperLayout.setAdapter(ReportFragmentsAdapter(supportFragmentManager, this))
 
-        fabtoolbar.hide()
         fabtoolbar_fab.setOnClickListener { fabtoolbar.show() }
     }
 }
+
 

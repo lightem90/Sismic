@@ -33,4 +33,8 @@
     <string name="error_field_required">Campo obbligatorio</string>
     <string name="permission_rationale">"Permesso di accedere ai contatti per autocompletamento indirizzi email."</string>
     <string name="remember_me">Resta connesso</string>
+    <string name="def_title">NonSupportato</string>
+    <string name="info_loc_report_title">Ubicazione</string>
+    <string name="catasto_report_title">Dati catastali</string>
+    <string name="sismogenetici_report_title">Dati sismogenetici</string>
 </resources>
