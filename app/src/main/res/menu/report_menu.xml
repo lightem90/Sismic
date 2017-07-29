@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:compat="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/reorder"
         android:icon="@drawable/ic_show_chart_black_24dp"
         android:title="@string/i_graph_history"
-        compat:showAsAction="always" />
+        app:showAsAction="always"  />
 
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:title="@string/i_reorder_history"
         android:icon="@drawable/ic_reorder_black_24dp"
-        compat:showAsAction="always" >
+        app:showAsAction="always" >
 
         <menu>
 

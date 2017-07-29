@@ -7,12 +7,7 @@ import com.polito.sismic.Domain.ReportDTO
 /**
  * Created by Matteo on 28/07/2017.
  */
-class DatabaseInteractor(val db : IDatabase) : (ReportDTO) -> Unit {
-
-    //TODO click sull'oggetto e altro
-    override fun invoke(p1: ReportDTO) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+class DatabaseInteractor(val db : IDatabase){
 
     fun getExampleDTOs(): List<ReportDTO> {
         return db.getExampleDTOs()
