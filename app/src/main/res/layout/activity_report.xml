@@ -27,8 +27,7 @@
         android:id="@+id/fabtoolbar_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/ms_bottom_navigation_bar_height">
+        android:layout_alignParentBottom="true">
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fabtoolbar_fab"
@@ -44,7 +43,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/ms_bottom_navigation_bar_height"
         android:orientation="horizontal">
 
         <ImageView
