@@ -21,6 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:ms_showBackButtonOnFirstStep="false"
+        app:ms_completeButtonText="@string/report_complete"
         app:ms_stepperType="tabs" />
 
     <RelativeLayout
@@ -43,6 +44,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:background="@android:color/transparent"
         android:orientation="horizontal">
 
         <ImageView
@@ -51,6 +53,8 @@
             android:layout_height="70dp"
             android:layout_weight="1"
             android:scaleType="centerInside"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
             app:srcCompat="@drawable/ic_videocam_white_24dp"/>
 
         <ImageView
@@ -59,6 +63,8 @@
             android:layout_height="70dp"
             android:layout_weight="1"
             android:scaleType="centerInside"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
             app:srcCompat="@drawable/ic_content_paste_white_24dp"/>
 
         <ImageView
@@ -67,6 +73,8 @@
             android:layout_height="70dp"
             android:layout_weight="1"
             android:scaleType="centerInside"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
             app:srcCompat="@drawable/ic_brush_white_24dp"/>
 
         <ImageView
@@ -75,6 +83,8 @@
             android:layout_height="70dp"
             android:layout_weight="1"
             android:scaleType="centerInside"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
             app:srcCompat="@drawable/ic_keyboard_voice_white_24dp"/>
 
         <ImageView
@@ -83,6 +93,8 @@
             android:layout_height="70dp"
             android:layout_weight="1"
             android:scaleType="centerInside"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
             app:srcCompat="@drawable/ic_photo_camera_white_24dp"/>
 
     </LinearLayout>

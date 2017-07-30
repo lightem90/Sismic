@@ -8,16 +8,15 @@ import android.view.ViewGroup
 import com.polito.sismic.R
 
 /**
- * Created by Matteo on 29/07/2017.
+ * Created by Matteo on 30/07/2017.
  */
-class ParametriSismiciFragment : BaseReportFragment() {
+class DatiStrutturaliReportFragment : BaseReportFragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View? {
-        var view = inflateFragment(R.layout.parametri_sismici_fragment, inflater, container);
+        var view = inflateFragment(R.layout.dati_strutturali_report_layout, inflater, container);
         /*
          *  Do things related to this fragment
          */
         return view;
     }
 }
-

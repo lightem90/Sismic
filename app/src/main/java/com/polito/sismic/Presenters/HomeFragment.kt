@@ -18,8 +18,6 @@ class HomeFragment : Fragment() {
         val view = inflater.inflate(R.layout.home_fragment, container, false)
 
         view.new_report.setOnClickListener {  startActivity(Intent(activity, ReportActivity::class.java))  }
-        view.view_history.setOnClickListener {  viewHistoryFragment()  }
-
         return view
     }
 

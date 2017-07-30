@@ -36,9 +36,19 @@
     <string name="def_title">NonSupportato</string>
     <string name="info_loc_report_title">Ubicazione</string>
     <string name="catasto_report_title">Dati catastali</string>
-    <string name="sismogenetici_report_title">Dati sismogenetici</string>
+    <string name="dati_sismogenetici_report_title">Dati sismogenetici</string>
     <string name="confir_reg_btn">Conferma</string>
     <string name="title_activity_register">Registrazione</string>
-    <string name="parametri_sismici_title">Parametri Sismici</string>
-    <string name="spettri_progetto_title">Spettri di progetto</string>
+    <string name="parametri_sismici_report_title">Parametri Sismici</string>
+    <string name="spettri_progetto_report_title">Spettri di progetto</string>
+    <string name="error_unsupported">Non supportato</string>
+    <string name="dati_generali_report_title">Dati generali</string>
+    <string name="dati_strutturali_report_title">Dati strutturali</string>
+    <string name="pilastri_report_title">Pilastri</string>
+    <string name="riepilogo_report_title">Riepilogo</string>
+    <string name="risultati_report_title">Risultati</string>
+    <string name="report_first">INVISIBILE</string>
+    <string name="report_next">PROSSIMO</string>
+    <string name="report_back">PRECEDENTE</string>
+    <string name="report_complete">COMPLETATO</string>
 </resources>

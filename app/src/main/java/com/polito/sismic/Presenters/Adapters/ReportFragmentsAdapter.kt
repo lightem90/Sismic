@@ -7,6 +7,7 @@ import com.stepstone.stepper.Step
 import com.stepstone.stepper.adapter.AbstractFragmentStepAdapter
 import com.stepstone.stepper.viewmodel.StepViewModel
 import com.polito.sismic.R
+import com.stepstone.stepper.VerificationError
 
 
 /**
@@ -16,50 +17,67 @@ class ReportFragmentsAdapter(fragmentManager: FragmentManager, reportActivity: R
     : AbstractFragmentStepAdapter(fragmentManager, reportActivity) {
 
     override fun getCount(): Int {
-        return 5
+        return 10
     }
 
-    //TODO
     //Non serve la factory / provider (in teoria)
     override fun createStep(position: Int): Step {
         when (position)
         {
             0 -> return InfoLocReportFragment()
-            1 -> return CatastoFragment()
-            2 -> return DatiSismoGeneticiFragment()
-            3 -> return ParametriSismiciFragment()
-            4 -> return SpettriDiProgettoFragment()
+            1 -> return CatastoReportFragment()
+            2 -> return DatiSismoGeneticiReportFragment()
+            3 -> return ParametriSismiciReportFragment()
+            4 -> return SpettriDiProgettoReportFragment()
+            5 -> return DatiGeneraliReportFragment()
+            6 -> return DatiStrutturaliReportFragment()
+            7 -> return PilastriReportFragment()
+            8 -> return RiepilogoReportFragment()
+            9 -> return RisultatiReportFragment()
         }
-        return InfoLocReportFragment()
+        //MAI
+        return InvalidReportFragment()
     }
 
     override fun getViewModel(position: Int): StepViewModel {
-        when (position)        {
-
-            0 -> return StepViewModel.Builder(context)
-                    .setTitle(R.string.info_loc_report_title)
-                    .create()
-
-            1 -> return StepViewModel.Builder(context)
-                    .setTitle(R.string.catasto_report_title)
-                    .create()
-
-            2 -> return StepViewModel.Builder(context)
-                    .setTitle(R.string.sismogenetici_report_title)
-                    .create()
-
-            3 -> return StepViewModel.Builder(context)
-                    .setTitle(R.string.parametri_sismici_title)
-                    .create()
-
-            4 -> return StepViewModel.Builder(context)
-                    .setTitle(R.string.spettri_progetto_title)
-                    .create()
-
+        when (position) {
+            0 -> return DecorStep(R.string.info_loc_report_title)
+            1 -> return DecorStep(R.string.catasto_report_title)
+            2 -> return DecorStep(R.string.dati_sismogenetici_report_title)
+            3 -> return DecorStep(R.string.parametri_sismici_report_title)
+            4 -> return DecorStep(R.string.spettri_progetto_report_title)
+            5 -> return DecorStep(R.string.dati_generali_report_title)
+            6 -> return DecorStep(R.string.dati_strutturali_report_title)
+            7 -> return DecorStep(R.string.pilastri_report_title)
+            8 -> return DecorStep(R.string.riepilogo_report_title)
+            9 -> return DecorStep(R.string.risultati_report_title)
         }
 
-        return StepViewModel.Builder(context)
-                .setTitle("Unsupported")
-                .create()
+        return DecorStep(R.string.error_unsupported)
     }
+
+    private fun DecorStep(id : Int, backStrId : Int = R.string.report_back, nextStrId : Int = R.string.report_next): StepViewModel
+    {
+       return  StepViewModel.Builder(context)
+               .setBackButtonLabel(backStrId)
+               .setNextButtonLabel(nextStrId)
+               .setTitle(id)
+               .create()
+    }
+}
+
+class InvalidReportFragment : Step {
+
+    override fun verifyStep(): VerificationError {
+        throw ExceptionInInitializerError()
+    }
+
+    override fun onError(error: VerificationError) {
+        throw ExceptionInInitializerError()
+    }
+
+    override fun onSelected() {
+        throw ExceptionInInitializerError()
+    }
+
 }
