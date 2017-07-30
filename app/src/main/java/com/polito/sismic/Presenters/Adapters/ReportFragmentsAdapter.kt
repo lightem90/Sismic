@@ -1,13 +1,11 @@
 package com.polito.sismic.Presenters.Adapters
 
 import android.support.v4.app.FragmentManager
-import com.polito.sismic.Presenters.CatastoFragment
-import com.polito.sismic.Presenters.InfoLocReportFragment
-import com.polito.sismic.Presenters.ReportActivity
+import com.polito.sismic.Presenters.ReportActivity.*
+import com.polito.sismic.Presenters.ReportActivity.Fragments.*
 import com.stepstone.stepper.Step
 import com.stepstone.stepper.adapter.AbstractFragmentStepAdapter
 import com.stepstone.stepper.viewmodel.StepViewModel
-import com.polito.sismic.Presenters.DatiSismoGeneticiFragment
 import com.polito.sismic.R
 
 
@@ -17,18 +15,20 @@ import com.polito.sismic.R
 class ReportFragmentsAdapter(fragmentManager: FragmentManager, reportActivity: ReportActivity)
     : AbstractFragmentStepAdapter(fragmentManager, reportActivity) {
 
-    //TODO 12
     override fun getCount(): Int {
-        return 3;
+        return 5
     }
 
     //TODO
+    //Non serve la factory / provider (in teoria)
     override fun createStep(position: Int): Step {
         when (position)
         {
-            1 -> return InfoLocReportFragment()
-            2 -> return CatastoFragment()
-            3 -> return DatiSismoGeneticiFragment()
+            0 -> return InfoLocReportFragment()
+            1 -> return CatastoFragment()
+            2 -> return DatiSismoGeneticiFragment()
+            3 -> return ParametriSismiciFragment()
+            4 -> return SpettriDiProgettoFragment()
         }
         return InfoLocReportFragment()
     }
@@ -47,6 +47,15 @@ class ReportFragmentsAdapter(fragmentManager: FragmentManager, reportActivity: R
             2 -> return StepViewModel.Builder(context)
                     .setTitle(R.string.sismogenetici_report_title)
                     .create()
+
+            3 -> return StepViewModel.Builder(context)
+                    .setTitle(R.string.parametri_sismici_title)
+                    .create()
+
+            4 -> return StepViewModel.Builder(context)
+                    .setTitle(R.string.spettri_progetto_title)
+                    .create()
+
         }
 
         return StepViewModel.Builder(context)

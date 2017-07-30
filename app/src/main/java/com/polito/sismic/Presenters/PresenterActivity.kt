@@ -6,7 +6,7 @@ import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-import com.polito.sismic.Interactors.FragmentProvider
+import com.polito.sismic.Interactors.PresenterFragmentProvider
 import com.polito.sismic.R
 import kotlinx.android.synthetic.main.activity_presenter.*
 
@@ -16,15 +16,15 @@ class PresenterActivity : AppCompatActivity() {
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_home -> {
-                pushFragment(FragmentProvider.GetHomeFragment())
+                pushFragment(PresenterFragmentProvider.GetHomeFragment())
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_history -> {
-                pushFragment(FragmentProvider.GetReportListFragment())
+                pushFragment(PresenterFragmentProvider.GetReportListFragment())
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_profile -> {
-                pushFragment(FragmentProvider.GetProfileFragment())
+                pushFragment(PresenterFragmentProvider.GetProfileFragment())
                 return@OnNavigationItemSelectedListener true
             }
         }
@@ -54,7 +54,7 @@ class PresenterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_presenter)
 
-        pushFragment(FragmentProvider.GetHomeFragment())
+        pushFragment(PresenterFragmentProvider.GetHomeFragment())
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
     }
 }

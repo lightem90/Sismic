@@ -8,7 +8,7 @@ import com.polito.sismic.Presenters.ReportListFragment
 /**
  * Created by Matteo on 29/07/2017.
  */
-class FragmentProvider {
+class PresenterFragmentProvider {
 
     companion object {
 

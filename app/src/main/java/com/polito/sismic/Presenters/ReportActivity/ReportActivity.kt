@@ -1,4 +1,4 @@
-package com.polito.sismic.Presenters
+package com.polito.sismic.Presenters.ReportActivity
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity

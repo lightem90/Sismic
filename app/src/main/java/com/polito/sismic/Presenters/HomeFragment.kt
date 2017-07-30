@@ -4,7 +4,8 @@ import android.app.Fragment
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
-import com.polito.sismic.Interactors.FragmentProvider
+import com.polito.sismic.Interactors.PresenterFragmentProvider
+import com.polito.sismic.Presenters.ReportActivity.ReportActivity
 import com.polito.sismic.R
 import kotlinx.android.synthetic.main.home_fragment.view.*
 
@@ -27,7 +28,7 @@ class HomeFragment : Fragment() {
         if (fragmentManager != null) {
             val ft = fragmentManager.beginTransaction()
             if (ft != null) {
-                ft.replace(R.id.frame_canvas, FragmentProvider.GetReportListFragment()).commit()
+                ft.replace(R.id.frame_canvas, PresenterFragmentProvider.GetReportListFragment()).commit()
             }
         }
     }

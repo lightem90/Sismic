@@ -37,4 +37,8 @@
     <string name="info_loc_report_title">Ubicazione</string>
     <string name="catasto_report_title">Dati catastali</string>
     <string name="sismogenetici_report_title">Dati sismogenetici</string>
+    <string name="confir_reg_btn">Conferma</string>
+    <string name="title_activity_register">Registrazione</string>
+    <string name="parametri_sismici_title">Parametri Sismici</string>
+    <string name="spettri_progetto_title">Spettri di progetto</string>
 </resources>

@@ -50,6 +50,11 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
         //})
 
         email_sign_in_button.setOnClickListener { attemptLogin() }
+        register_button.setOnClickListener { register() }
+    }
+
+    private fun register() {
+
     }
 
     private fun populateAutoComplete() {

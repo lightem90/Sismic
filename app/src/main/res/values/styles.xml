@@ -8,4 +8,11 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <!-- Da applicare a tutti i figli di base_report_fragment, layout_height in particolare deve essere wrap_content, altrimenti non scrolla -->
+    <style name="scrollableLayout">
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+    </style>
+
 </resources>
