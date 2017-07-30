@@ -3,6 +3,7 @@ package com.polito.sismic.Presenters
 import android.app.Fragment
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.*
 import com.polito.sismic.Domain.DatabaseProvider
 import com.polito.sismic.Interactors.DatabaseInteractor
@@ -16,8 +17,13 @@ import kotlinx.android.synthetic.main.report_list_fragment.*
  */
 class ReportListFragment : Fragment() {
 
-    private var  mDbProvider: DatabaseProvider = DatabaseProvider()
-    private var  mDbInteractor: DatabaseInteractor = DatabaseInteractor(mDbProvider.GetDatabase())
+    private var mDbProvider : DatabaseProvider
+    private var mDbInteractor : DatabaseInteractor
+
+    init {
+        mDbProvider = DatabaseProvider()
+        mDbInteractor = DatabaseInteractor(mDbProvider.GetDatabase())
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.report_list_fragment, container, false)

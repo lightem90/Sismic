@@ -8,8 +8,10 @@ import java.util.*
 class DatabaseStub : IDatabase {
 
     override fun getExampleDTOs(): List<ReportDTO> {
-        return listOf(ReportDTO("bla", "desc", Date(), 85),
-                ReportDTO("bla1", "desc2", Date(), 95))
+        return listOf(
+                ReportDTO("bla", "desc", Date(), 85),
+                ReportDTO("bla1", "desc2", Date(), 95)
+        )
     }
 }
 

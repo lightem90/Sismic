@@ -7,11 +7,12 @@ import android.view.ViewGroup
 import com.polito.sismic.Domain.ReportDTO
 import com.polito.sismic.R
 import kotlinx.android.synthetic.main.history_item.view.*
+import java.text.SimpleDateFormat
 
 /**
  * Created by Matteo on 28/07/2017.
  */
-class ReportAdapter(var items: List<ReportDTO>, val listener: (ReportDTO) -> Unit) :
+class ReportAdapter(val items: List<ReportDTO>, val listener: (ReportDTO) -> Unit) :
         RecyclerView.Adapter<ReportAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder? {
@@ -24,7 +25,7 @@ class ReportAdapter(var items: List<ReportDTO>, val listener: (ReportDTO) -> Uni
     }
 
     override fun getItemCount(): Int {
-        return items.size;
+        return items.size
     }
 
     fun ViewGroup.inflate(layoutRes: Int): View {
@@ -37,7 +38,7 @@ class ReportAdapter(var items: List<ReportDTO>, val listener: (ReportDTO) -> Uni
 
             itemView.history_item_title.text = report.title
             itemView.history_item_description.text = report.description
-            itemView.history_item_date.text = report.date.toString()
+            itemView.history_item_date.text = SimpleDateFormat("MM/dd/yyyy").format(report.date).toString()
             itemView.history_item_value.text = report.value.toString()
             //TODO: Bottoni e click
             setOnClickListener { listener(report) }
