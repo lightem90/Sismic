@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ReportDangerHigh">
+        <attr name="state_report_danger_high" format="boolean"/>
+        <attr name="state_report_danger_medium" format="boolean"/>
+        <attr name="state_report_danger_normal" format="boolean"/>
+        <attr name="state_report_danger_low" format="boolean"/>
+    </declare-styleable>
+</resources>

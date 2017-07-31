@@ -1,9 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
+<selector xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:state_pressed="true"
-        android:drawable="@drawable/border_history_item_background" />
+        android:drawable="@android:color/transparent" />
 
-    <item android:drawable="@drawable/border_history_item_background" />
+    <item app:state_report_danger_high="true"
+        android:drawable="@drawable/border_history_item_background_danger_high" />
+
+    <item app:state_report_danger_medium="true"
+        android:drawable="@drawable/border_history_item_background_danger_medium" />
+
+    <item app:state_report_danger_normal="true"
+        android:drawable="@drawable/border_history_item_background_danger_normal" />
+
+    <item app:state_report_danger_low="true"
+        android:drawable="@drawable/border_history_item_background_danger_low" />
 </selector>
