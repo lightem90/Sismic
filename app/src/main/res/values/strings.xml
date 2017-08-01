@@ -25,7 +25,7 @@
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Login</string>
-    <string name="action_register">Registrazione</string>
+    <string name="action_register">Crea un account</string>
     <string name="action_sign_in_short">Login</string>
     <string name="error_invalid_email">Indirizzo email invalido</string>
     <string name="error_invalid_password">Password troppo corta</string>
@@ -51,4 +51,5 @@
     <string name="report_next">PROSSIMO</string>
     <string name="report_back">PRECEDENTE</string>
     <string name="report_complete">COMPLETATO</string>
+    <string name="welcome">Primo accesso? Registrati qui</string>
 </resources>

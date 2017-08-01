@@ -7,4 +7,4 @@ import java.util.*
  */
 
 
-data class ReportDTO(val title: String, val description: String, val date : Date, val value : Int)
+data class ReportDTO(val title: String, val description: String, val size : Int, val value : Int)

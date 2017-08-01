@@ -1,9 +1,11 @@
 package com.polito.sismic.Presenters.Adapters
 
+import android.graphics.Color
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import com.polito.sismic.Domain.DangerStateProvider
 import com.polito.sismic.Domain.ReportDTO
 import com.polito.sismic.Presenters.DangerState
@@ -41,16 +43,28 @@ class ReportAdapter(val items: List<ReportDTO>, val listener: (ReportDTO) -> Uni
             itemView.isDuplicateParentStateEnabled = true
             itemView.history_item_title.text = report.title
             itemView.history_item_description.text = report.description
-            itemView.history_item_date.text = SimpleDateFormat("MM/dd/yyyy").format(report.date).toString()
+            itemView.history_item_size.text = report.size.toString() + " MB"
             var dangerState = DangerStateProvider.getDangerStateByValue(report.value)
 
             itemView.danger_layout.SetDangerState(dangerState)
             itemView.history_item_value.text = report.value.toString()
-            //TODO: colore anche al value
+            setTextColorByDanger(report.value, itemView.history_item_value)
 
-            //TODO: Bottoni e click
+            //TODO: Bottoni e click (edit sul click della view)
             setOnClickListener { listener(report) }
 
+        }
+
+        //Per non mettere il context qui dentro, altrimenti avrei messo tutto come statico in DAngerStateProvider
+        private fun setTextColorByDanger(danger : Int, textView : TextView)
+        {
+            when(danger)
+            {
+                in 0..10 -> return textView.setTextColor(Color.parseColor("#0099FF"))
+                in 11..35 -> return textView.setTextColor(Color.parseColor("#33CC00"))
+                in 36..50 -> return textView.setTextColor(Color.parseColor("#FF9900"))
+                in 51..100 -> return textView.setTextColor(Color.parseColor("#FF0000"))
+            }
         }
 
         fun setOnClickListener(listener: (view: View) -> Unit){}

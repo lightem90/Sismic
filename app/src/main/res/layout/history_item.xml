@@ -50,10 +50,10 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/history_item_date"
+                android:id="@+id/history_item_size"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/history_item_date"/>
+                style="@style/history_item_size"/>
 
         </LinearLayout>
 
@@ -84,12 +84,12 @@
                 app:srcCompat="@drawable/ic_print_black_24dp" />
 
             <ImageButton
-                android:id="@+id/btn_edit_item_history"
+                android:id="@+id/btn_upload_item_history"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                app:srcCompat="@drawable/ic_mode_edit_black_24dp" />
+                app:srcCompat="@drawable/ic_file_upload_black_24dp" />
 
         </LinearLayout>
     </com.polito.sismic.Presenters.DangerLayout>
