@@ -4,8 +4,6 @@ import android.annotation.TargetApi
 import android.content.Context
 import android.os.Build
 import android.util.AttributeSet
-import android.view.LayoutInflater
-import android.view.View
 import android.widget.LinearLayout
 import com.polito.sismic.R
 
@@ -39,13 +37,11 @@ class DangerLayout : LinearLayout {
             : super(context, attrs, defStyleAttr, defStyleRes)
 
     private var mDangerState : DangerState = DangerState.Default
-    private val STATE_REPORT_DANGER = intArrayOf(R.attr.state_report_danger_high,
-            R.attr.state_report_danger_medium,
-            R.attr.state_report_danger_normal,
-            R.attr.state_report_danger_low)
+    private val STATE_REPORT_DANGER_HIGH = intArrayOf(R.attr.state_report_danger_high)
+    private val STATE_REPORT_DANGER_MEDIUM = intArrayOf(R.attr.state_report_danger_medium)
+    private val STATE_REPORT_DANGER_NORMAL = intArrayOf(R.attr.state_report_danger_normal)
+    private val STATE_REPORT_DANGER_LOW = intArrayOf(R.attr.state_report_danger_low)
 
-    //devo cablarlo
-    private val STATE_REPORT_DANGER_VALUES_COUNT = 4
 
     fun SetDangerState(state : DangerState)
     {
@@ -55,14 +51,26 @@ class DangerLayout : LinearLayout {
 
     override fun onCreateDrawableState(extraSpace: Int): IntArray {
 
-        if (mDangerState != DangerState.Default)
+        if (mDangerState == null) return super.onCreateDrawableState(extraSpace)
+
+        val drawableState = super.onCreateDrawableState(extraSpace + 1)
+        when(mDangerState)
         {
-            val drawableState = super.onCreateDrawableState(extraSpace + STATE_REPORT_DANGER_VALUES_COUNT)
-            if (STATE_REPORT_DANGER != null) mergeDrawableStates(drawableState, STATE_REPORT_DANGER)
-            return drawableState
+            DangerState.High -> return pushState(drawableState, STATE_REPORT_DANGER_HIGH, extraSpace)
+            DangerState.Medium -> return pushState(drawableState, STATE_REPORT_DANGER_MEDIUM, extraSpace)
+            DangerState.Normal -> return pushState(drawableState, STATE_REPORT_DANGER_NORMAL, extraSpace)
+            DangerState.Low -> return pushState(drawableState, STATE_REPORT_DANGER_LOW, extraSpace)
+            DangerState.Default -> return super.onCreateDrawableState(extraSpace)
         }
 
         return super.onCreateDrawableState(extraSpace)
+    }
+
+    private fun pushState(drawableState: IntArray, stateToPush: IntArray?, extraSpace: Int) : IntArray
+    {
+        if (stateToPush == null) super.onCreateDrawableState(extraSpace)
+        mergeDrawableStates(drawableState, stateToPush)
+        return drawableState
     }
 
 
