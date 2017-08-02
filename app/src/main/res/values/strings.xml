@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Sismic</string>
-    <string name="title_home">Home</string>
-    <string name="i_graph_history">Storico</string>
-    <string name="title_profile">Profilo</string>
+    <string name="action_home">Home</string>
+    <string name="action_graph_history">Storico</string>
+    <string name="action_profile">Profilo</string>
     <string name="new_report_btn_str">Nuovo Report</string>
     <string name="view_history_btn_str">Storico</string>
     <string name="et_name_hint">Nome</string>
@@ -13,11 +13,11 @@
     <string name="et_register_hint">Riferimento Albo</string>
     <string name="et_address_hint">Indirizzo</string>
     <string name="i_reorder_history">Riordina</string>
-    <string name="reorder_history_az">a-z</string>
-    <string name="reorder_history_za">z-a</string>
-    <string name="reorder_history_date_asc">data ascendente</string>
-    <string name="reorder_history_date_desc">data discendente</string>
-    <string name="i_profile_logout">Logout</string>
+    <string name="action_reorder_history_az">a-z</string>
+    <string name="action_reorder_history_za">z-a</string>
+    <string name="action_reorder_history_date_asc">data ascendente</string>
+    <string name="action_reorder_history_date_desc">data discendente</string>
+    <string name="action_logout">Logout</string>
     <string name="title_activity_report">Report</string>
     <string name="title_activity_login">Login</string>
 
@@ -59,4 +59,26 @@
     <string name="report_longitude_parameter">Longitudine</string>
     <string name="report_latitute_parameter_hint">Inserire longitudine</string>
     <string name="report_longitude_parameter_hint">Inserire longitudine</string>
+    <string name="action_reverseGeolocalization">Geolocalizzazione inversa</string>
+    <string name="action_geolocalization">Geolocalizzazione</string>
+    <string name="action_fromMap">Scegli su mappa</string>
+    <string name="report_info_section_number_label">Numero:</string>
+    <string name="report_info_section_name_label">Nome</string>
+    <string name="report_info_section_data_label">Data e ora</string>
+    <string name="report_state_parameter">Stato</string>
+    <string name="report_state_parameter_hint">Inserisci stato</string>
+    <string name="report_region_parameter">Regione</string>
+    <string name="report_region_parameter_hint">Inserisci regione</string>
+    <string name="report_province_parameter">Provincia</string>
+    <string name="report_province_parameter_hint">Inserisci provincia</string>
+    <string name="report_comune_parameter">Comune</string>
+    <string name="report_comune_parameter_hint">Inserisci comune</string>
+    <string name="report_address_parameter">Indirizzo</string>
+    <string name="report_address_parameter_hint">Inserisci indirizzo, numero civico</string>
+    <string name="report_cap_parameter">CAP</string>
+    <string name="report_cap_parameter_hint">Inserisci codice avviamento postale</string>
+    <string name="report_sismic_parameter">Zona sismica</string>
+    <string name="report_sismic_parameter_hint">Zona sismica calcolata</string>
+    <string name="report_istat_parameter">Codice Istat</string>
+    <string name="report_istat_parameter_hint">Codice Istat relativo</string>
 </resources>

@@ -8,44 +8,137 @@
         android:text="@string/report_info_section_title"/>
 
     <!-- Compilati automaticamente all'apertura -->
-    <TextView
-        android:id="@+id/report_info_section_number"
-        android:text="ESEMPIO"
-        style="@style/sectionValue"/>
 
-    <TextView
-        android:id="@+id/report_info_section_name"
-        android:text="ESEMPIO"
-        style="@style/sectionValue"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/report_info_section_data"
-        android:text="ESEMPIO"
-        style="@style/sectionValue"/>
+        <TextView
+            android:id="@+id/report_info_section_number_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/report_info_section_number_label"
+            style="@style/sectionValue"/>
+
+        <TextView
+            android:id="@+id/report_info_section_number_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/sectionValue"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/report_info_section_name_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/report_info_section_name_label"
+            style="@style/sectionValue"/>
+
+        <TextView
+            android:id="@+id/report_info_section_name_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/sectionValue"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/report_info_section_data_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/report_info_section_data_label"
+            style="@style/sectionValue"/>
+
+        <TextView
+            android:id="@+id/report_info_section_data_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/sectionValue"/>
+
+    </LinearLayout>
 
     <TextView
         style="@style/sectionTitle"
         android:text="@string/report_localization_section_title"/>
 
-    <com.polito.sismic.Presenters.ReportActivity.ParameterReportLayout
-        app:report_parameter_title="@string/report_latitute_parameter"
-        app:report_parameter_hint="@string/report_latitute_parameter_hint"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
+    app:report_parameter_title="@string/report_latitute_parameter"
+    app:report_parameter_hint="@string/report_latitute_parameter_hint"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"/>
 
-    <com.polito.sismic.Presenters.ReportActivity.ParameterReportLayout
+    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
         app:report_parameter_title="@string/report_longitude_parameter"
         app:report_parameter_hint="@string/report_longitude_parameter_hint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-    <com.polito.sismic.Presenters.ReportActivity.ParameterReportLayout
+    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
+        app:report_parameter_title="@string/report_latitute_parameter"
+        app:report_parameter_hint="@string/report_latitute_parameter_hint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-    <com.polito.sismic.Presenters.ReportActivity.ParameterReportLayout
+    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
+        app:report_parameter_title="@string/report_state_parameter"
+        app:report_parameter_hint="@string/report_state_parameter_hint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
+        app:report_parameter_title="@string/report_region_parameter"
+        app:report_parameter_hint="@string/report_region_parameter_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
+        app:report_parameter_title="@string/report_province_parameter"
+        app:report_parameter_hint="@string/report_province_parameter_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
+        app:report_parameter_title="@string/report_comune_parameter"
+        app:report_parameter_hint="@string/report_comune_parameter_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
+        app:report_parameter_title="@string/report_address_parameter"
+        app:report_parameter_hint="@string/report_address_parameter_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
+        app:report_parameter_title="@string/report_cap_parameter"
+        app:report_parameter_hint="@string/report_cap_parameter_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
+        app:report_parameter_title="@string/report_sismic_parameter"
+        app:report_parameter_hint="@string/report_sismic_parameter_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
+        app:report_parameter_title="@string/report_istat_parameter"
+        app:report_parameter_hint="@string/report_istat_parameter_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
 
 
 </LinearLayout>

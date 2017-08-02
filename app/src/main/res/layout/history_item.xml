@@ -10,7 +10,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin">
 
-    <com.polito.sismic.Presenters.DangerLayout
+    <com.polito.sismic.Presenters.CustomLayout.DangerLayout
         android:id="@+id/danger_layout"
         android:background="@drawable/border_history_item_background_selector"
         android:orientation="vertical"
@@ -91,6 +91,6 @@
                 app:srcCompat="@drawable/ic_file_upload_black_24dp" />
 
         </LinearLayout>
-    </com.polito.sismic.Presenters.DangerLayout>
+    </com.polito.sismic.Presenters.CustomLayout.DangerLayout>
 
 </android.support.v7.widget.CardView>

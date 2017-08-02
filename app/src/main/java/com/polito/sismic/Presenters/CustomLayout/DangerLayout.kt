@@ -1,4 +1,4 @@
-package com.polito.sismic.Presenters
+package com.polito.sismic.Presenters.CustomLayout
 
 import android.annotation.TargetApi
 import android.content.Context

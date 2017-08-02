@@ -1,10 +1,6 @@
 package com.polito.sismic.Domain
 
-import android.content.Context
-import android.support.v4.content.ContextCompat
-import android.widget.TextView
-import com.polito.sismic.Presenters.DangerState
-import com.polito.sismic.R
+import com.polito.sismic.Presenters.CustomLayout.DangerState
 
 /**
  * Created by Matteo on 31/07/2017.

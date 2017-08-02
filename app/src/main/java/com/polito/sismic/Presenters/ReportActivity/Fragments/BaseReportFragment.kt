@@ -28,6 +28,7 @@ open class BaseReportFragment : Fragment(), Step {
         //Elemento padre della custom view
         val scrollableCanvas = baseLayout.findViewById<ScrollView>(R.id.base_fragment_scroll_view)
 
+        //TODO detect scrolling e apertura keyboard
         view.setOnClickListener({ activity.findViewById<FABToolbarLayout>(R.id.fabtoolbar).hide() })
         scrollableCanvas.addView(view)
 

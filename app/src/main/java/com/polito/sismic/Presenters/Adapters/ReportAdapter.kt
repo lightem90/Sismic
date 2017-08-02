@@ -8,10 +8,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.polito.sismic.Domain.DangerStateProvider
 import com.polito.sismic.Domain.ReportDTO
-import com.polito.sismic.Presenters.DangerState
 import com.polito.sismic.R
 import kotlinx.android.synthetic.main.history_item.view.*
-import java.text.SimpleDateFormat
 
 /**
  * Created by Matteo on 28/07/2017.

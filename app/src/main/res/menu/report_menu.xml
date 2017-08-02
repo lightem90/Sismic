@@ -3,31 +3,31 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/reorder"
-        android:icon="@drawable/ic_place_black_24dp"
-        android:title="@string/i_graph_history"
+        android:id="@+id/actio_show_places"
+        android:icon="@drawable/ic_place_white_24dp"
+        android:title="@string/action_graph_history"
         app:showAsAction="always"  />
 
     <item
         android:id="@+id/action_reorder"
         android:orderInCategory="100"
         android:title="@string/i_reorder_history"
-        android:icon="@drawable/ic_reorder_black_24dp"
+        android:icon="@drawable/ic_reorder_white_24dp"
         app:showAsAction="always" >
 
         <menu>
 
             <item android:id="@+id/reorder_history_az"
-                android:title="@string/reorder_history_az" />
+                android:title="@string/action_reorder_history_az" />
 
             <item android:id="@+id/reorder_history_za"
-                android:title="@string/reorder_history_za" />
+                android:title="@string/action_reorder_history_za" />
 
             <item android:id="@+id/reorder_history_date_asc"
-                android:title="@string/reorder_history_date_asc" />
+                android:title="@string/action_reorder_history_date_asc" />
 
             <item android:id="@+id/reorder_history_date_desc"
-                android:title="@string/reorder_history_date_desc" />
+                android:title="@string/action_reorder_history_date_desc" />
 
         </menu>
     </item>

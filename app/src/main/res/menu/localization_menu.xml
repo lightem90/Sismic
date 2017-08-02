@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/reverseGeolocalization"
+        android:icon="@drawable/ic_satellite_white_24dp"
+        android:title="@string/action_reverseGeolocalization"
+        app:showAsAction="always"  />
+
+    <item
+        android:id="@+id/geolocalization"
+        android:icon="@drawable/ic_my_location_white_24dp"
+        android:title="@string/action_geolocalization"
+        app:showAsAction="always"  />
+
+    <item
+        android:id="@+id/fromMap"
+        android:icon="@drawable/ic_place_white_24dp"
+        android:title="@string/action_fromMap"
+        app:showAsAction="always"  />
+
+</menu>
