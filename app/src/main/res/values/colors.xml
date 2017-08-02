@@ -12,6 +12,7 @@
     <color name="report_danger_normal">#33CC00</color>
     <color name="report_danger_low">#0099FF</color>
 
+
     <!-- per debug -->
     <color name="hot_pink">#FF69B4</color>
     <color name="lime">#00FF00</color>

@@ -52,4 +52,11 @@
     <string name="report_back">PRECEDENTE</string>
     <string name="report_complete">COMPLETATO</string>
     <string name="welcome">Primo accesso? Registrati qui</string>
+    <string name="report_info_section_title">INFORMAZIONI SCHEDA</string>
+    <string name="report_localization_section_title">LOCALIZZAZIONE EDIFICIO</string>
+    <string name="not_defined">Not Defined</string>
+    <string name="report_latitute_parameter">Latitudine</string>
+    <string name="report_longitude_parameter">Longitudine</string>
+    <string name="report_latitute_parameter_hint">Inserire longitudine</string>
+    <string name="report_longitude_parameter_hint">Inserire longitudine</string>
 </resources>

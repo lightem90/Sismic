@@ -1,5 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout style="@style/scrollableLayout">
+<LinearLayout style="@style/scrollableLayout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        style="@style/sectionTitle"
+        android:text="@string/report_info_section_title"/>
+
+    <!-- Compilati automaticamente all'apertura -->
+    <TextView
+        android:id="@+id/report_info_section_number"
+        android:text="ESEMPIO"
+        style="@style/sectionValue"/>
+
+    <TextView
+        android:id="@+id/report_info_section_name"
+        android:text="ESEMPIO"
+        style="@style/sectionValue"/>
+
+    <TextView
+        android:id="@+id/report_info_section_data"
+        android:text="ESEMPIO"
+        style="@style/sectionValue"/>
+
+    <TextView
+        style="@style/sectionTitle"
+        android:text="@string/report_localization_section_title"/>
+
+    <com.polito.sismic.Presenters.ReportActivity.ParameterReportLayout
+        app:report_parameter_title="@string/report_latitute_parameter"
+        app:report_parameter_hint="@string/report_latitute_parameter_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.polito.sismic.Presenters.ReportActivity.ParameterReportLayout
+        app:report_parameter_title="@string/report_longitude_parameter"
+        app:report_parameter_hint="@string/report_longitude_parameter_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.polito.sismic.Presenters.ReportActivity.ParameterReportLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.polito.sismic.Presenters.ReportActivity.ParameterReportLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
 
 </LinearLayout>

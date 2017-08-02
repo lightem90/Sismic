@@ -6,4 +6,12 @@
         <attr name="state_report_danger_normal" format="boolean"/>
         <attr name="state_report_danger_low" format="boolean"/>
     </declare-styleable>
+
+    <declare-styleable name="report_parameter_components">
+        <attr name="report_parameter_title" format="reference" />
+        <attr name="report_parameter_hint" format="reference" />
+        <attr name="report_parameter_text" format="reference" />
+    </declare-styleable>
+
+
 </resources>
