@@ -29,6 +29,7 @@
         <activity
             android:name=".Presenters.ReportActivity.ReportActivity"
             android:label="@string/title_activity_report"
+            android:windowSoftInputMode="adjustPan"
             android:parentActivityName=".Presenters.PresenterActivity">
             <!-- The meta-data element is needed for versions lower than 4.1 -->
             <meta-data
