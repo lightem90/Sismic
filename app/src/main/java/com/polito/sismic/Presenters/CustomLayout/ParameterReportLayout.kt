@@ -2,9 +2,11 @@ package com.polito.sismic.Presenters.CustomLayout
 
 import android.annotation.TargetApi
 import android.content.Context
+import android.opengl.Visibility
 import android.os.Build
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.polito.sismic.R
@@ -58,9 +60,18 @@ class ParameterReportLayout : LinearLayout {
                             R.string.not_defined))
 
             section_parameter_title.text = title
+            section_parameter_help.visibility = View.INVISIBLE
 
             if (value != "Not Defined") section_parameter_value.setText(value, TextView.BufferType.EDITABLE)
             else section_parameter_value.hint = hint
+
+            //Mostra/nasconde l'help
+            section_parameter_value.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
+                if (hasFocus)
+                    section_parameter_help.visibility = View.VISIBLE
+                else
+                    section_parameter_help.visibility = View.INVISIBLE
+            }
 
             typedArray.recycle()
         }

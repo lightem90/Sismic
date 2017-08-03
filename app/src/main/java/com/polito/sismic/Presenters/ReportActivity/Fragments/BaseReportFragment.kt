@@ -1,6 +1,7 @@
 package com.polito.sismic.Presenters.ReportActivity.Fragments
 
 import android.support.v4.app.Fragment
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,7 +9,9 @@ import android.widget.ScrollView
 import com.github.fafaldo.fabtoolbar.widget.FABToolbarLayout
 import com.polito.sismic.R
 import com.stepstone.stepper.Step
+import com.stepstone.stepper.StepperLayout
 import com.stepstone.stepper.VerificationError
+import kotlinx.android.synthetic.main.activity_report.*
 
 
 /**
@@ -29,14 +32,56 @@ open class BaseReportFragment : Fragment(), Step {
         val scrollableCanvas = baseLayout.findViewById<ScrollView>(R.id.base_fragment_scroll_view)
 
         //TODO detect scrolling e apertura keyboard
-        view.setOnClickListener({ activity.findViewById<FABToolbarLayout>(R.id.fabtoolbar).hide() })
+        view.setOnClickListener({ hideFab() })
         scrollableCanvas.addView(view)
 
+        scrollableCanvas.viewTreeObserver.addOnScrollChangedListener {
+            hideStepper()
+            hideFab()
+        }
+
         return baseLayout
+    }
+
+    protected fun hideStepper() {
+        activity.findViewById<StepperLayout>(R.id.stepperLayout)?.hideProgress()
+    }
+
+    protected fun hideFab() {
+        activity.findViewById<FABToolbarLayout>(R.id.fabtoolbar)?.hide()
     }
 
     //Da overridare nei figli
     override fun onSelected() {    }
     override fun verifyStep(): VerificationError? { return null }
     override fun onError(error: VerificationError) { }
+
+    public abstract class HideShowScrollListener : RecyclerView.OnScrollListener() {
+
+        private val HIDE_THRESHOLD = 5
+        private var scrolledDistance = 0
+        private var controlsVisible = true
+
+        override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+
+            if (scrolledDistance > HIDE_THRESHOLD && controlsVisible) {
+                onHide()
+                controlsVisible = false
+                scrolledDistance = 0
+            } else if (scrolledDistance < -HIDE_THRESHOLD && !controlsVisible) {
+                onShow()
+                controlsVisible = true
+                scrolledDistance = 0
+            }
+
+            if (controlsVisible && dy > 0 || !controlsVisible && dy < 0) {
+                scrolledDistance += dy
+            }
+        }
+
+        abstract fun onHide()
+        abstract fun onShow()
+
+    }
 }
