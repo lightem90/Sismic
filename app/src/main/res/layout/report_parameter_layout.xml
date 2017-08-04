@@ -28,7 +28,7 @@
         
     </RelativeLayout>
     
-    <EditText
+    <AutoCompleteTextView
         android:id="@+id/section_parameter_value"
         style="@style/sectionParameterValue"/>
 

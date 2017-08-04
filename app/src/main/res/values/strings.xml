@@ -81,4 +81,6 @@
     <string name="report_sismic_parameter_hint">Zona sismica calcolata</string>
     <string name="report_istat_parameter">Codice Istat</string>
     <string name="report_istat_parameter_hint">Codice Istat relativo</string>
+
+
 </resources>

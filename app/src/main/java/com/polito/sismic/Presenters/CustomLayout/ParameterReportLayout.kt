@@ -2,7 +2,6 @@ package com.polito.sismic.Presenters.CustomLayout
 
 import android.annotation.TargetApi
 import android.content.Context
-import android.opengl.Visibility
 import android.os.Build
 import android.util.AttributeSet
 import android.view.LayoutInflater
@@ -11,6 +10,9 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.polito.sismic.R
 import kotlinx.android.synthetic.main.report_parameter_layout.view.*
+import android.widget.ArrayAdapter
+
+
 
 /**
  * Created by Matteo on 02/08/2017.
@@ -59,6 +61,10 @@ class ParameterReportLayout : LinearLayout {
                     .getResourceId(R.styleable.report_parameter_components_report_parameter_text,
                             R.string.not_defined))
 
+            val suggestions = resources.getStringArray(typedArray
+                    .getResourceId(R.styleable.report_parameter_components_android_entries,
+                            R.string.not_defined))
+
             section_parameter_title.text = title
             section_parameter_help.visibility = View.INVISIBLE
 
@@ -73,8 +79,29 @@ class ParameterReportLayout : LinearLayout {
                     section_parameter_help.visibility = View.INVISIBLE
             }
 
+            if (suggestions.size > 1)
+            {
+                var autoSugg = ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, suggestions)
+                section_parameter_value.setAdapter(autoSugg)
+            }
+
             typedArray.recycle()
         }
+    }
+
+    fun setParamterValue(newValue : String)
+    {
+        section_parameter_value.setText(newValue, TextView.BufferType.EDITABLE)
+    }
+
+    fun getParamterValue() : String
+    {
+        return section_parameter_value.text.toString()
+    }
+
+    fun isEmpty() : Boolean
+    {
+        return section_parameter_value.text.isEmpty()
     }
 
 }

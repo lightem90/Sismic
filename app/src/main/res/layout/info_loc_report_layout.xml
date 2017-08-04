@@ -74,66 +74,71 @@
         android:text="@string/report_localization_section_title"/>
 
     <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
-    app:report_parameter_title="@string/report_latitute_parameter"
-    app:report_parameter_hint="@string/report_latitute_parameter_hint"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"/>
-
-    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
-        app:report_parameter_title="@string/report_longitude_parameter"
-        app:report_parameter_hint="@string/report_longitude_parameter_hint"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
+        android:id="@+id/lat_parameter"
         app:report_parameter_title="@string/report_latitute_parameter"
         app:report_parameter_hint="@string/report_latitute_parameter_hint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
     <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
-        app:report_parameter_title="@string/report_state_parameter"
-        app:report_parameter_hint="@string/report_state_parameter_hint"
+        android:id="@+id/long_parameter"
+        app:report_parameter_title="@string/report_longitude_parameter"
+        app:report_parameter_hint="@string/report_longitude_parameter_hint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
     <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
+        android:id="@+id/state_parameter"
+        app:report_parameter_title="@string/report_state_parameter"
+        app:report_parameter_hint="@string/report_state_parameter_hint"
+        android:entries="@array/countries_array"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
+        android:id="@+id/region_parameter"
         app:report_parameter_title="@string/report_region_parameter"
         app:report_parameter_hint="@string/report_region_parameter_hint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
     <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
+        android:id="@+id/province_parameter"
         app:report_parameter_title="@string/report_province_parameter"
         app:report_parameter_hint="@string/report_province_parameter_hint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
     <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
+        android:id="@+id/comune_parameter"
         app:report_parameter_title="@string/report_comune_parameter"
         app:report_parameter_hint="@string/report_comune_parameter_hint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
     <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
+        android:id="@+id/address_parameter"
         app:report_parameter_title="@string/report_address_parameter"
         app:report_parameter_hint="@string/report_address_parameter_hint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
     <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
+        android:id="@+id/cap_parameter"
         app:report_parameter_title="@string/report_cap_parameter"
         app:report_parameter_hint="@string/report_cap_parameter_hint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
     <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
+        android:id="@+id/zona_sismica_parameter"
         app:report_parameter_title="@string/report_sismic_parameter"
         app:report_parameter_hint="@string/report_sismic_parameter_hint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
     <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
+        android:id="@+id/codice_istat_parameter"
         app:report_parameter_title="@string/report_istat_parameter"
         app:report_parameter_hint="@string/report_istat_parameter_hint"
         android:layout_width="match_parent"
