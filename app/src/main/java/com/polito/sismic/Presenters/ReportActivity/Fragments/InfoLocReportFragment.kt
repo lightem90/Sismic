@@ -4,8 +4,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.Nullable
 import android.view.*
+import com.polito.sismic.Interactors.Helpers.ActionHelper
+import com.polito.sismic.Interactors.Helpers.ActionType
+import com.polito.sismic.Interactors.Helpers.PermissionsHelper
 import com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
 import com.polito.sismic.R
+import com.github.fafaldo.fabtoolbar.util.ExpandAnimationUtils.build
+import com.google.android.gms.location.places.ui.PlacePicker
+
+
 
 
 /**
@@ -17,9 +24,12 @@ class InfoLocReportFragment : BaseReportFragment() {
     private var  mCodiceIstatParameter: ParameterReportLayout? = null
     private var  mLatParameter: ParameterReportLayout? = null
     private var  mLonParameter: ParameterReportLayout? = null
+    private var  mAddressParameter: ParameterReportLayout? = null
+    private var  mActionHelper = ActionHelper()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setHasOptionsMenu(true);
     }
 
@@ -36,7 +46,7 @@ class InfoLocReportFragment : BaseReportFragment() {
         //Da inizializzare accedendo al server
         mZonaSismicaParameter = view?.findViewById<ParameterReportLayout>(R.id.zona_sismica_parameter)
         mCodiceIstatParameter = view?.findViewById<ParameterReportLayout>(R.id.codice_istat_parameter)
-
+        mAddressParameter = view?.findViewById<ParameterReportLayout>(R.id.address_parameter)
 
         return view;
     }
@@ -45,9 +55,23 @@ class InfoLocReportFragment : BaseReportFragment() {
         if (item != null) {
             when (item.itemId)
             {
-                R.id.reverseGeolocalization -> return true
-                R.id.geolocalization -> return true
-                R.id.fromMap -> return true
+                R.id.reverseGeolocalization ->
+                {
+                    mActionHelper.handleActionRequest(ActionType.ReverseLocalization, activity)
+                    return true
+                }
+
+                R.id.geolocalization ->
+                {
+                    mActionHelper.handleActionRequest(ActionType.Localization, activity)
+                    return true
+                }
+
+                R.id.fromMap ->
+                {
+                    mActionHelper.handleActionRequest(ActionType.PlacePicker, activity)
+                    return true
+                }
             }
         }
         return false;
@@ -61,7 +85,29 @@ class InfoLocReportFragment : BaseReportFragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        //TODO Gestire le varie azioni da toolbar
+        when (requestCode)
+        {
+            mActionHelper.PLACE_PICKER_REQUEST ->
+            {
+                val place = mActionHelper.handlePickerResponse(activity, resultCode, data)
+                if (place != null)
+                {
+                    mLatParameter?.setParameterValue(place!!.latLng?.latitude.toString())
+                    mLonParameter?.setParameterValue(place!!.latLng?.longitude.toString())
+                    mAddressParameter?.setParameterValue(place!!.address?.toString()!!)
+                }
+            }
+
+            mActionHelper.LOCALIZATION_REQUEST ->
+            {
+
+            }
+
+            mActionHelper.REVERSE_LOCALIZATION_REQUEST ->
+            {
+
+            }
+        }
     }
 
 }

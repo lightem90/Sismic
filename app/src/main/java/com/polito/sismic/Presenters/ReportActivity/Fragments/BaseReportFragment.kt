@@ -1,7 +1,6 @@
 package com.polito.sismic.Presenters.ReportActivity.Fragments
 
 import android.support.v4.app.Fragment
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +10,6 @@ import com.polito.sismic.R
 import com.stepstone.stepper.Step
 import com.stepstone.stepper.StepperLayout
 import com.stepstone.stepper.VerificationError
-import kotlinx.android.synthetic.main.activity_report.*
 
 
 /**

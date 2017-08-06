@@ -89,12 +89,12 @@ class ParameterReportLayout : LinearLayout {
         }
     }
 
-    fun setParamterValue(newValue : String)
+    fun setParameterValue(newValue : String)
     {
         section_parameter_value.setText(newValue, TextView.BufferType.EDITABLE)
     }
 
-    fun getParamterValue() : String
+    fun getParameterValue() : String
     {
         return section_parameter_value.text.toString()
     }
