@@ -1,4 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    style="@style/scrollableLayout">
+<LinearLayout style="@style/scrollableLayout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        style="@style/sectionTitle"
+        android:text="@string/report_catasto_section_title"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
+        android:id="@+id/foglio_parameter"
+        app:report_parameter_title="@string/report_sheet_parameter"
+        app:report_parameter_hint="@string/report_sheet_parameter_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
+        android:id="@+id/mappale_parameter"
+        app:report_parameter_title="@string/report_mappale_parameter"
+        app:report_parameter_hint="@string/report_mappale_parameter_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
+        android:id="@+id/particella_parameter"
+        app:report_parameter_title="@string/report_particella_parameter"
+        app:report_parameter_hint="@string/report_particella_parameter_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        style="@style/sectionTitle"
+        android:text="@string/report_cartography_section_title"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
+        android:id="@+id/foglio_cart_parameter"
+        app:report_parameter_title="@string/report_foglio_cart_parameter"
+        app:report_parameter_hint="@string/report_foglio_cart_parameter_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
+        android:id="@+id/edificio_parameter"
+        app:report_parameter_title="@string/report_edificio_parameter"
+        app:report_parameter_hint="@string/report_edificio_parameter_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
+        android:id="@+id/aggr_str_parameter"
+        app:report_parameter_title="@string/report_aggr_str_parameter"
+        app:report_parameter_hint="@string/report_aggr_str_parameter_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        style="@style/sectionTitle"
+        android:text="@string/report_urbanistic_section_title"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
+        android:id="@+id/zona_urb_parameter"
+        app:report_parameter_title="@string/report_zona_urb_parameter"
+        app:report_parameter_hint="@string/report_zona_urb_parameter_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
+        android:id="@+id/piano_urb_parameter"
+        app:report_parameter_title="@string/report_piano_urb_parameter"
+        app:report_parameter_hint="@string/report_piano_urb_parameter_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
+        android:id="@+id/vincoli_urb_parameter"
+        app:report_parameter_title="@string/report_vincoli_urb_parameter"
+        app:report_parameter_hint="@string/report_vincoli_urb_parameter_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+
+
 </LinearLayout>

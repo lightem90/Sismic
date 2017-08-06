@@ -9,65 +9,24 @@
 
     <!-- Compilati automaticamente all'apertura -->
 
-    <LinearLayout
+    <com.polito.sismic.Presenters.CustomLayout.LabelReportLayout
+        android:id="@+id/report_info_number_label"
+        app:report_label_title="@string/report_info_number_label"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"/>
 
-        <TextView
-            android:id="@+id/report_info_section_number_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/report_info_section_number_label"
-            style="@style/sectionValue"/>
-
-        <TextView
-            android:id="@+id/report_info_section_number_value"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/sectionValue"/>
-
-    </LinearLayout>
-
-    <LinearLayout
+    <com.polito.sismic.Presenters.CustomLayout.LabelReportLayout
+        android:id="@+id/report_info_name_label"
+        app:report_label_title="@string/report_info_name_label"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"/>
 
-        <TextView
-            android:id="@+id/report_info_section_name_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/report_info_section_name_label"
-            style="@style/sectionValue"/>
-
-        <TextView
-            android:id="@+id/report_info_section_name_value"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/sectionValue"/>
-
-    </LinearLayout>
-
-    <LinearLayout
+    <com.polito.sismic.Presenters.CustomLayout.LabelReportLayout
+        android:id="@+id/report_info_data_label"
+        app:report_label_title="@string/report_info_data_label"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"/>
 
-        <TextView
-            android:id="@+id/report_info_section_data_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/report_info_section_data_label"
-            style="@style/sectionValue"/>
-
-        <TextView
-            android:id="@+id/report_info_section_data_value"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/sectionValue"/>
-
-    </LinearLayout>
 
     <TextView
         style="@style/sectionTitle"

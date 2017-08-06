@@ -5,14 +5,11 @@ import android.support.v7.app.AppCompatActivity
 import com.polito.sismic.Presenters.Adapters.ReportFragmentsAdapter
 import com.polito.sismic.R
 import kotlinx.android.synthetic.main.activity_report.*
+import android.view.MotionEvent
+
+
 
 class ReportActivity : AppCompatActivity() {
-
-    //Nasconde la toolbar dopo un click sul layout del fragment
-    fun hideToolbar() {
-        fabtoolbar.show()
-    }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

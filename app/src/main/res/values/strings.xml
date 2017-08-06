@@ -50,7 +50,7 @@
     <string name="report_first">INVISIBILE</string>
     <string name="report_next">PROSSIMO</string>
     <string name="report_back">PRECEDENTE</string>
-    <string name="report_complete">COMPLETATO</string>
+    <string name="report_complete">SALVA</string>
     <string name="welcome">Primo accesso? Registrati qui</string>
     <string name="report_info_section_title">INFORMAZIONI SCHEDA</string>
     <string name="report_localization_section_title">LOCALIZZAZIONE EDIFICIO</string>
@@ -62,9 +62,9 @@
     <string name="action_reverseGeolocalization">Geolocalizzazione inversa</string>
     <string name="action_geolocalization">Geolocalizzazione</string>
     <string name="action_fromMap">Scegli su mappa</string>
-    <string name="report_info_section_number_label">Numero:</string>
-    <string name="report_info_section_name_label">Nome</string>
-    <string name="report_info_section_data_label">Data e ora</string>
+    <string name="report_info_number_label">Numero:</string>
+    <string name="report_info_name_label">Nome</string>
+    <string name="report_info_data_label">Data e ora</string>
     <string name="report_state_parameter">Stato</string>
     <string name="report_state_parameter_hint">Inserisci stato</string>
     <string name="report_region_parameter">Regione</string>
@@ -81,6 +81,27 @@
     <string name="report_sismic_parameter_hint">Zona sismica calcolata</string>
     <string name="report_istat_parameter">Codice Istat</string>
     <string name="report_istat_parameter_hint">Codice Istat relativo</string>
+    <string name="report_sheet_parameter">Foglio</string>
+    <string name="report_sheet_parameter_hint">Riferimento foglio catastale</string>
+    <string name="report_mappale_parameter">Mappale</string>
+    <string name="report_mappale_parameter_hint">Mappale di riferimento al catasto</string>
+    <string name="report_particella_parameter">Particella</string>
+    <string name="report_particella_parameter_hint">Particella di riferimento al catasto</string>
+    <string name="report_catasto_section_title">RIFERIMENTI CATASTALI</string>
+    <string name="report_cartography_section_title">CARTOGRAFIA DI RILEVAZIONE</string>
+    <string name="report_foglio_cart_parameter">Foglio</string>
+    <string name="report_edificio_parameter">Edificio</string>
+    <string name="report_foglio_cart_parameter_hint">Foglio di riferimento cartografico</string>
+    <string name="report_edificio_parameter_hint">Edificio</string>
+    <string name="report_aggr_str_parameter">TODO</string>
+    <string name="report_aggr_str_parameter_hint">TODO</string>
+    <string name="report_urbanistic_section_title">URBANISTICA</string>
+    <string name="report_zona_urb_parameter">Zona di piano</string>
+    <string name="report_zona_urb_parameter_hint">TODO</string>
+    <string name="report_piano_urb_parameter">Piano attuativo</string>
+    <string name="report_piano_urb_parameter_hint">TODO</string>
+    <string name="report_vincoli_urb_parameter">Vincoli</string>
+    <string name="report_vincoli_urb_parameter_hint">TODO</string>
 
 
 </resources>
