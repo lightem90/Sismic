@@ -1,5 +1,6 @@
 package com.polito.sismic.Presenters.ReportActivity
 
+import android.content.Intent
 import android.location.Location
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -11,9 +12,6 @@ import com.polito.sismic.Presenters.Adapters.ReportFragmentsAdapter
 import com.polito.sismic.Presenters.ReportActivity.Fragments.InfoLocReportFragment
 import com.polito.sismic.R
 import kotlinx.android.synthetic.main.activity_report.*
-import android.content.Intent
-
-
 
 
 class ReportActivity : AppCompatActivity(), InfoLocReportFragment.OnCurrentLocationProvided, GoogleApiClient.OnConnectionFailedListener {
@@ -33,6 +31,7 @@ class ReportActivity : AppCompatActivity(), InfoLocReportFragment.OnCurrentLocat
                 .addApi(Places.PLACE_DETECTION_API)
                 .enableAutoManage(this, this)
                 .build()
+
     }
 
     override fun onLocationAcquired(location: Location) {

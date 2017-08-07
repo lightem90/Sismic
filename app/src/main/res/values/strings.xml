@@ -141,6 +141,8 @@
     <string name="place_picker_failed">Impossibile ricavare latitudine e longitudine</string>
     <string name="autocomplete_failed">Impossibile ricavare latitudine e longitudine</string>
     <string name="google_api_error">Impossibile connettersi alle funzionalità di Google</string>
+    <string name="google_places_api_key">AIzaSyC2bJwWfNdzFepYUceoSERsRTV3F1tnvng</string>
+    <string name="error_parsing_place">Impossibile ricavare informazioni</string>
 
 
 </resources>
