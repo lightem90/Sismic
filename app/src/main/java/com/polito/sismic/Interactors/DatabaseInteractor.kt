@@ -1,6 +1,5 @@
 package com.polito.sismic.Interactors
 
-import com.polito.sismic.Domain.DatabaseStub
 import com.polito.sismic.Domain.IDatabase
 import com.polito.sismic.Domain.ReportDTO
 

@@ -13,10 +13,9 @@ import com.google.android.gms.location.places.Place
 import com.google.android.gms.location.places.ui.PlaceAutocomplete
 import com.google.android.gms.location.places.ui.PlacePicker
 import com.google.android.gms.tasks.OnSuccessListener
+import com.polito.sismic.Extensions.toast
 import com.polito.sismic.Presenters.ReportActivity.Fragments.InfoLocReportFragment
-import android.support.v4.app.ActivityCompat.startActivityForResult
-
-
+import com.polito.sismic.R
 
 
 class ActionHelper {
@@ -26,23 +25,23 @@ class ActionHelper {
 
     private var  mFusedLocationClient: FusedLocationProviderClient? = null
 
-    fun handleActionRequest(type : ActionType, caller : Activity, mLocationCallback: InfoLocReportFragment.OnCurrentLocationProvided?)
+    fun handleActionRequest(type : ActionType, caller : InfoLocReportFragment, mLocationCallback: InfoLocReportFragment.OnCurrentLocationProvided?)
     {
         when (type)
         {
             ActionType.PlacePicker -> launchPlacePicker(caller)
-            ActionType.Localization -> launchLocalization(caller, mLocationCallback)
+            ActionType.Localization -> launchLocalization(caller.activity, mLocationCallback)
             ActionType.ReverseLocalization -> launchReverseLocalization(caller)
         }
     }
 
-    private fun launchReverseLocalization(caller: Activity) {
+    private fun launchReverseLocalization(caller: InfoLocReportFragment) {
 
-        val intent = PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN).build(caller)
-        startActivityForResult(caller, intent, REVERSE_LOCALIZATION_REQUEST, null)
+        val intent = PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN).build(caller.activity)
+        caller.startActivityForResult(intent, REVERSE_LOCALIZATION_REQUEST)
     }
 
-
+    //Already checked!
     @SuppressLint("MissingPermission")
     private fun launchLocalization(caller: Activity, mLocationCallback: InfoLocReportFragment.OnCurrentLocationProvided?) {
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(caller)
@@ -58,10 +57,9 @@ class ActionHelper {
         }
     }
 
-    private fun launchPlacePicker(caller: Activity) {
-        val builder = PlacePicker.IntentBuilder()
-
-        caller.startActivityForResult(builder.build(caller), PLACE_PICKER_REQUEST)
+    private fun launchPlacePicker(caller: InfoLocReportFragment) {
+        //Il fragment lancia e si prende il risultato
+        caller.startActivityForResult(PlacePicker.IntentBuilder().build(caller.activity), PLACE_PICKER_REQUEST)
     }
 
     fun handlePickerResponse(caller: Activity, resultCode : Int, data : Intent?) : Place?
@@ -70,7 +68,7 @@ class ActionHelper {
             return PlacePicker.getPlace(caller, data)
         }
 
-        //TODO segnalare errore
+        caller.toast(R.string.place_picker_failed)
         return null
     }
 
@@ -80,7 +78,7 @@ class ActionHelper {
             return  PlaceAutocomplete.getPlace(caller, data)
         }
 
-        //TODO segnalare errore
+        caller.toast(R.string.autocomplete_failed)
         return null
     }
 }

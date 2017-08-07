@@ -32,9 +32,7 @@
             android:name=".Presenters.ReportActivity.ReportActivity"
             android:label="@string/title_activity_report"
             android:windowSoftInputMode="adjustPan"
-            android:parentActivityName=".Presenters.PresenterActivity"
-            android:noHistory="true"
-            android:excludeFromRecents="true">
+            android:parentActivityName=".Presenters.PresenterActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Presenters.PresenterActivity" />

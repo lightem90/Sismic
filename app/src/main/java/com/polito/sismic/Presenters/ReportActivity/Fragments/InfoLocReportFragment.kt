@@ -18,10 +18,6 @@ import kotlinx.android.synthetic.main.info_loc_report_layout.*
 /**
  * Created by Matteo on 29/07/2017.
  */
-
-
-
-
 class InfoLocReportFragment : BaseReportFragment() {
 
     private var  mLocationCallback: InfoLocReportFragment.OnCurrentLocationProvided? = null
@@ -72,19 +68,19 @@ class InfoLocReportFragment : BaseReportFragment() {
             {
                 R.id.reverseGeolocalization ->
                 {
-                    if (havePermission()) mActionHelper.handleActionRequest(ActionType.ReverseLocalization, activity, null)
+                    if (havePermission()) mActionHelper.handleActionRequest(ActionType.ReverseLocalization, this, null)
                     return true
                 }
 
                 R.id.geolocalization ->
                 {
-                    if (havePermission()) mActionHelper.handleActionRequest(ActionType.Localization, activity, mLocationCallback)
+                    if (havePermission()) mActionHelper.handleActionRequest(ActionType.Localization, this, mLocationCallback)
                     return true
                 }
 
                 R.id.fromMap ->
                 {
-                    if (havePermission()) mActionHelper.handleActionRequest(ActionType.PlacePicker, activity, null)
+                    if (havePermission()) mActionHelper.handleActionRequest(ActionType.PlacePicker, this, null)
                     return true
                 }
             }
@@ -134,6 +130,7 @@ class InfoLocReportFragment : BaseReportFragment() {
     {
         if (place != null)
         {
+            //TODO troncare
             lat_parameter.setParameterValue(place.latLng?.latitude.toString())
             long_parameter.setParameterValue(place.latLng?.longitude.toString())
             address_parameter.setParameterValue(place.address?.toString()!!)

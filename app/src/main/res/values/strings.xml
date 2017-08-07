@@ -138,6 +138,9 @@
     <string name="stato_parameter_hint">Stato dell\'edificio</string>
     <string name="totale_unita_parameter">Totale unità d\'uso</string>
     <string name="totale_unita_parameter_hint">Totale unità d\'uso dell\'edificio</string>
+    <string name="place_picker_failed">Impossibile ricavare latitudine e longitudine</string>
+    <string name="autocomplete_failed">Impossibile ricavare latitudine e longitudine</string>
+    <string name="google_api_error">Impossibile connettersi alle funzionalità di Google</string>
 
 
 </resources>
