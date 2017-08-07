@@ -16,6 +16,9 @@ import com.google.android.gms.tasks.OnSuccessListener
 import com.polito.sismic.Extensions.toast
 import com.polito.sismic.Presenters.ReportActivity.Fragments.InfoLocReportFragment
 import com.polito.sismic.R
+import com.google.android.gms.location.places.AutocompleteFilter
+
+
 
 
 class ActionHelper {
@@ -36,8 +39,13 @@ class ActionHelper {
     }
 
     private fun launchReverseLocalization(caller: InfoLocReportFragment) {
-
-        val intent = PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN).build(caller.activity)
+        val typeFilter = AutocompleteFilter.Builder()
+                .setCountry("IT")
+                .setTypeFilter(AutocompleteFilter.TYPE_FILTER_ADDRESS)
+                .build()
+        val intent = PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
+                .setFilter(typeFilter)
+                .build(caller.activity)
         caller.startActivityForResult(intent, REVERSE_LOCALIZATION_REQUEST)
     }
 

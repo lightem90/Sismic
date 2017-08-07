@@ -133,7 +133,7 @@ class InfoLocReportFragment : BaseReportFragment() {
             //TODO troncare
             lat_parameter.setParameterValue(place.latLng?.latitude.toString())
             long_parameter.setParameterValue(place.latLng?.longitude.toString())
-            address_parameter.setParameterValue(place.address?.toString()!!)
+            //TODO asynctask per le altre info?
         }
     }
 
