@@ -1,6 +1,7 @@
 package com.polito.sismic.Presenters.ReportActivity
 
 import android.content.pm.PackageManager
+import android.location.Location
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.polito.sismic.Interactors.Helpers.PermissionsHelper
@@ -10,10 +11,8 @@ import com.polito.sismic.R
 import kotlinx.android.synthetic.main.activity_report.*
 
 
-class ReportActivity : AppCompatActivity() {
+class ReportActivity : AppCompatActivity(), InfoLocReportFragment.OnCurrentLocationProvided {
 
-
-    private var  mPermissionHelper = PermissionsHelper()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,10 +22,10 @@ class ReportActivity : AppCompatActivity() {
         fabtoolbar_fab.setOnClickListener { fabtoolbar.show() }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int,
-                                            permissions: Array<String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    override fun onLocationAcquired(location: Location) {
+        supportFragmentManager.fragments.filterIsInstance<InfoLocReportFragment>().first().updateByLocation(location)
     }
+
 }
 
 

@@ -27,6 +27,8 @@ class PermissionsHelper
                 fragment.requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
                         PERMISSION_POSITION)
             }
+            else
+                PERMISSION_POSITION_GRANTED = true
         }
     }
 

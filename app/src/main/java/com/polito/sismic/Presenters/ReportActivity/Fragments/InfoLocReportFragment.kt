@@ -1,14 +1,16 @@
 package com.polito.sismic.Presenters.ReportActivity.Fragments
 
+import android.content.Context
 import android.content.Intent
+import android.location.Location
 import android.os.Bundle
 import android.support.annotation.Nullable
 import android.view.*
+import com.google.android.gms.location.places.Place
 import com.polito.sismic.Extensions.toast
 import com.polito.sismic.Interactors.Helpers.ActionHelper
 import com.polito.sismic.Interactors.Helpers.ActionType
 import com.polito.sismic.Interactors.Helpers.PermissionsHelper
-import com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
 import com.polito.sismic.R
 import kotlinx.android.synthetic.main.info_loc_report_layout.*
 
@@ -16,15 +18,41 @@ import kotlinx.android.synthetic.main.info_loc_report_layout.*
 /**
  * Created by Matteo on 29/07/2017.
  */
+
+
+
+
 class InfoLocReportFragment : BaseReportFragment() {
 
+    private var  mLocationCallback: InfoLocReportFragment.OnCurrentLocationProvided? = null
     private var  mActionHelper = ActionHelper()
     private var  mPermissionHelper = PermissionsHelper()
+
+    // Container Activity must implement this interface
+    interface OnCurrentLocationProvided {
+        fun onLocationAcquired(location: Location)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mPermissionHelper.checAndAskLocationPermissions(activity, this)
         setHasOptionsMenu(true)
+    }
+
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+
+        // This makes sure that the container activity has implemented
+        // the callback interface. If not, it throws an exception
+        try
+        {
+            mLocationCallback = context as OnCurrentLocationProvided?
+        }
+        catch (e: ClassCastException) {
+            throw ClassCastException(context!!.toString() + " must implement OnCurrentLocationProvided")
+        }
+
     }
 
     override fun onCreateView(inflater: LayoutInflater?, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View? {
@@ -44,19 +72,19 @@ class InfoLocReportFragment : BaseReportFragment() {
             {
                 R.id.reverseGeolocalization ->
                 {
-                    if (havePermission()) mActionHelper.handleActionRequest(ActionType.ReverseLocalization, activity)
+                    if (havePermission()) mActionHelper.handleActionRequest(ActionType.ReverseLocalization, activity, null)
                     return true
                 }
 
                 R.id.geolocalization ->
                 {
-                    if (havePermission()) mActionHelper.handleActionRequest(ActionType.Localization, activity)
+                    if (havePermission()) mActionHelper.handleActionRequest(ActionType.Localization, activity, mLocationCallback)
                     return true
                 }
 
                 R.id.fromMap ->
                 {
-                    if (havePermission()) mActionHelper.handleActionRequest(ActionType.PlacePicker, activity)
+                    if (havePermission()) mActionHelper.handleActionRequest(ActionType.PlacePicker, activity, null)
                     return true
                 }
             }
@@ -92,13 +120,7 @@ class InfoLocReportFragment : BaseReportFragment() {
         {
             mActionHelper.PLACE_PICKER_REQUEST ->
             {
-                val place = mActionHelper.handlePickerResponse(activity, resultCode, data)
-                if (place != null)
-                {
-                    lat_parameter.setParameterValue(place.latLng?.latitude.toString())
-                    long_parameter.setParameterValue(place.latLng?.longitude.toString())
-                    address_parameter.setParameterValue(place.address?.toString()!!)
-                }
+                updateByPlace(mActionHelper.handlePickerResponse(activity, resultCode, data))
             }
 
             mActionHelper.LOCALIZATION_REQUEST ->
@@ -111,6 +133,22 @@ class InfoLocReportFragment : BaseReportFragment() {
 
             }
         }
+    }
+
+    fun updateByPlace(place : Place?)
+    {
+        if (place != null)
+        {
+            lat_parameter.setParameterValue(place.latLng?.latitude.toString())
+            long_parameter.setParameterValue(place.latLng?.longitude.toString())
+            address_parameter.setParameterValue(place.address?.toString()!!)
+        }
+    }
+
+    fun updateByLocation(location: Location)
+    {
+        lat_parameter.setParameterValue(location.latitude.toString())
+        long_parameter.setParameterValue(location.longitude.toString())
     }
 
 }

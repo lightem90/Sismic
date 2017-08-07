@@ -1,24 +1,18 @@
 package com.polito.sismic.Interactors.Helpers
+
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Context
-import com.google.android.gms.location.places.ui.PlacePicker
-import com.google.android.gms.location.places.Place
-
 import android.content.Intent
-import android.location.Criteria
-import android.content.Context.LOCATION_SERVICE
 import android.location.Location
-import android.location.LocationListener
-import android.location.LocationManager
-import android.os.Bundle
 import android.os.Looper
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.places.Place
+import com.google.android.gms.location.places.ui.PlacePicker
 import com.google.android.gms.tasks.OnSuccessListener
-import com.google.android.gms.tasks.Task
+import com.polito.sismic.Presenters.ReportActivity.Fragments.InfoLocReportFragment
 
 
 class ActionHelper {
@@ -28,12 +22,12 @@ class ActionHelper {
     val REVERSE_LOCALIZATION_REQUEST = 52
     private var  mFusedLocationClient: FusedLocationProviderClient? = null
 
-    fun handleActionRequest(type : ActionType, caller : Activity)
+    fun handleActionRequest(type : ActionType, caller : Activity, mLocationCallback: InfoLocReportFragment.OnCurrentLocationProvided?)
     {
         when (type)
         {
             ActionType.PlacePicker -> launchPlacePicker(caller)
-            ActionType.Localization -> launchLocalization(caller)
+            ActionType.Localization -> launchLocalization(caller, mLocationCallback)
             ActionType.ReverseLocalization -> launchReverseLocalization(caller)
         }
     }
@@ -43,19 +37,18 @@ class ActionHelper {
 
 
     @SuppressLint("MissingPermission")
-    private fun launchLocalization(caller: Activity) : Location? {
+    private fun launchLocalization(caller: Activity, mLocationCallback: InfoLocReportFragment.OnCurrentLocationProvided?) {
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(caller)
-        var  requestedLocation: Location? = null
         if(mFusedLocationClient != null)
         {
             mFusedLocationClient!!.requestLocationUpdates(LocationRequest(), LocationCallback(), Looper.getMainLooper())
             mFusedLocationClient!!.lastLocation?.addOnSuccessListener(caller, OnSuccessListener<Location> { location ->
                 // Got last known location. In some rare situations this can be null.
-                requestedLocation = location
+                //Rimbalzo di eventi tra activity e fragment
+                mLocationCallback?.onLocationAcquired(location)
             })
             mFusedLocationClient!!.removeLocationUpdates(LocationCallback())
         }
-        return requestedLocation
     }
 
     private fun launchPlacePicker(caller: Activity) {
