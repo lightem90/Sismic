@@ -32,7 +32,9 @@
             android:name=".Presenters.ReportActivity.ReportActivity"
             android:label="@string/title_activity_report"
             android:windowSoftInputMode="adjustPan"
-            android:parentActivityName=".Presenters.PresenterActivity">
+            android:parentActivityName=".Presenters.PresenterActivity"
+            android:noHistory="true"
+            android:excludeFromRecents="true">
             <!-- The meta-data element is needed for versions lower than 4.1 -->
             <meta-data
                 android:name="com.google.android.geo.API_KEY"

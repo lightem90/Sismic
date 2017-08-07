@@ -10,6 +10,7 @@ import com.polito.sismic.Interactors.Helpers.ActionType
 import com.polito.sismic.Interactors.Helpers.PermissionsHelper
 import com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
 import com.polito.sismic.R
+import kotlinx.android.synthetic.main.info_loc_report_layout.*
 
 
 /**
@@ -17,11 +18,6 @@ import com.polito.sismic.R
  */
 class InfoLocReportFragment : BaseReportFragment() {
 
-    private var  mZonaSismicaParameter: ParameterReportLayout? = null
-    private var  mCodiceIstatParameter: ParameterReportLayout? = null
-    private var  mLatParameter: ParameterReportLayout? = null
-    private var  mLonParameter: ParameterReportLayout? = null
-    private var  mAddressParameter: ParameterReportLayout? = null
     private var  mActionHelper = ActionHelper()
     private var  mPermissionHelper = PermissionsHelper()
 
@@ -32,22 +28,14 @@ class InfoLocReportFragment : BaseReportFragment() {
         setHasOptionsMenu(true)
     }
 
-
-
     override fun onCreateView(inflater: LayoutInflater?, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View? {
 
-        var view = inflateFragment(R.layout.info_loc_report_layout, inflater, container)
+        return inflateFragment(R.layout.info_loc_report_layout, inflater, container)
+    }
 
-        //Da inizializzare coi bottoni
-        mLatParameter = view?.findViewById<ParameterReportLayout>(R.id.lat_parameter)
-        mLonParameter = view?.findViewById<ParameterReportLayout>(R.id.long_parameter)
+    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
 
-        //Da inizializzare accedendo al server
-        mZonaSismicaParameter = view?.findViewById<ParameterReportLayout>(R.id.zona_sismica_parameter)
-        mCodiceIstatParameter = view?.findViewById<ParameterReportLayout>(R.id.codice_istat_parameter)
-        mAddressParameter = view?.findViewById<ParameterReportLayout>(R.id.address_parameter)
-
-        return view;
+        super.onViewCreated(view, savedInstanceState)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
@@ -103,9 +91,9 @@ class InfoLocReportFragment : BaseReportFragment() {
                 val place = mActionHelper.handlePickerResponse(activity, resultCode, data)
                 if (place != null)
                 {
-                    mLatParameter?.setParameterValue(place.latLng?.latitude.toString())
-                    mLonParameter?.setParameterValue(place.latLng?.longitude.toString())
-                    mAddressParameter?.setParameterValue(place.address?.toString()!!)
+                    lat_parameter.setParameterValue(place.latLng?.latitude.toString())
+                    long_parameter.setParameterValue(place.latLng?.longitude.toString())
+                    address_parameter.setParameterValue(place.address?.toString()!!)
                 }
             }
 

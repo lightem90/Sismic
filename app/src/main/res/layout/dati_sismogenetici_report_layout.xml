@@ -1,6 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    style="@style/scrollableLayout">
+<LinearLayout style="@style/scrollableLayout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <TextView
+        android:text="@string/report_datisismogenetici_title"
+        style="@style/sectionTitle"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.LabelReportLayout
+        android:id="@+id/report_datisimogenetici_coordinate_label"
+        app:report_label_title="@string/report_datisimogenetici_coordinate_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.LabelReportLayout
+        android:id="@+id/report_datisimogenetici_indirizzo"
+        app:report_label_title="@string/report_datisimogenetici_indirizzo_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.LabelReportLayout
+        android:id="@+id/report_datisimogenetici_zonasismica"
+        app:report_label_title="@string/report_datisimogenetici_zonasismica_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:text="@string/report_nodivicini_title"
+        style="@style/sectionTitle"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/list_nodi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </android.support.v7.widget.RecyclerView>
+
+    <Button
+        android:id="@+id/nodi_request_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/colorAccent"
+        android:text="@string/nodi_request_button_text"/>
+
+    <TextView
+        android:text="@string/report_spettrodirisposta_title"
+        style="@style/sectionTitle"/>
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/report_spettrodirisposta_chart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

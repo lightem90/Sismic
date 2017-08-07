@@ -41,6 +41,10 @@ open class BaseReportFragment : Fragment(), Step {
         return baseLayout
     }
 
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
+
     protected fun hideStepper() {
         activity.findViewById<StepperLayout>(R.id.stepperLayout)?.hideProgress()
     }

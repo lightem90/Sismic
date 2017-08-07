@@ -27,13 +27,10 @@ class ReportActivity : AppCompatActivity() {
                                             permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         val fragments = supportFragmentManager.fragments
-        if (fragments != null) {
-            for (fragment in fragments) {
+        fragments
                 //L'unico che richiede i permessi
-                if (fragment is InfoLocReportFragment)
-                    fragment.onRequestPermissionsResult(requestCode, permissions, grantResults)
-            }
-        }
+                .filterIsInstance<InfoLocReportFragment>()
+                .forEach { it.onRequestPermissionsResult(requestCode, permissions, grantResults) }
     }
 }
 

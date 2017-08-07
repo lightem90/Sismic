@@ -103,6 +103,13 @@
     <string name="report_vincoli_urb_parameter">Vincoli</string>
     <string name="report_vincoli_urb_parameter_hint">TODO</string>
     <string name="permission_denied">Permesso alla localizzazione negato</string>
+    <string name="report_datisismogenetici_title">DATI SISMOGENETICI</string>
+    <string name="report_datisimogenetici_coordinate_label">Coordinate</string>
+    <string name="report_datisimogenetici_indirizzo_label">Indirizzo</string>
+    <string name="report_datisimogenetici_zonasismica_label">Zona Sismica</string>
+    <string name="report_nodivicini_title">NODI VICINI</string>
+    <string name="nodi_request_button_text">Acquisci valori</string>
+    <string name="report_spettrodirisposta_title">SPETTRO DI RISPOSTA</string>
 
 
 </resources>
