@@ -60,7 +60,7 @@ class ReportFragmentsAdapter(fragmentManager: FragmentManager, reportActivity: R
     {
        return  StepViewModel.Builder(context)
                .setBackButtonLabel(backStrId)
-               .setNextButtonLabel(nextStrId)
+               .setEndButtonLabel(nextStrId)
                .setTitle(id)
                .create()
     }

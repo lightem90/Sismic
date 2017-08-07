@@ -103,9 +103,9 @@ class InfoLocReportFragment : BaseReportFragment() {
                 val place = mActionHelper.handlePickerResponse(activity, resultCode, data)
                 if (place != null)
                 {
-                    mLatParameter?.setParameterValue(place!!.latLng?.latitude.toString())
-                    mLonParameter?.setParameterValue(place!!.latLng?.longitude.toString())
-                    mAddressParameter?.setParameterValue(place!!.address?.toString()!!)
+                    mLatParameter?.setParameterValue(place.latLng?.latitude.toString())
+                    mLonParameter?.setParameterValue(place.latLng?.longitude.toString())
+                    mAddressParameter?.setParameterValue(place.address?.toString()!!)
                 }
             }
 

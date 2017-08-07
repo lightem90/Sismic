@@ -49,7 +49,7 @@ class ReportAdapter(val items: List<ReportDTO>, val listener: (ReportDTO) -> Uni
             setTextColorByDanger(report.value, itemView.history_item_value)
 
             //TODO: Bottoni e click (edit sul click della view)
-            setOnClickListener { listener(report) }
+            //setOnClickListener { listener(report) }
 
         }
 
@@ -65,6 +65,5 @@ class ReportAdapter(val items: List<ReportDTO>, val listener: (ReportDTO) -> Uni
             }
         }
 
-        fun setOnClickListener(listener: (view: View) -> Unit){}
     }
 }

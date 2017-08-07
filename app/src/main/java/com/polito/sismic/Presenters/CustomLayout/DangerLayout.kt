@@ -51,8 +51,6 @@ class DangerLayout : LinearLayout {
 
     override fun onCreateDrawableState(extraSpace: Int): IntArray {
 
-        if (mDangerState == null) return super.onCreateDrawableState(extraSpace)
-
         val drawableState = super.onCreateDrawableState(extraSpace + 1)
         when(mDangerState)
         {
@@ -62,8 +60,6 @@ class DangerLayout : LinearLayout {
             DangerState.Low -> return pushState(drawableState, STATE_REPORT_DANGER_LOW, extraSpace)
             DangerState.Default -> return super.onCreateDrawableState(extraSpace)
         }
-
-        return super.onCreateDrawableState(extraSpace)
     }
 
     private fun pushState(drawableState: IntArray, stateToPush: IntArray?, extraSpace: Int) : IntArray

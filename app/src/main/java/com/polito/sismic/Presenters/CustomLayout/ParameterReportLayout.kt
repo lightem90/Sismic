@@ -72,7 +72,7 @@ class ParameterReportLayout : LinearLayout {
             else section_parameter_value.hint = hint
 
             //Mostra/nasconde l'help
-            section_parameter_value.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
+            section_parameter_value.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
                 if (hasFocus)
                     section_parameter_help.visibility = View.VISIBLE
                 else

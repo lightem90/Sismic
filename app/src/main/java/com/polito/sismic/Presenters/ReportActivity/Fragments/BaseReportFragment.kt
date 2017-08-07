@@ -25,7 +25,7 @@ open class BaseReportFragment : Fragment(), Step {
         //Custom view (qualsiasi tipo di layout LL, RL, Coordinator etc.., basta che utilizzi lo style "scrollableLayout")
         var view = inflater!!.inflate(resId, container, false)
         //Base view (intero layout)
-        val baseLayout = inflater!!.inflate(R.layout.base_report_fragment, container, false)
+        val baseLayout = inflater.inflate(R.layout.base_report_fragment, container, false)
         //Elemento padre della custom view
         val scrollableCanvas = baseLayout.findViewById<ScrollView>(R.id.base_fragment_scroll_view)
 
