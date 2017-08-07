@@ -10,16 +10,20 @@ import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.places.Place
+import com.google.android.gms.location.places.ui.PlaceAutocomplete
 import com.google.android.gms.location.places.ui.PlacePicker
 import com.google.android.gms.tasks.OnSuccessListener
 import com.polito.sismic.Presenters.ReportActivity.Fragments.InfoLocReportFragment
+import android.support.v4.app.ActivityCompat.startActivityForResult
+
+
 
 
 class ActionHelper {
 
     val PLACE_PICKER_REQUEST = 50
-    val LOCALIZATION_REQUEST = 51
-    val REVERSE_LOCALIZATION_REQUEST = 52
+    val REVERSE_LOCALIZATION_REQUEST = 51
+
     private var  mFusedLocationClient: FusedLocationProviderClient? = null
 
     fun handleActionRequest(type : ActionType, caller : Activity, mLocationCallback: InfoLocReportFragment.OnCurrentLocationProvided?)
@@ -33,6 +37,9 @@ class ActionHelper {
     }
 
     private fun launchReverseLocalization(caller: Activity) {
+
+        val intent = PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN).build(caller)
+        startActivityForResult(caller, intent, REVERSE_LOCALIZATION_REQUEST, null)
     }
 
 
@@ -61,6 +68,16 @@ class ActionHelper {
     {
         if (resultCode == Activity.RESULT_OK) {
             return PlacePicker.getPlace(caller, data)
+        }
+
+        //TODO segnalare errore
+        return null
+    }
+
+    fun handleAutoCompleteMapsResponse(caller: Activity, resultCode : Int, data : Intent?) : Place?
+    {
+        if (resultCode == Activity.RESULT_OK) {
+            return  PlaceAutocomplete.getPlace(caller, data)
         }
 
         //TODO segnalare errore

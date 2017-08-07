@@ -35,12 +35,6 @@
             android:parentActivityName=".Presenters.PresenterActivity"
             android:noHistory="true"
             android:excludeFromRecents="true">
-            <!-- The meta-data element is needed for versions lower than 4.1 -->
-            <meta-data
-                android:name="com.google.android.geo.API_KEY"
-                android:value="AIzaSyANF0r_fUT0rS8PRG6m6ZSsnCtm_zPwtmc"/>
-            <meta-data android:name="com.google.android.gms.version"
-                android:value="@integer/google_play_services_version" />
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Presenters.PresenterActivity" />
@@ -56,6 +50,13 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Presenters.LoginActivity" />
         </activity>
+
+        <!-- The meta-data element is needed for versions lower than 4.1 -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDb2vFawYj2v0l8KUjcUMWaem1NmOcRJXU"/>
+        <meta-data android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
     </application>
 
 </manifest>

@@ -123,14 +123,9 @@ class InfoLocReportFragment : BaseReportFragment() {
                 updateByPlace(mActionHelper.handlePickerResponse(activity, resultCode, data))
             }
 
-            mActionHelper.LOCALIZATION_REQUEST ->
-            {
-
-            }
-
             mActionHelper.REVERSE_LOCALIZATION_REQUEST ->
             {
-
+                updateByPlace(mActionHelper.handleAutoCompleteMapsResponse(activity, resultCode, data))
             }
         }
     }
