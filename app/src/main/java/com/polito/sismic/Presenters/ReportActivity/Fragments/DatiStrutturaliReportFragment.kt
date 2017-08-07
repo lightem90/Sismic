@@ -13,10 +13,6 @@ import com.polito.sismic.R
 class DatiStrutturaliReportFragment : BaseReportFragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View? {
-        var view = inflateFragment(R.layout.dati_strutturali_report_layout, inflater, container);
-        /*
-         *  Do things related to this fragment
-         */
-        return view;
+        return inflateFragment(R.layout.dati_strutturali_report_layout, inflater, container)
     }
 }

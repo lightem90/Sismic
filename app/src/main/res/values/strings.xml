@@ -110,6 +110,34 @@
     <string name="report_nodivicini_title">NODI VICINI</string>
     <string name="nodi_request_button_text">Acquisci valori</string>
     <string name="report_spettrodirisposta_title">SPETTRO DI RISPOSTA</string>
+    <string name="report_parametri_sismici_title">PARAMETRI SISMICI EDIFICIO</string>
+    <string name="report_classe_parameter">Classe d\'uso</string>
+    <string name="report_classe_parameter_hint">Classe d\'uso dell\'edificio</string>
+    <string name="report_vita_parameter">Vita nominale</string>
+    <string name="report_vita_parameter_hint">Vita nominale dell\'edificio</string>
+    <string name="report_spettridiprogetto_title">SPETTRI DI PROGETTO</string>
+    <string name="report_caratteristichesottosuolo_title">CARATTERISTICHE SOTTOSUOLO</string>
+    <string name="report_fattoredistruttura_title">FATTORE DI STRUTTURA</string>
+    <string name="catetoria_suolo_parameter">Categoria suolo</string>
+    <string name="catetoria_suolo_parameter_hint">Categoria suolo</string>
+    <string name="categoria_topografica_parameter">Categoria topografica</string>
+    <string name="categoria_topografica_parameter_hint">Categoria topografica</string>
+    <string name="categoria_classe_duttilita_parameter">Classe di duttilità</string>
+    <string name="categoria_classe_duttilita_parameter_hint">TODO</string>
+    <string name="categoria_regolarita_parameter">Regolarità</string>
+    <string name="categoria_regolarita_parameter_hint">TODO</string>
+    <string name="categoria_tipologia_parameter">Tipologia</string>
+    <string name="categoria_tipologia_parameter_hint">TODO</string>
+    <string name="update_graph_btn">Aggiorna</string>
+    <string name="report_generali_title">Caratteristiche generali</string>
+    <string name="anno_costruzione_parameter">Anno di costruzione</string>
+    <string name="anno_costruzione_parameter_hint">Anno di costruzione edificio</string>
+    <string name="tipologia_strutturale_parameter">Tipologia strutturale</string>
+    <string name="tipologia_strutturale_parameter_hint">Tipologia strutturale</string>
+    <string name="stato_parameter">Stato</string>
+    <string name="stato_parameter_hint">Stato dell\'edificio</string>
+    <string name="totale_unita_parameter">Totale unità d\'uso</string>
+    <string name="totale_unita_parameter_hint">Totale unità d\'uso dell\'edificio</string>
 
 
 </resources>

@@ -1,5 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout style="@style/scrollableLayout">
+<LinearLayout style="@style/scrollableLayout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <TextView
+        style="@style/sectionTitle"
+        android:text="@string/report_caratteristichesottosuolo_title"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
+        android:id="@+id/catetoria_suolo_parameter"
+        app:report_parameter_title="@string/catetoria_suolo_parameter"
+        app:report_parameter_hint="@string/catetoria_suolo_parameter_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
+        android:id="@+id/categoria_topografica_parameter"
+        app:report_parameter_title="@string/categoria_topografica_parameter"
+        app:report_parameter_hint="@string/categoria_topografica_parameter_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        style="@style/sectionTitle"
+        android:text="@string/report_fattoredistruttura_title"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
+        android:id="@+id/categoria_classe_duttilità_parameter"
+        app:report_parameter_title="@string/categoria_classe_duttilita_parameter"
+        app:report_parameter_hint="@string/categoria_classe_duttilita_parameter_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
+        android:id="@+id/categoria_regolarità_parameter"
+        app:report_parameter_title="@string/categoria_regolarita_parameter"
+        app:report_parameter_hint="@string/categoria_regolarita_parameter_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
+        android:id="@+id/categoria_tipologia_parameter"
+        app:report_parameter_title="@string/categoria_tipologia_parameter"
+        app:report_parameter_hint="@string/categoria_tipologia_parameter_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        style="@style/sectionTitle"
+        android:text="@string/report_spettrodirisposta_title"/>
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/report_spettrodirisposta_chart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/update_graph"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/colorAccent"
+        android:text="@string/update_graph_btn"/>
 
 </LinearLayout>

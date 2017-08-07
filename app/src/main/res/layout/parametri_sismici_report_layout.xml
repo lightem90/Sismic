@@ -1,5 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout style="@style/scrollableLayout">
+<LinearLayout style="@style/scrollableLayout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <TextView
+        style="@style/sectionTitle"
+        android:text="@string/report_parametri_sismici_title"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
+        android:id="@+id/vita_parameter"
+        app:report_parameter_title="@string/report_vita_parameter"
+        app:report_parameter_hint="@string/report_vita_parameter_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
+        android:id="@+id/classe_parameter"
+        app:report_parameter_title="@string/report_classe_parameter"
+        app:report_parameter_hint="@string/report_classe_parameter_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/parametri_sismici_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </android.support.v7.widget.RecyclerView>
+
+    <TextView
+        style="@style/sectionTitle"
+        android:text="@string/report_spettrodirisposta_title"/>
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/report_spettrodirisposta_chart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>
