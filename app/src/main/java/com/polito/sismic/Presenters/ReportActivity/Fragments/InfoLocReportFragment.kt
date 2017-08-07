@@ -4,15 +4,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.Nullable
 import android.view.*
+import com.polito.sismic.Extensions.toast
 import com.polito.sismic.Interactors.Helpers.ActionHelper
 import com.polito.sismic.Interactors.Helpers.ActionType
 import com.polito.sismic.Interactors.Helpers.PermissionsHelper
 import com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
 import com.polito.sismic.R
-import com.github.fafaldo.fabtoolbar.util.ExpandAnimationUtils.build
-import com.google.android.gms.location.places.ui.PlacePicker
-
-
 
 
 /**
@@ -26,11 +23,13 @@ class InfoLocReportFragment : BaseReportFragment() {
     private var  mLonParameter: ParameterReportLayout? = null
     private var  mAddressParameter: ParameterReportLayout? = null
     private var  mActionHelper = ActionHelper()
+    private var  mPermissionHelper = PermissionsHelper()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setHasOptionsMenu(true);
+        mPermissionHelper.checAndAskLocationPermissions(activity)
+        setHasOptionsMenu(true)
     }
 
 
@@ -52,6 +51,12 @@ class InfoLocReportFragment : BaseReportFragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+
+        if (!mPermissionHelper.PERMISSION_POSITION_GRANTED)
+        {
+            context.toast(R.string.permission_denied)
+            return true
+        }
         if (item != null) {
             when (item.itemId)
             {
@@ -80,6 +85,12 @@ class InfoLocReportFragment : BaseReportFragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.localization_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        //Setta la proprietà interna "permission granted"
+        mPermissionHelper.handelPermissionResult(requestCode, permissions, grantResults)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

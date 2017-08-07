@@ -102,6 +102,7 @@
     <string name="report_piano_urb_parameter_hint">TODO</string>
     <string name="report_vincoli_urb_parameter">Vincoli</string>
     <string name="report_vincoli_urb_parameter_hint">TODO</string>
+    <string name="permission_denied">Permesso alla localizzazione negato</string>
 
 
 </resources>

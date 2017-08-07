@@ -4,6 +4,10 @@ import android.Manifest
 import android.app.Activity
 import android.content.pm.PackageManager
 import android.os.Build
+import android.support.v4.content.ContextCompat
+import android.support.v4.app.ActivityCompat
+
+
 
 /**
  * Created by Matteo on 06/08/2017.
@@ -11,23 +15,28 @@ import android.os.Build
 class PermissionsHelper
 {
     val PERMISSION_POSITION = 50
-    val PERMISSION_INTERNET = 51
+    var PERMISSION_POSITION_GRANTED = false
 
     //Solo internet e posizione
-    fun checkPermissions(caller : Activity)
+    fun checAndAskLocationPermissions(caller : Activity)
     {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
         {
-            if (caller.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-                caller.requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), PERMISSION_POSITION)
-                return
+            if (ContextCompat.checkSelfPermission(caller, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
+                    ContextCompat.checkSelfPermission(caller, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+            {
+                ActivityCompat.requestPermissions( caller, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
+                        PERMISSION_POSITION)
             }
+        }
+    }
 
-            if (caller.checkSelfPermission(Manifest.permission.ACCESS_NETWORK_STATE) != PackageManager.PERMISSION_GRANTED) {
-
-                caller.requestPermissions(arrayOf(Manifest.permission.ACCESS_NETWORK_STATE), PERMISSION_INTERNET)
-                return
+    fun handelPermissionResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray)
+    {
+        when (requestCode) {
+            PERMISSION_POSITION -> {
+                // If request is cancelled, the result arrays are empty.
+                PERMISSION_POSITION_GRANTED = grantResults.size > 0 && grantResults[0] === PackageManager.PERMISSION_GRANTED
             }
         }
     }
