@@ -23,8 +23,7 @@ class InfoLocReportFragment : BaseReportFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        mPermissionHelper.checAndAskLocationPermissions(activity)
+        mPermissionHelper.checAndAskLocationPermissions(activity, this)
         setHasOptionsMenu(true)
     }
 
@@ -34,40 +33,45 @@ class InfoLocReportFragment : BaseReportFragment() {
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
-
         super.onViewCreated(view, savedInstanceState)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
 
-        if (!mPermissionHelper.PERMISSION_POSITION_GRANTED)
-        {
-            context.toast(R.string.permission_denied)
-            return true
-        }
+
         if (item != null) {
             when (item.itemId)
             {
                 R.id.reverseGeolocalization ->
                 {
-                    mActionHelper.handleActionRequest(ActionType.ReverseLocalization, activity)
+                    if (havePermission()) mActionHelper.handleActionRequest(ActionType.ReverseLocalization, activity)
                     return true
                 }
 
                 R.id.geolocalization ->
                 {
-                    mActionHelper.handleActionRequest(ActionType.Localization, activity)
+                    if (havePermission()) mActionHelper.handleActionRequest(ActionType.Localization, activity)
                     return true
                 }
 
                 R.id.fromMap ->
                 {
-                    mActionHelper.handleActionRequest(ActionType.PlacePicker, activity)
+                    if (havePermission()) mActionHelper.handleActionRequest(ActionType.PlacePicker, activity)
                     return true
                 }
             }
         }
         return false;
+    }
+
+    fun havePermission() : Boolean
+    {
+        if (!mPermissionHelper.PERMISSION_POSITION_GRANTED)
+        {
+            context.toast(R.string.permission_denied)
+            return false
+        }
+        return true
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -78,7 +82,7 @@ class InfoLocReportFragment : BaseReportFragment() {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         //Setta la proprietà interna "permission granted"
-        mPermissionHelper.handelPermissionResult(requestCode, permissions, grantResults)
+        mPermissionHelper.handlePermissionResult(requestCode, permissions, grantResults)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

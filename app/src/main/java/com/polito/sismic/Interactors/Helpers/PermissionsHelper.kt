@@ -5,8 +5,7 @@ import android.app.Activity
 import android.content.pm.PackageManager
 import android.os.Build
 import android.support.v4.content.ContextCompat
-import android.support.v4.app.ActivityCompat
-
+import com.polito.sismic.Presenters.ReportActivity.Fragments.InfoLocReportFragment
 
 
 /**
@@ -14,24 +13,24 @@ import android.support.v4.app.ActivityCompat
  */
 class PermissionsHelper
 {
-    val PERMISSION_POSITION = 50
+    val PERMISSION_POSITION = 100
     var PERMISSION_POSITION_GRANTED = false
 
     //Solo internet e posizione
-    fun checAndAskLocationPermissions(caller : Activity)
+    fun checAndAskLocationPermissions(caller : Activity, fragment : InfoLocReportFragment)
     {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
         {
             if (ContextCompat.checkSelfPermission(caller, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
                     ContextCompat.checkSelfPermission(caller, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
             {
-                ActivityCompat.requestPermissions( caller, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
+                fragment.requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
                         PERMISSION_POSITION)
             }
         }
     }
 
-    fun handelPermissionResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray)
+    fun handlePermissionResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray)
     {
         when (requestCode) {
             PERMISSION_POSITION -> {

@@ -26,11 +26,6 @@ class ReportActivity : AppCompatActivity() {
     override fun onRequestPermissionsResult(requestCode: Int,
                                             permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        val fragments = supportFragmentManager.fragments
-        fragments
-                //L'unico che richiede i permessi
-                .filterIsInstance<InfoLocReportFragment>()
-                .forEach { it.onRequestPermissionsResult(requestCode, permissions, grantResults) }
     }
 }
 
