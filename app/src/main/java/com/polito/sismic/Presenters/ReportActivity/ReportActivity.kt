@@ -16,11 +16,14 @@ import com.polito.sismic.R
 import kotlinx.android.synthetic.main.activity_report.*
 import android.content.DialogInterface
 import android.support.v7.app.AlertDialog
+import android.view.KeyEvent
+import android.view.KeyEvent.KEYCODE_BACK
+import android.view.MenuItem
 
 
-
-
-class ReportActivity : AppCompatActivity(), InfoLocReportFragment.OnCurrentLocationProvided, GoogleApiClient.OnConnectionFailedListener {
+class ReportActivity : AppCompatActivity(),
+        InfoLocReportFragment.OnCurrentLocationProvided,
+        GoogleApiClient.OnConnectionFailedListener {
 
     private var  mGoogleApiClient: GoogleApiClient? = null
     private var mReportManager: ReportManager? = null
@@ -56,15 +59,25 @@ class ReportActivity : AppCompatActivity(), InfoLocReportFragment.OnCurrentLocat
         toast(R.string.google_api_error)
     }
 
-    override fun onBackPressed() {
+    fun BackPressed() {
         AlertDialog.Builder(this)
-            .setTitle(R.string.confirm_report_back)
-            .setMessage(R.string.confirm_report_back_message)
-            .setIcon(android.R.drawable.ic_dialog_alert)
-            .setPositiveButton(android.R.string.yes, DialogInterface.OnClickListener { dialog, _ -> mReportManager!!.deleteReport(); finish()})
-            .setNegativeButton(android.R.string.no, null)
-            .show()
+                .setTitle(R.string.confirm_report_back)
+                .setMessage(R.string.confirm_report_back_message)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setPositiveButton(android.R.string.yes, DialogInterface.OnClickListener { dialog, _ -> mReportManager!!.deleteReport(); finish()})
+                .setNegativeButton(android.R.string.no, null)
+                .show()
     }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        if(item?.itemId == android.R.id.home) {
+            BackPressed()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+
 }
 
 
