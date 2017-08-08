@@ -3,7 +3,6 @@ package com.polito.sismic.Presenters
 import android.app.Fragment
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.*
 import com.polito.sismic.Domain.DatabaseProvider
 import com.polito.sismic.Interactors.DatabaseInteractor
@@ -22,7 +21,7 @@ class ReportListFragment : Fragment() {
 
     init {
         mDbProvider = DatabaseProvider()
-        mDbInteractor = DatabaseInteractor(mDbProvider.GetDatabase())
+        mDbInteractor = DatabaseInteractor(mDbProvider.getDatabase())
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

@@ -5,7 +5,7 @@ package com.polito.sismic.Domain
  */
 class DatabaseProvider {
 
-    fun GetDatabase() : IDatabase {
+    fun getDatabase() : IDatabase {
         return DatabaseStub()
     }
 

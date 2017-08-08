@@ -6,15 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.polito.sismic.Domain.DangerStateProvider
-import com.polito.sismic.Domain.ReportDTO
+import com.polito.sismic.Interactors.DangerStateProvider
+import com.polito.sismic.Domain.ReportItemListDTO
 import com.polito.sismic.R
 import kotlinx.android.synthetic.main.history_item.view.*
 
 /**
  * Created by Matteo on 28/07/2017.
  */
-class ReportAdapter(val items: List<ReportDTO>, val listener: (ReportDTO) -> Unit) :
+class ReportAdapter(val items: List<ReportItemListDTO>, val listener: (ReportItemListDTO) -> Unit) :
         RecyclerView.Adapter<ReportAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder? {
@@ -36,7 +36,7 @@ class ReportAdapter(val items: List<ReportDTO>, val listener: (ReportDTO) -> Uni
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
     {
-        fun bindReport(report: ReportDTO, listener: (ReportDTO) -> Unit) = with(report) {
+        fun bindReport(report: ReportItemListDTO, listener: (ReportItemListDTO) -> Unit) = with(report) {
 
             itemView.isDuplicateParentStateEnabled = true
             itemView.history_item_title.text = report.title

@@ -6,19 +6,23 @@ import java.util.*
  * Created by Matteo on 28/07/2017.
  */
 class DatabaseStub : IDatabase {
+    override fun getRecordNumber(): Int {
+        return 6
+    }
 
-    override fun getExampleDTOs(): List<ReportDTO> {
+    override fun getExampleDTOs(): List<ReportItemListDTO> {
         return listOf(
-                ReportDTO("bla", "desc", 10, 85),
-                ReportDTO("bla1", "desc2", 300, 95),
-                ReportDTO("bla2", "desc3", 50, 5),
-                ReportDTO("bla3", "desc4", 12, 20),
-                ReportDTO("bla4", "desc5", 320, 45)
+                ReportItemListDTO("bla", "desc", 10, 85),
+                ReportItemListDTO("bla1", "desc2", 300, 95),
+                ReportItemListDTO("bla2", "desc3", 50, 5),
+                ReportItemListDTO("bla3", "desc4", 12, 20),
+                ReportItemListDTO("bla4", "desc5", 320, 45)
         )
     }
 }
 
 //TODO
 interface IDatabase {
-    fun getExampleDTOs(): List<ReportDTO>
+    fun getExampleDTOs(): List<ReportItemListDTO>
+    fun  getRecordNumber(): Int
 }
