@@ -1,7 +1,9 @@
 package com.polito.sismic.Domain
 
+import android.net.Uri
 import android.os.Parcel
 import android.os.Parcelable
+import java.net.URI
 
 /**
  * Created by Matteo on 28/07/2017.
@@ -15,7 +17,8 @@ data class ReportDTO(val id : Int
                      , val intHashMap : HashMap<String, Int>
                      , val stringHashMap : HashMap<String, String>
                      , val boolHashMap : HashMap<String, Boolean>
-                     , val doubleHashMap : HashMap<String, Double>) : Parcelable {
+                     , val doubleHashMap : HashMap<String, Double>
+                     , val mediaList : MutableList<Uri>) : Parcelable {
     companion object {
         @JvmField val CREATOR: Parcelable.Creator<ReportDTO> = object : Parcelable.Creator<ReportDTO> {
             override fun createFromParcel(source: Parcel): ReportDTO = ReportDTO(source)
@@ -28,7 +31,8 @@ data class ReportDTO(val id : Int
     source.readSerializable() as HashMap<String, Int>,
     source.readSerializable() as HashMap<String, String>,
     source.readSerializable() as HashMap<String, Boolean>,
-    source.readSerializable() as HashMap<String, Double>
+    source.readSerializable() as HashMap<String, Double>,
+    source.createTypedArrayList(Uri.CREATOR)
     )
 
     override fun describeContents() = 0
@@ -39,5 +43,7 @@ data class ReportDTO(val id : Int
         dest.writeSerializable(stringHashMap)
         dest.writeSerializable(boolHashMap)
         dest.writeSerializable(doubleHashMap)
+        dest.writeTypedList(mediaList)
     }
 }
+

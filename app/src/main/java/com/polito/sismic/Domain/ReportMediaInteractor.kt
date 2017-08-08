@@ -15,7 +15,7 @@ enum class MediaType
     Sketch
 }
 
-class ReportMediaInteractor(val reportDir: File) {
+class ReportMediaInteractor(reportDir: File) {
 
     val mediaDir = File(reportDir.absolutePath, "Media")
     val pictureDir = File(mediaDir, "Pictures")
@@ -23,7 +23,7 @@ class ReportMediaInteractor(val reportDir: File) {
     val audioDir = File(mediaDir, "Audio")
     val sketchDir = File(mediaDir, "Sketch")
 
-    fun getFileNameForMedia(type : MediaType) : URI?
+    fun createFileForMedia(type : MediaType) : URI?
     {
         var prefix = ""
         var suffix = ""

@@ -21,24 +21,25 @@ import com.google.android.gms.location.places.AutocompleteFilter
 
 
 
-class ActionHelper {
+class LocalizationActionHelper {
 
     val PLACE_PICKER_REQUEST = 50
     val REVERSE_LOCALIZATION_REQUEST = 51
 
     private var  mFusedLocationClient: FusedLocationProviderClient? = null
 
-    fun handleActionRequest(type : ActionType, caller : InfoLocReportFragment, mLocationCallback: InfoLocReportFragment.OnCurrentLocationProvided?)
+    fun handleActionRequest(typeLocalization: LocalizationActionType, caller : InfoLocReportFragment, mLocationCallback: InfoLocReportFragment.OnCurrentLocationProvided?)
     {
-        when (type)
+        when (typeLocalization)
         {
-            ActionType.PlacePicker -> launchPlacePicker(caller)
-            ActionType.Localization -> launchLocalization(caller.activity, mLocationCallback)
-            ActionType.ReverseLocalization -> launchReverseLocalization(caller)
+            LocalizationActionType.PlacePicker -> launchPlacePicker(caller)
+            LocalizationActionType.Localization -> launchLocalization(caller.activity, mLocationCallback)
+            LocalizationActionType.ReverseLocalization -> launchReverseLocalization(caller)
         }
     }
 
     private fun launchReverseLocalization(caller: InfoLocReportFragment) {
+        //Autocomplete filter on Italian addresses
         val typeFilter = AutocompleteFilter.Builder()
                 .setCountry("IT")
                 .setTypeFilter(AutocompleteFilter.TYPE_FILTER_ADDRESS)
@@ -66,7 +67,7 @@ class ActionHelper {
     }
 
     private fun launchPlacePicker(caller: InfoLocReportFragment) {
-        //Il fragment lancia e si prende il risultato
+        //The fragment launches and handles the result
         caller.startActivityForResult(PlacePicker.IntentBuilder().build(caller.activity), PLACE_PICKER_REQUEST)
     }
 
@@ -75,7 +76,7 @@ class ActionHelper {
         if (resultCode == Activity.RESULT_OK) {
             return PlacePicker.getPlace(caller, data)
         }
-
+        //Error message on failure
         caller.toast(R.string.place_picker_failed)
         return null
     }
@@ -85,7 +86,7 @@ class ActionHelper {
         if (resultCode == Activity.RESULT_OK) {
             return  PlaceAutocomplete.getPlace(caller, data)
         }
-
+        //Error message on failure
         caller.toast(R.string.autocomplete_failed)
         return null
     }

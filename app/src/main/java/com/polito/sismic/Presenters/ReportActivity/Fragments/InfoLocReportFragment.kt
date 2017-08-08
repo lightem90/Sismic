@@ -9,8 +9,8 @@ import android.view.*
 import com.google.android.gms.location.places.Place
 import com.polito.sismic.AsyncTasks.PlaceDetailsTask
 import com.polito.sismic.Extensions.toast
-import com.polito.sismic.Interactors.Helpers.ActionHelper
-import com.polito.sismic.Interactors.Helpers.ActionType
+import com.polito.sismic.Interactors.Helpers.LocalizationActionHelper
+import com.polito.sismic.Interactors.Helpers.LocalizationActionType
 import com.polito.sismic.Interactors.Helpers.PermissionsHelper
 import com.polito.sismic.R
 import kotlinx.android.synthetic.main.info_loc_report_layout.*
@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.main.info_loc_report_layout.*
 class InfoLocReportFragment() : BaseReportFragment() {
 
     private var  mLocationCallback: InfoLocReportFragment.OnCurrentLocationProvided? = null
-    private var  mActionHelper = ActionHelper()
+    private var  mActionHelper = LocalizationActionHelper()
     private var  mPermissionHelper = PermissionsHelper()
 
     // Container Activity must implement this interface
@@ -64,19 +64,19 @@ class InfoLocReportFragment() : BaseReportFragment() {
             {
                 R.id.reverseGeolocalization ->
                 {
-                    if (havePermission()) mActionHelper.handleActionRequest(ActionType.ReverseLocalization, this, null)
+                    if (havePermission()) mActionHelper.handleActionRequest(LocalizationActionType.ReverseLocalization, this, null)
                     return true
                 }
 
                 R.id.geolocalization ->
                 {
-                    if (havePermission()) mActionHelper.handleActionRequest(ActionType.Localization, this, mLocationCallback)
+                    if (havePermission()) mActionHelper.handleActionRequest(LocalizationActionType.Localization, this, mLocationCallback)
                     return true
                 }
 
                 R.id.fromMap ->
                 {
-                    if (havePermission()) mActionHelper.handleActionRequest(ActionType.PlacePicker, this, null)
+                    if (havePermission()) mActionHelper.handleActionRequest(LocalizationActionType.PlacePicker, this, null)
                     return true
                 }
             }
