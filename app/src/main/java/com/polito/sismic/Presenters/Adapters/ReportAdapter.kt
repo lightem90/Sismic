@@ -14,6 +14,8 @@ import kotlinx.android.synthetic.main.history_item.view.*
 /**
  * Created by Matteo on 28/07/2017.
  */
+
+//Manager of report list
 class ReportAdapter(val items: List<ReportItemListDTO>, val listener: (ReportItemListDTO) -> Unit) :
         RecyclerView.Adapter<ReportAdapter.ViewHolder>() {
 
@@ -49,7 +51,7 @@ class ReportAdapter(val items: List<ReportItemListDTO>, val listener: (ReportIte
             setTextColorByDanger(report.value, itemView.history_item_value)
 
             //TODO: Bottoni e click (edit sul click della view)
-            //setOnClickListener { listener(report) }
+            //setOnClickListener { listener(reportManager) }
 
         }
 

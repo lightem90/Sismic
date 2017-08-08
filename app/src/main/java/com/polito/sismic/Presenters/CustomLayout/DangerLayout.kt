@@ -20,6 +20,7 @@ enum class DangerState
     Default
 }
 
+//To add border color according to danger
 class DangerLayout : LinearLayout {
     @JvmOverloads
     constructor(
@@ -51,6 +52,7 @@ class DangerLayout : LinearLayout {
 
     override fun onCreateDrawableState(extraSpace: Int): IntArray {
 
+        //In the case its loaded too soon
         if (mDangerState == null) return super.onCreateDrawableState(extraSpace)
 
         val drawableState = super.onCreateDrawableState(extraSpace + 1)

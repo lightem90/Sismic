@@ -15,7 +15,7 @@ enum class MediaType
     Sketch
 }
 
-class ReportMediaHandler(val reportDir: File) {
+class ReportMediaInteractor(val reportDir: File) {
 
     val mediaDir = File(reportDir.absolutePath, "Media")
     val pictureDir = File(mediaDir, "Pictures")
@@ -82,10 +82,12 @@ class ReportMediaHandler(val reportDir: File) {
 
     }
 
+    //lenta
     private fun  getFolderSize(mediaDir: File): Long
     {
         var size : Long = 0;
         for (file in mediaDir.listFiles()) {
+            if (file == null) continue
             if (file.isFile) {
                 size += file.length();
             }

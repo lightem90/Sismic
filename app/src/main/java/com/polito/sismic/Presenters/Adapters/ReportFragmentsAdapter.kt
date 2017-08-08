@@ -1,6 +1,7 @@
 package com.polito.sismic.Presenters.Adapters
 
 import android.support.v4.app.FragmentManager
+import com.polito.sismic.Domain.ReportManager
 import com.polito.sismic.Presenters.ReportActivity.*
 import com.polito.sismic.Presenters.ReportActivity.Fragments.*
 import com.stepstone.stepper.Step
@@ -13,7 +14,7 @@ import com.stepstone.stepper.VerificationError
 /**
  * Created by Matteo on 29/07/2017.
  */
-class ReportFragmentsAdapter(fragmentManager: FragmentManager, reportActivity: ReportActivity)
+class ReportFragmentsAdapter(fragmentManager: FragmentManager, reportActivity: ReportActivity, val reportManager: ReportManager)
     : AbstractFragmentStepAdapter(fragmentManager, reportActivity) {
 
     override fun getCount(): Int {
