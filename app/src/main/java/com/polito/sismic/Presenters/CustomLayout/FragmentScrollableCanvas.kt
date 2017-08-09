@@ -52,7 +52,8 @@ class FragmentScrollableCanvas : ScrollView
 
     private fun onScrollUp()
     {
-        fabToolbarReference!!.show()
+        //Otherwise the fab never shows again
+        //fabToolbarReference!!.show()
         fabReference!!.show()
     }
 

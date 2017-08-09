@@ -78,9 +78,9 @@ class UserActionInteractor(val reportManager : ReportManager) {
     }
 
     //Confirms or deletes last added media
-    fun onActionResponse(requestCode: Int) {
+    fun onActionResponse(resultCode: Int) {
 
-        if (requestCode == Activity.RESULT_OK)
+        if (resultCode == Activity.RESULT_OK)
             reportManager.confirmLastMedia()
         else
         {

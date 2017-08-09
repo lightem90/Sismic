@@ -19,21 +19,14 @@ enum class MediaType
 }
 
 //Context needed for file provider
-class ReportMediaInteractor(val context : Context, val reportDir: File) {
+class ReportMediaInteractor(val context : Context, val reportId: String) {
 
     //The user can add media only sequentially, so in case of failure while adding we delete the tmp file
     var lastAddedTmpFile : Uri? = null
-    val mMediaDir = File(reportDir.absolutePath, "Media")
-
-    init {
-
-        if (!mMediaDir.exists())
-            mMediaDir.mkdir()
-    }
 
     fun createFileForMedia(type : MediaType) : Uri?
     {
-        var prefix = ""
+        var prefix = reportId
         var suffix = ""
         val storageDir : File
         when (type)
@@ -82,32 +75,17 @@ class ReportMediaInteractor(val context : Context, val reportDir: File) {
     }
 
 
-    fun getMediaSizeMb(): Int {
-
-        var byteSize: Long
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            byteSize = Files.walk(mMediaDir.toPath()).mapToLong({ p -> p.toFile().length() }).sum()
-        }
-        else
-            byteSize = getFolderSize(mMediaDir)
-
-        var mbSize = byteSize / 1024 / 1024
-        return mbSize.toInt()
-
-    }
-
-    //lenta
-    private fun  getFolderSize(mediaDir: File): Long
-    {
-        var size : Long = 0;
-        for (file in mediaDir.listFiles()) {
-            if (file == null) continue
-            if (file.isFile) {
-                size += file.length();
-            }
-            else
-                size += getFolderSize(file);
-        }
-        return size;
-    }
+    //fun getMediaSizeMb(): Int {
+//
+    //    var byteSize: Long
+    //    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+    //        byteSize = Files.walk(mMediaDir.toPath()).mapToLong({ p -> p.toFile().length() }).sum()
+    //    }
+    //    else
+    //        byteSize = getFolderSize()
+//
+    //    var mbSize = byteSize / 1024 / 1024
+    //    return mbSize.toInt()
+//
+    //}
 }

@@ -145,6 +145,7 @@
     <string name="error_parsing_place">Impossibile ricavare informazioni</string>
     <string name="confirm_report_back">Conferma uscita</string>
     <string name="confirm_report_back_message">Proseguendo tutti i dati andranno persi. Continuare?</string>
+    <string name="error_saving_file">Errore nel salvataggio file</string>
 
 
 </resources>

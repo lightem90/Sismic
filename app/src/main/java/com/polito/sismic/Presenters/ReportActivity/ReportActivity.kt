@@ -67,10 +67,11 @@ class ReportActivity : AppCompatActivity(),
         supportFragmentManager.fragments.filterIsInstance<InfoLocReportFragment>().first().updateByLocation(location)
     }
 
-    public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    //If I pass an Uri, data will be null
+    public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        mUserActionInteractor?.onActionResponse(requestCode)
+        mUserActionInteractor?.onActionResponse(resultCode)
     }
 
     override fun onConnectionFailed(p0: ConnectionResult) {

@@ -2,8 +2,9 @@ package com.polito.sismic.Domain
 
 import android.content.Context
 import android.net.Uri
-import android.support.v4.content.FileProvider
+import com.polito.sismic.Extensions.toast
 import com.polito.sismic.Interactors.ParameterInteractor
+import com.polito.sismic.R
 import java.io.File
 import java.util.function.Consumer
 
@@ -11,7 +12,7 @@ import java.util.function.Consumer
 //TODO: Classe di dominio del reportManager
 //Classe che contiente i dati e che viene passato tra i fragment,
 //la classe "reportManager" lo wrappa solamente e deve essere creata/ricevuta (nel caso si stia editando)
-class ReportManager(val id: Int, mContext: Context, var DTO : ReportDTO ) {
+class ReportManager(val id: Int, val mContext: Context, var DTO : ReportDTO ) {
 
     constructor(mContext: Context, dto: ReportDTO) : this(dto.id, mContext, dto)                                                //Edit
     constructor(mContext: Context, id : Int)
@@ -20,20 +21,11 @@ class ReportManager(val id: Int, mContext: Context, var DTO : ReportDTO ) {
     //Componenti: gestore dei media e gestore dei parametri
     private val mMediaInteractor: ReportMediaInteractor
     private val mParameterInteractor : ParameterInteractor
-    var mMediaDir: File = File("REPORT_" + id)
 
-    //TODO far creare la cartella in com.polito.sismic!!
     init {
 
-        var mediaUri = FileProvider.getUriForFile(mContext,
-                "com.polito.sismic",
-                mMediaDir)
-
-        mMediaDir = File(mediaUri.path)
-        if (!mMediaDir.exists()) mMediaDir.mkdirs()
-
-        mMediaInteractor = ReportMediaInteractor(mContext, mMediaDir)
-        mParameterInteractor = ParameterInteractor(DTO)
+        mMediaInteractor = ReportMediaInteractor(mContext, "REPORT_" + id)
+        mParameterInteractor = ParameterInteractor(DTO, mContext)
     }
 
     fun deleteAllReportMedia()
@@ -46,9 +38,9 @@ class ReportManager(val id: Int, mContext: Context, var DTO : ReportDTO ) {
         return mMediaInteractor.createFileForMedia(type)
     }
 
-    fun getMediaFolderSize() : Int
+    fun getMediaSize() : Int
     {
-        return mMediaInteractor.getMediaSizeMb()
+        return mParameterInteractor.mMediaSize
     }
 
     fun <T> setValue(paramName : String, value : T) {
@@ -62,6 +54,7 @@ class ReportManager(val id: Int, mContext: Context, var DTO : ReportDTO ) {
 
     fun deleteLastMedia() {
         //delete temp invalid file
+        mContext.toast(R.string.error_saving_file)
         File(mMediaInteractor.lastAddedTmpFile!!.path).delete()
     }
 
