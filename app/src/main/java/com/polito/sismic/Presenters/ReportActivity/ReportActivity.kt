@@ -4,6 +4,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.location.Location
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
@@ -38,7 +39,6 @@ class ReportActivity : AppCompatActivity(),
         if (reportDTO == null)      //new report
         {
             mReportManager = ReportProvider.createReport(this)
-            savedInstanceState?.putParcelable("report", mReportManager!!.DTO)
         }
         else
         {
@@ -59,6 +59,12 @@ class ReportActivity : AppCompatActivity(),
                 .build()
 
     }
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+        outState?.putParcelable("report", mReportManager!!.DTO)
+    }
+
 
     override fun onLocationAcquired(location: Location) {
         supportFragmentManager.fragments.filterIsInstance<InfoLocReportFragment>().first().updateByLocation(location)

@@ -1,6 +1,7 @@
 package com.polito.sismic.Presenters.ReportActivity.Fragments
 
 import android.os.Bundle
+import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,7 @@ import com.github.fafaldo.fabtoolbar.widget.FABToolbarLayout
 import com.polito.sismic.Domain.ReportDTO
 import com.polito.sismic.Domain.ReportManager
 import com.polito.sismic.Domain.ReportProvider
+import com.polito.sismic.Presenters.CustomLayout.FragmentScrollableCanvas
 import com.polito.sismic.R
 import com.stepstone.stepper.Step
 import com.stepstone.stepper.StepperLayout
@@ -24,10 +26,10 @@ open class BaseReportFragment : Fragment(), Step {
     protected var mReportManager : ReportManager? = null
 
     //I need a report manager in every fragment to update parameters on step confirmation
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        var reportDTO = savedInstanceState?.getParcelable<ReportDTO>("report")
+        var reportDTO = arguments.getParcelable<ReportDTO>("report")
         mReportManager = ReportProvider.createFromDTO(context, reportDTO!!)
     }
 
@@ -37,17 +39,19 @@ open class BaseReportFragment : Fragment(), Step {
         //Custom view any layout with "scrollable" style
         var view = inflater!!.inflate(resId, container, false)
         val baseLayout = inflater.inflate(R.layout.base_report_fragment, container, false)
-        val scrollableCanvas = baseLayout.findViewById<ScrollView>(R.id.base_fragment_scroll_view)
+        val scrollableCanvas = baseLayout.findViewById<FragmentScrollableCanvas>(R.id.base_fragment_scroll_view)
 
         view.setOnClickListener({ hideFab() })
         scrollableCanvas.addView(view)
+        //Must be called or it crashes on scroll!!!
+        scrollableCanvas.setObjectsToHideOnScroll(activity.findViewById<FABToolbarLayout>(R.id.fabtoolbar),
+                activity.findViewById<FloatingActionButton>(R.id.fabtoolbar_fab),
+                activity.findViewById<StepperLayout>(R.id.stepperLayout))
 
-        //Hides when scroll
-        scrollableCanvas.viewTreeObserver.addOnScrollChangedListener {
-            hideStepper()
-            hideFab()
-        }
-
+        //Requires api 23
+        //scrollableCanvas.setOnScrollChangeListener(View.OnScrollChangeListener({
+        //    view, scrollX, scrollY, oldScrollX, oldScroolY ->
+        //}))
         return baseLayout
     }
 
@@ -59,8 +63,18 @@ open class BaseReportFragment : Fragment(), Step {
         activity.findViewById<StepperLayout>(R.id.stepperLayout)?.hideProgress()
     }
 
-    protected fun hideFab() {
+    protected fun hideFabToolbar() {
         activity.findViewById<FABToolbarLayout>(R.id.fabtoolbar)?.hide()
+    }
+
+    protected fun hideFab()
+    {
+        activity.findViewById<FloatingActionButton>(R.id.fabtoolbar_fab)?.hide()
+    }
+
+    protected fun showFab()
+    {
+        activity.findViewById<FloatingActionButton>(R.id.fabtoolbar_fab)?.show()
     }
 
     //Eventually in derived classes
@@ -68,3 +82,4 @@ open class BaseReportFragment : Fragment(), Step {
     override fun verifyStep(): VerificationError? { return null }
     override fun onError(error: VerificationError) { }
 }
+
