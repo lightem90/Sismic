@@ -16,9 +16,14 @@ class ParameterInteractor(val dto: ReportDTO?) {
         }
     }
 
-    fun addMediaPath(path : Uri)
+    fun addMediaPath(path : Uri?)
     {
         if (dto == null) return //too soon
-        dto.mediaList.add(path)
+        if (path != null) dto.mediaList.add(path)
+    }
+
+    fun getAllMedia() : MutableList<Uri>?
+    {
+        return dto?.mediaList
     }
 }

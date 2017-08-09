@@ -3,7 +3,6 @@ package com.polito.sismic.Domain
 import android.net.Uri
 import android.os.Parcel
 import android.os.Parcelable
-import java.net.URI
 
 /**
  * Created by Matteo on 28/07/2017.

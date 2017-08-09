@@ -1,11 +1,8 @@
 package com.polito.sismic.Presenters.ReportActivity
 
-import android.content.DialogInterface
 import android.content.Intent
 import android.location.Location
 import android.os.Bundle
-import android.os.PersistableBundle
-import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import com.google.android.gms.common.ConnectionResult
@@ -73,7 +70,7 @@ class ReportActivity : AppCompatActivity(),
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        mUserActionInteractor?.onActionResponse(requestCode, resultCode, data, this)
+        mUserActionInteractor?.onActionResponse(requestCode)
     }
 
     override fun onConnectionFailed(p0: ConnectionResult) {

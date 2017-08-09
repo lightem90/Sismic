@@ -3,7 +3,6 @@ package com.polito.sismic.Interactors
 import android.app.Activity
 import android.content.DialogInterface
 import android.content.Intent
-import android.net.Uri
 import android.provider.MediaStore
 import android.support.v7.app.AlertDialog
 import com.polito.sismic.Domain.MediaType
@@ -43,7 +42,7 @@ class UserActionInteractor(val reportManager : ReportManager) {
                 .setTitle(R.string.confirm_report_back)
                 .setMessage(R.string.confirm_report_back_message)
                 .setIcon(android.R.drawable.ic_dialog_alert)
-                .setPositiveButton(android.R.string.yes, DialogInterface.OnClickListener { dialog, _ -> reportManager!!.deleteReport(); caller.finish()})
+                .setPositiveButton(android.R.string.yes, DialogInterface.OnClickListener { dialog, _ -> reportManager!!.deleteAllReportMedia(); caller.finish()})
                 .setNegativeButton(android.R.string.no, null)
                 .show()
 
@@ -69,7 +68,7 @@ class UserActionInteractor(val reportManager : ReportManager) {
 
         var takePictureIntent : Intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         // Ensure that there's a camera activity to handle the intent
-        if (takePictureIntent.resolveActivity(caller.getPackageManager()) != null)
+        if (takePictureIntent.resolveActivity(caller.packageManager) != null)
         {
             var photoUri = reportManager.getUriForMedia(MediaType.Picture)
             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
@@ -78,19 +77,16 @@ class UserActionInteractor(val reportManager : ReportManager) {
 
     }
 
-    fun onActionResponse(requestCode: Int, resultCode: Int, data: Intent, caller : Activity) {
-        when (requestCode)
+    //Confirms or deletes last added media
+    fun onActionResponse(requestCode: Int) {
+
+        if (requestCode == Activity.RESULT_OK)
+            reportManager.confirmLastMedia()
+        else
         {
-            //TODO testare!
-            USER_ACTION_PIC ->
-            {
-                if (resultCode == Activity.RESULT_OK)
-                {
-                    //Save uri only if its all ok
-                    var uri = data.extras[MediaStore.EXTRA_OUTPUT] as Uri
-                    reportManager.addMediaPath(uri)
-                }
-            }
+            //TODO signal error to user
+            reportManager.deleteLastMedia()
         }
+
     }
 }
