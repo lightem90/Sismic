@@ -23,8 +23,8 @@ class ReportManager(val id: Int, val mContext: Context, var DTO : ReportDTO ) {
     private val mParameterInteractor : ParameterInteractor
 
     init {
-
-        mMediaInteractor = ReportMediaInteractor(mContext, "REPORT_" + id)
+        //Need the second underscore, otherwise REPORT_1 equals REPORT_11, I have to sear REPORT_+ID+_
+        mMediaInteractor = ReportMediaInteractor(mContext, "REPORT_" + id + "_")
         mParameterInteractor = ParameterInteractor(DTO, mContext)
     }
 
@@ -38,9 +38,9 @@ class ReportManager(val id: Int, val mContext: Context, var DTO : ReportDTO ) {
         return mMediaInteractor.createFileForMedia(type)
     }
 
-    fun getMediaSize() : Int
+    fun getMediaSizeMb() : String
     {
-        return mParameterInteractor.mMediaSize
+        return "%.2f".format(mParameterInteractor.mMediaSize)
     }
 
     fun <T> setValue(paramName : String, value : T) {

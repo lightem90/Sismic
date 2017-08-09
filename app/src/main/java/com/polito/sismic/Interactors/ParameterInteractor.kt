@@ -9,7 +9,7 @@ import com.polito.sismic.Extensions.toast
 
 class ParameterInteractor(val dto: ReportDTO?, private val mContext: Context) {
 
-    var mMediaSize : Int = 0
+    var mMediaSize : Double = 0.0
     fun <T> setValue(paramName : String, value : T) {
         if (dto == null) return //too soon
         when (value)
@@ -28,17 +28,18 @@ class ParameterInteractor(val dto: ReportDTO?, private val mContext: Context) {
         {
             dto.mediaList.add(path)
             mMediaSize += getSizeFromUri(path)
-            mContext.toast("Nuova dimensione report: " + mMediaSize + " MB")
+            mContext.toast("Nuova dimensione report: " + "%.2f".format(mMediaSize) + " MB")
         }
     }
 
 
-    private fun getSizeFromUri(path: Uri): Int {
+    private fun getSizeFromUri(path: Uri): Double {
 
         val returnCursor = mContext.contentResolver.query(path, null, null, null, null)
-        val sizeIndex = returnCursor.getColumnIndex(OpenableColumns.SIZE)
         returnCursor.moveToFirst()
-        return sizeIndex / 1024 / 1024
+        val sizeIndex = returnCursor.getLong(returnCursor.getColumnIndex(OpenableColumns.SIZE))
+        val doubleSizeIndex = sizeIndex.toDouble()
+        return doubleSizeIndex / 1024 / 1024
     }
 
     fun getAllMedia() : MutableList<Uri>?
