@@ -10,7 +10,6 @@ import com.polito.sismic.Domain.ReportManager
 import com.polito.sismic.Interactors.Helpers.UserActionType
 import com.polito.sismic.R
 
-
 /**
  * Created by Matteo on 08/08/2017.
  */
@@ -58,10 +57,23 @@ class UserActionInteractor(val reportManager : ReportManager) {
 
     private fun startAudioIntent(caller: Activity) {
 
+        val audioRecordIntent = Intent(MediaStore.Audio.Media.RECORD_SOUND_ACTION)
+        if (audioRecordIntent.resolveActivity(caller.packageManager) != null) {
+
+            var audioUri = reportManager.getUriForMedia(MediaType.Audio)
+            audioRecordIntent.putExtra(MediaStore.EXTRA_OUTPUT, audioUri)
+            caller.startActivityForResult(audioRecordIntent, USER_ACTION_AUDIO)
+        }
     }
 
     private fun startVideoIntent(caller: Activity) {
+        val takeVideoIntent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
+        if (takeVideoIntent.resolveActivity(caller.packageManager) != null) {
 
+            var videoUri = reportManager.getUriForMedia(MediaType.Video)
+            takeVideoIntent.putExtra(MediaStore.EXTRA_OUTPUT, videoUri)
+            caller.startActivityForResult(takeVideoIntent, USER_ACTION_VIDEO)
+        }
     }
 
     private fun startPictureIntent(caller: Activity) {
@@ -84,7 +96,6 @@ class UserActionInteractor(val reportManager : ReportManager) {
             reportManager.confirmLastMedia()
         else
         {
-            //TODO signal error to user
             reportManager.deleteLastMedia()
         }
 

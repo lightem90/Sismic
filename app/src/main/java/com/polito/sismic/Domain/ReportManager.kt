@@ -49,6 +49,7 @@ class ReportManager(val id: Int, val mContext: Context, var DTO : ReportDTO ) {
 
     fun confirmLastMedia() {
         //confirms media file and pushes into parameters list to be viewed at the end
+        mContext.toast(R.string.correctly_saving_file)
         mParameterInteractor.addMediaPath(mMediaInteractor.lastAddedTmpFile)
     }
 

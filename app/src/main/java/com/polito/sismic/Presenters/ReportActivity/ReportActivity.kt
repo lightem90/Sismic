@@ -48,6 +48,8 @@ class ReportActivity : AppCompatActivity(),
         stepperLayout.adapter = ReportFragmentsAdapter(supportFragmentManager, this, mReportManager!!)
         fabtoolbar_fab.setOnClickListener { fabtoolbar.show() }
         pic.setOnClickListener{ mUserActionInteractor?.onActionRequested(this, UserActionType.PicRequest)}
+        video.setOnClickListener{ mUserActionInteractor?.onActionRequested(this, UserActionType.VideoRequest)}
+        audio.setOnClickListener{ mUserActionInteractor?.onActionRequested(this, UserActionType.AudioRequest)}
 
         mGoogleApiClient = GoogleApiClient.Builder(this)
                 .addApi(Places.GEO_DATA_API)
@@ -71,6 +73,7 @@ class ReportActivity : AppCompatActivity(),
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
+        //TODO the audio file could be saved into custom location, handle the case!
         mUserActionInteractor?.onActionResponse(resultCode)
     }
 

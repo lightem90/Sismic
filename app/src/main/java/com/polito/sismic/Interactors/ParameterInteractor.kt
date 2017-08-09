@@ -28,7 +28,7 @@ class ParameterInteractor(val dto: ReportDTO?, private val mContext: Context) {
         {
             dto.mediaList.add(path)
             mMediaSize += getSizeFromUri(path)
-            mContext.toast("Nuova dimensione media: " + mMediaSize + " MB")
+            mContext.toast("Nuova dimensione report: " + mMediaSize + " MB")
         }
     }
 
