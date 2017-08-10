@@ -162,6 +162,7 @@
     <string name="sketch_reset">Ricomincia</string>
     <string name="sketch_error_saving">Impossibile salvare disegno</string>
     <string name="note_save">Salva nota</string>
+    <string name="note_error_empty">La nota che si cerca di salvare è vuota</string>
 
 
 </resources>

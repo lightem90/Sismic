@@ -5,6 +5,7 @@ import android.net.Uri
 import com.polito.sismic.Domain.ReportDTO
 import android.provider.OpenableColumns
 import com.polito.sismic.Extensions.toast
+import java.io.*
 
 
 class ParameterInteractor(val dto: ReportDTO?, private val mContext: Context) {
@@ -23,6 +24,7 @@ class ParameterInteractor(val dto: ReportDTO?, private val mContext: Context) {
 
     fun <T> getValue (paramName: String) : T?
     {
+        //Safe cast
         if (dto == null) return null
         if (dto.doubleHashMap.containsKey(paramName))
             return dto.doubleHashMap[paramName] as T
@@ -47,7 +49,6 @@ class ParameterInteractor(val dto: ReportDTO?, private val mContext: Context) {
         }
     }
 
-
     private fun getSizeFromUri(path: Uri): Double {
 
         val returnCursor = mContext.contentResolver.query(path, null, null, null, null)
@@ -60,5 +61,47 @@ class ParameterInteractor(val dto: ReportDTO?, private val mContext: Context) {
     fun getAllMedia() : MutableList<Uri>?
     {
         return dto?.mediaList
+    }
+
+    fun  addNote(noteToAdd: String) {
+        if (dto == null) return //too soon
+        dto.noteList.add(noteToAdd)
+    }
+
+    //Copy from the source to the dest so we can have the uri available in our positions
+    fun  saveMp3FromSourceUri(source: String, lastAddedTmpFile: Uri?) {
+
+        if (lastAddedTmpFile == null) return
+        val dest = lastAddedTmpFile.path.toString()
+
+        var bis: BufferedInputStream? = null
+        var bos: BufferedOutputStream? = null
+
+        try {
+            bis = BufferedInputStream(FileInputStream(source))
+            bos = BufferedOutputStream(FileOutputStream(dest, false))
+            val buf = ByteArray(1024)
+            bis!!.read(buf)
+
+            do
+            {
+                bos!!.write(buf)
+            } while (bis!!.read(buf) !== -1)
+
+        } catch (e: IOException)
+        {
+            e.printStackTrace()
+        } finally {
+
+            try {
+                if (bis != null) bis!!.close()
+                if (bos != null) bos!!.close()
+
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+
+        }
+
     }
 }

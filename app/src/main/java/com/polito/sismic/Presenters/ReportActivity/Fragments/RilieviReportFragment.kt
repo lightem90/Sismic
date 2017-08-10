@@ -13,7 +13,7 @@ import com.polito.sismic.R
 class RilieviReportFragment : BaseReportFragment() {
 
 
-    override fun getAllViewParameters(): MutableList<Pair<String, Object>> {
+    override fun getAllViewParameters(): MutableList<Pair<String, Any>> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

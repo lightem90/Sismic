@@ -1,12 +1,15 @@
 package com.polito.sismic.Interactors
 
 import android.app.Activity
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.net.Uri
 import android.provider.MediaStore
 import android.support.v7.app.AlertDialog
 import com.polito.sismic.Domain.MediaType
 import com.polito.sismic.Domain.ReportManager
+import com.polito.sismic.Extensions.toast
 import com.polito.sismic.Interactors.Helpers.UserActionType
 import com.polito.sismic.Presenters.ReportActivity.NoteActivity
 import com.polito.sismic.Presenters.ReportActivity.SketchActivity
@@ -15,7 +18,7 @@ import com.polito.sismic.R
 /**
  * Created by Matteo on 08/08/2017.
  */
-class UserActionInteractor(val reportManager : ReportManager) {
+class UserActionInteractor(val reportManager : ReportManager, val mCaller : Activity) {
 
     val USER_ACTION_PIC         = 40
     val USER_ACTION_VIDEO       = 41
@@ -24,16 +27,16 @@ class UserActionInteractor(val reportManager : ReportManager) {
     val USER_ACTION_NOTE        = 44
 
 
-    fun onActionRequested(caller : Activity, requestType : UserActionType)
+    fun onActionRequested(requestType : UserActionType)
     {
         when (requestType)
         {
-            UserActionType.PicRequest ->        startPictureIntent(caller)
-            UserActionType.VideoRequest ->      startVideoIntent(caller)
-            UserActionType.AudioRequest ->      startAudioIntent(caller)
-            UserActionType.SketchRequest->      startSketchIntent(caller)
-            UserActionType.NoteRequest->        startNoteIntent(caller)
-            UserActionType.BackRequest->        goBack(caller)
+            UserActionType.PicRequest ->        startPictureIntent(mCaller)
+            UserActionType.VideoRequest ->      startVideoIntent(mCaller)
+            UserActionType.AudioRequest ->      startAudioIntent(mCaller)
+            UserActionType.SketchRequest->      startSketchIntent(mCaller)
+            UserActionType.NoteRequest->        startNoteIntent(mCaller)
+            UserActionType.BackRequest->        goBack(mCaller)
         }
     }
 
@@ -43,7 +46,7 @@ class UserActionInteractor(val reportManager : ReportManager) {
                 .setTitle(R.string.confirm_report_back)
                 .setMessage(R.string.confirm_report_back_message)
                 .setIcon(android.R.drawable.ic_dialog_alert)
-                .setPositiveButton(android.R.string.yes, DialogInterface.OnClickListener { dialog, _ -> reportManager!!.deleteAllReportMedia(); caller.finish()})
+                .setPositiveButton(android.R.string.yes, { _, _ -> reportManager.deleteAllReportMedia(); caller.finish()})
                 .setNegativeButton(android.R.string.no, null)
                 .show()
 
@@ -99,7 +102,7 @@ class UserActionInteractor(val reportManager : ReportManager) {
     }
 
     //Confirms or deletes last added media
-    fun onActionResponse(requestCode: Int, resultCode: Int) {
+    fun onActionResponse(requestCode: Int, resultCode: Int, data: Intent?) {
 
         when(requestCode)
         {
@@ -107,27 +110,42 @@ class UserActionInteractor(val reportManager : ReportManager) {
             USER_ACTION_VIDEO,
             USER_ACTION_SKETCH -> noOtherActionsRequired(resultCode)
 
-            USER_ACTION_AUDIO -> fixUri()
-            USER_ACTION_NOTE  -> addNote()
+            USER_ACTION_AUDIO -> fixUri(data)
+            USER_ACTION_NOTE  -> addNote(data)
         }
 
     }
 
-    //TODO
-    private fun addNote() {
+    private fun addNote(data: Intent?) {
 
+        var plainTextNote = data?.getStringExtra("note")
+        if (plainTextNote == null)
+        {
+            mCaller.toast(R.string.note_error_empty)
+            return
+        }
+        reportManager.addNote(plainTextNote)
     }
 
-    //TODO
-    private fun fixUri() {
+    private fun fixUri(data: Intent?) {
 
+        if (data == null ||  data.data == null)
+        {
+            mCaller.toast(R.string.error_saving_file)
+            return
+        }
+        reportManager.fixUriForAudio(data.data)
     }
 
     fun noOtherActionsRequired(resultCode: Int) {
         if (resultCode == Activity.RESULT_OK)
+        {
+            mCaller.toast(R.string.correctly_saving_file)
             reportManager.confirmLastMedia()
+        }
         else
         {
+            mCaller.toast(R.string.error_saving_file)
             reportManager.deleteLastMedia()
         }
     }

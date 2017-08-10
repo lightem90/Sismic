@@ -2,24 +2,24 @@ package com.polito.sismic.Domain
 
 import android.content.Context
 import android.net.Uri
-import com.polito.sismic.Extensions.toast
 import com.polito.sismic.Interactors.ParameterInteractor
-import com.polito.sismic.R
 import java.io.File
-import java.util.function.Consumer
 
 
-//TODO: Classe di dominio del reportManager
-//Classe che contiente i dati e che viene passato tra i fragment,
-//la classe "reportManager" lo wrappa solamente e deve essere creata/ricevuta (nel caso si stia editando)
+//TODO: Classe di dominio
+//Wrapper of the DTO that contains the managers for parameters and media
 class ReportManager(val id: Int, val mContext: Context, var DTO : ReportDTO ) {
 
+    //TODO: i toast da errore vanno controllati prima di arrivare quà
     constructor(mContext: Context, dto: ReportDTO) : this(dto.id, mContext, dto)                                                //Edit
     constructor(mContext: Context, id : Int)
-            : this (id, mContext, ReportDTO(id, HashMap(), HashMap(), HashMap(), HashMap(), mutableListOf<Uri>()))   //New
+            : this (id, mContext, ReportDTO(id, HashMap(), HashMap(), HashMap(), HashMap(), mutableListOf<String>(), mutableListOf<Uri>()))   //New
 
-    //Componenti: gestore dei media e gestore dei parametri
-    private val mMediaInteractor: ReportMediaInteractor = ReportMediaInteractor(mContext, "REPORT_" + id + "_")
+
+    private val mReportID : String = "REPORT_" + id + "_"
+
+    //Twho components to handle parameters and media
+    private val mMediaInteractor: ReportMediaInteractor = ReportMediaInteractor(mContext, mReportID)
     //Need the second underscore, otherwise REPORT_1 equals REPORT_11, I have to sear REPORT_+ID+_
     private val mParameterInteractor : ParameterInteractor = ParameterInteractor(DTO, mContext)
 
@@ -44,14 +44,28 @@ class ReportManager(val id: Int, val mContext: Context, var DTO : ReportDTO ) {
 
     fun confirmLastMedia() {
         //confirms media file and pushes into parameters list to be viewed at the end
-        mContext.toast(R.string.correctly_saving_file)
         mParameterInteractor.addMediaPath(mMediaInteractor.lastAddedTmpFile)
+    }
+
+    fun addNote(noteToAdd: String)
+    {
+        mParameterInteractor.addNote(noteToAdd)
     }
 
     fun deleteLastMedia() {
         //delete temp invalid file
-        mContext.toast(R.string.error_saving_file)
         File(mMediaInteractor.lastAddedTmpFile!!.path).delete()
+    }
+
+    //The audio could be saved into custom location, in this way I reposition the file in the expected Uri
+    fun fixUriForAudio(newUri: Uri) {
+
+        if (mMediaInteractor.lastAddedTmpFile != newUri)
+        {
+            mParameterInteractor.saveMp3FromSourceUri(newUri.path, mMediaInteractor.lastAddedTmpFile)
+        }
+
+        confirmLastMedia()
     }
 
     //For add to gallery (not needed now)

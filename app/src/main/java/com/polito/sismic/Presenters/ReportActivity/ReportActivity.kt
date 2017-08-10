@@ -45,15 +45,15 @@ class ReportActivity : AppCompatActivity(),
             mReportManager = ReportProvider.createFromDTO(this, reportDTO)
         }
 
-        mUserActionInteractor = UserActionInteractor(mReportManager!!)
+        mUserActionInteractor = UserActionInteractor(mReportManager!!, this)
 
         stepperLayout.adapter = ReportFragmentsAdapter(supportFragmentManager, this, mReportManager!!)
         fabtoolbar_fab.setOnClickListener { fabtoolbar.show() }
-        pic.setOnClickListener{ mUserActionInteractor?.onActionRequested(this, UserActionType.PicRequest)}
-        video.setOnClickListener{ mUserActionInteractor?.onActionRequested(this, UserActionType.VideoRequest)}
-        audio.setOnClickListener{ mUserActionInteractor?.onActionRequested(this, UserActionType.AudioRequest)}
-        draw.setOnClickListener{ mUserActionInteractor?.onActionRequested(this, UserActionType.SketchRequest)}
-        note.setOnClickListener{ mUserActionInteractor?.onActionRequested(this, UserActionType.NoteRequest)}
+        pic.setOnClickListener{ mUserActionInteractor?.onActionRequested(UserActionType.PicRequest)}
+        video.setOnClickListener{ mUserActionInteractor?.onActionRequested(UserActionType.VideoRequest)}
+        audio.setOnClickListener{ mUserActionInteractor?.onActionRequested(UserActionType.AudioRequest)}
+        draw.setOnClickListener{ mUserActionInteractor?.onActionRequested(UserActionType.SketchRequest)}
+        note.setOnClickListener{ mUserActionInteractor?.onActionRequested(UserActionType.NoteRequest)}
 
         mGoogleApiClient = GoogleApiClient.Builder(this)
                 .addApi(Places.GEO_DATA_API)
@@ -77,8 +77,7 @@ class ReportActivity : AppCompatActivity(),
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        //TODO the audio file could be saved into custom location, handle the case!
-        mUserActionInteractor?.onActionResponse(requestCode, resultCode)
+        mUserActionInteractor?.onActionResponse(requestCode, resultCode, data)
     }
 
     override fun onConnectionFailed(p0: ConnectionResult) {
@@ -87,14 +86,14 @@ class ReportActivity : AppCompatActivity(),
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         if(item?.itemId == android.R.id.home) {
-            mUserActionInteractor?.onActionRequested(this, UserActionType.BackRequest)
+            mUserActionInteractor?.onActionRequested(UserActionType.BackRequest)
             return true
         }
         return super.onOptionsItemSelected(item)
     }
 
     //Updates the dto
-    override fun onParametersConfirmed(paramList: MutableList<Pair<String, Object>>) {
+    override fun onParametersConfirmed(paramList: MutableList<Pair<String, Any>>) {
         paramList.forEach{x -> mReportManager!!.setValue(x.first, x.second)}
     }
 

@@ -29,7 +29,7 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
     // parameters througth the callback when the button "next" is pressed
     //Each fragment must implement the method to get their own paramter name-value
     interface ParametersManager {
-        fun onParametersConfirmed(paramList : MutableList<Pair<String, Object>>)
+        fun onParametersConfirmed(paramList : MutableList<Pair<String, Any>>)
         fun onParametersSaveRequest()
     }
 
@@ -66,7 +66,7 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
     }
 
     //Each fragment must implement this, so the activity is in charge to save the data
-    abstract fun getAllViewParameters() : MutableList<Pair<String, Object>>
+    abstract fun getAllViewParameters() : MutableList<Pair<String, Any>>
     override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback?) {
 
         mParametersCallback?.onParametersConfirmed(getAllViewParameters())
