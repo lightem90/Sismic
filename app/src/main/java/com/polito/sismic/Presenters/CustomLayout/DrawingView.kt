@@ -7,11 +7,32 @@ import android.os.Build
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
+import android.graphics.Bitmap
+import android.media.ThumbnailUtils
+import android.widget.ImageView
+import java.io.ByteArrayOutputStream
 
-class DrawingView(internal var context: Context) : View(context) {
 
+class DrawingView : View {
+
+    @JvmOverloads
+    constructor(
+            context: Context,
+            attrs: AttributeSet? = null,
+            defStyleAttr: Int = 0)
+            : super(context, attrs, defStyleAttr)
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    constructor(
+            context: Context,
+            attrs: AttributeSet?,
+            defStyleAttr: Int,
+            defStyleRes: Int)
+            : super(context, attrs, defStyleAttr, defStyleRes)
 
     var  mPaint: Paint? = null
+    var mWidth: Int = 0
+    var mHeight: Int = 0
     private var mBitmap: Bitmap? = null
     private var mCanvas: Canvas? = null
     private val mPath: Path = Path()
@@ -27,6 +48,7 @@ class DrawingView(internal var context: Context) : View(context) {
         circlePaint.style = Paint.Style.STROKE
         circlePaint.strokeJoin = Paint.Join.MITER
         circlePaint.strokeWidth = TOUCH_TOLERANCE
+        isDrawingCacheEnabled = true;
     }
 
     fun setPaint(paint : Paint)
@@ -34,13 +56,45 @@ class DrawingView(internal var context: Context) : View(context) {
         mPaint = paint
     }
 
+    fun clearDrawing() {
+
+        isDrawingCacheEnabled = false
+        // don't forget that one and the match below,
+        // or you just keep getting a duplicate when you save.
+        onSizeChanged(width, height, width, height)
+        invalidate()
+
+        isDrawingCacheEnabled = true
+    }
+
+    fun getDrawingToSave() : ByteArrayOutputStream
+    {
+        var whatTheUserDrewBitmap = drawingCache;
+        // don't forget to clear it (see above) or you just get duplicates
+
+        // almost always you will want to reduce res from the very high screen res
+        whatTheUserDrewBitmap =
+                ThumbnailUtils.extractThumbnail(whatTheUserDrewBitmap, 256, 256);
+        // NOTE that's an incredibly useful trick for cropping/resizing squares
+        // while handling all memory problems etc
+        // http://stackoverflow.com/a/17733530/294884
+
+        // these days you often need a "byte array". for example,
+        // to save to parse.com or other cloud services
+        var baos : ByteArrayOutputStream = ByteArrayOutputStream()
+        whatTheUserDrewBitmap.compress(Bitmap.CompressFormat.JPEG, 0, baos)
+        return baos
+    }
+
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
 
-        mBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
+        mWidth = w
+        mHeight = h
+
+        mBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
         mCanvas = Canvas(mBitmap)
     }
-
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 

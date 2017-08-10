@@ -10,7 +10,7 @@ import com.polito.sismic.R
 class SpettriDiProgettoReportFragment : BaseReportFragment() {
     
     override fun getAllViewParameters(): MutableList<Pair<String, Any>> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return mutableListOf()
     }
 
     override fun onCreateView(inflater: LayoutInflater?, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View? {

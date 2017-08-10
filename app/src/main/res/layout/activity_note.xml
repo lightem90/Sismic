@@ -16,6 +16,8 @@
         android:id="@+id/note_save"
         android:text="@string/note_save"
         android:layout_alignParentBottom="true"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/colorAccent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

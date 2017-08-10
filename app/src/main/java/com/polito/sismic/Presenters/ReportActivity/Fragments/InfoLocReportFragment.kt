@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.main.info_loc_report_layout.*
 class InfoLocReportFragment : BaseReportFragment() {
 
     override fun getAllViewParameters(): MutableList<Pair<String, Any>> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return mutableListOf()
     }
 
     private var  mLocationCallback: InfoLocReportFragment.OnCurrentLocationProvided? = null

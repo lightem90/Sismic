@@ -19,7 +19,7 @@ import java.io.FileOutputStream
 
 
 //Custom activity to draw something
-//TODO: Make it more usefull (draw lines, curves, changin color)
+//TODO: Make it more useful (draw lines, curves, changin color)
 class SketchActivity : AppCompatActivity() {
 
     var uriToSave : Uri? = null
@@ -42,22 +42,17 @@ class SketchActivity : AppCompatActivity() {
         mPaint!!.strokeWidth = 12f
         dv!!.setPaint(mPaint!!)
 
-        reset.setOnClickListener { dv!!.invalidate() }
-        salva.setOnClickListener { saveToUriAndClose() }
+        reset_draw.setOnClickListener { dv.clearDrawing() }
+        save_draw.setOnClickListener { saveToUriAndClose() }
     }
 
     private fun saveToUriAndClose() {
 
         try
         {
-            val b = Bitmap.createBitmap(dv.layoutParams.width, dv.layoutParams.height, Bitmap.Config.ARGB_8888)
-            val c = Canvas(b)
-            dv.layout(dv.left, dv.top, dv.right, dv.bottom)
-            dv.draw(c)
-            val out = FileOutputStream(File(uriToSave!!.path))
-            b.compress(Bitmap.CompressFormat.JPEG, 75, out)
-            out.flush()
-            out.close()
+            var byteArrayToSave = dv.getDrawingToSave()
+            val outputStream = contentResolver.openOutputStream(uriToSave)
+            outputStream.write(byteArrayToSave.toByteArray())
             exitWithSuccess()
         }
         catch (exc : Exception)
