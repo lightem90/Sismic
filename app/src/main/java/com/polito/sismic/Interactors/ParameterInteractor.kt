@@ -21,6 +21,21 @@ class ParameterInteractor(val dto: ReportDTO?, private val mContext: Context) {
         }
     }
 
+    fun <T> getValue (paramName: String) : T?
+    {
+        if (dto == null) return null
+        if (dto.doubleHashMap.containsKey(paramName))
+            return dto.doubleHashMap[paramName] as T
+        if (dto.intHashMap.containsKey(paramName))
+            return dto.intHashMap[paramName] as T
+        if (dto.stringHashMap.containsKey(paramName))
+            return dto.stringHashMap[paramName] as T
+        if (dto.boolHashMap.containsKey(paramName))
+            return dto.boolHashMap[paramName] as T
+
+        return null
+    }
+
     fun addMediaPath(path : Uri?)
     {
         if (dto == null) return //too soon

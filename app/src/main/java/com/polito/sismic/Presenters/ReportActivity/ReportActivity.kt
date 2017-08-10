@@ -15,6 +15,7 @@ import com.polito.sismic.Extensions.toast
 import com.polito.sismic.Interactors.Helpers.UserActionType
 import com.polito.sismic.Interactors.UserActionInteractor
 import com.polito.sismic.Presenters.Adapters.ReportFragmentsAdapter
+import com.polito.sismic.Presenters.ReportActivity.Fragments.BaseReportFragment
 import com.polito.sismic.Presenters.ReportActivity.Fragments.InfoLocReportFragment
 import com.polito.sismic.R
 import kotlinx.android.synthetic.main.activity_report.*
@@ -22,7 +23,9 @@ import kotlinx.android.synthetic.main.activity_report.*
 
 class ReportActivity : AppCompatActivity(),
         InfoLocReportFragment.OnCurrentLocationProvided,
+        BaseReportFragment.OnParametersConfirmed,
         GoogleApiClient.OnConnectionFailedListener {
+
 
     private var  mGoogleApiClient: GoogleApiClient? = null
     private var  mReportManager: ReportManager? = null
@@ -50,6 +53,8 @@ class ReportActivity : AppCompatActivity(),
         pic.setOnClickListener{ mUserActionInteractor?.onActionRequested(this, UserActionType.PicRequest)}
         video.setOnClickListener{ mUserActionInteractor?.onActionRequested(this, UserActionType.VideoRequest)}
         audio.setOnClickListener{ mUserActionInteractor?.onActionRequested(this, UserActionType.AudioRequest)}
+        draw.setOnClickListener{ mUserActionInteractor?.onActionRequested(this, UserActionType.SketchRequest)}
+        note.setOnClickListener{ mUserActionInteractor?.onActionRequested(this, UserActionType.NoteRequest)}
 
         mGoogleApiClient = GoogleApiClient.Builder(this)
                 .addApi(Places.GEO_DATA_API)
@@ -89,7 +94,10 @@ class ReportActivity : AppCompatActivity(),
         return super.onOptionsItemSelected(item)
     }
 
-
+    //Updates the dto
+    override fun onParametersConfirmed(paramList: MutableList<Pair<String, Object>>) {
+        paramList.forEach{x -> mReportManager!!.setValue(x.first, x.second)}
+    }
 }
 
 

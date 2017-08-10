@@ -148,7 +148,7 @@
     <string name="error_saving_file">Errore nel salvataggio file</string>
     <string name="correctly_saving_file">File salvato correttamente</string>
     <string name="report_rilievo_esterno_title">RILIEVO ESTERNO</string>
-    <string name="report_rilievo_interno_title">RILIEVO INTERNO</>
+    <string name="report_rilievo_interno_title">RILIEVO INTERNO</string>
     <string name="piani_numero_parameter">Numero piani</string>
     <string name="piani_numero_parameter_hint">Inserire numero piani</string>
     <string name="altezza_piano_parameter_hint">Inserisci l\'altezza di un singolo piano</string>

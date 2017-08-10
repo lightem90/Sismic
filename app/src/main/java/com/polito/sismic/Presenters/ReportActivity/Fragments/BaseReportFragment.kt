@@ -1,5 +1,6 @@
 package com.polito.sismic.Presenters.ReportActivity.Fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.Fragment
@@ -15,7 +16,6 @@ import com.polito.sismic.R
 import com.stepstone.stepper.BlockingStep
 import com.stepstone.stepper.StepperLayout
 import com.stepstone.stepper.VerificationError
-import java.util.*
 
 
 /**
@@ -23,7 +23,15 @@ import java.util.*
  */
 abstract class BaseReportFragment : Fragment(), BlockingStep {
 
-    protected var mReportManager : ReportManager? = null
+    protected   var     mReportManager        : ReportManager? = null
+    private     var     mParametersCallback   : BaseReportFragment.OnParametersConfirmed? = null
+
+    //Is' the activity the handler of the dto, each fragment only passes its own
+    // parameters througth the callback when the button "next" is pressed
+    //Each fragment must implement the method to get their own paramter name-value
+    interface OnParametersConfirmed {
+        fun onParametersConfirmed(paramList : MutableList<Pair<String, Object>>)
+    }
 
     //I need a report manager in every fragment to update parameters on step confirmation
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
@@ -60,12 +68,22 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
-    //Each fragment must implement this, so the base class is in charge to save data
+    //Each fragment must implement this, so the activity is in charge to save the data
     abstract fun getAllViewParameters() : MutableList<Pair<String, Object>>
     override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback?) {
 
-        getAllViewParameters().forEach{x -> mReportManager!!.setValue(x.first, x.second)}
-        arguments.putParcelable("report", mReportManager!!.DTO)
+        mParametersCallback?.onParametersConfirmed(getAllViewParameters())
+    }
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        try
+        {
+            mParametersCallback = context as OnParametersConfirmed?
+        }
+        catch (e: ClassCastException) {
+            throw ClassCastException(context!!.toString() + " must implement OnParametersConfirmed")
+        }
     }
 
     protected fun hideBottomActions()
@@ -79,6 +97,5 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
     override fun onError(error: VerificationError) { }
     override fun onBackClicked(callback: StepperLayout.OnBackClickedCallback?) { }
     override fun onCompleteClicked(callback: StepperLayout.OnCompleteClickedCallback?) {}
-
 }
 
