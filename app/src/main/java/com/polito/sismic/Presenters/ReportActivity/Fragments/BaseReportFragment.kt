@@ -68,8 +68,11 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
     //Each fragment must implement this, so the activity is in charge to save the data
     abstract fun getAllViewParameters() : MutableList<Pair<String, Any>>
     override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback?) {
-
         mParametersCallback?.onParametersConfirmed(getAllViewParameters())
+        callback!!.goToNextStep()
+    }
+    override fun onCompleteClicked(callback: StepperLayout.OnCompleteClickedCallback?) {
+        callback!!.complete()
     }
 
     override fun onAttach(context: Context?) {
@@ -93,6 +96,5 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
     override fun verifyStep(): VerificationError? { return null }
     override fun onError(error: VerificationError) { }
     override fun onBackClicked(callback: StepperLayout.OnBackClickedCallback?) { }
-    override fun onCompleteClicked(callback: StepperLayout.OnCompleteClickedCallback?) {}
 }
 
