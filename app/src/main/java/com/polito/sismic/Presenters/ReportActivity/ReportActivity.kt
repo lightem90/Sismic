@@ -23,9 +23,8 @@ import kotlinx.android.synthetic.main.activity_report.*
 
 class ReportActivity : AppCompatActivity(),
         InfoLocReportFragment.OnCurrentLocationProvided,
-        BaseReportFragment.OnParametersConfirmed,
+        BaseReportFragment.ParametersManager,
         GoogleApiClient.OnConnectionFailedListener {
-
 
     private var  mGoogleApiClient: GoogleApiClient? = null
     private var  mReportManager: ReportManager? = null
@@ -97,6 +96,10 @@ class ReportActivity : AppCompatActivity(),
     //Updates the dto
     override fun onParametersConfirmed(paramList: MutableList<Pair<String, Object>>) {
         paramList.forEach{x -> mReportManager!!.setValue(x.first, x.second)}
+    }
+
+    override fun onParametersSaveRequest() {
+        //TODO: save dto to db
     }
 }
 

@@ -23,22 +23,19 @@ import com.stepstone.stepper.VerificationError
  */
 abstract class BaseReportFragment : Fragment(), BlockingStep {
 
-    protected   var     mReportManager        : ReportManager? = null
-    private     var     mParametersCallback   : BaseReportFragment.OnParametersConfirmed? = null
+    private     var     mParametersCallback   : BaseReportFragment.ParametersManager? = null
 
     //Is' the activity the handler of the dto, each fragment only passes its own
     // parameters througth the callback when the button "next" is pressed
     //Each fragment must implement the method to get their own paramter name-value
-    interface OnParametersConfirmed {
+    interface ParametersManager {
         fun onParametersConfirmed(paramList : MutableList<Pair<String, Object>>)
+        fun onParametersSaveRequest()
     }
 
     //I need a report manager in every fragment to update parameters on step confirmation
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        var reportDTO = arguments.getParcelable<ReportDTO>("report")
-        mReportManager = ReportProvider.createFromDTO(context, reportDTO!!)
     }
 
     //In this way I can make every fragment scrollable and use protected properties avoiding replicated code
@@ -79,7 +76,7 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
         super.onAttach(context)
         try
         {
-            mParametersCallback = context as OnParametersConfirmed?
+            mParametersCallback = context as ParametersManager?
         }
         catch (e: ClassCastException) {
             throw ClassCastException(context!!.toString() + " must implement OnParametersConfirmed")

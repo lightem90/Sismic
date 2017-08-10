@@ -2,13 +2,11 @@ package com.polito.sismic.Domain
 
 import android.content.Context
 import android.net.Uri
-import android.os.Build
 import android.os.Environment
+import android.support.v4.content.FileProvider
 import java.io.File
-import java.nio.file.Files
 import java.text.SimpleDateFormat
 import java.util.*
-import android.support.v4.content.FileProvider
 
 enum class MediaType
 {
