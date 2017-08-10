@@ -158,6 +158,10 @@
     <string name="larghezza_piano_parameter_hint">L(y) [m]</string>
     <string name="larghezza_piano_parameter">Larghezza</string>
     <string name="report_regolare_altezza">Regolare in altezza</string>
+    <string name="sketch_save">Salva</string>
+    <string name="sketch_reset">Ricomincia</string>
+    <string name="sketch_error_saving">Impossibile salvare disegno</string>
+    <string name="note_save">Salva nota</string>
 
 
 </resources>

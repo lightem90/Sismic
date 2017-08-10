@@ -6,4 +6,21 @@
     android:layout_height="match_parent"
     tools:context="com.polito.sismic.Presenters.ReportActivity.SketchActivity">
 
+    <com.polito.sismic.Presenters.CustomLayout.DrawingView
+        android:id="@+id/dv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <Button
+        android:id="@+id/salva"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/sketch_save"/>
+
+    <Button
+        android:id="@+id/reset"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/sketch_reset"/>
+
 </android.support.constraint.ConstraintLayout>

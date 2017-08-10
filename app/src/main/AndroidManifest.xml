@@ -79,8 +79,17 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <activity android:name=".Presenters.ReportActivity.NoteActivity" />
-        <activity android:name=".Presenters.ReportActivity.SketchActivity"></activity>
+        <activity android:name=".Presenters.ReportActivity.NoteActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Presenters.ReportActivity.ReportActivity" />
+        </activity>
+
+        <activity android:name=".Presenters.ReportActivity.SketchActivity">
+            <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".Presenters.ReportActivity.ReportActivity" />
+        </activity>
     </application>
 
 </manifest>

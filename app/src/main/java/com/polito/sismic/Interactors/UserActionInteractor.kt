@@ -8,6 +8,8 @@ import android.support.v7.app.AlertDialog
 import com.polito.sismic.Domain.MediaType
 import com.polito.sismic.Domain.ReportManager
 import com.polito.sismic.Interactors.Helpers.UserActionType
+import com.polito.sismic.Presenters.ReportActivity.NoteActivity
+import com.polito.sismic.Presenters.ReportActivity.SketchActivity
 import com.polito.sismic.R
 
 /**
@@ -48,11 +50,19 @@ class UserActionInteractor(val reportManager : ReportManager) {
     }
 
     private fun startNoteIntent(caller: Activity) {
-
+        var intent = Intent(caller, NoteActivity::class.java)
+        caller.startActivityForResult(intent, USER_ACTION_NOTE)
     }
 
     private fun startSketchIntent(caller: Activity) {
 
+        var drawBitmap : Intent = Intent(caller, SketchActivity::class.java)
+        if (drawBitmap.resolveActivity(caller.packageManager) != null)
+        {
+            var bitmapUri = reportManager.getUriForMedia(MediaType.Picture)
+            drawBitmap.putExtra(MediaStore.EXTRA_OUTPUT, bitmapUri)
+            caller.startActivityForResult(drawBitmap, USER_ACTION_SKETCH)
+        }
     }
 
     private fun startAudioIntent(caller: Activity) {
@@ -86,18 +96,39 @@ class UserActionInteractor(val reportManager : ReportManager) {
             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
             caller.startActivityForResult(takePictureIntent, USER_ACTION_PIC)
         }
-
     }
 
     //Confirms or deletes last added media
-    fun onActionResponse(resultCode: Int) {
+    fun onActionResponse(requestCode: Int, resultCode: Int) {
 
+        when(requestCode)
+        {
+            USER_ACTION_PIC,
+            USER_ACTION_VIDEO,
+            USER_ACTION_SKETCH -> noOtherActionsRequired(resultCode)
+
+            USER_ACTION_AUDIO -> fixUri()
+            USER_ACTION_NOTE  -> addNote()
+        }
+
+    }
+
+    //TODO
+    private fun addNote() {
+
+    }
+
+    //TODO
+    private fun fixUri() {
+
+    }
+
+    fun noOtherActionsRequired(resultCode: Int) {
         if (resultCode == Activity.RESULT_OK)
             reportManager.confirmLastMedia()
         else
         {
             reportManager.deleteLastMedia()
         }
-
     }
 }

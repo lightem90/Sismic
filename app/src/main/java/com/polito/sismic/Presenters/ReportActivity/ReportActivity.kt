@@ -79,7 +79,7 @@ class ReportActivity : AppCompatActivity(),
         super.onActivityResult(requestCode, resultCode, data)
 
         //TODO the audio file could be saved into custom location, handle the case!
-        mUserActionInteractor?.onActionResponse(resultCode)
+        mUserActionInteractor?.onActionResponse(requestCode, resultCode)
     }
 
     override fun onConnectionFailed(p0: ConnectionResult) {
