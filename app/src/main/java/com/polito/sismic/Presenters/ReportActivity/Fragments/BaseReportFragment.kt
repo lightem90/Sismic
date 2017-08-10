@@ -12,15 +12,16 @@ import com.polito.sismic.Domain.ReportManager
 import com.polito.sismic.Domain.ReportProvider
 import com.polito.sismic.Presenters.CustomLayout.FragmentScrollableCanvas
 import com.polito.sismic.R
-import com.stepstone.stepper.Step
+import com.stepstone.stepper.BlockingStep
 import com.stepstone.stepper.StepperLayout
 import com.stepstone.stepper.VerificationError
+import java.util.*
 
 
 /**
  * Created by Matteo on 29/07/2017.
  */
-open class BaseReportFragment : Fragment(), Step {
+abstract class BaseReportFragment : Fragment(), BlockingStep {
 
     protected var mReportManager : ReportManager? = null
 
@@ -59,6 +60,14 @@ open class BaseReportFragment : Fragment(), Step {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
+    //Each fragment must implement this, so the base class is in charge to save data
+    abstract fun getAllViewParameters() : MutableList<Pair<String, Object>>
+    override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback?) {
+
+        getAllViewParameters().forEach{x -> mReportManager!!.setValue(x.first, x.second)}
+        arguments.putParcelable("report", mReportManager!!.DTO)
+    }
+
     protected fun hideBottomActions()
     {
         activity.findViewById<FloatingActionButton>(R.id.fabtoolbar_fab)?.hide()
@@ -68,5 +77,8 @@ open class BaseReportFragment : Fragment(), Step {
     override fun onSelected() {    }
     override fun verifyStep(): VerificationError? { return null }
     override fun onError(error: VerificationError) { }
+    override fun onBackClicked(callback: StepperLayout.OnBackClickedCallback?) { }
+    override fun onCompleteClicked(callback: StepperLayout.OnCompleteClickedCallback?) {}
+
 }
 

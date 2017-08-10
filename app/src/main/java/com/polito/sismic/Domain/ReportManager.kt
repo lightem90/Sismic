@@ -19,18 +19,13 @@ class ReportManager(val id: Int, val mContext: Context, var DTO : ReportDTO ) {
             : this (id, mContext, ReportDTO(id, HashMap(), HashMap(), HashMap(), HashMap(), mutableListOf<Uri>()))   //New
 
     //Componenti: gestore dei media e gestore dei parametri
-    private val mMediaInteractor: ReportMediaInteractor
-    private val mParameterInteractor : ParameterInteractor
-
-    init {
-        //Need the second underscore, otherwise REPORT_1 equals REPORT_11, I have to sear REPORT_+ID+_
-        mMediaInteractor = ReportMediaInteractor(mContext, "REPORT_" + id + "_")
-        mParameterInteractor = ParameterInteractor(DTO, mContext)
-    }
+    private val mMediaInteractor: ReportMediaInteractor = ReportMediaInteractor(mContext, "REPORT_" + id + "_")
+    //Need the second underscore, otherwise REPORT_1 equals REPORT_11, I have to sear REPORT_+ID+_
+    private val mParameterInteractor : ParameterInteractor = ParameterInteractor(DTO, mContext)
 
     fun deleteAllReportMedia()
     {
-        mParameterInteractor.getAllMedia()?.forEach(Consumer { x -> File(x.path).delete() })
+        mParameterInteractor.getAllMedia()?.forEach{ x -> File(x.path).delete() }
     }
 
     fun getUriForMedia(type : MediaType) : Uri?

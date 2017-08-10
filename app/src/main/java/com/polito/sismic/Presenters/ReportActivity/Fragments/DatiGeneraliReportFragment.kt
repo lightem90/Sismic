@@ -12,6 +12,10 @@ import com.polito.sismic.R
  */
 class DatiGeneraliReportFragment : BaseReportFragment() {
 
+    override fun getAllViewParameters(): MutableList<Pair<String, Object>> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     override fun onCreateView(inflater: LayoutInflater?, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View? {
         return inflateFragment(R.layout.dati_generali_report_layout, inflater, container)
     }

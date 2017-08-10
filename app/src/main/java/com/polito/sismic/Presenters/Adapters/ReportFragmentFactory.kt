@@ -10,31 +10,34 @@ import com.stepstone.stepper.viewmodel.StepViewModel
 
 class ReportFragmentFactory(private val reportManager: ReportManager) {
 
-    private val InfoLocReportFragment : InfoLocReportFragment = InfoLocReportFragment()
-    private val CatastoReportFragment : CatastoReportFragment = CatastoReportFragment()
-    private val DatiSismoGeneticiReportFragment : DatiSismoGeneticiReportFragment = DatiSismoGeneticiReportFragment()
-    private val ParametriSismiciReportFragment : ParametriSismiciReportFragment = ParametriSismiciReportFragment()
-    private val SpettriDiProgettoReportFragment : SpettriDiProgettoReportFragment = SpettriDiProgettoReportFragment()
-    private val DatiGeneraliReportFragment : DatiGeneraliReportFragment = DatiGeneraliReportFragment()
-    private val DatiStrutturaliReportFragment : DatiStrutturaliReportFragment = DatiStrutturaliReportFragment()
-    private val PilastriReportFragment : PilastriReportFragment = PilastriReportFragment()
-    private val RiepilogoReportFragment : RiepilogoReportFragment = RiepilogoReportFragment()
-    private val RisultatiReportFragment : RisultatiReportFragment = RisultatiReportFragment()
+    private val mInfoLocReportFragment : InfoLocReportFragment = InfoLocReportFragment()
+    private val mCatastoReportFragment : CatastoReportFragment = CatastoReportFragment()
+    private val mDatiSismoGeneticiReportFragment : DatiSismoGeneticiReportFragment = DatiSismoGeneticiReportFragment()
+    private val mParametriSismiciReportFragment : ParametriSismiciReportFragment = ParametriSismiciReportFragment()
+    private val mSpettriDiProgettoReportFragment : SpettriDiProgettoReportFragment = SpettriDiProgettoReportFragment()
+    private val mDatiGeneraliReportFragment : DatiGeneraliReportFragment = DatiGeneraliReportFragment()
+    private val mDatiStrutturaliReportFragment : DatiStrutturaliReportFragment = DatiStrutturaliReportFragment()
+    private val mRilieviReportFragment : RilieviReportFragment = RilieviReportFragment()
+    private val mPilastriReportFragment : PilastriReportFragment = PilastriReportFragment()
+    private val mRiepilogoReportFragment : RiepilogoReportFragment = RiepilogoReportFragment()
+    private val mRisultatiReportFragment : RisultatiReportFragment = RisultatiReportFragment()
 
     fun createFragmentForPosition(pos : Int) : Step
     {
         when (pos)
         {
-            0 -> return pushFragment(InfoLocReportFragment)
-            1 -> return pushFragment(CatastoReportFragment)
-            2 -> return pushFragment(DatiSismoGeneticiReportFragment)
-            3 -> return pushFragment(ParametriSismiciReportFragment)
-            4 -> return pushFragment(SpettriDiProgettoReportFragment)
-            5 -> return pushFragment(DatiGeneraliReportFragment)
-            6 -> return pushFragment(DatiStrutturaliReportFragment)
-            7 -> return pushFragment(PilastriReportFragment)
-            8 -> return pushFragment(RiepilogoReportFragment)
-            9 -> return pushFragment(RisultatiReportFragment)
+            0 -> return pushFragment(mInfoLocReportFragment)
+            1 -> return pushFragment(mCatastoReportFragment)
+            2 -> return pushFragment(mDatiSismoGeneticiReportFragment)
+            3 -> return pushFragment(mParametriSismiciReportFragment)
+            4 -> return pushFragment(mSpettriDiProgettoReportFragment)
+            5 -> return pushFragment(mDatiGeneraliReportFragment)
+            6 -> return pushFragment(mDatiStrutturaliReportFragment)
+            //TODO: sezione 6? Chiarimenti sulle restanti!
+            7 -> return pushFragment(mRilieviReportFragment)
+            8 -> return pushFragment(mPilastriReportFragment)
+            9 -> return pushFragment(mRiepilogoReportFragment)
+            10 -> return pushFragment(mRisultatiReportFragment)
         }
         //MAI
         return InvalidReportFragment()
@@ -50,7 +53,7 @@ class ReportFragmentFactory(private val reportManager: ReportManager) {
 
     fun fragmentCount() : Int
     {
-        return 10;
+        return 11;
     }
 
     fun createDecoratorForStep(pos: Int, context: Context) : StepViewModel

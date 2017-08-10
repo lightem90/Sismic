@@ -147,6 +147,17 @@
     <string name="confirm_report_back_message">Proseguendo tutti i dati andranno persi. Continuare?</string>
     <string name="error_saving_file">Errore nel salvataggio file</string>
     <string name="correctly_saving_file">File salvato correttamente</string>
+    <string name="report_rilievo_esterno_title">RILIEVO ESTERNO</string>
+    <string name="report_rilievo_interno_title" >RILIEVO INTERNO</>
+    <string name="piani_numero_parameter">Numero piani</string>
+    <string name="piani_numero_parameter_hint">Inserire numero piani</string>
+    <string name="altezza_piano_parameter_hint">Inserisci l\'altezza di un singolo piano</string>
+    <string name="altezza_piano_parameter">Altezza piano</string>
+    <string name="lunghezza_piano_parameter">Lunghezza</string>
+    <string name="lunghezza_piano_parameter_hint">L(x) [m]</string>
+    <string name="larghezza_piano_parameter_hint">L(y) [m]</string>
+    <string name="larghezza_piano_parameter">Larghezza</string>
+    <string name="report_regolare_altezza">Regolare in altezza</string>
 
 
 </resources>

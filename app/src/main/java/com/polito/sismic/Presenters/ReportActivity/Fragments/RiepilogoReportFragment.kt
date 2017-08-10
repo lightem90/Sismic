@@ -12,6 +12,10 @@ import com.polito.sismic.R
  */
 class RiepilogoReportFragment : BaseReportFragment() {
 
+    override fun getAllViewParameters(): MutableList<Pair<String, Object>> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     override fun onCreateView(inflater: LayoutInflater?, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View? {
         return inflateFragment(R.layout.riepilogo_report_layout, inflater, container)
     }

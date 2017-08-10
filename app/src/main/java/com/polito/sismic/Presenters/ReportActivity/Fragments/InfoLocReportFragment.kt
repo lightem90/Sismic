@@ -19,7 +19,11 @@ import kotlinx.android.synthetic.main.info_loc_report_layout.*
 /**
  * Created by Matteo on 29/07/2017.
  */
-class InfoLocReportFragment() : BaseReportFragment() {
+class InfoLocReportFragment : BaseReportFragment() {
+
+    override fun getAllViewParameters(): MutableList<Pair<String, Object>> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     private var  mLocationCallback: InfoLocReportFragment.OnCurrentLocationProvided? = null
     private var  mActionHelper = LocalizationActionHelper()
@@ -129,7 +133,6 @@ class InfoLocReportFragment() : BaseReportFragment() {
             lat_parameter.setParameterValue("%.4f".format(place.latLng.latitude))
             long_parameter.setParameterValue("%.4f".format(place.latLng.longitude))
 
-            //TODO asynctask per le altre info?
             askGoogleForPlaceId(place)
         }
     }

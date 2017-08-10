@@ -8,15 +8,16 @@ import android.view.ViewGroup
 import com.polito.sismic.R
 
 /**
- * Created by Matteo on 30/07/2017.
+ * Created by Matteo on 10/08/2017.
  */
-class RisultatiReportFragment : BaseReportFragment() {
+class RilieviReportFragment : BaseReportFragment() {
+
 
     override fun getAllViewParameters(): MutableList<Pair<String, Object>> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun onCreateView(inflater: LayoutInflater?, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View? {
-        return inflateFragment(R.layout.risultati_report_layout, inflater, container)
+        return inflateFragment(R.layout.rilievi_report_layout, inflater, container)
     }
 }
