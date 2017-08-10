@@ -1,9 +1,9 @@
 package com.polito.sismic.Interactors
 
 import android.app.Fragment
-import com.polito.sismic.Presenters.HomeFragment
-import com.polito.sismic.Presenters.ProfileFragment
-import com.polito.sismic.Presenters.ReportListFragment
+import com.polito.sismic.Presenters.PresenterActivity.HomeFragment
+import com.polito.sismic.Presenters.PresenterActivity.ProfileFragment
+import com.polito.sismic.Presenters.PresenterActivity.ReportListFragment
 
 /**
  * Created by Matteo on 29/07/2017.

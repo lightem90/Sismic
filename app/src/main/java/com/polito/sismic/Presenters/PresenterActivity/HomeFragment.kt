@@ -1,4 +1,4 @@
-package com.polito.sismic.Presenters
+package com.polito.sismic.Presenters.PresenterActivity
 
 import android.app.Fragment
 import android.content.Intent

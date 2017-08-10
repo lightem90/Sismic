@@ -1,4 +1,4 @@
-package com.polito.sismic.Presenters
+package com.polito.sismic.Presenters.PresenterActivity
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
@@ -17,9 +17,7 @@ import android.os.Bundle
 import android.provider.ContactsContract
 import android.text.TextUtils
 import android.view.View
-import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
-import android.widget.TextView
 
 import java.util.ArrayList
 import android.Manifest.permission.READ_CONTACTS
