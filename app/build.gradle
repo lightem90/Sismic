@@ -43,4 +43,8 @@ dependencies {
     compile 'com.stepstone.stepper:material-stepper:4.0.0'
     //https://github.com/stepstone-tech/android-material-stepper
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
+    compile ('com.opencsv:opencsv:3.10')
+    {
+        exclude group: 'commons-logging'
+    }
 }

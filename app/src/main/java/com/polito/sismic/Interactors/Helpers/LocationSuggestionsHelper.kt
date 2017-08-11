@@ -1,8 +1,12 @@
 package com.polito.sismic.Interactors.Helpers
 
 import android.content.Context
+import com.opencsv.bean.CsvBindByPosition
+import com.opencsv.bean.CsvToBeanBuilder
 import com.polito.sismic.Extensions.toast
 import com.polito.sismic.R
+import java.io.InputStreamReader
+
 
 /**
  * Created by Matteo on 11/08/2017.
@@ -17,6 +21,15 @@ class LocationSuggestionsHelper(val mContext : Context) {
 
     //TODO: Read from csv, on separate thread?
     fun initialize() {
+
+        var streamReader = InputStreamReader(mContext.resources.openRawResource(R.raw.istat))
+        val beans = CsvToBeanBuilder<Visitors>(streamReader)
+                .withType(Visitors::class.java).withSkipLines(1).build().parse()
+
+        //initializes regions
+        var tmpRegions = mutableListOf<String>()
+        beans.map { { visitors: Visitors -> if (visitors.regione != null) tmpRegions.add(visitors.regione) } }
+        regions = tmpRegions.distinct().toTypedArray()
 
     }
 
@@ -41,5 +54,18 @@ class LocationSuggestionsHelper(val mContext : Context) {
             return arrayOf<String>()
         }
         return localities
+    }
+
+    class Visitors
+    {
+        @CsvBindByPosition(position = 0) val regione: String? = null
+
+        @CsvBindByPosition(position = 1) val province: String? = null
+
+        @CsvBindByPosition(position = 2) val codiceIstat: Int = 0
+
+        @CsvBindByPosition(position = 3) val comune: String? = null
+
+        @CsvBindByPosition(position = 4) val classificazione: String? = null
     }
 }

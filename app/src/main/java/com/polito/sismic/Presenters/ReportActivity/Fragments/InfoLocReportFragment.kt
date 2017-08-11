@@ -26,7 +26,7 @@ class InfoLocReportFragment : BaseReportFragment(),
         ParameterReportLayout.ProvinceSelectedListener {
 
     private var  mLocationCallback: InfoLocReportFragment.OnCurrentLocationProvided? = null
-    private val  mLocationSuggestionsHelper : LocationSuggestionsHelper = LocationSuggestionsHelper(activity)
+    //private var  mLocationSuggestionsHelper : LocationSuggestionsHelper? = null
     private var  mActionHelper = LocalizationActionHelper()
     private var  mPermissionHelper = PermissionsHelper()
 
@@ -34,7 +34,8 @@ class InfoLocReportFragment : BaseReportFragment(),
         super.onCreate(savedInstanceState)
         mPermissionHelper.checAndAskLocationPermissions(activity, this)
         setHasOptionsMenu(true)
-        mLocationSuggestionsHelper.initialize()
+        //mLocationSuggestionsHelper = LocationSuggestionsHelper(activity)
+        //mLocationSuggestionsHelper!!.initialize()
     }
 
 
@@ -53,7 +54,7 @@ class InfoLocReportFragment : BaseReportFragment(),
 
     override fun onCreateView(inflater: LayoutInflater?, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View? {
 
-        region_parameter.setSuggestions(mLocationSuggestionsHelper.getRegions())
+        //region_parameter.setSuggestions(mLocationSuggestionsHelper!!.getRegions())
         region_parameter.setRegionListenerCallback(this)
         province_parameter.setProvinceListenerCallback(this)
 
@@ -174,11 +175,11 @@ class InfoLocReportFragment : BaseReportFragment(),
 
     //Is the helper of the fragment that gives back the suggestions to its own children
     override fun OnRegionSelected(newRegion: String) {
-        province_parameter.setSuggestions(mLocationSuggestionsHelper.getProvinceByRegion(newRegion))
+        //province_parameter.setSuggestions(mLocationSuggestionsHelper!!.getProvinceByRegion(newRegion))
     }
 
     override fun OnProvinceSelected(newProvince: String) {
-        comune_parameter.setSuggestions(mLocationSuggestionsHelper.getLocalityByProvince(newProvince))
+        //comune_parameter.setSuggestions(mLocationSuggestionsHelper!!.getLocalityByProvince(newProvince))
     }
 }
 
