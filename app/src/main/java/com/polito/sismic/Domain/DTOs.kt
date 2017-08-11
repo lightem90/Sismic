@@ -3,6 +3,7 @@ package com.polito.sismic.Domain
 import android.net.Uri
 import android.os.Parcel
 import android.os.Parcelable
+import java.util.*
 
 /**
  * Created by Matteo on 28/07/2017.
@@ -13,15 +14,18 @@ data class ReportItemListDTO(val title: String, val description: String, val siz
 
 //It contains all Report parameters, only way I could think of by implementing parcelable
 data class ReportDTO(val id: Int
+                     , val userIdentifier: String
+                     , val reportDate: Date
                      , val intHashMap: HashMap<String, Int>
                      , val stringHashMap: HashMap<String, String>
                      , val boolHashMap: HashMap<String, Boolean>
                      , val doubleHashMap: HashMap<String, Double>
                      , val noteList: MutableList<String>
                      , val mediaList: MutableList<Uri>) : Parcelable {
-
     constructor(source: Parcel) : this(
             source.readInt(),
+            source.readString(),
+            source.readSerializable() as Date,
             source.readSerializable() as HashMap<String, Int>,
             source.readSerializable() as HashMap<String, String>,
             source.readSerializable() as HashMap<String, Boolean>,
@@ -34,6 +38,8 @@ data class ReportDTO(val id: Int
 
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
         writeInt(id)
+        writeString(userIdentifier)
+        writeSerializable(reportDate)
         writeSerializable(intHashMap)
         writeSerializable(stringHashMap)
         writeSerializable(boolHashMap)

@@ -8,14 +8,16 @@ import android.support.annotation.Nullable
 import android.view.*
 import com.google.android.gms.location.places.Place
 import com.polito.sismic.AsyncTasks.PlaceDetailsTask
+import com.polito.sismic.Domain.ReportDTO
 import com.polito.sismic.Extensions.toast
 import com.polito.sismic.Interactors.Helpers.LocalizationActionHelper
 import com.polito.sismic.Interactors.Helpers.LocalizationActionType
-import com.polito.sismic.Interactors.Helpers.LocationSuggestionsHelper
 import com.polito.sismic.Interactors.Helpers.PermissionsHelper
+import com.polito.sismic.Presenters.CustomLayout.LabelReportLayout
 import com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
 import com.polito.sismic.R
 import kotlinx.android.synthetic.main.info_loc_report_layout.*
+import java.text.SimpleDateFormat
 
 
 /**
@@ -25,7 +27,7 @@ class InfoLocReportFragment : BaseReportFragment(),
         ParameterReportLayout.RegionSelectedListener,
         ParameterReportLayout.ProvinceSelectedListener {
 
-    private var  mLocationCallback: InfoLocReportFragment.OnCurrentLocationProvided? = null
+    private var  mLocationCallback: InfoLocReportFragment.CurrentLocationProvided? = null
     //private var  mLocationSuggestionsHelper : LocationSuggestionsHelper? = null
     private var  mActionHelper = LocalizationActionHelper()
     private var  mPermissionHelper = PermissionsHelper()
@@ -45,20 +47,30 @@ class InfoLocReportFragment : BaseReportFragment(),
         // the callback interface. If not, it throws an exception
         try
         {
-            mLocationCallback = context as OnCurrentLocationProvided?
+            mLocationCallback = context as CurrentLocationProvided?
         }
         catch (e: ClassCastException) {
-            throw ClassCastException(context!!.toString() + " must implement OnCurrentLocationProvided")
+            throw ClassCastException(context!!.toString() + " must implement CurrentLocationProvided")
         }
     }
 
     override fun onCreateView(inflater: LayoutInflater?, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View? {
 
         //region_parameter.setSuggestions(mLocationSuggestionsHelper!!.getRegions())
-        region_parameter.setRegionListenerCallback(this)
-        province_parameter.setProvinceListenerCallback(this)
+        var dtoForHeader = arguments.getParcelable<ReportDTO>("report")
+        var view = inflateFragment(R.layout.info_loc_report_layout, inflater, container)
 
-        return inflateFragment(R.layout.info_loc_report_layout, inflater, container)
+        //Initialize headers
+        if (dtoForHeader != null)
+        {
+            view?.findViewById<LabelReportLayout>(R.id.report_info_number_label)?.setValue(dtoForHeader.id.toString())
+            view?.findViewById<LabelReportLayout>(R.id.report_info_date_label)?.setValue(SimpleDateFormat("yyyy-MM-dd-hh.mm.ss").format(dtoForHeader.reportDate))
+            view?.findViewById<LabelReportLayout>(R.id.report_info_name_label)?.setValue(dtoForHeader.userIdentifier)
+        }
+        //region_parameter.setRegionListenerCallback(this)
+        //province_parameter.setProvinceListenerCallback(this)
+
+        return view
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
@@ -130,7 +142,7 @@ class InfoLocReportFragment : BaseReportFragment(),
     }
 
     // Container Activity must implement this interface
-    interface OnCurrentLocationProvided {
+    interface CurrentLocationProvided {
         fun onLocationAcquired(location: Location)
     }
 
@@ -160,7 +172,8 @@ class InfoLocReportFragment : BaseReportFragment(),
         return mutableListOf(
                 Pair(report_info_number_label.id.toString(), report_info_number_label.getValue().toInt()),
                 Pair(report_info_name_label.id.toString(), report_info_name_label.getValue()),
-                Pair(report_info_data_label.id.toString(), report_info_data_label.getValue()),
+                Pair(report_info_date_label.id.toString(), report_info_date_label.getValue()),
+                //TODO fixare gli empty values
                 Pair(lat_parameter.id.toString(), lat_parameter.getParameterValue().toDouble()),
                 Pair(long_parameter.id.toString(), long_parameter.getParameterValue().toDouble()),
                 Pair(country_parameter.id.toString(), country_parameter.getParameterValue()),

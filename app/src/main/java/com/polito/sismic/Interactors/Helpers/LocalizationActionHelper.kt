@@ -28,7 +28,7 @@ class LocalizationActionHelper {
 
     private var  mFusedLocationClient: FusedLocationProviderClient? = null
 
-    fun handleActionRequest(typeLocalization: LocalizationActionType, caller : InfoLocReportFragment, mLocationCallback: InfoLocReportFragment.OnCurrentLocationProvided?)
+    fun handleActionRequest(typeLocalization: LocalizationActionType, caller : InfoLocReportFragment, mLocationCallback: InfoLocReportFragment.CurrentLocationProvided?)
     {
         when (typeLocalization)
         {
@@ -52,7 +52,7 @@ class LocalizationActionHelper {
 
     //Already checked!
     @SuppressLint("MissingPermission")
-    private fun launchLocalization(caller: Activity, mLocationCallback: InfoLocReportFragment.OnCurrentLocationProvided?) {
+    private fun launchLocalization(caller: Activity, mLocationCallback: InfoLocReportFragment.CurrentLocationProvided?) {
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(caller)
         if(mFusedLocationClient != null)
         {

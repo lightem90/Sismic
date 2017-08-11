@@ -165,6 +165,7 @@
     <string name="note_error_empty">La nota che si cerca di salvare è vuota</string>
     <string name="province_error">Nessuna provincia per questa regione</string>
     <string name="localities_error">Nessun comune per questa provincia</string>
+    <string name="no_login">E\' necessario il login per compilare un report</string>
 
 
 </resources>

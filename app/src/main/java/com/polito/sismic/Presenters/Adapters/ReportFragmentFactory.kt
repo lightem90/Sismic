@@ -44,10 +44,14 @@ class ReportFragmentFactory(private val reportManager: ReportManager) {
     }
 
     private fun pushFragment(fragment: BaseReportFragment): Step {
-        //Useless, it uses the callback from the activity
-        //var bundle = Bundle()
-        //bundle.putParcelable("report", reportManager.DTO)
-        //fragment.arguments = bundle
+
+        //TODO: SERVE (per l'edit di un report)
+        if (fragment is InfoLocReportFragment)
+        {
+            var bundle = Bundle()
+            bundle.putParcelable("report", reportManager.DTO)
+            fragment.arguments = bundle
+        }
         return fragment
     }
 

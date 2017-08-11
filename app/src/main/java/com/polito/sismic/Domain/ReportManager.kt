@@ -4,16 +4,18 @@ import android.content.Context
 import android.net.Uri
 import com.polito.sismic.Interactors.ParameterInteractor
 import java.io.File
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 //TODO: Classe di dominio
 //Wrapper of the DTO that contains the managers for parameters and media
-class ReportManager(val id: Int, val mContext: Context, var DTO : ReportDTO ) {
+class ReportManager(val id: Int, mContext: Context, var DTO : ReportDTO ) {
 
     //TODO: i toast da errore vanno controllati prima di arrivare quà
     constructor(mContext: Context, dto: ReportDTO) : this(dto.id, mContext, dto)                                                //Edit
-    constructor(mContext: Context, id : Int)
-            : this (id, mContext, ReportDTO(id, HashMap(), HashMap(), HashMap(), HashMap(), mutableListOf<String>(), mutableListOf<Uri>()))   //New
+    constructor(mContext: Context, id : Int, userIdentifier : String)
+            : this (id, mContext, ReportDTO(id, userIdentifier, Date(), HashMap(), HashMap(), HashMap(), HashMap(), mutableListOf<String>(), mutableListOf<Uri>()))   //New
 
 
     private val mReportID : String = "REPORT_" + id + "_"

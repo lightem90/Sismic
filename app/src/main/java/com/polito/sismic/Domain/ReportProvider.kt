@@ -13,11 +13,11 @@ class ReportProvider {
 
     companion object {
 
-        fun createReport(context : Context) : ReportManager
+        fun createReport(context: Context, userID: String) : ReportManager
         {
             val mDatabaseProvider = DatabaseProvider()
             //In modo che ogni volta il nuovo reportManager ha un id maggiore del numero di reportManager presenti
-            return ReportManager(context, mDatabaseProvider.getDatabase().getRecordNumber())
+            return ReportManager(context, mDatabaseProvider.getDatabase().getRecordNumber(), userID)
         }
 
         fun createFromDTO(context : Context, dto : ReportDTO) : ReportManager

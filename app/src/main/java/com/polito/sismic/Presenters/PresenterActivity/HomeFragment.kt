@@ -17,18 +17,16 @@ class HomeFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.home_fragment, container, false)
 
-        view.new_report.setOnClickListener {  startActivity(Intent(activity, ReportActivity::class.java))  }
+        view.new_report.setOnClickListener {  startReportActivity()  }
         return view
     }
 
-    private fun viewHistoryFragment()
+    fun startReportActivity()
     {
-        if (fragmentManager != null) {
-            val ft = fragmentManager.beginTransaction()
-            if (ft != null) {
-                ft.replace(R.id.frame_canvas, PresenterFragmentProvider.GetReportListFragment()).commit()
-            }
-        }
+        var intent = Intent(activity, ReportActivity::class.java)
+        //TODO
+        intent.putExtra("USER_NAME", "Matteo")
+        startActivity(intent)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

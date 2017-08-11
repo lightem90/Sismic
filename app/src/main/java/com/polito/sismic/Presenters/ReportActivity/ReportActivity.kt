@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.main.activity_report.*
 
 
 class ReportActivity : AppCompatActivity(),
-        InfoLocReportFragment.OnCurrentLocationProvided,
+        InfoLocReportFragment.CurrentLocationProvided,
         BaseReportFragment.ParametersManager,
         GoogleApiClient.OnConnectionFailedListener {
 
@@ -37,7 +37,14 @@ class ReportActivity : AppCompatActivity(),
         var reportDTO = savedInstanceState?.getParcelable<ReportDTO>("report")
         if (reportDTO == null)      //new report
         {
-            mReportManager = ReportProvider.createReport(this)
+            var userID = intent.getStringExtra("USER_NAME")
+            if (userID.isEmpty())
+            {
+                toast(R.string.no_login)
+                finish()
+            }
+
+            mReportManager = ReportProvider.createReport(this, userID)
         }
         else
         {

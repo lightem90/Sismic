@@ -29,7 +29,7 @@
         android:layout_height="match_parent"/>
 
     <com.polito.sismic.Presenters.CustomLayout.LabelReportLayout
-        android:id="@+id/report_info_data_label"
+        android:id="@+id/report_info_date_label"
         app:report_label_title="@string/report_info_data_label"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"/>
