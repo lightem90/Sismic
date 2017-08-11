@@ -54,7 +54,7 @@
         android:layout_height="wrap_content"/>
 
     <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
-        android:id="@+id/state_parameter"
+        android:id="@+id/country_parameter"
         app:report_parameter_title="@string/report_state_parameter"
         app:report_parameter_hint="@string/report_state_parameter_hint"
         android:entries="@array/countries_array"

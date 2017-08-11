@@ -25,7 +25,7 @@ class PlaceDetailsTask(fragmentView: View, val context: Context) : AsyncTask<Pla
     private var  m_dialog : ProgressBar? = null
 
     init {
-        state_parameter = fragmentView.findViewById<ParameterReportLayout>(R.id.state_parameter)
+        state_parameter = fragmentView.findViewById<ParameterReportLayout>(R.id.country_parameter)
         region_parameter = fragmentView.findViewById<ParameterReportLayout>(R.id.region_parameter)
         province_parameter = fragmentView.findViewById<ParameterReportLayout>(R.id.province_parameter)
         comune_parameter = fragmentView.findViewById<ParameterReportLayout>(R.id.comune_parameter)

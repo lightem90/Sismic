@@ -6,6 +6,7 @@ import android.os.Build
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.AdapterView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.polito.sismic.R
@@ -13,11 +14,13 @@ import kotlinx.android.synthetic.main.report_parameter_layout.view.*
 import android.widget.ArrayAdapter
 
 
-
 /**
  * Created by Matteo on 02/08/2017.
  */
-class ParameterReportLayout : LinearLayout {
+class ParameterReportLayout : LinearLayout{
+
+    private var onRegionCallback    : RegionSelectedListener? = null
+    private var onProvinceCallback  : ProvinceSelectedListener? = null
 
     @JvmOverloads
     constructor(
@@ -39,6 +42,18 @@ class ParameterReportLayout : LinearLayout {
             : super(context, attrs, defStyleAttr, defStyleRes)
     {
         init(context, attrs)
+    }
+
+    //Need for dependent parameters (in our case Country -> Region -> Province -> Locality)
+    //In this way we can display each time the already filtered values (read by xml)
+    interface RegionSelectedListener
+    {
+        fun OnRegionSelected(newRegion : String)
+    }
+
+    interface ProvinceSelectedListener
+    {
+        fun OnProvinceSelected(newProvince : String)
     }
 
     private fun init(context : Context, attrs : AttributeSet?) {
@@ -71,7 +86,9 @@ class ParameterReportLayout : LinearLayout {
             if (value != "Not Defined") section_parameter_value.setText(value, TextView.BufferType.EDITABLE)
             else section_parameter_value.hint = hint
 
-            //Mostra/nasconde l'help
+            setSuggestions(suggestions)
+
+            //Shows/hide help
             section_parameter_value.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
                 if (hasFocus)
                     section_parameter_help.visibility = View.VISIBLE
@@ -79,13 +96,31 @@ class ParameterReportLayout : LinearLayout {
                     section_parameter_help.visibility = View.INVISIBLE
             }
 
-            if (suggestions.size > 1)
-            {
-                var autoSugg = ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, suggestions)
-                section_parameter_value.setAdapter(autoSugg)
-            }
-
             typedArray.recycle()
+        }
+    }
+
+    fun setRegionListenerCallback(callback : RegionSelectedListener?)
+    {
+        onRegionCallback = callback
+    }
+
+    fun setProvinceListenerCallback(callback : ProvinceSelectedListener)
+    {
+        onProvinceCallback = callback
+    }
+
+    fun setSuggestions(newSuggestions : Array<String>)
+    {
+        if (newSuggestions.size > 0)
+        {
+            var autoSugg = ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, newSuggestions)
+            section_parameter_value.setAdapter(autoSugg)
+            section_parameter_value.onItemClickListener = AdapterView.
+                    OnItemClickListener { _, _, _, _ ->
+                        onRegionCallback?.OnRegionSelected(getParameterValue())
+                        onProvinceCallback?.OnProvinceSelected(getParameterValue())}
+            autoSugg.notifyDataSetChanged()
         }
     }
 
