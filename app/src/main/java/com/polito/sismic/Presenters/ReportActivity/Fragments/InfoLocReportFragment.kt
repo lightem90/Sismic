@@ -21,7 +21,9 @@ import kotlinx.android.synthetic.main.info_loc_report_layout.*
 /**
  * Created by Matteo on 29/07/2017.
  */
-class InfoLocReportFragment : BaseReportFragment(), ParameterReportLayout.RegionSelectedListener, ParameterReportLayout.ProvinceSelectedListener {
+class InfoLocReportFragment : BaseReportFragment(),
+        ParameterReportLayout.RegionSelectedListener,
+        ParameterReportLayout.ProvinceSelectedListener {
 
     private var  mLocationCallback: InfoLocReportFragment.OnCurrentLocationProvided? = null
     private val  mLocationSuggestionsHelper : LocationSuggestionsHelper = LocationSuggestionsHelper(activity)
@@ -50,6 +52,11 @@ class InfoLocReportFragment : BaseReportFragment(), ParameterReportLayout.Region
     }
 
     override fun onCreateView(inflater: LayoutInflater?, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View? {
+
+        region_parameter.setSuggestions(mLocationSuggestionsHelper.getRegions())
+        region_parameter.setRegionListenerCallback(this)
+        province_parameter.setProvinceListenerCallback(this)
+
         return inflateFragment(R.layout.info_loc_report_layout, inflater, container)
     }
 

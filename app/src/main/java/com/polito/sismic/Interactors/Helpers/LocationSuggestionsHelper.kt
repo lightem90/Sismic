@@ -15,11 +15,12 @@ class LocationSuggestionsHelper(val mContext : Context) {
     //List of localities for each province
     private var localityMapping : HashMap<String, Array<String>> = HashMap()
 
-    //Read from csv!
+    //TODO: Read from csv, on separate thread?
     fun initialize() {
 
     }
 
+    fun getRegions() : Array<String> { return regions }
     fun getProvinceByRegion(region : String) : Array<String>
     {
         var provinces = provinceMapping.get(region)
@@ -41,6 +42,4 @@ class LocationSuggestionsHelper(val mContext : Context) {
         }
         return localities
     }
-
-
 }
