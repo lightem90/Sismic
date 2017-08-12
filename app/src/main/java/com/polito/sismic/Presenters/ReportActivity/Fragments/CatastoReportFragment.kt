@@ -5,6 +5,7 @@ import android.support.annotation.Nullable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.polito.sismic.Domain.ReportManager
 import com.polito.sismic.R
 import kotlinx.android.synthetic.main.catasto_report_layout.*
 
@@ -13,7 +14,11 @@ import kotlinx.android.synthetic.main.catasto_report_layout.*
  */
 class CatastoReportFragment : BaseReportFragment() {
 
-    override fun getAllViewParameters(): MutableList<Pair<String, Any>> {
+    override fun onInitializeParametersForEdit(reportManager: ReportManager) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun getAllViewParameters(): MutableList<Pair<String, String>> {
         return mutableListOf(
                 Pair(foglio_parameter.id.toString(), foglio_parameter.getParameterValue()),
                 Pair(mappale_parameter.id.toString(), mappale_parameter.getParameterValue()),

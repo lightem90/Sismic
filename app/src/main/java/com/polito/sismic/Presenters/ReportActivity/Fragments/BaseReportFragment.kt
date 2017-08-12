@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import com.github.fafaldo.fabtoolbar.widget.FABToolbarLayout
 import com.polito.sismic.Domain.ReportDTO
 import com.polito.sismic.Domain.ReportManager
-import com.polito.sismic.Domain.ReportProvider
 import com.polito.sismic.Presenters.CustomLayout.FragmentScrollableCanvas
 import com.polito.sismic.R
 import com.stepstone.stepper.BlockingStep
@@ -23,19 +22,25 @@ import com.stepstone.stepper.VerificationError
  */
 abstract class BaseReportFragment : Fragment(), BlockingStep {
 
-    private     var     mParametersCallback   : BaseReportFragment.ParametersManager? = null
+    private var mParametersCallback : BaseReportFragment.ParametersManager? = null
+    protected var mReportManager : ReportManager? = null
 
     //Is' the activity the handler of the dto, each fragment only passes its own
     // parameters througth the callback when the button "next" is pressed
     //Each fragment must implement the method to get their own paramter name-value
     interface ParametersManager {
-        fun onParametersConfirmed(paramList : MutableList<Pair<String, Any>>)
+        fun onParametersConfirmed(paramList : MutableList<Pair<String, String>>)
         fun onParametersSaveRequest()
     }
 
-    //I need a report manager in every fragment to update parameters on step confirmation
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
+        //In the case I'm editing, it must visualize the data already saved!
+        var dtoForHeader = arguments.getParcelable<ReportDTO>("report")
+        mReportManager = ReportManager(context, dtoForHeader)
+        if (dtoForHeader != null) onInitializeParametersForEdit(mReportManager!!)
+
+        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     //In this way I can make every fragment scrollable and use protected properties avoiding replicated code
@@ -65,14 +70,19 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
+    abstract fun onInitializeParametersForEdit(reportManager: ReportManager)
     //Each fragment must implement this, so the activity is in charge to save the data
-    abstract fun getAllViewParameters() : MutableList<Pair<String, Any>>
+    abstract fun getAllViewParameters() : MutableList<Pair<String, String>>
     override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback?) {
         mParametersCallback?.onParametersConfirmed(getAllViewParameters())
         callback!!.goToNextStep()
     }
     override fun onCompleteClicked(callback: StepperLayout.OnCompleteClickedCallback?) {
         callback!!.complete()
+    }
+
+    override fun onBackClicked(callback: StepperLayout.OnBackClickedCallback?) {
+        callback?.goToPrevStep()
     }
 
     override fun onAttach(context: Context?) {
@@ -95,6 +105,5 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
     override fun onSelected() {    }
     override fun verifyStep(): VerificationError? { return null }
     override fun onError(error: VerificationError) { }
-    override fun onBackClicked(callback: StepperLayout.OnBackClickedCallback?) { }
 }
 

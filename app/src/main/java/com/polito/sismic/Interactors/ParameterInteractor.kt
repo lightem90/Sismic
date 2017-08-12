@@ -11,15 +11,28 @@ import java.io.*
 class ParameterInteractor(val dto: ReportDTO?, private val mContext: Context) {
 
     var mMediaSize : Double = 0.0
-    fun <T> setValue(paramName : String, value : T) {
+    fun setValue(paramName : String, value : String) {
         if (dto == null) return //too soon
-        when (value)
+
+        if (value.toIntOrNull() != null)
         {
-            is Boolean -> dto.boolHashMap.put(paramName, value)
-            is Double -> dto.doubleHashMap.put(paramName, value)
-            is Int -> dto.intHashMap.put(paramName, value)
-            is String ->dto.stringHashMap.put(paramName, value)
+            dto.intHashMap.put(paramName, value.toInt())
+            return
         }
+
+        if (value.toDoubleOrNull() != null)
+        {
+            dto.doubleHashMap.put(paramName, value.toDouble())
+            return
+        }
+
+        if (value.toBoolean())
+        {
+            dto.boolHashMap.put(paramName, true)
+            return
+        }
+
+        dto.stringHashMap.put(paramName, value)
     }
 
     fun <T> getValue (paramName: String) : T?

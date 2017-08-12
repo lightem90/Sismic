@@ -72,9 +72,8 @@ class ReportActivity : AppCompatActivity(),
 
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
-        outState?.putParcelable("report", mReportManager!!.DTO)
+        outState?.putParcelable("report", mReportManager!!.getParcelable())
     }
-
 
     override fun onLocationAcquired(location: Location) {
         supportFragmentManager.fragments.filterIsInstance<InfoLocReportFragment>().first().updateByLocation(location)
@@ -100,7 +99,7 @@ class ReportActivity : AppCompatActivity(),
     }
 
     //Updates the dto
-    override fun onParametersConfirmed(paramList: MutableList<Pair<String, Any>>) {
+    override fun onParametersConfirmed(paramList: MutableList<Pair<String, String>>) {
         paramList.forEach{x -> mReportManager!!.setValue(x.first, x.second)}
     }
 

@@ -166,6 +166,7 @@
     <string name="province_error">Nessuna provincia per questa regione</string>
     <string name="localities_error">Nessun comune per questa provincia</string>
     <string name="no_login">E\' necessario il login per compilare un report</string>
+    <string name="rilievi_report_title">Rilievi</string>
 
 
 </resources>

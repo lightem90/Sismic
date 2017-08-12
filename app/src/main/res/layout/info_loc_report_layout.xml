@@ -65,6 +65,7 @@
         android:id="@+id/region_parameter"
         app:report_parameter_title="@string/report_region_parameter"
         app:report_parameter_hint="@string/report_region_parameter_hint"
+        android:entries="@array/regions_array"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

@@ -21,7 +21,8 @@ data class ReportDTO(val id: Int
                      , val boolHashMap: HashMap<String, Boolean>
                      , val doubleHashMap: HashMap<String, Double>
                      , val noteList: MutableList<String>
-                     , val mediaList: MutableList<Uri>) : Parcelable {
+                     , val mediaList: MutableList<Uri>
+                     , val isNew: Boolean = true) : Parcelable {
     constructor(source: Parcel) : this(
             source.readInt(),
             source.readString(),
@@ -31,7 +32,8 @@ data class ReportDTO(val id: Int
             source.readSerializable() as HashMap<String, Boolean>,
             source.readSerializable() as HashMap<String, Double>,
             source.createStringArrayList(),
-            source.createTypedArrayList(Uri.CREATOR)
+            source.createTypedArrayList(Uri.CREATOR),
+            1 == source.readInt()
     )
 
     override fun describeContents() = 0
@@ -46,6 +48,7 @@ data class ReportDTO(val id: Int
         writeSerializable(doubleHashMap)
         writeStringList(noteList)
         writeTypedList(mediaList)
+        writeInt((if (isNew) 1 else 0))
     }
 
     companion object {

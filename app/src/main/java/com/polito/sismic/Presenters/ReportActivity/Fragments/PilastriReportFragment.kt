@@ -5,6 +5,7 @@ import android.support.annotation.Nullable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.polito.sismic.Domain.ReportManager
 import com.polito.sismic.R
 
 /**
@@ -12,7 +13,11 @@ import com.polito.sismic.R
  */
 class PilastriReportFragment : BaseReportFragment() {
 
-    override fun getAllViewParameters(): MutableList<Pair<String, Any>> {
+    override fun onInitializeParametersForEdit(reportManager: ReportManager) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun getAllViewParameters(): MutableList<Pair<String, String>> {
         return mutableListOf()
     }
 

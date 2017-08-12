@@ -45,13 +45,10 @@ class ReportFragmentFactory(private val reportManager: ReportManager) {
 
     private fun pushFragment(fragment: BaseReportFragment): Step {
 
-        //TODO: SERVE (per l'edit di un report)
-        if (fragment is InfoLocReportFragment)
-        {
-            var bundle = Bundle()
-            bundle.putParcelable("report", reportManager.DTO)
-            fragment.arguments = bundle
-        }
+        var bundle = Bundle()
+        bundle.putParcelable("report", reportManager.getParcelable())
+        fragment.arguments = bundle
+
         return fragment
     }
 
@@ -70,9 +67,10 @@ class ReportFragmentFactory(private val reportManager: ReportManager) {
             4 -> return DecorStep(R.string.spettri_progetto_report_title, context)
             5 -> return DecorStep(R.string.dati_generali_report_title, context)
             6 -> return DecorStep(R.string.dati_strutturali_report_title, context)
-            7 -> return DecorStep(R.string.pilastri_report_title, context)
-            8 -> return DecorStep(R.string.riepilogo_report_title, context)
-            9 -> return DecorStep(R.string.risultati_report_title, context)
+            7 -> return DecorStep(R.string.rilievi_report_title, context)
+            8 -> return DecorStep(R.string.pilastri_report_title, context)
+            9 -> return DecorStep(R.string.riepilogo_report_title, context)
+            10 -> return DecorStep(R.string.risultati_report_title, context)
         }
 
         return DecorStep(R.string.error_unsupported, context)

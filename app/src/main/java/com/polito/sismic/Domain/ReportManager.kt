@@ -3,6 +3,7 @@ package com.polito.sismic.Domain
 import android.content.Context
 import android.net.Uri
 import com.polito.sismic.Interactors.ParameterInteractor
+import com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -10,7 +11,7 @@ import java.util.*
 
 //TODO: Classe di dominio
 //Wrapper of the DTO that contains the managers for parameters and media
-class ReportManager(val id: Int, mContext: Context, var DTO : ReportDTO ) {
+class ReportManager(val id: Int, mContext: Context, private val DTO : ReportDTO ) {
 
     //TODO: i toast da errore vanno controllati prima di arrivare quà
     constructor(mContext: Context, dto: ReportDTO) : this(dto.id, mContext, dto)                                                //Edit
@@ -18,12 +19,15 @@ class ReportManager(val id: Int, mContext: Context, var DTO : ReportDTO ) {
             : this (id, mContext, ReportDTO(id, userIdentifier, Date(), HashMap(), HashMap(), HashMap(), HashMap(), mutableListOf<String>(), mutableListOf<Uri>()))   //New
 
 
-    private val mReportID : String = "REPORT_" + id + "_"
-
-    //Twho components to handle parameters and media
-    private val mMediaInteractor: ReportMediaInteractor = ReportMediaInteractor(mContext, mReportID)
-    //Need the second underscore, otherwise REPORT_1 equals REPORT_11, I have to sear REPORT_+ID+_
+    private val mReportPrefix : String = "REPORT_" + id + "_"
+    //Two components to handle parameters and media
+    private val mMediaInteractor: ReportMediaInteractor = ReportMediaInteractor(mContext, mReportPrefix)
+    //Need the second underscore, otherwise REPORT_1 equals REPORT_11, I have to search REPORT_+ID+_
     private val mParameterInteractor : ParameterInteractor = ParameterInteractor(DTO, mContext)
+
+    val userID : String = DTO.userIdentifier
+    val Date : Date = DTO.reportDate
+    val isNew : Boolean = DTO.isNew
 
     fun deleteAllReportMedia()
     {
@@ -40,7 +44,7 @@ class ReportManager(val id: Int, mContext: Context, var DTO : ReportDTO ) {
         return "%.2f".format(mParameterInteractor.mMediaSize)
     }
 
-    fun <T> setValue(paramName : String, value : T) {
+    fun setValue(paramName : String, value : String) {
         mParameterInteractor.setValue(paramName, value)
     }
 
@@ -68,6 +72,16 @@ class ReportManager(val id: Int, mContext: Context, var DTO : ReportDTO ) {
         }
 
         confirmLastMedia()
+    }
+
+    fun  <T> prepareForEdit(viewToInitialize: ParameterReportLayout?) {
+        val newValue = mParameterInteractor.getValue<T>(viewToInitialize?.id.toString())
+        if (newValue != null) viewToInitialize?.setParameterValue(newValue.toString())
+    }
+
+    fun getParcelable() : ReportDTO
+    {
+        return DTO
     }
 
     //For add to gallery (not needed now)
