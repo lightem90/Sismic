@@ -34,12 +34,6 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-
-        //In the case I'm editing, it must visualize the data already saved!
-        var dtoForHeader = arguments.getParcelable<ReportDTO>("report")
-        mReportManager = ReportManager(context, dtoForHeader)
-        if (dtoForHeader != null) onInitializeParametersForEdit(mReportManager!!)
-
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
@@ -59,6 +53,11 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
                 activity.findViewById<FloatingActionButton>(R.id.fabtoolbar_fab),
                 activity.findViewById<StepperLayout>(R.id.stepperLayout))
 
+        //In the case I'm editing, it must visualize the data already saved!
+        var dtoForHeader = arguments.getParcelable<ReportDTO>("report")
+        mReportManager = ReportManager(context, dtoForHeader)
+        if (dtoForHeader != null) onInitializeParametersForEdit(view, mReportManager!!)
+
         //Requires api 23
         //scrollableCanvas.setOnScrollChangeListener(View.OnScrollChangeListener({
         //    view, scrollX, scrollY, oldScrollX, oldScroolY ->
@@ -70,7 +69,7 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
-    abstract fun onInitializeParametersForEdit(reportManager: ReportManager)
+    abstract fun onInitializeParametersForEdit(inflatingView: View, reportManager: ReportManager)
     //Each fragment must implement this, so the activity is in charge to save the data
     abstract fun getAllViewParameters() : MutableList<Pair<String, String>>
     override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback?) {

@@ -59,12 +59,12 @@ class InfoLocReportFragment : BaseReportFragment(),
         return inflateFragment(R.layout.info_loc_report_layout, inflater, container)
     }
 
-    override fun onInitializeParametersForEdit(reportManager: ReportManager) {
+    override fun onInitializeParametersForEdit(inflatingView: View, reportManager: ReportManager) {
 
         //Alwyas
-        view?.findViewById<LabelReportLayout>(R.id.report_info_number_label)?.setValue(reportManager.id.toString())
-        view?.findViewById<LabelReportLayout>(R.id.report_info_date_label)?.setValue(SimpleDateFormat("yyyy-MM-dd-hh.mm.ss").format(reportManager.Date))
-        view?.findViewById<LabelReportLayout>(R.id.report_info_name_label)?.setValue(reportManager.userID)
+        inflatingView?.findViewById<LabelReportLayout>(R.id.report_info_number_label)?.setValue(reportManager.id.toString())
+        inflatingView?.findViewById<LabelReportLayout>(R.id.report_info_date_label)?.setValue(SimpleDateFormat("yyyy-MM-dd-hh.mm.ss").format(reportManager.Date))
+        inflatingView?.findViewById<LabelReportLayout>(R.id.report_info_name_label)?.setValue(reportManager.userID)
 
         //If I'm editing a report, then just assign to the view the parameters read from the dto
         if (!reportManager.isNew)

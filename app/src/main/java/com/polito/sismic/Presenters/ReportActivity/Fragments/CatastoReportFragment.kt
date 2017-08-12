@@ -14,8 +14,8 @@ import kotlinx.android.synthetic.main.catasto_report_layout.*
  */
 class CatastoReportFragment : BaseReportFragment() {
 
-    override fun onInitializeParametersForEdit(reportManager: ReportManager) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun onInitializeParametersForEdit(inflatingView: View, reportManager: ReportManager) {
+
     }
 
     override fun getAllViewParameters(): MutableList<Pair<String, String>> {

@@ -12,8 +12,9 @@ import com.polito.sismic.R
  * Created by Matteo on 29/07/2017.
  */
 class ParametriSismiciReportFragment : BaseReportFragment() {
-    override fun onInitializeParametersForEdit(reportManager: ReportManager) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
+    override fun onInitializeParametersForEdit(inflatingView: View, reportManager: ReportManager) {
+
     }
 
     override fun getAllViewParameters(): MutableList<Pair<String, String>> {
