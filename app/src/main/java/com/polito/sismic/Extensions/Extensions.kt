@@ -3,7 +3,12 @@ package com.polito.sismic.Extensions
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
+import android.database.sqlite.SQLiteDatabase
 import android.widget.Toast
+import org.jetbrains.anko.db.MapRowParser
+import org.jetbrains.anko.db.SelectQueryBuilder
+import java.text.DateFormat
+import java.util.*
 import kotlin.reflect.KProperty
 
 /**
@@ -26,6 +31,22 @@ object DelegatesExt {
     fun <T> preference(context: Context, name: String,
                        default: T) = Preference(context, name, default)
 }
+
+fun <T : Any> SelectQueryBuilder.parseList(parser: (Map<String, Any?>) -> T): List<T> =
+        parseList(object : MapRowParser<T> {
+            override fun parseRow(columns: Map<String, Any?>): T = parser(columns)
+        })
+
+fun <T : Any> SelectQueryBuilder.parseOpt(parser: (Map<String, Any?>) -> T): T? =
+        parseOpt(object : MapRowParser<T> {
+            override fun parseRow(columns: Map<String, Any?>): T = parser(columns)
+        })
+
+fun SQLiteDatabase.clear(tableName: String) {
+    execSQL("delete from $tableName")
+}
+
+fun SelectQueryBuilder.byId(id: Long) = whereSimple("_id = ?", id.toString())
 
 class NotNullSingleValueVar<T> {
 
@@ -78,4 +99,9 @@ class Preference<T>(val context: Context, val name: String, val default: T) {
             else -> throw IllegalArgumentException("This type can't be saved into Preferences")
         }.apply()
     }
+}
+
+fun Long.toDateString(dateFormat: Int = DateFormat.MEDIUM): String {
+    val df = DateFormat.getDateInstance(dateFormat, Locale.getDefault())
+    return df.format(this)
 }

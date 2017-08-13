@@ -78,30 +78,29 @@ data class ReportDTO(val id: Int
     }
 }
 
-class test
+
+data class ReportDTOTest(var map: MutableMap<String, Any?>)
 {
-    fun bla()
-    {
-        DayForecast(HashMap())
-    }
-}
-
-data class DayForecast(var map: MutableMap<String, Any?>) {
-    var _id: Long by map
-    var date: Long by map
+    var id: Int by map
+    var title: String by map
     var description: String by map
-    var high: Int by map
-    var low: Int by map
-    var iconUrl: String by map
-    var cityId: Long by map
+    var userIdentifier: String by map
+    var reportDate: Date by map
+    var mediaSize: Double by map
+    var value: Int by map
 
-    constructor(date: Long, description: String, high: Int, low: Int, iconUrl: String, cityId: Long)
-            : this(HashMap()) {
-        this.date = date
+    constructor(id: Int, title: String , description: String
+                     , userIdentifier: String
+                     , reportDate: Date
+                     , mediaSize: Double
+                     , value: Int)
+    : this(HashMap())
+    {
+        this.id = id
+        this.title = title
         this.description = description
-        this.high = high
-        this.low = low
-        this.iconUrl = iconUrl
-        this.cityId = cityId
+        this.userIdentifier = userIdentifier
+        this.reportDate = reportDate
+        this.mediaSize = mediaSize
     }
 }
