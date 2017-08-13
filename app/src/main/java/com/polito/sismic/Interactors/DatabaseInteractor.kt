@@ -6,10 +6,7 @@ import com.polito.sismic.Domain.ReportItemListDTO
 import com.polito.sismic.Domain.ReportManager
 import com.polito.sismic.Extensions.database
 import com.polito.sismic.R
-import org.jetbrains.anko.db.delete
-import org.jetbrains.anko.db.insert
-import org.jetbrains.anko.db.select
-import org.jetbrains.anko.db.update
+import org.jetbrains.anko.db.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -19,14 +16,17 @@ import java.util.*
 class DatabaseInteractor
 {
     companion object {
-        
+
         fun createReportForId(context : Context, userID : String) : Int
         {
             var newID = -1
             context.database.use {
-                insert(ReportDatabaseHelper.REPORT_TABLE_NAME, "userID" to userID)
-                select(ReportDatabaseHelper.REPORT_TABLE_NAME).orderBy("id").limit(1).exec {
-                    newID = getInt(getColumnIndex("id"))
+                insert(ReportDatabaseHelper.REPORT_TABLE_NAME, ReportDatabaseHelper.REPORT_USERID to userID)
+                select(ReportDatabaseHelper.REPORT_TABLE_NAME).orderBy(ReportDatabaseHelper.REPORT_ID, SqlOrderDirection.DESC).limit(1).exec {
+
+                    //TODO
+                    //parseSingle(RowParser<T>)
+                    //newID = getInt(getColumnIndex(ReportDatabaseHelper.REPORT_ID))
                 }
             }
             return newID
@@ -50,18 +50,18 @@ class DatabaseInteractor
             return reportList
         }
 
-        fun deleteTempReport(context: Context, userID: String, rowID : Int)
+        fun deleteTempReport(context: Context, reportManager: ReportManager)
         {
             context.database.use {
                 delete(ReportDatabaseHelper.REPORT_TABLE_NAME
                         , "${ReportDatabaseHelper.REPORT_ID} = {rowID}" +
                         "${ReportDatabaseHelper.REPORT_USERID} = {userID}",
-                        "rowID" to rowID,
-                        "userID" to userID)
+                        "rowID" to reportManager.id,
+                        "userID" to reportManager.userID)
             }
         }
 
-        fun  insertReport(context: Context, mReportManager: ReportManager?) {
+        fun insertReport(context: Context, mReportManager: ReportManager?) {
 
             if (mReportManager == null) return
             context.database.use {

@@ -7,7 +7,7 @@ import org.jetbrains.anko.db.*
 /**
  * Created by Matteo on 13/08/2017.
  */
-class ReportDatabaseHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "ReportDatabase", null, 1) {
+class ReportDatabaseHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "ReportDatabase.db", null, 1) {
     companion object {
 
         val REPORT_TABLE_NAME = "Reports"
@@ -35,8 +35,7 @@ class ReportDatabaseHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "ReportD
     override fun onCreate(db: SQLiteDatabase) {
         //TODO will be a very long table
         db.createTable(REPORT_TABLE_NAME, ifNotExists = true,
-                columns = *arrayOf(
-                        REPORT_ID to INTEGER + PRIMARY_KEY + AUTOINCREMENT,
+                columns = *arrayOf(REPORT_ID to SqlType.create("INTEGER PRIMARY KEY AUTOINCREMENT"),
                 REPORT_TITLE to TEXT,
                 REPORT_DESCRIPTION to TEXT,
                 REPORT_USERID to TEXT,

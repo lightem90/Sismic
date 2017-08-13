@@ -4,6 +4,7 @@ import android.net.Uri
 import android.os.Parcel
 import android.os.Parcelable
 import java.util.*
+import kotlin.collections.HashMap
 
 /**
  * Created by Matteo on 28/07/2017.
@@ -74,5 +75,33 @@ data class ReportDTO(val id: Int
             override fun createFromParcel(source: Parcel): ReportDTO = ReportDTO(source)
             override fun newArray(size: Int): Array<ReportDTO?> = arrayOfNulls(size)
         }
+    }
+}
+
+class test
+{
+    fun bla()
+    {
+        DayForecast(HashMap())
+    }
+}
+
+class DayForecast(var map: MutableMap<String, Any?>) {
+    var _id: Long by map
+    var date: Long by map
+    var description: String by map
+    var high: Int by map
+    var low: Int by map
+    var iconUrl: String by map
+    var cityId: Long by map
+
+    constructor(date: Long, description: String, high: Int, low: Int, iconUrl: String, cityId: Long)
+            : this(HashMap()) {
+        this.date = date
+        this.description = description
+        this.high = high
+        this.low = low
+        this.iconUrl = iconUrl
+        this.cityId = cityId
     }
 }
