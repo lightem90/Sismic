@@ -4,6 +4,7 @@ import android.content.Context
 import com.polito.sismic.Domain.ReportDatabaseHelper
 import com.polito.sismic.Domain.ReportItemListDTO
 import com.polito.sismic.Domain.ReportManager
+import com.polito.sismic.Domain.ReportTable
 import com.polito.sismic.Extensions.database
 import com.polito.sismic.R
 import org.jetbrains.anko.db.*
@@ -21,8 +22,8 @@ class DatabaseInteractor
         {
             var newID = -1
             context.database.use {
-                insert(ReportDatabaseHelper.REPORT_TABLE_NAME, ReportDatabaseHelper.REPORT_USERID to userID)
-                select(ReportDatabaseHelper.REPORT_TABLE_NAME).orderBy(ReportDatabaseHelper.REPORT_ID, SqlOrderDirection.DESC).limit(1).exec {
+                insert(ReportTable.NAME, ReportTable.USERID to userID)
+                select(ReportTable.NAME).orderBy(ReportTable.ID, SqlOrderDirection.DESC).limit(1).exec {
 
                     //TODO
                     //parseSingle(RowParser<T>)
@@ -36,14 +37,14 @@ class DatabaseInteractor
             var reportList = mutableListOf<ReportItemListDTO>()
 
             context?.database?.use {
-                select(ReportDatabaseHelper.REPORT_TABLE_NAME).orderBy(ReportDatabaseHelper.REPORT_ID).exec {
-                    reportList.add(ReportItemListDTO(getInt(getColumnIndex(ReportDatabaseHelper.REPORT_ID)),
-                            getString(getColumnIndex(ReportDatabaseHelper.REPORT_TITLE)),
-                            getString(getColumnIndex(ReportDatabaseHelper.REPORT_DESCRIPTION)),
-                            getString(getColumnIndex(ReportDatabaseHelper.REPORT_USERID)),
-                            Date(getString(getColumnIndex(ReportDatabaseHelper.REPORT_DATE))),
-                            getDouble(getColumnIndex(ReportDatabaseHelper.REPORT_SIZE)),
-                            getInt(getColumnIndex(ReportDatabaseHelper.REPORT_VALUE))))
+                select(ReportTable.NAME).orderBy(ReportTable.ID).exec {
+                    reportList.add(ReportItemListDTO(getInt(getColumnIndex(ReportTable.ID)),
+                            getString(getColumnIndex(ReportTable.TITLE)),
+                            getString(getColumnIndex(ReportTable.DESCRIPTION)),
+                            getString(getColumnIndex(ReportTable.USERID)),
+                            Date(getString(getColumnIndex(ReportTable.DATE))),
+                            getDouble(getColumnIndex(ReportTable.SIZE)),
+                            getInt(getColumnIndex(ReportTable.VALUE))))
 
                 }
             }
@@ -53,9 +54,9 @@ class DatabaseInteractor
         fun deleteTempReport(context: Context, reportManager: ReportManager)
         {
             context.database.use {
-                delete(ReportDatabaseHelper.REPORT_TABLE_NAME
-                        , "${ReportDatabaseHelper.REPORT_ID} = {rowID}" +
-                        "${ReportDatabaseHelper.REPORT_USERID} = {userID}",
+                delete(ReportTable.NAME
+                        , "${ReportTable.ID} = {rowID}" +
+                        "${ReportTable.USERID} = {userID}",
                         "rowID" to reportManager.id,
                         "userID" to reportManager.userID)
             }
@@ -65,14 +66,14 @@ class DatabaseInteractor
 
             if (mReportManager == null) return
             context.database.use {
-                update(ReportDatabaseHelper.REPORT_TABLE_NAME,
-                        ReportDatabaseHelper.REPORT_TITLE to mReportManager.title,
-                        ReportDatabaseHelper.REPORT_DATE to SimpleDateFormat("yyyy-MM-dd-hh.mm.ss").format(mReportManager.Date),
-                        ReportDatabaseHelper.REPORT_DESCRIPTION to mReportManager.description,
-                        ReportDatabaseHelper.REPORT_SIZE to mReportManager.getMediaSizeMb(),
-                        ReportDatabaseHelper.REPORT_VALUE to mReportManager.dangerLevel,
-                        ReportDatabaseHelper.REPORT_LATITUDE to mReportManager.getValue<Double>(R.id.lat_parameter),
-                        ReportDatabaseHelper.REPORT_LONGITUDE to mReportManager.getValue<Double>(R.id.lat_parameter))
+                update(ReportTable.NAME,
+                        ReportTable.TITLE to mReportManager.title,
+                        ReportTable.DATE to SimpleDateFormat("yyyy-MM-dd-hh.mm.ss").format(mReportManager.Date),
+                        ReportTable.DESCRIPTION to mReportManager.description,
+                        ReportTable.SIZE to mReportManager.getMediaSizeMb(),
+                        ReportTable.VALUE to mReportManager.dangerLevel,
+                        ReportTable.LATITUDE to mReportManager.getValue<Double>(R.id.lat_parameter),
+                        ReportTable.LONGITUDE to mReportManager.getValue<Double>(R.id.lat_parameter))
             }
         }
     }

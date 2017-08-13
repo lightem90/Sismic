@@ -86,7 +86,7 @@ class test
     }
 }
 
-class DayForecast(var map: MutableMap<String, Any?>) {
+data class DayForecast(var map: MutableMap<String, Any?>) {
     var _id: Long by map
     var date: Long by map
     var description: String by map

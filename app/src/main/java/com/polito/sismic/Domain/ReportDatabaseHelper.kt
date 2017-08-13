@@ -2,48 +2,32 @@ package com.polito.sismic.Domain
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
+import com.polito.sismic.Presenters.App
 import org.jetbrains.anko.db.*
 
 /**
  * Created by Matteo on 13/08/2017.
  */
-class ReportDatabaseHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "ReportDatabase.db", null, 1) {
+class ReportDatabaseHelper(ctx: Context = App.instance) : ManagedSQLiteOpenHelper(ctx, DB_NAME, null, DB_VERSION) {
+
     companion object {
-
-        val REPORT_TABLE_NAME = "Reports"
-        val REPORT_ID = "id"
-        val REPORT_TITLE = "title"
-        val REPORT_DESCRIPTION = "description"
-        val REPORT_USERID = "userID"
-        val REPORT_DATE = "date"
-        val REPORT_SIZE = "size"
-        val REPORT_VALUE = "value"
-        val REPORT_LATITUDE = "latitude"
-        val REPORT_LONGITUDE = "longitude"
-
-        private var instance: ReportDatabaseHelper? = null
-
-        @Synchronized
-        fun getInstance(ctx: Context): ReportDatabaseHelper {
-            if (instance == null) {
-                instance = ReportDatabaseHelper(ctx.applicationContext)
-            }
-            return instance!!
-        }
+        val DB_NAME = "reportdatabase.db"
+        val DB_VERSION = 1
+        val instance by lazy { ReportDatabaseHelper() }
     }
 
     override fun onCreate(db: SQLiteDatabase) {
         //TODO will be a very long table
-        db.createTable(REPORT_TABLE_NAME, ifNotExists = true,
-                columns = *arrayOf(REPORT_ID to SqlType.create("INTEGER PRIMARY KEY AUTOINCREMENT"),
-                REPORT_TITLE to TEXT,
-                REPORT_DESCRIPTION to TEXT,
-                REPORT_USERID to TEXT,
-                REPORT_DATE to TEXT,
-                REPORT_SIZE to REAL,
-                REPORT_VALUE to INTEGER,
-                REPORT_LATITUDE to REAL,
-                REPORT_LONGITUDE to REAL
+        db.createTable(ReportTable.NAME, ifNotExists = true,
+                columns = *arrayOf(ReportTable.ID to SqlType.create("INTEGER PRIMARY KEY AUTOINCREMENT"),
+                ReportTable.TITLE to TEXT,
+                ReportTable.DESCRIPTION to TEXT,
+                ReportTable.USERID to TEXT,
+                ReportTable.DATE to TEXT,
+                ReportTable.SIZE to REAL,
+                ReportTable.VALUE to INTEGER,
+                ReportTable.LATITUDE to REAL,
+                ReportTable.LONGITUDE to REAL
             )
         )
     }
