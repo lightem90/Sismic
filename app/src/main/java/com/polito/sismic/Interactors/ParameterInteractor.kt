@@ -8,56 +8,54 @@ import com.polito.sismic.Extensions.toast
 import java.io.*
 
 
-class ParameterInteractor(val dto: ReportDTO?, private val mContext: Context) {
+class ParameterInteractor(val dto: ReportDTO, private val mContext: Context) {
 
-    var mMediaSize : Double = 0.0
-    fun setValue(paramName : String, value : String) {
-        if (dto == null) return //too soon
+    var mMediaSize : Double = dto.mediaSize
+    fun setValue(paramId: Int, value : String) {
 
         if (value.toIntOrNull() != null)
         {
-            dto.intHashMap.put(paramName, value.toInt())
+            dto.intHashMap.put(paramId, value.toInt())
             return
         }
 
         if (value.toDoubleOrNull() != null)
         {
-            dto.doubleHashMap.put(paramName, value.toDouble())
+            dto.doubleHashMap.put(paramId, value.toDouble())
             return
         }
 
         if (value.toBoolean())
         {
-            dto.boolHashMap.put(paramName, true)
+            dto.boolHashMap.put(paramId, true)
             return
         }
 
-        dto.stringHashMap.put(paramName, value)
+        dto.stringHashMap.put(paramId, value)
     }
 
-    fun <T> getValue (paramName: String) : T?
+    fun <T> getValue (paramId: Int) : T?
     {
         //Safe cast
-        if (dto == null) return null
-        if (dto.doubleHashMap.containsKey(paramName))
-            return dto.doubleHashMap[paramName] as T
-        if (dto.intHashMap.containsKey(paramName))
-            return dto.intHashMap[paramName] as T
-        if (dto.stringHashMap.containsKey(paramName))
-            return dto.stringHashMap[paramName] as T
-        if (dto.boolHashMap.containsKey(paramName))
-            return dto.boolHashMap[paramName] as T
+        if (dto.doubleHashMap.containsKey(paramId))
+            return dto.doubleHashMap[paramId] as T
+        if (dto.intHashMap.containsKey(paramId))
+            return dto.intHashMap[paramId] as T
+        if (dto.stringHashMap.containsKey(paramId))
+            return dto.stringHashMap[paramId] as T
+        if (dto.boolHashMap.containsKey(paramId))
+            return dto.boolHashMap[paramId] as T
 
         return null
     }
 
     fun addMediaPath(path : Uri?)
     {
-        if (dto == null) return //too soon
         if (path != null)
         {
             dto.mediaList.add(path)
             mMediaSize += getSizeFromUri(path)
+            dto.mediaSize = mMediaSize
             mContext.toast("Nuova dimensione report: " + "%.2f".format(mMediaSize) + " MB")
         }
     }
@@ -73,11 +71,10 @@ class ParameterInteractor(val dto: ReportDTO?, private val mContext: Context) {
 
     fun getAllMedia() : MutableList<Uri>?
     {
-        return dto?.mediaList
+        return dto.mediaList
     }
 
     fun  addNote(noteToAdd: String) {
-        if (dto == null) return //too soon
         dto.noteList.add(noteToAdd)
     }
 
@@ -94,11 +91,11 @@ class ParameterInteractor(val dto: ReportDTO?, private val mContext: Context) {
             bis = BufferedInputStream(FileInputStream(source))
             bos = BufferedOutputStream(FileOutputStream(dest, false))
             val buf = ByteArray(1024)
-            bis!!.read(buf)
+            bis.read(buf)
 
             do
             {
-                bos!!.write(buf)
+                bos.write(buf)
             } while (bis!!.read(buf) !== -1)
 
         } catch (e: IOException)
@@ -107,8 +104,8 @@ class ParameterInteractor(val dto: ReportDTO?, private val mContext: Context) {
         } finally {
 
             try {
-                if (bis != null) bis!!.close()
-                if (bos != null) bos!!.close()
+                if (bis != null) bis.close()
+                if (bos != null) bos.close()
 
             } catch (e: IOException) {
                 e.printStackTrace()

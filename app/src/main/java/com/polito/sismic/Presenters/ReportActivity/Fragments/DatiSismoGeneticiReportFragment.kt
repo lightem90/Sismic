@@ -14,10 +14,10 @@ import kotlinx.android.synthetic.main.dati_sismogenetici_report_layout.*
  */
 class DatiSismoGeneticiReportFragment : BaseReportFragment() {
     override fun onInitializeParametersForEdit(inflatingView: View, reportManager: ReportManager) {
-
+        return
     }
 
-    override fun getAllViewParameters(): MutableList<Pair<String, String>> {
+    override fun getAllViewParameters(): MutableList<Pair<Int, String>> {
         return mutableListOf()
     }
 

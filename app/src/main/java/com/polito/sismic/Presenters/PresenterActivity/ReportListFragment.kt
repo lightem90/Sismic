@@ -4,7 +4,6 @@ import android.app.Fragment
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.*
-import com.polito.sismic.Domain.DatabaseProvider
 import com.polito.sismic.Interactors.DatabaseInteractor
 import com.polito.sismic.Presenters.Adapters.ReportAdapter
 import com.polito.sismic.R
@@ -15,14 +14,6 @@ import kotlinx.android.synthetic.main.report_list_fragment.*
  * Created by Matteo on 27/07/2017.
  */
 class ReportListFragment : Fragment() {
-
-    private var mDbProvider : DatabaseProvider
-    private var mDbInteractor : DatabaseInteractor
-
-    init {
-        mDbProvider = DatabaseProvider()
-        mDbInteractor = DatabaseInteractor(mDbProvider.getDatabase())
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.report_list_fragment, container, false)
@@ -49,9 +40,11 @@ class ReportListFragment : Fragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //TODO lambda for edit
         history_container.layoutManager = LinearLayoutManager(activity)
-        //TODO lambda
-        var adapter = ReportAdapter(mDbInteractor.getExampleDTOs()) { print("${it.title} Clicked") }
+        var reportList = DatabaseInteractor.getAllReportsForHistory(activity)
+
+        var adapter = ReportAdapter(reportList) { print("${it.title} Clicked") }
         history_container.adapter = adapter
     }
 

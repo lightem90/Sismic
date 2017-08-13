@@ -12,6 +12,7 @@ import com.polito.sismic.Domain.ReportDTO
 import com.polito.sismic.Domain.ReportManager
 import com.polito.sismic.Domain.ReportProvider
 import com.polito.sismic.Extensions.toast
+import com.polito.sismic.Interactors.DatabaseInteractor
 import com.polito.sismic.Interactors.Helpers.UserActionType
 import com.polito.sismic.Interactors.UserActionInteractor
 import com.polito.sismic.Presenters.Adapters.ReportFragmentsAdapter
@@ -99,12 +100,12 @@ class ReportActivity : AppCompatActivity(),
     }
 
     //Updates the dto
-    override fun onParametersConfirmed(paramList: MutableList<Pair<String, String>>) {
+    override fun onParametersConfirmed(paramList: MutableList<Pair<Int, String>>) {
         paramList.forEach{x -> mReportManager!!.setValue(x.first, x.second)}
     }
 
     override fun onParametersSaveRequest() {
-        //TODO: save dto to db
+        DatabaseInteractor.insertReport(this, mReportManager)
     }
 }
 

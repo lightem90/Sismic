@@ -2,10 +2,11 @@ package com.polito.sismic.Domain
 
 import android.content.Context
 import android.net.Uri
+import com.polito.sismic.Interactors.MediaType
 import com.polito.sismic.Interactors.ParameterInteractor
+import com.polito.sismic.Interactors.ReportMediaInteractor
 import com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
 import java.io.File
-import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -16,7 +17,7 @@ class ReportManager(val id: Int, mContext: Context, private val DTO : ReportDTO 
     //TODO: i toast da errore vanno controllati prima di arrivare quà
     constructor(mContext: Context, dto: ReportDTO) : this(dto.id, mContext, dto)                                                //Edit
     constructor(mContext: Context, id : Int, userIdentifier : String)
-            : this (id, mContext, ReportDTO(id, userIdentifier, Date(), HashMap(), HashMap(), HashMap(), HashMap(), mutableListOf<String>(), mutableListOf<Uri>()))   //New
+            : this (id, mContext, ReportDTO(id, "", "", userIdentifier, Date(), HashMap(), HashMap(), HashMap(), HashMap(), mutableListOf<String>(), mutableListOf<Uri>(), 0.0, 0))   //New
 
 
     private val mReportPrefix : String = "REPORT_" + id + "_"
@@ -28,6 +29,9 @@ class ReportManager(val id: Int, mContext: Context, private val DTO : ReportDTO 
     val userID : String = DTO.userIdentifier
     val Date : Date = DTO.reportDate
     val isNew : Boolean = DTO.isNew
+    val title : String = DTO.title
+    val description : String = DTO.description
+    val dangerLevel : Int = DTO.value
 
     fun deleteAllReportMedia()
     {
@@ -44,8 +48,8 @@ class ReportManager(val id: Int, mContext: Context, private val DTO : ReportDTO 
         return "%.2f".format(mParameterInteractor.mMediaSize)
     }
 
-    fun setValue(paramName : String, value : String) {
-        mParameterInteractor.setValue(paramName, value)
+    fun setValue(paramId : Int, value : String) {
+        mParameterInteractor.setValue(paramId, value)
     }
 
     fun confirmLastMedia() {
@@ -74,9 +78,18 @@ class ReportManager(val id: Int, mContext: Context, private val DTO : ReportDTO 
         confirmLastMedia()
     }
 
+    fun <T> getValue(valueId : Int) : T
+    {
+        var toReturn = mParameterInteractor.getValue<T>(valueId)
+        if (toReturn == null)
+            throw Exception()
+        return toReturn
+    }
+
     fun  <T> prepareForEdit(viewToInitialize: ParameterReportLayout?) {
-        val newValue = mParameterInteractor.getValue<T>(viewToInitialize?.id.toString())
-        if (newValue != null) viewToInitialize?.setParameterValue(newValue.toString())
+        if (viewToInitialize == null) return
+        val newValue = mParameterInteractor.getValue<T>(viewToInitialize.id)
+        if (newValue != null) viewToInitialize.setParameterValue(newValue.toString())
     }
 
     fun getParcelable() : ReportDTO

@@ -15,10 +15,10 @@ import com.polito.sismic.R
 class RisultatiReportFragment : BaseReportFragment() {
 
     override fun onInitializeParametersForEdit(inflatingView: View, reportManager: ReportManager) {
-
+        return
     }
 
-    override fun getAllViewParameters(): MutableList<Pair<String, String>> {
+    override fun getAllViewParameters(): MutableList<Pair<Int, String>> {
         return mutableListOf()
     }
 

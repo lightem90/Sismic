@@ -1,4 +1,4 @@
-package com.polito.sismic.Domain
+package com.polito.sismic.Interactors
 
 import android.content.Context
 import android.net.Uri

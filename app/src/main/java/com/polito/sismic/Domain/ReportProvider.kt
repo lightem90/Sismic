@@ -1,6 +1,7 @@
 package com.polito.sismic.Domain
 
 import android.content.Context
+import com.polito.sismic.Interactors.DatabaseInteractor
 
 
 /**
@@ -15,9 +16,7 @@ class ReportProvider {
 
         fun createReport(context: Context, userID: String) : ReportManager
         {
-            val mDatabaseProvider = DatabaseProvider()
-            //In modo che ogni volta il nuovo reportManager ha un id maggiore del numero di reportManager presenti
-            return ReportManager(context, mDatabaseProvider.getDatabase().getRecordNumber(), userID)
+            return ReportManager(context, DatabaseInteractor.createReportForId(context, userID), userID)
         }
 
         fun createFromDTO(context : Context, dto : ReportDTO) : ReportManager

@@ -62,9 +62,9 @@ class InfoLocReportFragment : BaseReportFragment(),
     override fun onInitializeParametersForEdit(inflatingView: View, reportManager: ReportManager) {
 
         //Alwyas
-        inflatingView?.findViewById<LabelReportLayout>(R.id.report_info_number_label)?.setValue(reportManager.id.toString())
-        inflatingView?.findViewById<LabelReportLayout>(R.id.report_info_date_label)?.setValue(SimpleDateFormat("yyyy-MM-dd-hh.mm.ss").format(reportManager.Date))
-        inflatingView?.findViewById<LabelReportLayout>(R.id.report_info_name_label)?.setValue(reportManager.userID)
+        inflatingView.findViewById<LabelReportLayout>(R.id.report_info_number_label)?.setValue(reportManager.id.toString())
+        inflatingView.findViewById<LabelReportLayout>(R.id.report_info_date_label)?.setValue(SimpleDateFormat("yyyy-MM-dd-hh.mm.ss").format(reportManager.Date))
+        inflatingView.findViewById<LabelReportLayout>(R.id.report_info_name_label)?.setValue(reportManager.userID)
 
         //If I'm editing a report, then just assign to the view the parameters read from the dto
         if (!reportManager.isNew)
@@ -168,21 +168,21 @@ class InfoLocReportFragment : BaseReportFragment(),
         PlaceDetailsTask(view!!, context).execute(place)
     }
 
-    override fun getAllViewParameters(): MutableList<Pair<String, String>> {
+    override fun getAllViewParameters(): MutableList<Pair<Int, String>> {
 
         return mutableListOf(
-                Pair(report_info_number_label.id.toString(), report_info_number_label.getValue()),
-                Pair(report_info_name_label.id.toString(), report_info_name_label.getValue()),
-                Pair(report_info_date_label.id.toString(), report_info_date_label.getValue()),
-                Pair(lat_parameter.id.toString(), lat_parameter.getParameterValue()),
-                Pair(long_parameter.id.toString(), long_parameter.getParameterValue()),
-                Pair(country_parameter.id.toString(), country_parameter.getParameterValue()),
-                Pair(region_parameter.id.toString(), region_parameter.getParameterValue()),
-                Pair(comune_parameter.id.toString(), comune_parameter.getParameterValue()),
-                Pair(address_parameter.id.toString(), address_parameter.getParameterValue()),
-                Pair(cap_parameter.id.toString(), cap_parameter.getParameterValue()),
-                Pair(zona_sismica_parameter.id.toString(), zona_sismica_parameter.getParameterValue()),
-                Pair(codice_istat_parameter.id.toString(), codice_istat_parameter.getParameterValue())
+                Pair(report_info_number_label.id, report_info_number_label.getValue()),
+                Pair(report_info_name_label.id, report_info_name_label.getValue()),
+                Pair(report_info_date_label.id, report_info_date_label.getValue()),
+                Pair(lat_parameter.id, lat_parameter.getParameterValue()),
+                Pair(long_parameter.id, long_parameter.getParameterValue()),
+                Pair(country_parameter.id, country_parameter.getParameterValue()),
+                Pair(region_parameter.id, region_parameter.getParameterValue()),
+                Pair(comune_parameter.id, comune_parameter.getParameterValue()),
+                Pair(address_parameter.id, address_parameter.getParameterValue()),
+                Pair(cap_parameter.id, cap_parameter.getParameterValue()),
+                Pair(zona_sismica_parameter.id, zona_sismica_parameter.getParameterValue()),
+                Pair(codice_istat_parameter.id, codice_istat_parameter.getParameterValue())
         )
     }
 

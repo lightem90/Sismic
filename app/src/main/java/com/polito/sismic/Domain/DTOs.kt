@@ -10,29 +10,43 @@ import java.util.*
  */
 
 
-data class ReportItemListDTO(val title: String, val description: String, val size : Int, val value : Int)
+data class ReportItemListDTO(val id : Int,
+                             val title: String,
+                             val description: String,
+                             val userIdentifier: String,
+                             val date : Date,
+                             val size : Double,
+                             val value : Int)
 
 //It contains all Report parameters, only way I could think of by implementing parcelable
 data class ReportDTO(val id: Int
+                     , val title: String
+                     , val description: String
                      , val userIdentifier: String
                      , val reportDate: Date
-                     , val intHashMap: HashMap<String, Int>
-                     , val stringHashMap: HashMap<String, String>
-                     , val boolHashMap: HashMap<String, Boolean>
-                     , val doubleHashMap: HashMap<String, Double>
+                     , val intHashMap: HashMap<Int, Int>
+                     , val stringHashMap: HashMap<Int, String>
+                     , val boolHashMap: HashMap<Int, Boolean>
+                     , val doubleHashMap: HashMap<Int, Double>
                      , val noteList: MutableList<String>
                      , val mediaList: MutableList<Uri>
+                     , var mediaSize: Double
+                     , val value: Int
                      , val isNew: Boolean = true) : Parcelable {
     constructor(source: Parcel) : this(
             source.readInt(),
             source.readString(),
+            source.readString(),
+            source.readString(),
             source.readSerializable() as Date,
-            source.readSerializable() as HashMap<String, Int>,
-            source.readSerializable() as HashMap<String, String>,
-            source.readSerializable() as HashMap<String, Boolean>,
-            source.readSerializable() as HashMap<String, Double>,
+            source.readSerializable() as HashMap<Int, Int>,
+            source.readSerializable() as HashMap<Int, String>,
+            source.readSerializable() as HashMap<Int, Boolean>,
+            source.readSerializable() as HashMap<Int, Double>,
             source.createStringArrayList(),
             source.createTypedArrayList(Uri.CREATOR),
+            source.readDouble(),
+            source.readInt(),
             1 == source.readInt()
     )
 
@@ -40,6 +54,8 @@ data class ReportDTO(val id: Int
 
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
         writeInt(id)
+        writeString(title)
+        writeString(description)
         writeString(userIdentifier)
         writeSerializable(reportDate)
         writeSerializable(intHashMap)
@@ -48,6 +64,8 @@ data class ReportDTO(val id: Int
         writeSerializable(doubleHashMap)
         writeStringList(noteList)
         writeTypedList(mediaList)
+        writeDouble(mediaSize)
+        writeInt(value)
         writeInt((if (isNew) 1 else 0))
     }
 
