@@ -1,69 +1,41 @@
 package com.polito.sismic.Interactors
 
-import android.content.Context
-import com.polito.sismic.Domain.*
-import com.polito.sismic.Extensions.parseList
-import com.polito.sismic.R
-import org.jetbrains.anko.db.*
-import java.text.SimpleDateFormat
+import com.polito.sismic.Domain.Database.DatabaseDataMapper
+import com.polito.sismic.Domain.Database.ReportDatabaseHelper
+import com.polito.sismic.Domain.Database.ReportDetails
+import com.polito.sismic.Domain.Database.ReportTable
+import com.polito.sismic.Domain.Report
+import com.polito.sismic.Extensions.parseOpt
+import org.jetbrains.anko.db.insert
+import org.jetbrains.anko.db.select
 import java.util.*
-import kotlin.collections.HashMap
 
 /**
  * Created by Matteo on 13/08/2017.
  */
-class DatabaseInteractor(val reportDatabaseHelper: ReportDatabaseHelper = ReportDatabaseHelper.instance)
+
+class DatabaseInteractor(val reportDatabaseHelper: ReportDatabaseHelper = ReportDatabaseHelper.instance,
+                         val dataMapper: DatabaseDataMapper = DatabaseDataMapper())
 {
     //TODO
-    fun createReportForId(context : Context, userID : String) : Int = reportDatabaseHelper.use {
+    fun createReportForId(userID: String) : Report = reportDatabaseHelper.use {
 
+        insert(ReportTable.NAME, ReportTable.USERID to userID)
+        val reportRequest = "${ReportTable.USERID} = ? "
+        val report = select(ReportTable.USERID)
+                .whereSimple(reportRequest, userID)
+                .parseOpt  { ReportDetails(HashMap()) }
 
-
-
+        report!!.let { dataMapper.convertReportToDomain(report) }
     }
 
-    fun  getAllReportsForHistory(context : Context?): List<ReportItemListDTO> {
-        var reportList = mutableListOf<ReportItemListDTO>()
+    fun getReportForId(reportID : String, userID: String) : Report = reportDatabaseHelper.use {
+        val reportRequest = "${ReportTable.USERID} = ? AND ${ReportTable.ID} = ?"
+        val report = select(ReportTable.USERID)
+                .whereSimple(reportRequest, userID, reportID)
+                .parseOpt  { ReportDetails(HashMap()) }
 
-        context?.database?.use {
-            select(ReportTable.NAME).orderBy(ReportTable.ID).exec {
-                reportList.add(ReportItemListDTO(getInt(getColumnIndex(ReportTable.ID)),
-                        getString(getColumnIndex(ReportTable.TITLE)),
-                        getString(getColumnIndex(ReportTable.DESCRIPTION)),
-                        getString(getColumnIndex(ReportTable.USERID)),
-                        Date(getString(getColumnIndex(ReportTable.DATE))),
-                        getDouble(getColumnIndex(ReportTable.SIZE)),
-                        getInt(getColumnIndex(ReportTable.VALUE))))
-
-            }
-        }
-        return reportList
-    }
-
-    fun deleteTempReport(context: Context, reportManager: ReportManager)
-    {
-        context.database.use {
-            delete(ReportTable.NAME
-                    , "${ReportTable.ID} = {rowID}" +
-                    "${ReportTable.USERID} = {userID}",
-                    "rowID" to reportManager.id,
-                    "userID" to reportManager.userID)
-        }
-    }
-
-    fun insertReport(context: Context, mReportManager: ReportManager?) {
-
-        if (mReportManager == null) return
-        context.database.use {
-            update(ReportTable.NAME,
-                    ReportTable.TITLE to mReportManager.title,
-                    ReportTable.DATE to SimpleDateFormat("yyyy-MM-dd-hh.mm.ss").format(mReportManager.Date),
-                    ReportTable.DESCRIPTION to mReportManager.description,
-                    ReportTable.SIZE to mReportManager.getMediaSizeMb(),
-                    ReportTable.VALUE to mReportManager.dangerLevel,
-                    ReportTable.LATITUDE to mReportManager.getValue<Double>(R.id.lat_parameter),
-                    ReportTable.LONGITUDE to mReportManager.getValue<Double>(R.id.lat_parameter))
-        }
+        report!!.let { dataMapper.convertReportToDomain(report) }
     }
 
     //class MyMapper ()

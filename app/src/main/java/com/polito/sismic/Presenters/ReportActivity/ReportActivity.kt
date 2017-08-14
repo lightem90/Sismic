@@ -8,11 +8,8 @@ import android.view.MenuItem
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.places.Places
-import com.polito.sismic.Domain.ReportDTO
 import com.polito.sismic.Domain.ReportManager
-import com.polito.sismic.Domain.ReportProvider
 import com.polito.sismic.Extensions.toast
-import com.polito.sismic.Interactors.DatabaseInteractor
 import com.polito.sismic.Interactors.Helpers.UserActionType
 import com.polito.sismic.Interactors.UserActionInteractor
 import com.polito.sismic.Presenters.Adapters.ReportFragmentsAdapter
@@ -35,23 +32,7 @@ class ReportActivity : AppCompatActivity(),
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_report)
 
-        var reportDTO = savedInstanceState?.getParcelable<ReportDTO>("report")
-        if (reportDTO == null)      //new report
-        {
-            var userID = intent.getStringExtra("USER_NAME")
-            if (userID.isEmpty())
-            {
-                toast(R.string.no_login)
-                finish()
-            }
 
-            mReportManager = ReportProvider.createReport(this, userID)
-        }
-        else
-        {
-            //Edit TODO: handle filling of data in fragments
-            mReportManager = ReportProvider.createFromDTO(this, reportDTO)
-        }
 
         mUserActionInteractor = UserActionInteractor(mReportManager!!, this)
 
@@ -101,11 +82,11 @@ class ReportActivity : AppCompatActivity(),
 
     //Updates the dto
     override fun onParametersConfirmed(paramList: MutableList<Pair<Int, String>>) {
-        paramList.forEach{x -> mReportManager!!.setValue(x.first, x.second)}
+
     }
 
     override fun onParametersSaveRequest() {
-        DatabaseInteractor.insertReport(this, mReportManager)
+
     }
 }
 

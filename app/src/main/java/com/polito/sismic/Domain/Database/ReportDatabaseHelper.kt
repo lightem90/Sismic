@@ -1,4 +1,4 @@
-package com.polito.sismic.Domain
+package com.polito.sismic.Domain.Database
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
@@ -25,15 +25,32 @@ class ReportDatabaseHelper(ctx: Context = App.instance) : ManagedSQLiteOpenHelpe
                 ReportTable.USERID to TEXT,
                 ReportTable.DATE to TEXT,
                 ReportTable.SIZE to REAL,
-                ReportTable.VALUE to INTEGER,
-                ReportTable.LATITUDE to REAL,
-                ReportTable.LONGITUDE to REAL
+                ReportTable.VALUE to INTEGER
             )
+        )
+
+        db.createTable(ReportMedia.NAME, ifNotExists = true,
+                columns = *arrayOf(ReportMedia.ID to SqlType.create("INTEGER PRIMARY KEY AUTOINCREMENT"),
+                        ReportMedia.NAME to TEXT,
+                        ReportMedia.TYPE to TEXT,
+                        ReportMedia.NOTE to TEXT,
+                        ReportMedia.URL to TEXT,
+                        ReportMedia.REPORT_ID to INTEGER
+                )
+        )
+
+        db.createTable(LocalizationInfoTable.NAME, ifNotExists = true,
+                columns = *arrayOf(LocalizationInfoTable.ID to SqlType.create("INTEGER PRIMARY KEY AUTOINCREMENT"),
+                        LocalizationInfoTable.LATITUDE to REAL,
+                        LocalizationInfoTable.LONGITUDE to REAL,
+                        LocalizationInfoTable.REPORT_ID to INTEGER
+                )
         )
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         // Here you can upgrade tables, as usual
-        db.dropTable("User", true)
+        db.dropTable(ReportTable.NAME, true)
+        db.dropTable(LocalizationInfoTable.NAME, true)
     }
 }

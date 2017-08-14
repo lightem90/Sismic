@@ -26,13 +26,6 @@ class ReportManager(val id: Int, mContext: Context, private val DTO : ReportDTO 
     //Need the second underscore, otherwise REPORT_1 equals REPORT_11, I have to search REPORT_+ID+_
     private val mParameterInteractor : ParameterInteractor = ParameterInteractor(DTO, mContext)
 
-    val userID : String = DTO.userIdentifier
-    val Date : Date = DTO.reportDate
-    val isNew : Boolean = DTO.isNew
-    val title : String = DTO.title
-    val description : String = DTO.description
-    val dangerLevel : Int = DTO.value
-
     fun deleteAllReportMedia()
     {
         mParameterInteractor.getAllMedia()?.forEach{ x -> File(x.path).delete() }
@@ -46,10 +39,6 @@ class ReportManager(val id: Int, mContext: Context, private val DTO : ReportDTO 
     fun getMediaSizeMb() : String
     {
         return "%.2f".format(mParameterInteractor.mMediaSize)
-    }
-
-    fun setValue(paramId : Int, value : String) {
-        mParameterInteractor.setValue(paramId, value)
     }
 
     fun confirmLastMedia() {
@@ -77,33 +66,5 @@ class ReportManager(val id: Int, mContext: Context, private val DTO : ReportDTO 
 
         confirmLastMedia()
     }
-
-    fun <T> getValue(valueId : Int) : T
-    {
-        var toReturn = mParameterInteractor.getValue<T>(valueId)
-        if (toReturn == null)
-            throw Exception()
-        return toReturn
-    }
-
-    fun  <T> prepareForEdit(viewToInitialize: ParameterReportLayout?) {
-        if (viewToInitialize == null) return
-        val newValue = mParameterInteractor.getValue<T>(viewToInitialize.id)
-        if (newValue != null) viewToInitialize.setParameterValue(newValue.toString())
-    }
-
-    fun getParcelable() : ReportDTO
-    {
-        return DTO
-    }
-
-    //For add to gallery (not needed now)
-    //private fun galleryAddPic() {
-    //    val mediaScanIntent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
-    //    val f = File(mCurrentPhotoPath)
-    //    val contentUri = Uri.fromFile(f)
-    //    mediaScanIntent.data = contentUri
-    //    this.sendBroadcast(mediaScanIntent)
-    //}
 }
 

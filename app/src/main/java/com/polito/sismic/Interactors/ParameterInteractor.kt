@@ -11,43 +11,6 @@ import java.io.*
 class ParameterInteractor(val dto: ReportDTO, private val mContext: Context) {
 
     var mMediaSize : Double = dto.mediaSize
-    fun setValue(paramId: Int, value : String) {
-
-        if (value.toIntOrNull() != null)
-        {
-            dto.intHashMap.put(paramId, value.toInt())
-            return
-        }
-
-        if (value.toDoubleOrNull() != null)
-        {
-            dto.doubleHashMap.put(paramId, value.toDouble())
-            return
-        }
-
-        if (value.toBoolean())
-        {
-            dto.boolHashMap.put(paramId, true)
-            return
-        }
-
-        dto.stringHashMap.put(paramId, value)
-    }
-
-    fun <T> getValue (paramId: Int) : T?
-    {
-        //Safe cast
-        if (dto.doubleHashMap.containsKey(paramId))
-            return dto.doubleHashMap[paramId] as T
-        if (dto.intHashMap.containsKey(paramId))
-            return dto.intHashMap[paramId] as T
-        if (dto.stringHashMap.containsKey(paramId))
-            return dto.stringHashMap[paramId] as T
-        if (dto.boolHashMap.containsKey(paramId))
-            return dto.boolHashMap[paramId] as T
-
-        return null
-    }
 
     fun addMediaPath(path : Uri?)
     {

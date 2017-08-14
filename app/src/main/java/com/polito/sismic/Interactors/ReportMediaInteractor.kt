@@ -57,18 +57,18 @@ class ReportMediaInteractor(val context : Context, val reportId: String) {
 
         // Create an image file name (REPORT#_TYPE_Date.ext)
         val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-        val imageFileName = prefix + timeStamp
+        val filename = prefix + timeStamp
 
-        val imageFile = File.createTempFile(
-                imageFileName,
+        val file = File.createTempFile(
+                filename,
                 suffix,
                 storageDir
         )
-        val photoURI = FileProvider.getUriForFile(context,
+        val fileUri = FileProvider.getUriForFile(context,
                 "com.polito.sismic",
-                imageFile)
+                file)
 
-        lastAddedTmpFile = photoURI
+        lastAddedTmpFile = fileUri
         return lastAddedTmpFile
     }
 
