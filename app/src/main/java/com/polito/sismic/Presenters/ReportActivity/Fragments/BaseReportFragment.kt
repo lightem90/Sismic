@@ -72,9 +72,9 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
 
     abstract fun onInitializeParametersForEdit(inflatingView: View, reportManager: ReportManager)
     //Each fragment must implement this, so the activity is in charge to save the data
-    abstract fun getAllViewParameters() : MutableList<Pair<Int, String>>
+    abstract fun getSectionParameter() : ReportSection
     override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback?) {
-        mParametersCallback?.onParametersConfirmed(getAllViewParameters())
+        mParametersCallback?.onParametersConfirmed(getSectionParameter())
         callback!!.goToNextStep()
     }
     override fun onCompleteClicked(callback: StepperLayout.OnCompleteClickedCallback?) {

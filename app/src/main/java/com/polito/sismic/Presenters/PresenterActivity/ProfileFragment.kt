@@ -1,8 +1,12 @@
 package com.polito.sismic.Presenters.PresenterActivity
 
 import android.app.Fragment
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.*
+import com.polito.sismic.Extensions.DelegatesExt
+import com.polito.sismic.Interactors.LoginSharedPreferences
 import com.polito.sismic.R
 
 
@@ -24,10 +28,18 @@ class ProfileFragment : Fragment() {
         if (item != null) {
             when (item.itemId)
             {
-                R.id.logout -> return true
+                R.id.logout ->
+                {
+                    logout()
+                    return true
+                }
             }
         }
         return false;
+    }
+
+    private fun  logout() {
+        LoginSharedPreferences.logout(activity)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

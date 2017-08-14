@@ -38,6 +38,10 @@ class DatabaseInteractor(val reportDatabaseHelper: ReportDatabaseHelper = Report
         report!!.let { dataMapper.convertReportToDomain(report) }
     }
 
+    fun  getAllReports(): List<Report> {
+
+    }
+
     //class MyMapper ()
     //{
     //    fun getId(reportDTOTest: ReportDTOTest?) : Int

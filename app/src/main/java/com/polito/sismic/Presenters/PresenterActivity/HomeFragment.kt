@@ -4,7 +4,6 @@ import android.app.Fragment
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
-import com.polito.sismic.Interactors.PresenterFragmentProvider
 import com.polito.sismic.Presenters.ReportActivity.ReportActivity
 import com.polito.sismic.R
 import kotlinx.android.synthetic.main.home_fragment.view.*

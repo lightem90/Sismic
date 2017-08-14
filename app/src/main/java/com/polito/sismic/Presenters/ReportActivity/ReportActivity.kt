@@ -13,6 +13,7 @@ import com.polito.sismic.Domain.ReportProvider
 import com.polito.sismic.Domain.ReportSection
 import com.polito.sismic.Extensions.toast
 import com.polito.sismic.Interactors.Helpers.UserActionType
+import com.polito.sismic.Interactors.ReportMediaInteractor
 import com.polito.sismic.Interactors.UserActionInteractor
 import com.polito.sismic.Presenters.Adapters.ReportFragmentsAdapter
 import com.polito.sismic.Presenters.ReportActivity.Fragments.BaseReportFragment
@@ -42,7 +43,7 @@ class ReportActivity : AppCompatActivity(),
             finish()
         }
 
-
+        //To handle user action, it uses other interactor to pilot the ui changes to the domain
         mUserActionInteractor = UserActionInteractor(mReportManager!!, this)
 
         stepperLayout.adapter = ReportFragmentsAdapter(supportFragmentManager, this, mReportManager!!)
@@ -106,7 +107,7 @@ class ReportActivity : AppCompatActivity(),
     }
 
     override fun onParametersSaveRequest() {
-        mReportManager!!.saveReportToDb()
+        mUserActionInteractor!!.saveReport()
     }
 }
 

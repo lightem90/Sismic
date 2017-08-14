@@ -21,6 +21,7 @@ import android.widget.ArrayAdapter
 
 import java.util.ArrayList
 import android.Manifest.permission.READ_CONTACTS
+import com.polito.sismic.Interactors.LoginSharedPreferences
 import com.polito.sismic.R
 
 import kotlinx.android.synthetic.main.activity_login.*
@@ -247,7 +248,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
 
         override fun doInBackground(vararg params: Void): Boolean? {
             // TODO: attempt authentication against a network service.
-
+            LoginSharedPreferences.demoLogin(applicationContext)
             try {
                 // Simulate network access.
                 Thread.sleep(2000)
@@ -270,6 +271,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
             showProgress(false)
 
             if (success!!) {
+                //TODO: save to sp
                 finish()
             } else {
                 password.error = getString(R.string.error_incorrect_password)

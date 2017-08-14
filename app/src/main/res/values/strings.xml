@@ -169,5 +169,9 @@
     <string name="rilievi_report_title">Rilievi</string>
     <string name="error_creating_report">Errore nell\'apertura del report</string>
 
+    <string name="title_activity_splash_screen">SplashScreen</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+
 
 </resources>

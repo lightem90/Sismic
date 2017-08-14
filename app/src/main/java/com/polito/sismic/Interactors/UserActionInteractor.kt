@@ -11,14 +11,13 @@ import com.polito.sismic.Interactors.Helpers.UserActionType
 import com.polito.sismic.Presenters.ReportActivity.NoteActivity
 import com.polito.sismic.Presenters.ReportActivity.SketchActivity
 import com.polito.sismic.R
-import java.io.*
 
 /**
  * Created by Matteo on 08/08/2017.
  */
-class UserActionInteractor(val reportManager : ReportManager,
-                           val reportMediaInteractor: ReportMediaInteractor,
-                           val mCaller : Activity) {
+class UserActionInteractor(val mReportManager: ReportManager,
+                           val mCaller : Activity,
+                           val reportMediaInteractor: ReportMediaInteractor = ReportMediaInteractor(mReportManager, mCaller)) {
 
     val USER_ACTION_PIC         = 40
     val USER_ACTION_VIDEO       = 41
@@ -48,7 +47,7 @@ class UserActionInteractor(val reportManager : ReportManager,
                 .setMessage(R.string.confirm_report_back_message)
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setPositiveButton(android.R.string.yes, { _, _ ->
-                    reportManager.deleteReport()
+                    mReportManager.deleteReport()
                     caller.finish()})
                 .setNegativeButton(android.R.string.no, null)
                 .show()
@@ -144,5 +143,9 @@ class UserActionInteractor(val reportManager : ReportManager,
             reportMediaInteractor.deleteLastMedia()
             mCaller.toast(R.string.error_saving_file)
         }
+    }
+
+    fun saveReport() {
+        mReportManager.saveReportToDb()
     }
 }

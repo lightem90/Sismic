@@ -8,6 +8,7 @@ import com.polito.sismic.Interactors.DatabaseInteractor
 import com.polito.sismic.Presenters.Adapters.ReportAdapter
 import com.polito.sismic.R
 import kotlinx.android.synthetic.main.report_list_fragment.*
+import org.jetbrains.anko.toast
 
 
 /**
@@ -42,9 +43,9 @@ class ReportListFragment : Fragment() {
 
         //TODO lambda for edit
         history_container.layoutManager = LinearLayoutManager(activity)
-        var reportList = DatabaseInteractor.getAllReportsForHistory(activity)
+        var reportList = DatabaseInteractor().getAllReports()
 
-        var adapter = ReportAdapter(reportList) { print("${it.title} Clicked") }
+        var adapter = ReportAdapter(reportList) { toast("${it.title} Clicked") }
         history_container.adapter = adapter
     }
 

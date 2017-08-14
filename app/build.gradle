@@ -45,4 +45,5 @@ dependencies {
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
     //https://github.com/Kotlin/anko/wiki/Anko-SQLite
     compile "org.jetbrains.anko:anko-sqlite:$anko_version"
+    implementation 'com.android.support:support-v4:26.0.1'
 }

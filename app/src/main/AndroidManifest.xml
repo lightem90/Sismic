@@ -84,12 +84,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Presenters.ReportActivity.ReportActivity" />
         </activity>
-
         <activity android:name=".Presenters.ReportActivity.SketchActivity">
             <meta-data
-            android:name="android.support.PARENT_ACTIVITY"
-            android:value=".Presenters.ReportActivity.ReportActivity" />
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Presenters.ReportActivity.ReportActivity" />
         </activity>
+        <activity
+            android:name=".Presenters.PresenterActivity.SplashScreenActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_splash_screen"
+            android:theme="@style/FullscreenTheme"></activity>
     </application>
 
 </manifest>

@@ -51,7 +51,7 @@ class ReportAdapter(val items: List<ReportItemListDTO>, val listener: (ReportIte
             setTextColorByDanger(report.value, itemView.history_item_value)
 
             //TODO: Bottoni e click (edit sul click della view)
-            //setOnClickListener { listener(reportManager) }
+            //setOnClickListener { listener(mReportManager) }
 
         }
 
