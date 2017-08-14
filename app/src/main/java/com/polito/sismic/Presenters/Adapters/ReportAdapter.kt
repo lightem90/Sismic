@@ -55,7 +55,7 @@ class ReportAdapter(val items: List<ReportItemListDTO>, val listener: (ReportIte
 
         }
 
-        //Per non mettere il context qui dentro, altrimenti avrei messo tutto come statico in DAngerStateProvider
+        //Per non mettere il mContext qui dentro, altrimenti avrei messo tutto come statico in DAngerStateProvider
         private fun setTextColorByDanger(danger : Int, textView : TextView)
         {
             when(danger)

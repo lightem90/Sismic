@@ -54,10 +54,10 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
                 activity.findViewById<FloatingActionButton>(R.id.fabtoolbar_fab),
                 activity.findViewById<StepperLayout>(R.id.stepperLayout))
 
-        //In the case I'm editing, it must visualize the data already saved!
-        var dtoForHeader = arguments.getParcelable<ReportDTO>("report")
-        mReportManager = ReportManager(context, dtoForHeader)
-        if (dtoForHeader != null) onInitializeParametersForEdit(view, mReportManager!!)
+        //TODO: handle edit In the case I'm editing, it must visualize the data already saved!
+        //var dtoForHeader = arguments.getParcelable<ReportDTO>("report")
+        //mReportManager = ReportManager(context, dtoForHeader)
+        //if (dtoForHeader != null) onInitializeParametersForEdit(view, mReportManager!!)
 
         //Requires api 23
         //scrollableCanvas.setOnScrollChangeListener(View.OnScrollChangeListener({

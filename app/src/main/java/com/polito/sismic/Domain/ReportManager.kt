@@ -1,13 +1,13 @@
 package com.polito.sismic.Domain
 
 import com.polito.sismic.Interactors.DatabaseInteractor
+import com.polito.sismic.Interactors.MediaFile
 
 class ReportManager(private val report : Report, val database : DatabaseInteractor)
 {
-    //Temporary section for creating/editing, if I'm editing a report this list is read from db
-    var tmpSectionList : MutableList<ReportSection> = report.sectionList as MutableList<ReportSection>
-    var tmpMediaList   : MutableList<ReportMedia>   = report.mediaList   as MutableList<ReportMedia>
-    var tmpReportMediaSize : Double = report.size
+    //TODO: handle edit in some ways
+    var tmpSectionList : MutableList<ReportSection> = mutableListOf()
+    var tmpMediaList   : MutableList<MediaFile>   = mutableListOf()
 
 
     fun deleteReport() {

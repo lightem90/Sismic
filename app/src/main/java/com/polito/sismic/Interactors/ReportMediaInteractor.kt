@@ -3,8 +3,10 @@ package com.polito.sismic.Interactors
 import android.content.Context
 import android.net.Uri
 import android.os.Environment
+import android.provider.OpenableColumns
 import android.support.v4.content.FileProvider
-import java.io.File
+import com.polito.sismic.Domain.ReportManager
+import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -13,16 +15,19 @@ enum class MediaType
     Picture,
     Video,
     Audio,
-    Sketch
+    Sketch,
+    Note
 }
 
 //Context needed for file provider
-class ReportMediaInteractor(val context : Context, val reportId: String) {
+class ReportMediaInteractor(val mReportManager: ReportManager,
+        val mContext: Context,
+        val reportId: String) {
 
     //The user can add media only sequentially, so in case of failure while adding we delete the tmp file
-    var lastAddedTmpFile : Uri? = null
+    var lastAddedTmpFile : MediaFile? = null
 
-    fun createFileForMedia(type : MediaType) : Uri?
+    fun createFileForMedia(type : MediaType) : MediaFile?
     {
         var prefix = reportId
         var suffix = ""
@@ -33,25 +38,31 @@ class ReportMediaInteractor(val context : Context, val reportId: String) {
             {
                 prefix += "JPEG_"
                 suffix = "\".jpg\""
-                storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+                storageDir = mContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
             }
             MediaType.Video ->
             {
                 prefix += "MP4_"
                 suffix = "\".mp4\""
-                storageDir = context.getExternalFilesDir(Environment.DIRECTORY_MOVIES)
+                storageDir = mContext.getExternalFilesDir(Environment.DIRECTORY_MOVIES)
             }
             MediaType.Audio ->
             {
                 prefix += "MP3_"
                 suffix = "\".mp3\""
-                storageDir = context.getExternalFilesDir(Environment.DIRECTORY_MUSIC)
+                storageDir = mContext.getExternalFilesDir(Environment.DIRECTORY_MUSIC)
             }
             MediaType.Sketch ->
             {
                 prefix += "JPEG_"
                 suffix = "\".jpg\""
-                storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+                storageDir = mContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+            }
+            MediaType.Note ->
+            {
+                //Special case
+                lastAddedTmpFile = MediaFile("Note", "")
+                return lastAddedTmpFile
             }
         }
 
@@ -64,26 +75,78 @@ class ReportMediaInteractor(val context : Context, val reportId: String) {
                 suffix,
                 storageDir
         )
-        val fileUri = FileProvider.getUriForFile(context,
+        val fileUri = FileProvider.getUriForFile(mContext,
                 "com.polito.sismic",
                 file)
 
-        lastAddedTmpFile = fileUri
+        lastAddedTmpFile = MediaFile(suffix, fileUri!!.toString())
         return lastAddedTmpFile
     }
 
+    fun finalizeLastMedia(stringExtra: String? = null)
+    {
+        lastAddedTmpFile!!.note = if (stringExtra  == null) "" else stringExtra
+        lastAddedTmpFile!!.size = getSizeFromUri(Uri.parse(lastAddedTmpFile!!.url))
+        mReportManager.tmpMediaList.add(lastAddedTmpFile!!)
+    }
 
-    //fun getMediaSizeMb(): Int {
-//
-    //    var byteSize: Long
-    //    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-    //        byteSize = Files.walk(mMediaDir.toPath()).mapToLong({ p -> p.toFile().length() }).sum()
-    //    }
-    //    else
-    //        byteSize = getFolderSize()
-//
-    //    var mbSize = byteSize / 1024 / 1024
-    //    return mbSize.toInt()
-//
-    //}
+    private fun getSizeFromUri(path: Uri): Double {
+
+        val returnCursor = mContext.contentResolver.query(path, null, null, null, null)
+        returnCursor.moveToFirst()
+        val sizeIndex = returnCursor.getLong(returnCursor.getColumnIndex(OpenableColumns.SIZE))
+        returnCursor.close()
+        val doubleSizeIndex = sizeIndex.toDouble()
+        return doubleSizeIndex / 1024 / 1024
+    }
+
+    fun deleteLastMedia() {
+        mContext.contentResolver.delete(Uri.parse(lastAddedTmpFile?.url), null, null)
+    }
+
+    fun  fixUriForAudio(data: Uri?) {
+
+        val currentUri = Uri.parse(lastAddedTmpFile?.url)
+        if (currentUri != data && currentUri != null && data != null)
+        {
+            saveMp3FromSourceUri(data.toString(), currentUri)
+        }
+        finalizeLastMedia()
+    }
+
+    //Copy from the source to the dest so we can have the uri available in our positions
+    fun  saveMp3FromSourceUri(source: String, lastAddedTmpFile: Uri) {
+
+        val dest = lastAddedTmpFile.path.toString()
+
+        var bis: BufferedInputStream? = null
+        var bos: BufferedOutputStream? = null
+
+        try {
+            bis = BufferedInputStream(FileInputStream(source))
+            bos = BufferedOutputStream(FileOutputStream(dest, false))
+            val buf = ByteArray(1024)
+            bis.read(buf)
+
+            do
+            {
+                bos.write(buf)
+            } while (bis!!.read(buf) !== -1)
+
+        } catch (e: IOException)
+        {
+            e.printStackTrace()
+        } finally {
+
+            try {
+                if (bis != null) bis.close()
+                if (bos != null) bos.close()
+
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+
+        }
+
+    }
 }

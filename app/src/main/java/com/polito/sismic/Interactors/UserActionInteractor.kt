@@ -2,6 +2,7 @@ package com.polito.sismic.Interactors
 
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.provider.MediaStore
 import android.support.v7.app.AlertDialog
 import com.polito.sismic.Domain.ReportManager
@@ -10,11 +11,14 @@ import com.polito.sismic.Interactors.Helpers.UserActionType
 import com.polito.sismic.Presenters.ReportActivity.NoteActivity
 import com.polito.sismic.Presenters.ReportActivity.SketchActivity
 import com.polito.sismic.R
+import java.io.*
 
 /**
  * Created by Matteo on 08/08/2017.
  */
-class UserActionInteractor(val reportManager : ReportManager, val mCaller : Activity) {
+class UserActionInteractor(val reportManager : ReportManager,
+                           val reportMediaInteractor: ReportMediaInteractor,
+                           val mCaller : Activity) {
 
     val USER_ACTION_PIC         = 40
     val USER_ACTION_VIDEO       = 41
@@ -23,16 +27,16 @@ class UserActionInteractor(val reportManager : ReportManager, val mCaller : Acti
     val USER_ACTION_NOTE        = 44
 
 
-    fun onActionRequested(requestType : UserActionType)
+    fun onActionRequested(requestType : UserActionType) = with(mCaller)
     {
         when (requestType)
         {
-            UserActionType.PicRequest ->        startPictureIntent(mCaller)
-            UserActionType.VideoRequest ->      startVideoIntent(mCaller)
-            UserActionType.AudioRequest ->      startAudioIntent(mCaller)
-            UserActionType.SketchRequest->      startSketchIntent(mCaller)
-            UserActionType.NoteRequest->        startNoteIntent(mCaller)
-            UserActionType.BackRequest->        goBack(mCaller)
+            UserActionType.PicRequest ->        startPictureIntent(this)
+            UserActionType.VideoRequest ->      startVideoIntent(this)
+            UserActionType.AudioRequest ->      startAudioIntent(this)
+            UserActionType.SketchRequest->      startSketchIntent(this)
+            UserActionType.NoteRequest->        startNoteIntent(this)
+            UserActionType.BackRequest->        goBack(this)
         }
     }
 
@@ -53,6 +57,7 @@ class UserActionInteractor(val reportManager : ReportManager, val mCaller : Acti
 
     private fun startNoteIntent(caller: Activity) {
         var intent = Intent(caller, NoteActivity::class.java)
+        reportMediaInteractor.createFileForMedia(MediaType.Note)
         caller.startActivityForResult(intent, USER_ACTION_NOTE)
     }
 
@@ -61,8 +66,8 @@ class UserActionInteractor(val reportManager : ReportManager, val mCaller : Acti
         var drawBitmap : Intent = Intent(caller, SketchActivity::class.java)
         if (drawBitmap.resolveActivity(caller.packageManager) != null)
         {
-            var bitmapUri = reportManager.getUriForMedia(MediaType.Picture)
-            drawBitmap.putExtra(MediaStore.EXTRA_OUTPUT, bitmapUri)
+            var bitmap = reportMediaInteractor.createFileForMedia(MediaType.Picture)
+            drawBitmap.putExtra(MediaStore.EXTRA_OUTPUT, Uri.parse(bitmap?.url))
             caller.startActivityForResult(drawBitmap, USER_ACTION_SKETCH)
         }
     }
@@ -72,8 +77,8 @@ class UserActionInteractor(val reportManager : ReportManager, val mCaller : Acti
         val audioRecordIntent = Intent(MediaStore.Audio.Media.RECORD_SOUND_ACTION)
         if (audioRecordIntent.resolveActivity(caller.packageManager) != null) {
 
-            var audioUri = reportManager.getUriForMedia(MediaType.Audio)
-            audioRecordIntent.putExtra(MediaStore.EXTRA_OUTPUT, audioUri)
+            var audio = reportMediaInteractor.createFileForMedia(MediaType.Audio)
+            audioRecordIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.parse(audio?.url))
             caller.startActivityForResult(audioRecordIntent, USER_ACTION_AUDIO)
         }
     }
@@ -82,8 +87,8 @@ class UserActionInteractor(val reportManager : ReportManager, val mCaller : Acti
         val takeVideoIntent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
         if (takeVideoIntent.resolveActivity(caller.packageManager) != null) {
 
-            var videoUri = reportManager.getUriForMedia(MediaType.Video)
-            takeVideoIntent.putExtra(MediaStore.EXTRA_OUTPUT, videoUri)
+            var video = reportMediaInteractor.createFileForMedia(MediaType.Video)
+            takeVideoIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.parse(video?.url))
             caller.startActivityForResult(takeVideoIntent, USER_ACTION_VIDEO)
         }
     }
@@ -94,8 +99,8 @@ class UserActionInteractor(val reportManager : ReportManager, val mCaller : Acti
         // Ensure that there's a camera activity to handle the intent
         if (takePictureIntent.resolveActivity(caller.packageManager) != null)
         {
-            var photoUri = reportManager.getUriForMedia(MediaType.Picture)
-            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
+            var photo = reportMediaInteractor.createFileForMedia(MediaType.Picture)
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.parse(photo?.url))
             caller.startActivityForResult(takePictureIntent, USER_ACTION_PIC)
         }
     }
@@ -107,23 +112,12 @@ class UserActionInteractor(val reportManager : ReportManager, val mCaller : Acti
         {
             USER_ACTION_PIC,
             USER_ACTION_VIDEO,
-            USER_ACTION_SKETCH -> noOtherActionsRequired(resultCode)
+            USER_ACTION_NOTE,
+            USER_ACTION_SKETCH -> noOtherActionsRequired(resultCode, data)
 
             USER_ACTION_AUDIO -> fixUri(data)
-            USER_ACTION_NOTE  -> addNote(data)
         }
 
-    }
-
-    private fun addNote(data: Intent?) {
-
-        var plainTextNote = data?.getStringExtra("note")
-        if (plainTextNote == null)
-        {
-            mCaller.toast(R.string.note_error_empty)
-            return
-        }
-        reportManager.addNote(plainTextNote)
     }
 
     private fun fixUri(data: Intent?) {
@@ -133,19 +127,22 @@ class UserActionInteractor(val reportManager : ReportManager, val mCaller : Acti
             mCaller.toast(R.string.error_saving_file)
             return
         }
-        reportManager.fixUriForAudio(data.data)
+
+        //The audio could be saved into custom location, in this way I reposition the file in the expected Uri
+        reportMediaInteractor.fixUriForAudio(data.data)
     }
 
-    fun noOtherActionsRequired(resultCode: Int) {
+
+    fun noOtherActionsRequired(resultCode: Int, data: Intent?) {
         if (resultCode == Activity.RESULT_OK)
         {
+            reportMediaInteractor.finalizeLastMedia(data?.getStringExtra("note"))
             mCaller.toast(R.string.correctly_saving_file)
-            reportManager.confirmLastMedia()
         }
         else
         {
+            reportMediaInteractor.deleteLastMedia()
             mCaller.toast(R.string.error_saving_file)
-            reportManager.deleteLastMedia()
         }
     }
 }
