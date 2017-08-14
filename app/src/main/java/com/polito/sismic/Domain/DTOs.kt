@@ -23,7 +23,8 @@ data class Report(val id : Int,
                     val date : Date,
                     val size : Double,
                     val value : Int,
-                    val sectionList : List<ReportSection> = listOf())
+                    val sectionList : List<ReportSection> = listOf(),
+                    val mediaList : List<ReportMedia> = listOf())
 {
     //magic
     inline fun <reified T> getSection() : T
@@ -33,11 +34,19 @@ data class Report(val id : Int,
     }
 }
 
+data class ReportMedia (val id : Int,
+                        val url : String,
+                        val type : String,
+                        val note : String,
+                        val size : Double)
+
 //TODO
 data class LocalizationSection (val id: Int,
         val latitude : Double,
         val longitude: Double) : ReportSection
-{
 
-}
+
+
+
+
 

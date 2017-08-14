@@ -2,21 +2,19 @@ package com.polito.sismic.Interactors
 
 import android.content.Context
 import android.net.Uri
-import com.polito.sismic.Domain.ReportDTO
 import android.provider.OpenableColumns
+import com.polito.sismic.Domain.ReportManager
 import com.polito.sismic.Extensions.toast
 import java.io.*
 
 
-class ParameterInteractor(val dto: ReportDTO, private val mContext: Context) {
-
-    var mMediaSize : Double = dto.mediaSize
+class ParameterInteractor(val reportManager : ReportManager, private val mContext: Context) {
 
     fun addMediaPath(path : Uri?)
     {
         if (path != null)
         {
-            dto.mediaList.add(path)
+            reportManager.tmpMediaList.ad
             mMediaSize += getSizeFromUri(path)
             dto.mediaSize = mMediaSize
             mContext.toast("Nuova dimensione report: " + "%.2f".format(mMediaSize) + " MB")

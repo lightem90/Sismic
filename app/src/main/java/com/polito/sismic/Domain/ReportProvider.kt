@@ -1,6 +1,6 @@
 package com.polito.sismic.Domain
 
-import android.content.Context
+import android.content.Intent
 import com.polito.sismic.Interactors.DatabaseInteractor
 
 
@@ -12,16 +12,24 @@ import com.polito.sismic.Interactors.DatabaseInteractor
 //or if I'm creating the wrapper for the DTO, stateless so I can call it where I need it
 class ReportProvider {
 
-    companion object {
-
-        fun createReport(context: Context, userID: String) : ReportManager
+    private val dbInteractor : DatabaseInteractor = DatabaseInteractor()
+    fun getOrCreateReportManager(userName : String, intent : Intent) : ReportManager?
+    {
+        //editing existing report
+        if (intent.getBooleanExtra("editing", false))
         {
-            return ReportManager(context, DatabaseInteractor.createReportForId(context, userID), userID)
+            val reportId = intent.getIntExtra("report_id", -1)
+            if (reportId == -1) return null
+
+            val report = dbInteractor.getReportForId(reportId.toString(), userName)
+            return ReportManager(report, dbInteractor)
+
         }
-
-        fun createFromDTO(context : Context, dto : ReportDTO) : ReportManager
+        else
         {
-            return ReportManager(context, dto)
+            //creating new report
+            val report = dbInteractor.createReportForId(userName)
+            return ReportManager(report, dbInteractor)
         }
     }
 }

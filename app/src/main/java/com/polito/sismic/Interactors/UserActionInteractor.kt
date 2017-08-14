@@ -44,8 +44,7 @@ class UserActionInteractor(val reportManager : ReportManager, val mCaller : Acti
                 .setMessage(R.string.confirm_report_back_message)
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setPositiveButton(android.R.string.yes, { _, _ ->
-                    reportManager.deleteAllReportMedia()
-                    DatabaseInteractor.deleteTempReport(caller, reportManager)
+                    reportManager.deleteReport()
                     caller.finish()})
                 .setNegativeButton(android.R.string.no, null)
                 .show()

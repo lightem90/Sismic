@@ -35,6 +35,7 @@ class ReportDatabaseHelper(ctx: Context = App.instance) : ManagedSQLiteOpenHelpe
                         ReportMedia.TYPE to TEXT,
                         ReportMedia.NOTE to TEXT,
                         ReportMedia.URL to TEXT,
+                        ReportMedia.SIZE to REAL,
                         ReportMedia.REPORT_ID to INTEGER
                 )
         )

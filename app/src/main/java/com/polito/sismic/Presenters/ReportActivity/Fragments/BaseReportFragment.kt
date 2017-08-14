@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import com.github.fafaldo.fabtoolbar.widget.FABToolbarLayout
 import com.polito.sismic.Domain.ReportDTO
 import com.polito.sismic.Domain.ReportManager
+import com.polito.sismic.Domain.ReportSection
 import com.polito.sismic.Presenters.CustomLayout.FragmentScrollableCanvas
 import com.polito.sismic.R
 import com.stepstone.stepper.BlockingStep
@@ -29,7 +30,7 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
     // parameters througth the callback when the button "next" is pressed
     //Each fragment must implement the method to get their own paramter name-value
     interface ParametersManager {
-        fun onParametersConfirmed(paramList : MutableList<Pair<Int, String>>)
+        fun onParametersConfirmed(sectionParametr : ReportSection)
         fun onParametersSaveRequest()
     }
 

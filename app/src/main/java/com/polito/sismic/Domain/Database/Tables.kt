@@ -24,6 +24,7 @@ object ReportMedia
     val URL = "filepath"
     val TYPE = "type"
     val NOTE = "note"
+    val SIZE = "size"
     val REPORT_ID = "report_id"
 }
 
