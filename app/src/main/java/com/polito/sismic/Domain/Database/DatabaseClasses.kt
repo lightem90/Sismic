@@ -7,7 +7,7 @@ import kotlin.collections.HashMap
  * Created by Matteo on 14/08/2017.
  */
 
-data class ReportDetails(var map: MutableMap<String, Any?>)
+data class DatabaseReportDetails(var map: MutableMap<String, Any?>)
 {
     var _id: Int by map
     var title: String by map
@@ -17,7 +17,8 @@ data class ReportDetails(var map: MutableMap<String, Any?>)
     var size: Double by map
     var value: Int by map
 
-    constructor(_id: Int, title: String
+    constructor(_id: Int
+                , title: String
                 , description: String
                 , userID: String
                 , date: String
@@ -32,6 +33,46 @@ data class ReportDetails(var map: MutableMap<String, Any?>)
         this.date = date
         this.size = size
         this.value = value
+    }
+}
+
+data class DatabaseReportLocalizationInfo(var map: MutableMap<String, Any?>)
+{
+    var _id : Int by map
+    var latitude : Double by map
+    var longitude : Double by map
+    var country : String by map
+    var region : String by map
+    var province : String by map
+    var comune : String by map
+    var address : String by map
+    var zone : String by map
+    var code : Int by map
+    var report_id : Int by map
+
+    constructor(_id : Int,
+                latitude : Double,
+                longitude : Double,
+                country : String,
+                region : String,
+                province : String,
+                comune : String,
+                address : String,
+                zone : String,
+                code : Int,
+                report_id: Int) : this (HashMap())
+    {
+        this._id = _id
+        this.latitude = latitude
+        this.longitude = longitude
+        this.country = country
+        this.region = region
+        this.province = province
+        this.comune = comune
+        this.address = address
+        this.zone = zone
+        this.code = code
+        this.report_id = report_id
     }
 }
 

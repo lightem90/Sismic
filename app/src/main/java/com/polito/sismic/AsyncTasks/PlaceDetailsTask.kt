@@ -79,6 +79,7 @@ class PlaceDetailsTask(fragmentView: View, val context: Context) : AsyncTask<Pla
         if (result == null || result.getString("status").equals("REQUEST_DENIED"))
         {
             context.toast(R.string.error_parsing_place)
+            m_dialog!!.visibility = View.GONE
             return super.onPostExecute(result)
         }
 

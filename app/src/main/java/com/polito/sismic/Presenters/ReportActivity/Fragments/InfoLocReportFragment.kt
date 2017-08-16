@@ -8,17 +8,14 @@ import android.support.annotation.Nullable
 import android.view.*
 import com.google.android.gms.location.places.Place
 import com.polito.sismic.AsyncTasks.PlaceDetailsTask
-import com.polito.sismic.Domain.ReportManager
 import com.polito.sismic.Domain.ReportSection
 import com.polito.sismic.Extensions.toast
 import com.polito.sismic.Interactors.Helpers.LocalizationActionHelper
 import com.polito.sismic.Interactors.Helpers.LocalizationActionType
 import com.polito.sismic.Interactors.Helpers.PermissionsHelper
-import com.polito.sismic.Presenters.CustomLayout.LabelReportLayout
 import com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
 import com.polito.sismic.R
 import kotlinx.android.synthetic.main.info_loc_report_layout.*
-import java.text.SimpleDateFormat
 
 
 /**
@@ -160,13 +157,5 @@ class InfoLocReportFragment : BaseReportFragment(),
         //comune_parameter.setSuggestions(mLocationSuggestionsHelper!!.getLocalityByProvince(newProvince))
     }
 }
-
-//TODO
-data class LocalizationInfoSection(val latitude : String,
-                                   val longitude : String) : ReportSection
-{
-
-}
-
 
 

@@ -1,7 +1,9 @@
 package com.polito.sismic.Interactors
 
 import com.polito.sismic.Domain.Database.*
+import com.polito.sismic.Domain.MediaFile
 import com.polito.sismic.Domain.Report
+import com.polito.sismic.Domain.ReportSection
 import com.polito.sismic.Extensions.clear
 import com.polito.sismic.Extensions.parseList
 import com.polito.sismic.Extensions.parseOpt
@@ -35,29 +37,29 @@ class DatabaseInteractor(val reportDatabaseHelper: ReportDatabaseHelper = Report
                 ReportTable.VALUE to value,
                 ReportTable.SIZE to size)
         val reportRequest = "${ReportTable.USERID} = ? "
-        val report = select(ReportTable.NAME)
+        val databaseReportDetails = select(ReportTable.NAME)
                 .whereSimple(reportRequest, userID)
                 .orderBy(ReportTable.USERID, SqlOrderDirection.DESC)
                 .limit(1)
-                .parseOpt  { ReportDetails(HashMap(it)) }
+                .parseOpt  { DatabaseReportDetails(HashMap(it)) }
 
-        report!!.let { dataMapper.convertReportToDomain(report) }
+        databaseReportDetails!!.let { dataMapper.convertReportToDomain(databaseReportDetails) }
     }
 
     fun getReportForId(reportID : String, userID: String) : Report = reportDatabaseHelper.use {
         val reportRequest = "${ReportTable.USERID} = ? AND ${ReportTable.ID} = ?"
-        val report = select(ReportTable.NAME)
+        val databaseReportDetails = select(ReportTable.NAME)
                 .whereSimple(reportRequest, userID, reportID)
-                .parseOpt  { ReportDetails(HashMap(it)) }
+                .parseOpt  { DatabaseReportDetails(HashMap(it)) }
 
-        report!!.let { dataMapper.convertReportToDomain(report) }
+        databaseReportDetails!!.let { dataMapper.convertReportToDomain(databaseReportDetails) }
     }
 
     fun  getAllReports(): List<Report> = reportDatabaseHelper.use {
 
         val reports = select(ReportTable.NAME)
                 .orderBy(ReportTable.ID)
-                .parseList { ReportDetails(HashMap(it)) }
+                .parseList { DatabaseReportDetails(HashMap(it)) }
 
         //there's a smarter way to do this
         var listToReturn = mutableListOf<Report>()
@@ -72,23 +74,10 @@ class DatabaseInteractor(val reportDatabaseHelper: ReportDatabaseHelper = Report
         clear(LocalizationInfoTable.NAME)
     }
 
-
-
-    //class MyMapper ()
-    //{
-    //    fun getId(reportDTOTest: ReportDTOTest?) : Int
-    //    {
-    //        return reportDTOTest!!.id
-    //    }
-    //}
-    //insert(ReportTable.NAME, ReportTable.USERID to userID)
-    //val reportRequest = "${ReportTable.USERID} = ? "
-    //val report = select(ReportTable.USERID)
-    //    .whereSimple(reportRequest, userID)
-    //    .parseList { ReportDTOTest(HashMap(it)) }.firstOrNull()
-//
-    //mapper.getId(report)
     //TODO
-    //parseSingle(RowParser<T>)
-    //newID = getInt(getColumnIndex(ReportDatabaseHelper.REPORT_ID))
+    fun  save(report: Report,
+              tmpSectionList: HashMap<String, ReportSection>,
+              tmpMediaList: MutableList<MediaFile>) {
+
+    }
 }

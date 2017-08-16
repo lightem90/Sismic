@@ -20,4 +20,6 @@ class CatastoReportFragment : BaseReportFragment() {
         return inflateFragment(R.layout.catasto_report_layout, inflater, container)
     }
 
+
+
 }

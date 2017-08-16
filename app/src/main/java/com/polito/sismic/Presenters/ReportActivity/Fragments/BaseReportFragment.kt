@@ -23,6 +23,7 @@ import com.stepstone.stepper.VerificationError
 abstract class BaseReportFragment : Fragment(), BlockingStep {
 
     private var mParametersCallback : BaseReportFragment.ParametersManager? = null
+    //wrap the mapper into interactor
     protected val mUiMapper : UiMapper = UiMapper()
 
     //Is' the activity the handler of the dto, each fragment only passes its own
@@ -73,7 +74,7 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
     //abstract fun onInitializeParametersForEdit(inflatingView: View, reportManager: ReportManager)
     //Each fragment must implement this, so the activity is in charge to save the data
     override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback?) {
-        mParametersCallback?.onParametersConfirmed(mUiMapper.getSectionParameterFor(this))
+        mParametersCallback?.onParametersConfirmed(mUiMapper.getDomainSectionFor(this))
         callback!!.goToNextStep()
     }
     override fun onCompleteClicked(callback: StepperLayout.OnCompleteClickedCallback?) {

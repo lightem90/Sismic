@@ -18,7 +18,7 @@ class ReportManager(private val report : Report, val database : DatabaseInteract
     }
 
     fun saveReportToDb() {
-
+        database.save(report, tmpSectionList, tmpMediaList)
     }
 
     fun addSectionParameters(sectionParameters: ReportSection) {

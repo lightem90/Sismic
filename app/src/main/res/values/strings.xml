@@ -165,9 +165,9 @@
     <string name="note_error_empty">La nota che si cerca di salvare è vuota</string>
     <string name="province_error">Nessuna provincia per questa regione</string>
     <string name="localities_error">Nessun comune per questa provincia</string>
-    <string name="no_login">E\' necessario il login per compilare un report</string>
+    <string name="no_login">E\' necessario il login per compilare un databaseReport</string>
     <string name="rilievi_report_title">Rilievi</string>
-    <string name="error_creating_report">Errore nell\'apertura del report</string>
+    <string name="error_creating_report">Errore nell\'apertura del databaseReport</string>
 
     <string name="title_activity_splash_screen">SplashScreen</string>
     <string name="dummy_button">Dummy Button</string>

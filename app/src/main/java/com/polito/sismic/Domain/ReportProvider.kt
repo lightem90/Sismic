@@ -29,7 +29,7 @@ class ReportProvider {
         {
             //creating new report, I need to do it now so I can have the report Id and other infos.. if the user cancels the operation
             //I will delete the tmp report as well
-            dbInteractor.cleanDatabase()
+            //dbInteractor.cleanDatabase()
             val report = dbInteractor.createReportForId(userName)
             return ReportManager(report, dbInteractor)
         }
