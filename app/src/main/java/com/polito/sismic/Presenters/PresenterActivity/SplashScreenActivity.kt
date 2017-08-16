@@ -1,15 +1,12 @@
 package com.polito.sismic.Presenters.PresenterActivity
 
 import android.content.Intent
-import android.content.SharedPreferences
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
-import com.polito.sismic.Extensions.DelegatesExt
-import com.polito.sismic.Interactors.LoginSharedPreferences
+import com.polito.sismic.Interactors.Helpers.LoginSharedPreferences
 import com.polito.sismic.R
-import kotlinx.android.synthetic.main.activity_splash_screen.*
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.

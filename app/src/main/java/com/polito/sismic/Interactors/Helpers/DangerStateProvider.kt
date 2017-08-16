@@ -1,4 +1,4 @@
-package com.polito.sismic.Interactors
+package com.polito.sismic.Interactors.Helpers
 
 import com.polito.sismic.Presenters.CustomLayout.DangerState
 

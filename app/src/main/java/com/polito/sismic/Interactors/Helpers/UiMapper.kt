@@ -1,4 +1,4 @@
-package com.polito.sismic.Interactors
+package com.polito.sismic.Interactors.Helpers
 
 import com.polito.sismic.Domain.CatastoReportSection
 import com.polito.sismic.Domain.ErroreSection

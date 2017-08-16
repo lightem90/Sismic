@@ -4,13 +4,11 @@ import com.polito.sismic.Domain.Database.*
 import com.polito.sismic.Domain.MediaFile
 import com.polito.sismic.Domain.Report
 import com.polito.sismic.Domain.ReportSection
-import com.polito.sismic.Extensions.clear
-import com.polito.sismic.Extensions.parseList
-import com.polito.sismic.Extensions.parseOpt
+import com.polito.sismic.Extensions.*
 import org.jetbrains.anko.db.SqlOrderDirection
 import org.jetbrains.anko.db.insert
 import org.jetbrains.anko.db.select
-import java.text.SimpleDateFormat
+import org.jetbrains.anko.db.update
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -21,7 +19,7 @@ import kotlin.collections.HashMap
 class DatabaseInteractor(val reportDatabaseHelper: ReportDatabaseHelper = ReportDatabaseHelper.instance,
                          val dataMapper: DatabaseDataMapper = DatabaseDataMapper())
 {
-    //TODO
+    //Creates the entry in the db for the current (new) report
     fun createReportForId(userID: String,
                           title : String = "",
                           description : String = "",
@@ -33,9 +31,10 @@ class DatabaseInteractor(val reportDatabaseHelper: ReportDatabaseHelper = Report
                 ReportTable.USERID to userID,
                 ReportTable.TITLE to title,
                 ReportTable.DESCRIPTION to description,
-                ReportTable.DATE to SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(date),
+                ReportTable.DATE to date.toFormattedString(),
                 ReportTable.VALUE to value,
                 ReportTable.SIZE to size)
+
         val reportRequest = "${ReportTable.USERID} = ? "
         val databaseReportDetails = select(ReportTable.NAME)
                 .whereSimple(reportRequest, userID)
@@ -43,9 +42,11 @@ class DatabaseInteractor(val reportDatabaseHelper: ReportDatabaseHelper = Report
                 .limit(1)
                 .parseOpt  { DatabaseReportDetails(HashMap(it)) }
 
+        //returns new entry
         databaseReportDetails!!.let { dataMapper.convertReportToDomain(databaseReportDetails) }
     }
 
+    //TODO, it doesn't need just the Report, but the report section as well!
     fun getReportForId(reportID : String, userID: String) : Report = reportDatabaseHelper.use {
         val reportRequest = "${ReportTable.USERID} = ? AND ${ReportTable.ID} = ?"
         val databaseReportDetails = select(ReportTable.NAME)
@@ -70,14 +71,27 @@ class DatabaseInteractor(val reportDatabaseHelper: ReportDatabaseHelper = Report
     fun cleanDatabase() = reportDatabaseHelper.use {
 
         clear(ReportTable.NAME)
-        clear(ReportMedia.NAME)
+        clear(ReportMediaTable.NAME)
         clear(LocalizationInfoTable.NAME)
     }
 
-    //TODO
+    //TODO how to save section into correct table??
     fun  save(report: Report,
               tmpSectionList: HashMap<String, ReportSection>,
-              tmpMediaList: MutableList<MediaFile>) {
+              tmpMediaList: MutableList<MediaFile>) = reportDatabaseHelper.use {
 
+    with(dataMapper.convertReportFromDomain(report))
+    {
+        update(ReportTable.NAME, *map.toVarargArray())
+    }
+
+    }
+
+    //TODO: delete all sections with report_id as well
+    fun  delete(report: Report) = reportDatabaseHelper.use {
+        with(dataMapper.convertReportFromDomain(report))
+        {
+            delete(ReportTable.NAME, "${ReportTable.ID} = ?", arrayOf(_id.toString()))
+        }
     }
 }

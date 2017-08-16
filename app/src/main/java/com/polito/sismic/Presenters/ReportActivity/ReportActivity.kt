@@ -12,6 +12,7 @@ import com.polito.sismic.Domain.ReportManager
 import com.polito.sismic.Domain.ReportProvider
 import com.polito.sismic.Domain.ReportSection
 import com.polito.sismic.Extensions.toast
+import com.polito.sismic.Interactors.DomainInteractor
 import com.polito.sismic.Interactors.Helpers.UserActionType
 import com.polito.sismic.Interactors.UserActionInteractor
 import com.polito.sismic.Presenters.Adapters.ReportFragmentsAdapter
@@ -28,6 +29,7 @@ class ReportActivity : AppCompatActivity(),
 
     private var  mGoogleApiClient: GoogleApiClient? = null
     private var  mUserActionInteractor: UserActionInteractor? = null
+    private var  mDomainInteractor : DomainInteractor? = null
     private var  mReportManager : ReportManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,6 +46,7 @@ class ReportActivity : AppCompatActivity(),
 
         //To handle user action, it uses other interactor to pilot the ui changes to the domain
         mUserActionInteractor = UserActionInteractor(mReportManager!!, this)
+        mDomainInteractor = DomainInteractor(mReportManager!!)
 
         stepperLayout.adapter = ReportFragmentsAdapter(supportFragmentManager, this, mReportManager!!)
         fabtoolbar_fab.setOnClickListener { fabtoolbar.show() }
@@ -70,11 +73,6 @@ class ReportActivity : AppCompatActivity(),
         }
         return userName
     }
-
-    //override fun onSaveInstanceState(outState: Bundle?) {
-    //    super.onSaveInstanceState(outState)
-    //    outState?.putParcelable("report", mReportManager!!.getParcelable())
-    //}
 
     override fun onLocationAcquired(location: Location) {
         supportFragmentManager.fragments.filterIsInstance<InfoLocReportFragment>().first().updateByLocation(location)
@@ -104,7 +102,7 @@ class ReportActivity : AppCompatActivity(),
     }
 
     override fun onParametersConfirmed(sectionParameters: ReportSection) {
-        mReportManager!!.addSectionParameters(sectionParameters)
+        mDomainInteractor!!.addDomainReportSection(sectionParameters)
     }
 }
 

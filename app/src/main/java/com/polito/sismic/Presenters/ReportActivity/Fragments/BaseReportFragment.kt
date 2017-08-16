@@ -9,7 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.github.fafaldo.fabtoolbar.widget.FABToolbarLayout
 import com.polito.sismic.Domain.ReportSection
-import com.polito.sismic.Interactors.UiMapper
+import com.polito.sismic.Interactors.Helpers.UiMapper
 import com.polito.sismic.Presenters.CustomLayout.FragmentScrollableCanvas
 import com.polito.sismic.R
 import com.stepstone.stepper.BlockingStep

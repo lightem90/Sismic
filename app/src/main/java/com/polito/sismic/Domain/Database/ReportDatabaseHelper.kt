@@ -17,7 +17,6 @@ class ReportDatabaseHelper(ctx: Context = App.instance) : ManagedSQLiteOpenHelpe
     }
 
     override fun onCreate(db: SQLiteDatabase) {
-        //TODO will be a very long table
         db.createTable(ReportTable.NAME, ifNotExists = true,
                 columns = *arrayOf(ReportTable.ID to SqlType.create("INTEGER PRIMARY KEY AUTOINCREMENT"),
                 ReportTable.TITLE to TEXT,
@@ -29,14 +28,14 @@ class ReportDatabaseHelper(ctx: Context = App.instance) : ManagedSQLiteOpenHelpe
             )
         )
 
-        db.createTable(ReportMedia.NAME, ifNotExists = true,
-                columns = *arrayOf(ReportMedia.ID to SqlType.create("INTEGER PRIMARY KEY AUTOINCREMENT"),
-                        ReportMedia.NAME to TEXT,
-                        ReportMedia.TYPE to TEXT,
-                        ReportMedia.NOTE to TEXT,
-                        ReportMedia.URL to TEXT,
-                        ReportMedia.SIZE to REAL,
-                        ReportMedia.REPORT_ID to INTEGER
+        db.createTable(ReportMediaTable.NAME, ifNotExists = true,
+                columns = *arrayOf(ReportMediaTable.ID to SqlType.create("INTEGER PRIMARY KEY AUTOINCREMENT"),
+                        ReportMediaTable.NAME to TEXT,
+                        ReportMediaTable.TYPE to TEXT,
+                        ReportMediaTable.NOTE to TEXT,
+                        ReportMediaTable.URL to TEXT,
+                        ReportMediaTable.SIZE to REAL,
+                        ReportMediaTable.REPORT_ID to INTEGER
                 )
         )
 
@@ -61,6 +60,7 @@ class ReportDatabaseHelper(ctx: Context = App.instance) : ManagedSQLiteOpenHelpe
         // Here you can upgrade tables, as usual
         db.dropTable(ReportTable.NAME, true)
         db.dropTable(LocalizationInfoTable.NAME, true)
-        db.dropTable(ReportMedia.NAME, true)
+        db.dropTable(ReportMediaTable.NAME, true)
+        onCreate(db)
     }
 }

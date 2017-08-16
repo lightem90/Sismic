@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.polito.sismic.Domain.Report
-import com.polito.sismic.Interactors.DangerStateProvider
+import com.polito.sismic.Interactors.Helpers.DangerStateProvider
 import com.polito.sismic.R
 import kotlinx.android.synthetic.main.history_item.view.*
 

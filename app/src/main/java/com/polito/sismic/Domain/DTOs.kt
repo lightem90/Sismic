@@ -21,11 +21,11 @@ data class Report(val id : Int,
                     val value : Int)
 
 
-data class ReportMedia (val id : Int,
-                        val url : String,
-                        val type : String,
-                        val note : String,
-                        val size : Double)
+data class ReportMedia(val id: Int,
+                       val url: String,
+                       val type: String,
+                       val note: String,
+                       val size: Double, val report_id: Int)
 
 data class LocalizationInfoSection(val latitude : String,
                                    val longitude : String,

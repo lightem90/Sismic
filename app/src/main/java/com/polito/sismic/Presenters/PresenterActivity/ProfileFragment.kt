@@ -1,12 +1,9 @@
 package com.polito.sismic.Presenters.PresenterActivity
 
 import android.app.Fragment
-import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.*
-import com.polito.sismic.Extensions.DelegatesExt
-import com.polito.sismic.Interactors.LoginSharedPreferences
+import com.polito.sismic.Interactors.Helpers.LoginSharedPreferences
 import com.polito.sismic.R
 
 

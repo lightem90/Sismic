@@ -1,4 +1,4 @@
-package com.polito.sismic.Interactors
+package com.polito.sismic.Interactors.Helpers
 
 import android.content.Context
 import com.polito.sismic.Extensions.edit

@@ -14,11 +14,19 @@ class ReportManager(private val report : Report, val database : DatabaseInteract
 
 
     fun deleteReport() {
-
+        database.delete(report)
     }
 
     fun saveReportToDb() {
-        database.save(report, tmpSectionList, tmpMediaList)
+        var reportToSave = Report(report.id,
+                report.title,
+                report.description,
+                report.userIdentifier,
+                report.date,
+                tmpMediaList.sumByDouble { x -> x.size },
+                report.value)
+        //Save a copy of the original dto, needed to save value and size correctly
+        database.save(reportToSave, tmpSectionList, tmpMediaList)
     }
 
     fun addSectionParameters(sectionParameters: ReportSection) {

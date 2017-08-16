@@ -21,7 +21,7 @@ import android.widget.ArrayAdapter
 
 import java.util.ArrayList
 import android.Manifest.permission.READ_CONTACTS
-import com.polito.sismic.Interactors.LoginSharedPreferences
+import com.polito.sismic.Interactors.Helpers.LoginSharedPreferences
 import com.polito.sismic.R
 
 import kotlinx.android.synthetic.main.activity_login.*

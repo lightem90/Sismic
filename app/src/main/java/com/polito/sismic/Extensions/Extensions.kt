@@ -105,11 +105,6 @@ class Preference<T>(val context: Context, val name: String, val default: T) {
     }
 }
 
-fun Long.toDateString(dateFormat: Int = DateFormat.MEDIUM): String {
-    val df = DateFormat.getDateInstance(dateFormat, Locale.getDefault())
-    return df.format(this)
-}
-
 fun String.toFormattedDate() : Date
 {
     return SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(this)
@@ -119,3 +114,6 @@ fun Date.toFormattedString() : String
 {
     return SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(this)
 }
+
+fun <K, V : Any> Map<K, V?>.toVarargArray(): Array<out Pair<K, V>> =
+        map({ Pair(it.key, it.value!!) }).toTypedArray()

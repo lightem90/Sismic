@@ -8,18 +8,9 @@ import android.support.v4.content.FileProvider
 import com.polito.sismic.Domain.MediaFile
 import com.polito.sismic.Domain.ReportManager
 import com.polito.sismic.Extensions.toFormattedString
+import com.polito.sismic.Interactors.Helpers.MediaType
 import java.io.*
-import java.text.SimpleDateFormat
 import java.util.*
-
-enum class MediaType
-{
-    Picture,
-    Video,
-    Audio,
-    Sketch,
-    Note
-}
 
 //Context needed for file provider
 class ReportMediaInteractor(val mReportManager: ReportManager,

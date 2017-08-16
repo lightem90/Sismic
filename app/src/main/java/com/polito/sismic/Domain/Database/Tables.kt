@@ -17,7 +17,7 @@ object ReportTable
     val VALUE = "value"
 }
 
-object ReportMedia
+object ReportMediaTable
 {
     val NAME = "Media"
     val ID = "_id"
