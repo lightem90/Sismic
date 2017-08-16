@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.polito.sismic.Domain.Report
+import com.polito.sismic.Domain.ReportDetails
 import com.polito.sismic.Interactors.Helpers.DangerStateProvider
 import com.polito.sismic.R
 import kotlinx.android.synthetic.main.history_item.view.*
@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.history_item.view.*
  */
 
 //Manager of report list
-class ReportAdapter(val items: List<Report>, val listener: (Report) -> Unit) :
+class ReportAdapter(val items: List<ReportDetails>, val listener: (ReportDetails) -> Unit) :
         RecyclerView.Adapter<ReportAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder? {
@@ -38,17 +38,17 @@ class ReportAdapter(val items: List<Report>, val listener: (Report) -> Unit) :
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
     {
-        fun bindReport(report: Report, listener: (Report) -> Unit) = with(report) {
+        fun bindReport(reportDetails: ReportDetails, listener: (ReportDetails) -> Unit) = with(reportDetails) {
 
             itemView.isDuplicateParentStateEnabled = true
-            itemView.history_item_title.text = report.title
-            itemView.history_item_description.text = report.description
-            itemView.history_item_size.text = report.size.toString() + " MB"
-            var dangerState = DangerStateProvider.getDangerStateByValue(report.value)
+            itemView.history_item_title.text = reportDetails.title
+            itemView.history_item_description.text = reportDetails.description
+            itemView.history_item_size.text = reportDetails.size.toString() + " MB"
+            var dangerState = DangerStateProvider.getDangerStateByValue(reportDetails.value)
 
             itemView.danger_layout.SetDangerState(dangerState)
-            itemView.history_item_value.text = report.value.toString()
-            setTextColorByDanger(report.value, itemView.history_item_value)
+            itemView.history_item_value.text = reportDetails.value.toString()
+            setTextColorByDanger(reportDetails.value, itemView.history_item_value)
 
             //TODO: Bottoni e click (edit sul click della view)
             //setOnClickListener { listener(mReportManager) }

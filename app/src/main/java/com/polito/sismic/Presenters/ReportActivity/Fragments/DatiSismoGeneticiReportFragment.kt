@@ -5,7 +5,6 @@ import android.support.annotation.Nullable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.polito.sismic.Domain.ReportManager
 import com.polito.sismic.R
 import kotlinx.android.synthetic.main.dati_sismogenetici_report_layout.*
 

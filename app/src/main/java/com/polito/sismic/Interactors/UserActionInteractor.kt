@@ -5,7 +5,6 @@ import android.content.Intent
 import android.net.Uri
 import android.provider.MediaStore
 import android.support.v7.app.AlertDialog
-import com.polito.sismic.Domain.ReportManager
 import com.polito.sismic.Extensions.toast
 import com.polito.sismic.Interactors.Helpers.MediaType
 import com.polito.sismic.Interactors.Helpers.UserActionType

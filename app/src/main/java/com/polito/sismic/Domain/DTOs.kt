@@ -1,5 +1,6 @@
 package com.polito.sismic.Domain
 
+import com.polito.sismic.Presenters.PresenterActivity.ReportListFragment
 import java.util.*
 
 /**
@@ -12,32 +13,38 @@ interface ReportSection
 
 }
 
-data class Report(val id : Int,
-                    val title: String,
-                    val description: String,
-                    val userIdentifier: String,
-                    val date : Date,
-                    val size : Double,
-                    val value : Int)
+//It contains the whole report data
+data class Report(val reportDetails: ReportDetails,
+                  val mediaList : List<ReportMedia>,
+                  val sectionList : List<ReportSection>)
 
+data class ReportDetails(val id : Int,
+                         val title: String,
+                         val description: String,
+                         val userIdentifier: String,
+                         val date : Date,
+                         val size : Double,
+                         val value : Int)
 
 data class ReportMedia(val id: Int,
                        val url: String,
                        val type: String,
                        val note: String,
-                       val size: Double, val report_id: Int)
+                       val size: Double)
 
-data class LocalizationInfoSection(val latitude : String,
+data class LocalizationInfoSection(val id : Int,
+                                   val latitude : String,
                                    val longitude : String,
                                    val country : String,
                                    val region : String,
                                    val province : String,
-                                   val comun : String,
+                                   val comune: String,
                                    val address : String,
                                    val zone : String,
                                    val code : String) : ReportSection
 
-data class CatastoReportSection(val foglio : String,
+data class CatastoReportSection(val id : Int,
+                                val foglio : String,
                                 val mappale : String,
                                 val particella : String,
                                 val foglio_cartografia : String,

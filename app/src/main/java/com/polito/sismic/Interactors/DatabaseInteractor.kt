@@ -1,8 +1,7 @@
 package com.polito.sismic.Interactors
 
 import com.polito.sismic.Domain.Database.*
-import com.polito.sismic.Domain.MediaFile
-import com.polito.sismic.Domain.Report
+import com.polito.sismic.Domain.ReportDetails
 import com.polito.sismic.Domain.ReportSection
 import com.polito.sismic.Extensions.*
 import org.jetbrains.anko.db.SqlOrderDirection
@@ -20,12 +19,12 @@ class DatabaseInteractor(val reportDatabaseHelper: ReportDatabaseHelper = Report
                          val dataMapper: DatabaseDataMapper = DatabaseDataMapper())
 {
     //Creates the entry in the db for the current (new) report
-    fun createReportForId(userID: String,
-                          title : String = "",
-                          description : String = "",
-                          value : Int = 0,
-                          size : Double = 0.0,
-                          date : Date = Date()) : Report = reportDatabaseHelper.use {
+    fun createReportDetailsForUser(userID: String,
+                                   title : String = "",
+                                   description : String = "",
+                                   value : Int = 0,
+                                   size : Double = 0.0,
+                                   date : Date = Date()) : ReportDetails = reportDatabaseHelper.use {
 
         insert(ReportTable.NAME,
                 ReportTable.USERID to userID,
@@ -46,24 +45,24 @@ class DatabaseInteractor(val reportDatabaseHelper: ReportDatabaseHelper = Report
         databaseReportDetails!!.let { dataMapper.convertReportToDomain(databaseReportDetails) }
     }
 
-    //TODO, it doesn't need just the Report, but the report section as well!
-    fun getReportForId(reportID : String, userID: String) : Report = reportDatabaseHelper.use {
+    fun getReportForId(reportID : String, userID: String) : ReportDetails = reportDatabaseHelper.use {
         val reportRequest = "${ReportTable.USERID} = ? AND ${ReportTable.ID} = ?"
         val databaseReportDetails = select(ReportTable.NAME)
                 .whereSimple(reportRequest, userID, reportID)
                 .parseOpt  { DatabaseReportDetails(HashMap(it)) }
 
+        //TODO, it doesn't need just the ReportDetails, but the report section as well, these are just details!
         databaseReportDetails!!.let { dataMapper.convertReportToDomain(databaseReportDetails) }
     }
 
-    fun  getAllReports(): List<Report> = reportDatabaseHelper.use {
+    fun getAllReportsDetails(): List<ReportDetails> = reportDatabaseHelper.use {
 
         val reports = select(ReportTable.NAME)
                 .orderBy(ReportTable.ID)
                 .parseList { DatabaseReportDetails(HashMap(it)) }
 
         //there's a smarter way to do this
-        var listToReturn = mutableListOf<Report>()
+        var listToReturn = mutableListOf<ReportDetails>()
         reports.forEach { x -> listToReturn.add(dataMapper.convertReportToDomain(x)) }
         listToReturn.toList()
     }
@@ -76,11 +75,11 @@ class DatabaseInteractor(val reportDatabaseHelper: ReportDatabaseHelper = Report
     }
 
     //TODO how to save section into correct table??
-    fun  save(report: Report,
+    fun  save(reportDetails: ReportDetails,
               tmpSectionList: HashMap<String, ReportSection>,
               tmpMediaList: MutableList<MediaFile>) = reportDatabaseHelper.use {
 
-    with(dataMapper.convertReportFromDomain(report))
+    with(dataMapper.convertReportFromDomain(reportDetails))
     {
         update(ReportTable.NAME, *map.toVarargArray())
     }
@@ -88,8 +87,8 @@ class DatabaseInteractor(val reportDatabaseHelper: ReportDatabaseHelper = Report
     }
 
     //TODO: delete all sections with report_id as well
-    fun  delete(report: Report) = reportDatabaseHelper.use {
-        with(dataMapper.convertReportFromDomain(report))
+    fun  delete(reportDetails: ReportDetails) = reportDatabaseHelper.use {
+        with(dataMapper.convertReportFromDomain(reportDetails))
         {
             delete(ReportTable.NAME, "${ReportTable.ID} = ?", arrayOf(_id.toString()))
         }

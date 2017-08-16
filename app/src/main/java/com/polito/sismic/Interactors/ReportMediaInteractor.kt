@@ -5,8 +5,6 @@ import android.net.Uri
 import android.os.Environment
 import android.provider.OpenableColumns
 import android.support.v4.content.FileProvider
-import com.polito.sismic.Domain.MediaFile
-import com.polito.sismic.Domain.ReportManager
 import com.polito.sismic.Extensions.toFormattedString
 import com.polito.sismic.Interactors.Helpers.MediaType
 import java.io.*
@@ -14,7 +12,7 @@ import java.util.*
 
 //Context needed for file provider
 class ReportMediaInteractor(val mReportManager: ReportManager,
-        val mContext: Context) {
+                            val mContext: Context) {
 
     //The user can add media only sequentially, so in case of failure while adding we delete the tmp file
     var lastAddedTmpFile : MediaFile? = null

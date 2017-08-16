@@ -1,7 +1,6 @@
-package com.polito.sismic.Domain
+package com.polito.sismic.Interactors
 
 import android.content.Intent
-import com.polito.sismic.Interactors.DatabaseInteractor
 
 
 /**
@@ -30,7 +29,7 @@ class ReportProvider {
             //creating new report, I need to do it now so I can have the report Id and other infos.. if the user cancels the operation
             //I will delete the tmp report as well
             //dbInteractor.cleanDatabase()
-            val report = dbInteractor.createReportForId(userName)
+            val report = dbInteractor.createReportDetailsForUser(userName)
             return ReportManager(report, dbInteractor)
         }
     }

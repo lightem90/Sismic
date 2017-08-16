@@ -1,8 +1,7 @@
 package com.polito.sismic.Presenters.Adapters
 
 import android.content.Context
-import android.os.Bundle
-import com.polito.sismic.Domain.ReportManager
+import com.polito.sismic.Interactors.ReportManager
 import com.polito.sismic.Presenters.ReportActivity.Fragments.*
 import com.polito.sismic.R
 import com.stepstone.stepper.Step

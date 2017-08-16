@@ -8,8 +8,8 @@ import android.view.MenuItem
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.places.Places
-import com.polito.sismic.Domain.ReportManager
-import com.polito.sismic.Domain.ReportProvider
+import com.polito.sismic.Interactors.ReportManager
+import com.polito.sismic.Interactors.ReportProvider
 import com.polito.sismic.Domain.ReportSection
 import com.polito.sismic.Extensions.toast
 import com.polito.sismic.Interactors.DomainInteractor

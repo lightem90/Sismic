@@ -43,7 +43,7 @@ class ReportListFragment : Fragment() {
 
         //TODO lambda for edit
         history_container.layoutManager = LinearLayoutManager(activity)
-        var reportList = DatabaseInteractor().getAllReports()
+        var reportList = DatabaseInteractor().getAllReportsDetails()
 
         var adapter = ReportAdapter(reportList) { toast("${it.title} Clicked") }
         history_container.adapter = adapter

@@ -1,6 +1,5 @@
 package com.polito.sismic.Interactors
 
-import com.polito.sismic.Domain.ReportManager
 import com.polito.sismic.Domain.ReportSection
 
 //Bridge between UI and Domain/Database
