@@ -45,9 +45,10 @@ class ReportFragmentFactory(private val reportManager: ReportManager) {
 
     private fun pushFragment(fragment: BaseReportFragment): Step {
 
-        var bundle = Bundle()
-        bundle.putParcelable("report", reportManager.getParcelable())
-        fragment.arguments = bundle
+        //TODO: handle edit!
+        //var bundle = Bundle()
+        //bundle.putParcelable("report", reportManager.getParcelable())
+        //fragment.arguments = bundle
 
         return fragment
     }

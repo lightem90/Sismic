@@ -9,6 +9,7 @@ import android.view.*
 import com.google.android.gms.location.places.Place
 import com.polito.sismic.AsyncTasks.PlaceDetailsTask
 import com.polito.sismic.Domain.ReportManager
+import com.polito.sismic.Domain.ReportSection
 import com.polito.sismic.Extensions.toast
 import com.polito.sismic.Interactors.Helpers.LocalizationActionHelper
 import com.polito.sismic.Interactors.Helpers.LocalizationActionType
@@ -26,6 +27,7 @@ import java.text.SimpleDateFormat
 class InfoLocReportFragment : BaseReportFragment(),
         ParameterReportLayout.RegionSelectedListener,
         ParameterReportLayout.ProvinceSelectedListener {
+
 
     private var  mLocationCallback: InfoLocReportFragment.CurrentLocationProvided? = null
     //private var  mLocationSuggestionsHelper : LocationSuggestionsHelper? = null
@@ -57,25 +59,6 @@ class InfoLocReportFragment : BaseReportFragment(),
     override fun onCreateView(inflater: LayoutInflater?, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View?
     {
         return inflateFragment(R.layout.info_loc_report_layout, inflater, container)
-    }
-
-    override fun onInitializeParametersForEdit(inflatingView: View, reportManager: ReportManager) {
-
-        //Alwyas
-        inflatingView.findViewById<LabelReportLayout>(R.id.report_info_number_label)?.setValue(reportManager.id.toString())
-        inflatingView.findViewById<LabelReportLayout>(R.id.report_info_date_label)?.setValue(SimpleDateFormat("yyyy-MM-dd-hh.mm.ss").format(reportManager.Date))
-        inflatingView.findViewById<LabelReportLayout>(R.id.report_info_name_label)?.setValue(reportManager.userID)
-
-        //If I'm editing a report, then just assign to the view the parameters read from the dto
-        if (!reportManager.isNew)
-        {
-            reportManager.prepareForEdit<Double>(view?.findViewById<ParameterReportLayout>(R.id.lat_parameter))
-            reportManager.prepareForEdit<Double>(view?.findViewById<ParameterReportLayout>(R.id.long_parameter))
-        }
-    }
-
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
@@ -168,24 +151,6 @@ class InfoLocReportFragment : BaseReportFragment(),
         PlaceDetailsTask(view!!, context).execute(place)
     }
 
-    override fun getAllViewParameters(): MutableList<Pair<Int, String>> {
-
-        return mutableListOf(
-                Pair(report_info_number_label.id, report_info_number_label.getValue()),
-                Pair(report_info_name_label.id, report_info_name_label.getValue()),
-                Pair(report_info_date_label.id, report_info_date_label.getValue()),
-                Pair(lat_parameter.id, lat_parameter.getParameterValue()),
-                Pair(long_parameter.id, long_parameter.getParameterValue()),
-                Pair(country_parameter.id, country_parameter.getParameterValue()),
-                Pair(region_parameter.id, region_parameter.getParameterValue()),
-                Pair(comune_parameter.id, comune_parameter.getParameterValue()),
-                Pair(address_parameter.id, address_parameter.getParameterValue()),
-                Pair(cap_parameter.id, cap_parameter.getParameterValue()),
-                Pair(zona_sismica_parameter.id, zona_sismica_parameter.getParameterValue()),
-                Pair(codice_istat_parameter.id, codice_istat_parameter.getParameterValue())
-        )
-    }
-
     //Is the helper of the fragment that gives back the suggestions to its own children
     override fun OnRegionSelected(newRegion: String) {
         //province_parameter.setSuggestions(mLocationSuggestionsHelper!!.getProvinceByRegion(newRegion))
@@ -194,6 +159,13 @@ class InfoLocReportFragment : BaseReportFragment(),
     override fun OnProvinceSelected(newProvince: String) {
         //comune_parameter.setSuggestions(mLocationSuggestionsHelper!!.getLocalityByProvince(newProvince))
     }
+}
+
+//TODO
+data class LocalizationInfoSection(val latitude : String,
+                                   val longitude : String) : ReportSection
+{
+
 }
 
 

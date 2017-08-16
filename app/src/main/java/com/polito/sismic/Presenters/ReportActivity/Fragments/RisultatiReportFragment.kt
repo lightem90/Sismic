@@ -14,14 +14,6 @@ import com.polito.sismic.R
 //TODO, questo è diverso
 class RisultatiReportFragment : BaseReportFragment() {
 
-    override fun onInitializeParametersForEdit(inflatingView: View, reportManager: ReportManager) {
-        return
-    }
-
-    override fun getAllViewParameters(): MutableList<Pair<Int, String>> {
-        return mutableListOf()
-    }
-
     override fun onCreateView(inflater: LayoutInflater?, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View? {
         return inflateFragment(R.layout.risultati_report_layout, inflater, container)
     }

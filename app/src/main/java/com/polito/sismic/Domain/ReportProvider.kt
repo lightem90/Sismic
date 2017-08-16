@@ -15,7 +15,7 @@ class ReportProvider {
     private val dbInteractor : DatabaseInteractor = DatabaseInteractor()
     fun getOrCreateReportManager(userName : String, intent : Intent) : ReportManager?
     {
-        //editing existing report
+        //TODO: editing existing report
         if (intent.getBooleanExtra("editing", false))
         {
             val reportId = intent.getIntExtra("report_id", -1)
@@ -27,7 +27,9 @@ class ReportProvider {
         }
         else
         {
-            //creating new report
+            //creating new report, I need to do it now so I can have the report Id and other infos.. if the user cancels the operation
+            //I will delete the tmp report as well
+            dbInteractor.cleanDatabase()
             val report = dbInteractor.createReportForId(userName)
             return ReportManager(report, dbInteractor)
         }

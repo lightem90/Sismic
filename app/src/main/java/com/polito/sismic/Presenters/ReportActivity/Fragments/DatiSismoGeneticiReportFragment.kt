@@ -13,13 +13,6 @@ import kotlinx.android.synthetic.main.dati_sismogenetici_report_layout.*
  * Created by Matteo on 29/07/2017.
  */
 class DatiSismoGeneticiReportFragment : BaseReportFragment() {
-    override fun onInitializeParametersForEdit(inflatingView: View, reportManager: ReportManager) {
-        return
-    }
-
-    override fun getAllViewParameters(): MutableList<Pair<Int, String>> {
-        return mutableListOf()
-    }
 
     override fun onCreateView(inflater: LayoutInflater?, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View? {
         return inflateFragment(R.layout.dati_sismogenetici_report_layout, inflater, container)

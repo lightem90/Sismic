@@ -7,6 +7,7 @@ import android.provider.OpenableColumns
 import android.support.v4.content.FileProvider
 import com.polito.sismic.Domain.MediaFile
 import com.polito.sismic.Domain.ReportManager
+import com.polito.sismic.Extensions.toFormattedString
 import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -67,7 +68,7 @@ class ReportMediaInteractor(val mReportManager: ReportManager,
         }
 
         // Create an image file name (REPORT#_TYPE_Date.ext)
-        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val timeStamp = Date().toFormattedString()
         val filename = prefix + timeStamp
 
         val file = File.createTempFile(
@@ -87,7 +88,7 @@ class ReportMediaInteractor(val mReportManager: ReportManager,
     {
         lastAddedTmpFile!!.note = if (stringExtra  == null) "" else stringExtra
         lastAddedTmpFile!!.size = getSizeFromUri(Uri.parse(lastAddedTmpFile!!.url))
-        mReportManager.tmpMediaList.add(lastAddedTmpFile!!)
+        mReportManager.addMediaFile(lastAddedTmpFile!!)
     }
 
     private fun getSizeFromUri(path: Uri): Double {

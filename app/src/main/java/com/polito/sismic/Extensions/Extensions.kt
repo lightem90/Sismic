@@ -5,10 +5,14 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.database.sqlite.SQLiteDatabase
 import android.widget.Toast
+import com.polito.sismic.Domain.ReportManager
+import com.polito.sismic.Domain.ReportSection
 import org.jetbrains.anko.db.MapRowParser
 import org.jetbrains.anko.db.SelectQueryBuilder
 import java.text.DateFormat
+import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.reflect.KClass
 import kotlin.reflect.KProperty
 
 /**
@@ -104,4 +108,14 @@ class Preference<T>(val context: Context, val name: String, val default: T) {
 fun Long.toDateString(dateFormat: Int = DateFormat.MEDIUM): String {
     val df = DateFormat.getDateInstance(dateFormat, Locale.getDefault())
     return df.format(this)
+}
+
+fun String.toFormattedDate() : Date
+{
+    return SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(this)
+}
+
+fun Date.toFormattedString() : String
+{
+    return SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(this)
 }

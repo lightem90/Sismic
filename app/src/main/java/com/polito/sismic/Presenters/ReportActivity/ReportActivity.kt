@@ -13,7 +13,6 @@ import com.polito.sismic.Domain.ReportProvider
 import com.polito.sismic.Domain.ReportSection
 import com.polito.sismic.Extensions.toast
 import com.polito.sismic.Interactors.Helpers.UserActionType
-import com.polito.sismic.Interactors.ReportMediaInteractor
 import com.polito.sismic.Interactors.UserActionInteractor
 import com.polito.sismic.Presenters.Adapters.ReportFragmentsAdapter
 import com.polito.sismic.Presenters.ReportActivity.Fragments.BaseReportFragment
@@ -100,14 +99,12 @@ class ReportActivity : AppCompatActivity(),
         return super.onOptionsItemSelected(item)
     }
 
-    //Updates the dto
-    override fun onParametersConfirmed(sectionParametr : ReportSection) {
-        //todo
-        mReportManager!!.tmpSectionList.add(sectionParametr)
-    }
-
     override fun onParametersSaveRequest() {
         mUserActionInteractor!!.saveReport()
+    }
+
+    override fun onParametersConfirmed(sectionParameters: ReportSection) {
+        mReportManager!!.addSectionParameters(sectionParameters)
     }
 }
 

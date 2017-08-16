@@ -10,14 +10,6 @@ import com.polito.sismic.R
 
 class SpettriDiProgettoReportFragment : BaseReportFragment() {
 
-    override fun onInitializeParametersForEdit(inflatingView: View, reportManager: ReportManager) {
-        return
-    }
-
-    override fun getAllViewParameters(): MutableList<Pair<Int, String>> {
-        return mutableListOf()
-    }
-
     override fun onCreateView(inflater: LayoutInflater?, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View? {
         return inflateFragment(R.layout.spettri_progetto_report_layout, inflater, container)
     }
