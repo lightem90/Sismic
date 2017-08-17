@@ -1,9 +1,6 @@
 package com.polito.sismic.Interactors.Helpers
 
-import com.polito.sismic.Domain.CatastoReportSection
-import com.polito.sismic.Domain.ErroreSection
-import com.polito.sismic.Domain.LocalizationInfoSection
-import com.polito.sismic.Domain.ReportSection
+import com.polito.sismic.Domain.*
 import com.polito.sismic.Presenters.ReportActivity.Fragments.*
 import kotlinx.android.synthetic.main.catasto_report_layout.*
 import kotlinx.android.synthetic.main.info_loc_report_layout.*
@@ -49,6 +46,16 @@ class UiMapper {
         }
 
         return ErroreSection("error")
+    }
+
+    fun convertMediaForDomain(mediaFile: MediaFile) : ReportMedia = with(mediaFile)
+    {
+        return ReportMedia(-1, mediaFile.url, mediaFile.type, mediaFile.note, mediaFile.size)
+    }
+
+    fun convertReportMediaFromDomain(reportMedia: ReportMedia) : MediaFile = with(reportMedia)
+    {
+        return MediaFile(type, url, note, size)
     }
 }
 

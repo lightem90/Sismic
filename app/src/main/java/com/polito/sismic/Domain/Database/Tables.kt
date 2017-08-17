@@ -44,3 +44,18 @@ object LocalizationInfoTable
     val ISTAT_CODE = "code"
     val REPORT_ID = "report_id"
 }
+
+object CatastoInfoTable
+{
+    val NAME = "Catasto"
+    val ID =                "_id"
+    val foglio =            "foglio"
+    val mappale =           "mappale"
+    val particella =        "particella"
+    val foglio_cart =       "foglio_cart"
+    val edificio =          "edificio"
+    val aggr_str =          "aggr_str"
+    val zona_urb =          "zona_urb"
+    val piano_urb =         "piano_urb"
+    val vincoli_urb =       "vincoli_urb"
+}

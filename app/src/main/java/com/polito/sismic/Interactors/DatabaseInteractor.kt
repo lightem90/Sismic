@@ -5,7 +5,6 @@ import com.polito.sismic.Domain.Report
 import com.polito.sismic.Domain.ReportDetails
 import com.polito.sismic.Domain.ReportSection
 import com.polito.sismic.Extensions.*
-import com.polito.sismic.Interactors.Helpers.MediaFile
 import org.jetbrains.anko.db.SqlOrderDirection
 import org.jetbrains.anko.db.insert
 import org.jetbrains.anko.db.select
@@ -66,9 +65,10 @@ class DatabaseInteractor(val reportDatabaseHelper: ReportDatabaseHelper = Report
         //TODO, add others!
 
         //TODO, it doesn't need just the ReportDetails, but the report section as well, these are just details!
-        databaseReportDetails?.let { dataMapper.convertToDomain(databaseReportDetails,
+        databaseReportDetails?.let { dataMapper.convertReportToDomain(DatabaseReport(
+                databaseReportDetails,
                 databaseMediaInfo,
-                listOf(databaseLocalizationInfo)) }
+                listOf(databaseLocalizationInfo as DatabaseSection))) }
     }
 
     fun getAllReportsDetails(): List<ReportDetails> = reportDatabaseHelper.use {
@@ -91,14 +91,12 @@ class DatabaseInteractor(val reportDatabaseHelper: ReportDatabaseHelper = Report
     }
 
     //TODO how to save section into correct table??
-    fun  save(reportDetails: ReportDetails,
-              tmpSectionList: HashMap<String, ReportSection>,
-              tmpMediaList: MutableList<MediaFile>) = reportDatabaseHelper.use {
+    fun  save(report : Report) = reportDatabaseHelper.use {
 
-    with(dataMapper.convertReportDetailsFromDomain(reportDetails))
-    {
-        update(ReportTable.NAME, *map.toVarargArray())
-    }
+        with (dataMapper.convertReportFromDomain(report))
+        {
+            update(ReportTable.NAME, *reportDetails.map.toVarargArray())
+        }
 
     }
 

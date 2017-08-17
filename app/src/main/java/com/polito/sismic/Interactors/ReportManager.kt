@@ -1,8 +1,11 @@
 package com.polito.sismic.Interactors
 
+import com.polito.sismic.Domain.Report
 import com.polito.sismic.Domain.ReportDetails
+import com.polito.sismic.Domain.ReportMedia
 import com.polito.sismic.Domain.ReportSection
 import com.polito.sismic.Interactors.Helpers.MediaFile
+import com.polito.sismic.Interactors.Helpers.UiMapper
 
 //ReportDetails if I'm editing is the domain class that refers to a row in the db,
 //if it's a new reportDetails its the temporary new reportDetails
@@ -15,21 +18,23 @@ class ReportManager(private val reportDetails: ReportDetails, val database : Dat
     private var tmpSectionList : HashMap<String, ReportSection> = HashMap()
     private var tmpMediaList   : MutableList<MediaFile>   = mutableListOf()
 
-
     fun deleteReport() {
         database.delete(reportDetails)
     }
 
-    fun saveReportToDb() {
-        var reportToSave = ReportDetails(reportDetails.id,
+    fun saveReportToDb() = with (UiMapper()){
+        val reportToSave = ReportDetails(reportDetails.id,
                 reportDetails.title,
                 reportDetails.description,
                 reportDetails.userIdentifier,
                 reportDetails.date,
                 tmpMediaList.sumByDouble { x -> x.size },
                 reportDetails.value)
-        //Save a copy of the original dto, needed to save value and size correctly
-        database.save(reportToSave, tmpSectionList, tmpMediaList)
+        //Save a copy of the original dto, needed to save value and size correctly, convert the media file for ui to domain for db..
+        //not nice but still..
+        val domainMediaList = mutableListOf<ReportMedia>()
+        tmpMediaList.forEach {x -> domainMediaList.add(convertMediaForDomain(x))}
+        database.save(Report(reportToSave, domainMediaList, tmpSectionList.values.toList()))
     }
 
     fun addSectionParameters(sectionParameters: ReportSection) {

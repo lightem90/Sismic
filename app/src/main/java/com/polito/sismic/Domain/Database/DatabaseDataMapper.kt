@@ -9,6 +9,8 @@ import com.polito.sismic.Extensions.toFormattedString
  */
 class DatabaseDataMapper {
 
+    private val helper : DatabaseMapperHelper = DatabaseMapperHelper()
+
     fun convertReportDetailsToDomain(databaseReport: DatabaseReportDetails): ReportDetails = with (databaseReport){
         return ReportDetails(_id, title, description, userID, date.toFormattedDate(), size, value)
     }
@@ -27,39 +29,45 @@ class DatabaseDataMapper {
         return DatabaseReportMedia(id, url, type, note, size, reportId)
     }
 
-    fun convertLocalizationDataFromDomain(reportId : Int, localizationInfoSection: LocalizationInfoSection) : DatabaseReportLocalizationInfo = with (localizationInfoSection)
-    {
-        return DatabaseReportLocalizationInfo(id, latitude.toDouble(), longitude.toDouble(), country, region, province, comune, address, zone, code.toInt(), reportId)
+    fun  convertReportFromDomain(report: Report): DatabaseReport = with(report){
+
+        var databaseReportDetails = convertReportDetailsFromDomain(reportDetails)
+        var databaseMediaList = with (mediaList)
+        {
+            map {convertMediaFromDomain(databaseReportDetails._id, it)}
+        }
+
+        var databaseSection = with(sectionList)
+        {
+            map { convertDomainSectionToDatabaseSection(databaseReportDetails._id, it) }
+        }
+
+        DatabaseReport(databaseReportDetails, databaseMediaList, databaseSection.requireNoNulls())
     }
 
-    fun  convertToDomain(databaseReportDetails: DatabaseReportDetails, databaseMediaInfo: List<DatabaseReportMedia>, databaseSections: List<DatabaseSection?>): Report {
+    fun convertReportToDomain(databaseReport: DatabaseReport): Report = with (databaseReport){
 
-        var domainMediaList = with(databaseMediaInfo){
+        val domainMediaList = with(mediaList){
             map { convertMediaToDomain(it) }
         }
 
-        var domainSections = with(databaseSections)
+        val domainSections = with(sections)
         {
             map { convertDatabaseSectionToDomain(it) }
         }
 
-        return Report(convertReportDetailsToDomain(databaseReportDetails), domainMediaList, domainSections.requireNoNulls())
+        Report(convertReportDetailsToDomain(reportDetails), domainMediaList, domainSections.requireNoNulls())
     }
 
 
-    fun convertDatabaseSectionToDomain(section: DatabaseSection?) : ReportSection?
+    fun convertDatabaseSectionToDomain(section: DatabaseSection?) : ReportSection? = with (helper)
     {
-        //TODO
-        when(section)
-        {
-            is DatabaseReportLocalizationInfo -> return convertLocalizationDataToDomain(section)
-        }
-
-        return null
+        //TODO with helper
+        helper.getDomainClassForSection(section)
     }
 
-    fun convertLocalizationDataToDomain(localizationInfo: DatabaseReportLocalizationInfo) : LocalizationInfoSection = with (localizationInfo)
+    fun convertDomainSectionToDatabaseSection(reportId: Int, section : ReportSection) : DatabaseSection? = with(helper)
     {
-        return LocalizationInfoSection(_id, latitude.toString(), longitude.toString(), country, region, province, comune, address, zone, code.toString())
+        helper.getDatabaseSectionForDomain(reportId, section)
     }
 }
