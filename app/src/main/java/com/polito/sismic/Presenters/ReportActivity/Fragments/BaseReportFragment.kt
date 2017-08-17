@@ -78,6 +78,7 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
         callback!!.goToNextStep()
     }
     override fun onCompleteClicked(callback: StepperLayout.OnCompleteClickedCallback?) {
+        mParametersCallback?.onParametersSaveRequest()
         callback!!.complete()
     }
 

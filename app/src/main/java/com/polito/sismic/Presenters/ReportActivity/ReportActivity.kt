@@ -81,6 +81,7 @@ class ReportActivity : AppCompatActivity(),
 
     override fun onParametersSaveRequest() {
         mUserActionInteractor.saveReport()
+        finish()
     }
 
     override fun onParametersConfirmed(sectionParameters: ReportSection) {
@@ -94,6 +95,7 @@ class ReportActivity : AppCompatActivity(),
 
     private fun initializeFromManager(reportManager: ReportManager)
     {
+        //reportManager.database.cleanDatabase()
         //To handle user action, it uses other interactor to pilot the ui changes to the domain
         mUserActionInteractor = UserActionInteractor(reportManager, this)
         mDomainInteractor = DomainInteractor(reportManager)

@@ -31,11 +31,6 @@
             android:name=".Presenters.PresenterActivity.PresenterActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <!-- "adjustPan" So the keyboard hides the fab and bottom nav when it shows -->
@@ -50,6 +45,7 @@
         </activity>
         <activity
             android:name=".Presenters.PresenterActivity.LoginActivity"
+            android:windowSoftInputMode="adjustPan"
             android:label="@string/title_activity_login" />
         <activity
             android:name=".Presenters.PresenterActivity.RegistrationActivity"
@@ -94,7 +90,14 @@
             android:name=".Presenters.PresenterActivity.SplashScreenActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_splash_screen"
-            android:theme="@style/FullscreenTheme"></activity>
+            android:theme="@style/FullscreenTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
     </application>
 
 </manifest>

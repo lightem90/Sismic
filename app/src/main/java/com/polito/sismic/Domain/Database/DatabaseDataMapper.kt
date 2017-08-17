@@ -42,7 +42,7 @@ class DatabaseDataMapper {
             map { convertDomainSectionToDatabaseSection(databaseReportDetails._id, it) }
         }
 
-        DatabaseReport(databaseReportDetails, databaseMediaList, databaseSection.requireNoNulls())
+        DatabaseReport(databaseReportDetails, databaseMediaList, databaseSection.filterNotNull())
     }
 
     fun convertReportToDomain(databaseReport: DatabaseReport): Report = with (databaseReport){

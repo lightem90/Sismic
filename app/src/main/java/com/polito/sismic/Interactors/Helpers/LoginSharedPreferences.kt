@@ -17,7 +17,6 @@ class LoginSharedPreferences {
             getSharedPreferences("login", Context.MODE_PRIVATE).edit {
                 putBoolean("logged", false)
             }
-
         }
 
         fun isLoggedIn (context: Context) : Boolean = with(context)
@@ -48,12 +47,13 @@ class LoginSharedPreferences {
                 putString("qualification", userDetails.qualification)
                 putString("registration", userDetails.registration)
                 putString("imageuri", userDetails.imageUri)
+                putBoolean("logged", true)
             }
         }
 
         fun demoLogin (context: Context)
         {
-            login(UserDetails("demo", "demo", "demo", "demo", "demo", "demo", "demo"), context)
+            login(UserDetails("Matteo", "demo", "demo", "demo", "demo", "demo", "demo"), context)
         }
     }
 }

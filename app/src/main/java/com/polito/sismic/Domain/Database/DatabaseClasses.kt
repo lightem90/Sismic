@@ -42,7 +42,7 @@ data class DatabaseReportDetails(var map: MutableMap<String, Any?>) {
 
 interface DatabaseSection {}
 
-data class DatabaseReportLocalizationInfo(var map: MutableMap<String, Any?>) : DatabaseSection {
+data class DatabaseLocalizationSection(var map: MutableMap<String, Any?>) : DatabaseSection {
     var _id: Int by map
     var latitude: Double by map
     var longitude: Double by map
@@ -80,7 +80,7 @@ data class DatabaseReportLocalizationInfo(var map: MutableMap<String, Any?>) : D
     }
 }
 
-data class CatastoReportInfo(var map: MutableMap<String, Any?>) {
+data class DatabaseCatastoSection(var map: MutableMap<String, Any?>) {
     var _id: Int by map
     var foglio: String by map
     var mappale: String by map

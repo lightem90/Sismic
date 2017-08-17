@@ -1,9 +1,9 @@
 package com.polito.sismic.Interactors
 
+import com.polito.sismic.Domain.CatastoReportSection
 import com.polito.sismic.Domain.Database.*
 import com.polito.sismic.Domain.Report
 import com.polito.sismic.Domain.ReportDetails
-import com.polito.sismic.Domain.ReportSection
 import com.polito.sismic.Extensions.*
 import org.jetbrains.anko.db.SqlOrderDirection
 import org.jetbrains.anko.db.insert
@@ -61,14 +61,19 @@ class DatabaseInteractor(val reportDatabaseHelper: ReportDatabaseHelper = Report
         val sectionRequest = "${LocalizationInfoTable.REPORT_ID} = ?"
         val databaseLocalizationInfo = select(LocalizationInfoTable.NAME)
                 .whereSimple(sectionRequest, reportID)
-                .parseOpt  { DatabaseReportLocalizationInfo(HashMap(it)) }
+                .parseOpt  { DatabaseLocalizationSection(HashMap(it)) } as DatabaseSection
+
+        val databaseCatastoInfo = select(CatastoInfoTable.NAME)
+                .whereSimple(sectionRequest, reportID)
+                .parseOpt  { DatabaseCatastoSection(HashMap(it)) } as DatabaseSection
         //TODO, add others!
 
+        val sectionList = listOf(databaseLocalizationInfo, databaseCatastoInfo)
         //TODO, it doesn't need just the ReportDetails, but the report section as well, these are just details!
         databaseReportDetails?.let { dataMapper.convertReportToDomain(DatabaseReport(
                 databaseReportDetails,
                 databaseMediaInfo,
-                listOf(databaseLocalizationInfo as DatabaseSection))) }
+                sectionList.filterNotNull())) }
     }
 
     fun getAllReportsDetails(): List<ReportDetails> = reportDatabaseHelper.use {
@@ -91,11 +96,13 @@ class DatabaseInteractor(val reportDatabaseHelper: ReportDatabaseHelper = Report
     }
 
     //TODO how to save section into correct table??
-    fun  save(report : Report) = reportDatabaseHelper.use {
+    fun save(report : Report) = reportDatabaseHelper.use {
 
         with (dataMapper.convertReportFromDomain(report))
         {
             update(ReportTable.NAME, *reportDetails.map.toVarargArray())
+            insertEachSectionIntoCorrectTable(sections)
+            mediaList.forEach{ (map) -> insert(ReportMediaTable.NAME, *map.toVarargArray())}
         }
 
     }
@@ -105,6 +112,17 @@ class DatabaseInteractor(val reportDatabaseHelper: ReportDatabaseHelper = Report
         with(dataMapper.convertReportDetailsFromDomain(reportDetails))
         {
             delete(ReportTable.NAME, "${ReportTable.ID} = ?", arrayOf(_id.toString()))
+        }
+    }
+
+    private fun insertEachSectionIntoCorrectTable(sections: List<DatabaseSection>) = reportDatabaseHelper.use {
+
+        sections.forEach {section ->
+            when (section) {
+                is DatabaseLocalizationSection -> {
+                    insert(LocalizationInfoTable.NAME, *section.map.toVarargArray())
+                }
+            }
         }
     }
 }

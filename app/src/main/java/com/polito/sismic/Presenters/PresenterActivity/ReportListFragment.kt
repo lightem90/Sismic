@@ -50,6 +50,7 @@ class ReportListFragment : Fragment() {
 
         var adapter = ReportAdapter(reportList)
         {
+            //on long press, edit the whole report
             startReportEditing(it)
         }
         history_container.adapter = adapter

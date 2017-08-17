@@ -21,6 +21,9 @@ import android.widget.ArrayAdapter
 
 import java.util.ArrayList
 import android.Manifest.permission.READ_CONTACTS
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
 import com.polito.sismic.Interactors.Helpers.LoginSharedPreferences
 import com.polito.sismic.R
 
@@ -141,7 +144,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true)
-            mAuthTask = UserLoginTask(emailStr, passwordStr)
+            mAuthTask = UserLoginTask(emailStr, passwordStr, this)
             mAuthTask!!.execute(null as Void?)
         }
     }
@@ -244,26 +247,18 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
-    inner class UserLoginTask internal constructor(private val mEmail: String, private val mPassword: String) : AsyncTask<Void, Void, Boolean>() {
+    inner class UserLoginTask internal constructor(private val mEmail: String,
+                                                   private val mPassword: String,
+                                                   private val caller : Activity) : AsyncTask<Void, Void, Boolean>() {
 
         override fun doInBackground(vararg params: Void): Boolean? {
             // TODO: attempt authentication against a network service.
             LoginSharedPreferences.demoLogin(applicationContext)
             try {
-                // Simulate network access.
-                Thread.sleep(2000)
+                return true
             } catch (e: InterruptedException) {
                 return false
             }
-
-            return DUMMY_CREDENTIALS
-                    .map { it.split(":") }
-                    .firstOrNull { it[0] == mEmail }
-                    ?.let {
-                        // Account exists, return true if the password matches.
-                        it[1] == mPassword
-                    }
-                    ?: true
         }
 
         override fun onPostExecute(success: Boolean?) {
@@ -271,7 +266,8 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
             showProgress(false)
 
             if (success!!) {
-                //TODO: save to sp
+
+                caller.startActivity(Intent(caller, PresenterActivity::class.java))
                 finish()
             } else {
                 password.error = getString(R.string.error_incorrect_password)
@@ -291,11 +287,5 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
          * Id to identity READ_CONTACTS permission request.
          */
         private val REQUEST_READ_CONTACTS = 0
-
-        /**
-         * A dummy authentication store containing known user names and passwords.
-         * TODO: remove after connecting to a real authentication system.
-         */
-        private val DUMMY_CREDENTIALS = arrayOf("foo@example.com:hello", "bar@example.com:world")
     }
 }

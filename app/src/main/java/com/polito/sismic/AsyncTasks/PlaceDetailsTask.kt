@@ -54,7 +54,7 @@ class PlaceDetailsTask(fragmentView: View, val context: Context) : AsyncTask<Pla
         var conn: HttpURLConnection?
         conn = urlUse.openConnection() as HttpURLConnection
         conn.requestMethod = "GET"
-        conn.connectTimeout = 2000
+        conn.connectTimeout = 5000
         val status = conn.responseCode
 
         when (status) {

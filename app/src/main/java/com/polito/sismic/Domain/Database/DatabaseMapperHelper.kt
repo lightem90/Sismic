@@ -12,7 +12,7 @@ class DatabaseMapperHelper
 
         when(section)
         {
-            is DatabaseReportLocalizationInfo -> return convertLocalizationDataToDomain(section)
+            is DatabaseLocalizationSection -> return convertLocalizationDataToDomain(section)
         }
 
         return null
@@ -28,13 +28,13 @@ class DatabaseMapperHelper
         return null
     }
 
-    fun convertLocalizationDataToDomain(localizationInfo: DatabaseReportLocalizationInfo) : LocalizationInfoSection = with (localizationInfo)
+    fun convertLocalizationDataToDomain(localizationSection: DatabaseLocalizationSection) : LocalizationInfoSection = with (localizationSection)
     {
         return LocalizationInfoSection(_id, latitude.toString(), longitude.toString(), country, region, province, comune, address, zone, code.toString())
     }
 
-    fun convertLocalizationDataFromDomain(reportId : Int, localizationInfoSection: LocalizationInfoSection) : DatabaseReportLocalizationInfo = with (localizationInfoSection)
+    fun convertLocalizationDataFromDomain(reportId : Int, localizationInfoSection: LocalizationInfoSection) : DatabaseLocalizationSection = with (localizationInfoSection)
     {
-        return DatabaseReportLocalizationInfo(id, latitude.toDouble(), longitude.toDouble(), country, region, province, comune, address, zone, code.toInt(), reportId)
+        return DatabaseLocalizationSection(id, latitude.toDouble(), longitude.toDouble(), country, region, province, comune, address, zone, code.toInt(), reportId)
     }
 }

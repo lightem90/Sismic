@@ -4,6 +4,7 @@ import android.app.Fragment
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
+import com.polito.sismic.Interactors.Helpers.LoginSharedPreferences
 import com.polito.sismic.Presenters.ReportActivity.ReportActivity
 import com.polito.sismic.R
 import kotlinx.android.synthetic.main.home_fragment.view.*
@@ -22,9 +23,9 @@ class HomeFragment : Fragment() {
 
     fun startReportActivity()
     {
-        var intent = Intent(activity, ReportActivity::class.java)
-        //TODO
-        intent.putExtra("USER_NAME", "Matteo")
+        val intent = Intent(activity, ReportActivity::class.java)
+        val userDetails = LoginSharedPreferences.getLoggedUser(activity)
+        intent.putExtra("username", userDetails.name)
         startActivity(intent)
     }
 

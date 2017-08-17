@@ -44,7 +44,6 @@ class ReportDatabaseHelper(ctx: Context = App.instance) : ManagedSQLiteOpenHelpe
                         LocalizationInfoTable.LATITUDE to REAL,
                         LocalizationInfoTable.LONGITUDE to REAL,
                         LocalizationInfoTable.COUNTRY to TEXT,
-                        LocalizationInfoTable.COUNTRY to TEXT,
                         LocalizationInfoTable.REGION to TEXT,
                         LocalizationInfoTable.PROVINCE to TEXT,
                         LocalizationInfoTable.COMUNE to TEXT,
@@ -53,6 +52,19 @@ class ReportDatabaseHelper(ctx: Context = App.instance) : ManagedSQLiteOpenHelpe
                         LocalizationInfoTable.ISTAT_CODE to INTEGER,
                         LocalizationInfoTable.REPORT_ID to INTEGER
                 )
+        )
+
+        db.createTable(CatastoInfoTable.NAME, ifNotExists = true,
+                columns = *arrayOf(CatastoInfoTable.ID to SqlType.create("INTEGER PRIMARY KEY AUTOINCREMENT"),
+                        CatastoInfoTable.FOGLIO to TEXT,
+                        CatastoInfoTable.MAPPALE to TEXT,
+                        CatastoInfoTable.PARTICELLA to TEXT,
+                        CatastoInfoTable.FOGLIO_CART to TEXT,
+                        CatastoInfoTable.EDIFICIO to TEXT,
+                        CatastoInfoTable.AGGR_STR to TEXT,
+                        CatastoInfoTable.PIANO_URB to TEXT,
+                        CatastoInfoTable.VINCOLI_URB to TEXT,
+                        CatastoInfoTable.ZONA_URB to TEXT)
         )
     }
 

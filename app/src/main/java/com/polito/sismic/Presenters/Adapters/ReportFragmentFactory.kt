@@ -70,7 +70,7 @@ class ReportFragmentFactory(private val reportManager: ReportManager) {
             7 -> return DecorStep(R.string.rilievi_report_title, context)
             8 -> return DecorStep(R.string.pilastri_report_title, context)
             9 -> return DecorStep(R.string.riepilogo_report_title, context)
-            10 -> return DecorStep(R.string.risultati_report_title, context)
+            10 -> return DecorStep(R.string.risultati_report_title, context, nextStrId = R.string.report_complete)
         }
 
         return DecorStep(R.string.error_unsupported, context)
