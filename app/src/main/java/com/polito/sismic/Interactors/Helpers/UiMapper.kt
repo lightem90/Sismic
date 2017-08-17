@@ -14,13 +14,15 @@ import kotlinx.android.synthetic.main.info_loc_report_layout.*
 
 //TODO
 //Maps the ui parameters into domain classes
+//the -1 is for reusing this class instead of creating another one just for the ui
 class UiMapper {
 
     fun getDomainSectionFor(fragment: BaseReportFragment) : ReportSection = with(fragment){
         when (this) {
 
             is InfoLocReportFragment -> {
-                return LocalizationInfoSection(lat_parameter.getParameterValue(),
+                return LocalizationInfoSection(-1,
+                        lat_parameter.getParameterValue(),
                         long_parameter.getParameterValue(),
                         country_parameter.getParameterValue(),
                         region_parameter.getParameterValue(),
@@ -33,7 +35,8 @@ class UiMapper {
 
             is CatastoReportFragment ->
             {
-                return CatastoReportSection(foglio_parameter.getParameterValue(),
+                return CatastoReportSection(-1,
+                        foglio_parameter.getParameterValue(),
                         mappale_parameter.getParameterValue(),
                         particella_parameter.getParameterValue(),
                         foglio_cart_parameter.getParameterValue(),

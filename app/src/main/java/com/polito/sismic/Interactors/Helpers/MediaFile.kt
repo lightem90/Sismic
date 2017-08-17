@@ -1,4 +1,4 @@
-package com.polito.sismic.Interactors
+package com.polito.sismic.Interactors.Helpers
 
 class MediaFile(var type : String,
                 var url : String,

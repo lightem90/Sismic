@@ -6,6 +6,7 @@ import android.os.Environment
 import android.provider.OpenableColumns
 import android.support.v4.content.FileProvider
 import com.polito.sismic.Extensions.toFormattedString
+import com.polito.sismic.Interactors.Helpers.MediaFile
 import com.polito.sismic.Interactors.Helpers.MediaType
 import java.io.*
 import java.util.*

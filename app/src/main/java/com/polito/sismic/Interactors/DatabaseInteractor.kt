@@ -1,9 +1,11 @@
 package com.polito.sismic.Interactors
 
 import com.polito.sismic.Domain.Database.*
+import com.polito.sismic.Domain.Report
 import com.polito.sismic.Domain.ReportDetails
 import com.polito.sismic.Domain.ReportSection
 import com.polito.sismic.Extensions.*
+import com.polito.sismic.Interactors.Helpers.MediaFile
 import org.jetbrains.anko.db.SqlOrderDirection
 import org.jetbrains.anko.db.insert
 import org.jetbrains.anko.db.select
@@ -42,17 +44,25 @@ class DatabaseInteractor(val reportDatabaseHelper: ReportDatabaseHelper = Report
                 .parseOpt  { DatabaseReportDetails(HashMap(it)) }
 
         //returns new entry
-        databaseReportDetails!!.let { dataMapper.convertReportToDomain(databaseReportDetails) }
+        databaseReportDetails!!.let { dataMapper.convertReportDetailsToDomain(databaseReportDetails) }
     }
 
-    fun getReportForId(reportID : String, userID: String) : ReportDetails = reportDatabaseHelper.use {
+    fun getReportForId(reportID : String, userID: String) : Report? = reportDatabaseHelper.use {
         val reportRequest = "${ReportTable.USERID} = ? AND ${ReportTable.ID} = ?"
         val databaseReportDetails = select(ReportTable.NAME)
                 .whereSimple(reportRequest, userID, reportID)
                 .parseOpt  { DatabaseReportDetails(HashMap(it)) }
 
+        val databaseMediaInfo = select(ReportMediaTable.NAME)
+                .whereSimple(reportRequest, userID, reportID)
+                .parseList  { DatabaseReportMedia(HashMap(it)) }
+
+        val databaseLocalizationInfo = select(LocalizationInfoTable.NAME)
+                .whereSimple(reportRequest, userID, reportID)
+                .parseOpt  { DatabaseReportLocalizationInfo(HashMap(it)) }
+
         //TODO, it doesn't need just the ReportDetails, but the report section as well, these are just details!
-        databaseReportDetails!!.let { dataMapper.convertReportToDomain(databaseReportDetails) }
+        databaseReportDetails?.let { dataMapper.convertToDomain(databaseReportDetails, databaseMediaInfo, listOf(databaseLocalizationInfo)) }
     }
 
     fun getAllReportsDetails(): List<ReportDetails> = reportDatabaseHelper.use {
@@ -63,7 +73,7 @@ class DatabaseInteractor(val reportDatabaseHelper: ReportDatabaseHelper = Report
 
         //there's a smarter way to do this
         var listToReturn = mutableListOf<ReportDetails>()
-        reports.forEach { x -> listToReturn.add(dataMapper.convertReportToDomain(x)) }
+        reports.forEach { x -> listToReturn.add(dataMapper.convertReportDetailsToDomain(x)) }
         listToReturn.toList()
     }
 
@@ -79,7 +89,7 @@ class DatabaseInteractor(val reportDatabaseHelper: ReportDatabaseHelper = Report
               tmpSectionList: HashMap<String, ReportSection>,
               tmpMediaList: MutableList<MediaFile>) = reportDatabaseHelper.use {
 
-    with(dataMapper.convertReportFromDomain(reportDetails))
+    with(dataMapper.convertReportDetailsFromDomain(reportDetails))
     {
         update(ReportTable.NAME, *map.toVarargArray())
     }
@@ -88,7 +98,7 @@ class DatabaseInteractor(val reportDatabaseHelper: ReportDatabaseHelper = Report
 
     //TODO: delete all sections with report_id as well
     fun  delete(reportDetails: ReportDetails) = reportDatabaseHelper.use {
-        with(dataMapper.convertReportFromDomain(reportDetails))
+        with(dataMapper.convertReportDetailsFromDomain(reportDetails))
         {
             delete(ReportTable.NAME, "${ReportTable.ID} = ?", arrayOf(_id.toString()))
         }

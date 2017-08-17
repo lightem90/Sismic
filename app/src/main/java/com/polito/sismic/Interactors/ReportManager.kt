@@ -2,6 +2,7 @@ package com.polito.sismic.Interactors
 
 import com.polito.sismic.Domain.ReportDetails
 import com.polito.sismic.Domain.ReportSection
+import com.polito.sismic.Interactors.Helpers.MediaFile
 
 //ReportDetails if I'm editing is the domain class that refers to a row in the db,
 //if it's a new reportDetails its the temporary new reportDetails

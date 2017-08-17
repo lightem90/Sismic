@@ -36,7 +36,9 @@ data class DatabaseReportDetails(var map: MutableMap<String, Any?>)
     }
 }
 
-data class DatabaseReportLocalizationInfo(var map: MutableMap<String, Any?>)
+interface DatabaseSection {}
+
+data class DatabaseReportLocalizationInfo(var map: MutableMap<String, Any?>) : DatabaseSection
 {
     var _id : Int by map
     var latitude : Double by map

@@ -172,6 +172,13 @@
     <string name="title_activity_splash_screen">SplashScreen</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="report_wizard_title">Report Wizard</string>
+    <string name="confirm_report_details">Conferma</string>
+    <string name="discard_report_details">Annulla</string>
+    <string name="report_title">Titolo</string>
+    <string name="report_title_hint">Inserire qui il titolo</string>
+    <string name="report_description">Descrizione</string>
+    <string name="report_description_hint">Descrizione riassuntiva del report</string>
 
 
 </resources>

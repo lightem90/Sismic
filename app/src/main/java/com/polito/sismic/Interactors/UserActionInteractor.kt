@@ -41,7 +41,6 @@ class UserActionInteractor(val mReportManager: ReportManager,
 
     private fun goBack(caller: Activity) {
 
-
         AlertDialog.Builder(caller)
                 .setTitle(R.string.confirm_report_back)
                 .setMessage(R.string.confirm_report_back_message)
@@ -51,7 +50,6 @@ class UserActionInteractor(val mReportManager: ReportManager,
                     caller.finish()})
                 .setNegativeButton(android.R.string.no, null)
                 .show()
-
     }
 
     private fun startNoteIntent(caller: Activity) {

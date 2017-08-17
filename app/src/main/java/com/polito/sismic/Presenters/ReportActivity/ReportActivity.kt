@@ -27,9 +27,9 @@ class ReportActivity : AppCompatActivity(),
         BaseReportFragment.ParametersManager,
         GoogleApiClient.OnConnectionFailedListener {
 
-    private var  mGoogleApiClient: GoogleApiClient? = null
-    private var  mUserActionInteractor: UserActionInteractor? = null
-    private var  mDomainInteractor : DomainInteractor? = null
+    private lateinit var  mGoogleApiClient: GoogleApiClient
+    private lateinit var  mUserActionInteractor: UserActionInteractor
+    private lateinit var  mDomainInteractor : DomainInteractor
     private var  mReportManager : ReportManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,35 +37,17 @@ class ReportActivity : AppCompatActivity(),
         setContentView(R.layout.activity_report)
 
         //Creating row for report in db if user is logged in
-        mReportManager = ReportProvider().getOrCreateReportManager(checkLogin(), intent)
-        if (mReportManager == null)
-        {
-            toast(R.string.error_creating_report)
-            finish()
+        mReportManager = ReportProvider(this).getOrCreateReportManager(checkLogin(), intent)
+
+        mReportManager?.let {
+            //means i'm editing
+            initializeFromManager(mReportManager!!)
         }
-
-        //To handle user action, it uses other interactor to pilot the ui changes to the domain
-        mUserActionInteractor = UserActionInteractor(mReportManager!!, this)
-        mDomainInteractor = DomainInteractor(mReportManager!!)
-
-        stepperLayout.adapter = ReportFragmentsAdapter(supportFragmentManager, this, mReportManager!!)
-        fabtoolbar_fab.setOnClickListener { fabtoolbar.show() }
-        pic.setOnClickListener{ mUserActionInteractor?.onActionRequested(UserActionType.PicRequest)}
-        video.setOnClickListener{ mUserActionInteractor?.onActionRequested(UserActionType.VideoRequest)}
-        audio.setOnClickListener{ mUserActionInteractor?.onActionRequested(UserActionType.AudioRequest)}
-        draw.setOnClickListener{ mUserActionInteractor?.onActionRequested(UserActionType.SketchRequest)}
-        note.setOnClickListener{ mUserActionInteractor?.onActionRequested(UserActionType.NoteRequest)}
-
-        mGoogleApiClient = GoogleApiClient.Builder(this)
-                .addApi(Places.GEO_DATA_API)
-                .addApi(Places.PLACE_DETECTION_API)
-                .enableAutoManage(this, this)
-                .build()
 
     }
 
     private fun checkLogin() : String {
-        var userName = intent.getStringExtra("USER_NAME")
+        val userName = intent.getStringExtra("USER_NAME")
         if (userName == null || userName.isEmpty())
         {
             toast(R.string.no_login)
@@ -82,7 +64,7 @@ class ReportActivity : AppCompatActivity(),
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        mUserActionInteractor?.onActionResponse(requestCode, resultCode, data)
+        mUserActionInteractor.onActionResponse(requestCode, resultCode, data)
     }
 
     override fun onConnectionFailed(p0: ConnectionResult) {
@@ -91,18 +73,43 @@ class ReportActivity : AppCompatActivity(),
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         if(item?.itemId == android.R.id.home) {
-            mUserActionInteractor?.onActionRequested(UserActionType.BackRequest)
+            mUserActionInteractor.onActionRequested(UserActionType.BackRequest)
             return true
         }
         return super.onOptionsItemSelected(item)
     }
 
     override fun onParametersSaveRequest() {
-        mUserActionInteractor!!.saveReport()
+        mUserActionInteractor.saveReport()
     }
 
     override fun onParametersConfirmed(sectionParameters: ReportSection) {
-        mDomainInteractor!!.addDomainReportSection(sectionParameters)
+        mDomainInteractor.addDomainReportSection(sectionParameters)
+    }
+
+    fun  onNewReportConfirmed(createFromNew: ReportManager): ReportManager? {
+        initializeFromManager(createFromNew)
+        return createFromNew
+    }
+
+    private fun initializeFromManager(reportManager: ReportManager)
+    {
+        //To handle user action, it uses other interactor to pilot the ui changes to the domain
+        mUserActionInteractor = UserActionInteractor(reportManager, this)
+        mDomainInteractor = DomainInteractor(reportManager)
+        stepperLayout.adapter = ReportFragmentsAdapter(supportFragmentManager, this, reportManager)
+        fabtoolbar_fab.setOnClickListener { fabtoolbar.show() }
+        pic.setOnClickListener{ mUserActionInteractor.onActionRequested(UserActionType.PicRequest)}
+        video.setOnClickListener{ mUserActionInteractor.onActionRequested(UserActionType.VideoRequest)}
+        audio.setOnClickListener{ mUserActionInteractor.onActionRequested(UserActionType.AudioRequest)}
+        draw.setOnClickListener{ mUserActionInteractor.onActionRequested(UserActionType.SketchRequest)}
+        note.setOnClickListener{ mUserActionInteractor.onActionRequested(UserActionType.NoteRequest)}
+
+        mGoogleApiClient = GoogleApiClient.Builder(this)
+                .addApi(Places.GEO_DATA_API)
+                .addApi(Places.PLACE_DETECTION_API)
+                .enableAutoManage(this, this)
+                .build()
     }
 }
 
