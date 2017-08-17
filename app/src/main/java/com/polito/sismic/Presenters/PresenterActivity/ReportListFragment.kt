@@ -1,14 +1,17 @@
 package com.polito.sismic.Presenters.PresenterActivity
 
 import android.app.Fragment
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.*
+import com.polito.sismic.Domain.ReportDetails
 import com.polito.sismic.Interactors.DatabaseInteractor
 import com.polito.sismic.Presenters.Adapters.ReportAdapter
+import com.polito.sismic.Presenters.ReportActivity.ReportActivity
 import com.polito.sismic.R
 import kotlinx.android.synthetic.main.report_list_fragment.*
-import org.jetbrains.anko.toast
+import org.jetbrains.anko.startActivity
 
 
 /**
@@ -45,8 +48,21 @@ class ReportListFragment : Fragment() {
         history_container.layoutManager = LinearLayoutManager(activity)
         var reportList = DatabaseInteractor().getAllReportsDetails()
 
-        var adapter = ReportAdapter(reportList) { toast("${it.title} Clicked") }
+        var adapter = ReportAdapter(reportList)
+        {
+            startReportEditing(it)
+        }
         history_container.adapter = adapter
+    }
+
+    private fun startReportEditing(reportDetails: ReportDetails): Boolean {
+
+        var intent = Intent(activity, ReportActivity::class.java)
+        intent.putExtra("editing", true)
+        intent.putExtra("report_id", reportDetails.id)
+        intent.putExtra("username", reportDetails.userIdentifier)
+        startActivity(intent)
+        return true
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

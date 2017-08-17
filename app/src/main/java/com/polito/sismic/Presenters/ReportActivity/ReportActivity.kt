@@ -47,7 +47,7 @@ class ReportActivity : AppCompatActivity(),
     }
 
     private fun checkLogin() : String {
-        val userName = intent.getStringExtra("USER_NAME")
+        val userName = intent.getStringExtra("username")
         if (userName == null || userName.isEmpty())
         {
             toast(R.string.no_login)
@@ -87,7 +87,7 @@ class ReportActivity : AppCompatActivity(),
         mDomainInteractor.addDomainReportSection(sectionParameters)
     }
 
-    fun  onNewReportConfirmed(createFromNew: ReportManager): ReportManager? {
+    fun onNewReportConfirmed(createFromNew: ReportManager): ReportManager? {
         initializeFromManager(createFromNew)
         return createFromNew
     }

@@ -48,21 +48,27 @@ class DatabaseInteractor(val reportDatabaseHelper: ReportDatabaseHelper = Report
     }
 
     fun getReportForId(reportID : String, userID: String) : Report? = reportDatabaseHelper.use {
-        val reportRequest = "${ReportTable.USERID} = ? AND ${ReportTable.ID} = ?"
+        val reportDetailRequest = "${ReportTable.USERID} = ? AND ${ReportTable.ID} = ?"
         val databaseReportDetails = select(ReportTable.NAME)
-                .whereSimple(reportRequest, userID, reportID)
+                .whereSimple(reportDetailRequest, userID, reportID)
                 .parseOpt  { DatabaseReportDetails(HashMap(it)) }
 
+        //They have just a unique reference to the report ID
+        val mediaSectionRequest = "${ReportMediaTable.REPORT_ID} = ?"
         val databaseMediaInfo = select(ReportMediaTable.NAME)
-                .whereSimple(reportRequest, userID, reportID)
+                .whereSimple(mediaSectionRequest, reportID)
                 .parseList  { DatabaseReportMedia(HashMap(it)) }
 
+        val sectionRequest = "${LocalizationInfoTable.REPORT_ID} = ?"
         val databaseLocalizationInfo = select(LocalizationInfoTable.NAME)
-                .whereSimple(reportRequest, userID, reportID)
+                .whereSimple(sectionRequest, reportID)
                 .parseOpt  { DatabaseReportLocalizationInfo(HashMap(it)) }
+        //TODO, add others!
 
         //TODO, it doesn't need just the ReportDetails, but the report section as well, these are just details!
-        databaseReportDetails?.let { dataMapper.convertToDomain(databaseReportDetails, databaseMediaInfo, listOf(databaseLocalizationInfo)) }
+        databaseReportDetails?.let { dataMapper.convertToDomain(databaseReportDetails,
+                databaseMediaInfo,
+                listOf(databaseLocalizationInfo)) }
     }
 
     fun getAllReportsDetails(): List<ReportDetails> = reportDatabaseHelper.use {

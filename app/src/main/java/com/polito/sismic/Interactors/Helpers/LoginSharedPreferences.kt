@@ -33,7 +33,8 @@ class LoginSharedPreferences {
                     sp.getString("email", ""),
                     sp.getString("phone", ""),
                     sp.getString("qualification", ""),
-                    sp.getString("registration", ""))
+                    sp.getString("registration", ""),
+                    sp.getString("imageuri", ""))
         }
 
         fun login(userDetails: UserDetails, context: Context) = with(context)
@@ -41,17 +42,18 @@ class LoginSharedPreferences {
             var sp = getSharedPreferences("login", Context.MODE_PRIVATE).edit()
             {
                 putString("name", userDetails.name)
-                putString("name", userDetails.address)
-                putString("name", userDetails.email)
-                putString("name", userDetails.phone)
-                putString("name", userDetails.qualification)
-                putString("name", userDetails.registration)
+                putString("address", userDetails.address)
+                putString("email", userDetails.email)
+                putString("phone", userDetails.phone)
+                putString("qualification", userDetails.qualification)
+                putString("registration", userDetails.registration)
+                putString("imageuri", userDetails.imageUri)
             }
         }
 
         fun demoLogin (context: Context)
         {
-            login(UserDetails("demo", "demo", "demo", "demo", "demo", "demo"), context)
+            login(UserDetails("demo", "demo", "demo", "demo", "demo", "demo", "demo"), context)
         }
     }
 }
@@ -61,6 +63,7 @@ class UserDetails (val name : String,
                    val email : String,
                    val phone : String,
                    val qualification : String,
-                   val registration : String)
+                   val registration : String,
+                   val imageUri: String)
 
 

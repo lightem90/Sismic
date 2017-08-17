@@ -16,16 +16,16 @@ import kotlinx.android.synthetic.main.history_item.view.*
  */
 
 //Manager of report list
-class ReportAdapter(val items: List<ReportDetails>, val listener: (ReportDetails) -> Unit) :
+class ReportAdapter(val items: List<ReportDetails>, val longClick: (ReportDetails) -> Boolean) :
         RecyclerView.Adapter<ReportAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder? {
         val v = parent.inflate(R.layout.history_item)
-        return ViewHolder(v)
+        return ViewHolder(v, longClick)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindReport(items[position], listener)
+        holder.bindReport(items[position])
     }
 
     override fun getItemCount(): Int {
@@ -36,23 +36,22 @@ class ReportAdapter(val items: List<ReportDetails>, val listener: (ReportDetails
         return LayoutInflater.from(context).inflate(layoutRes, this, false)
     }
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+    class ViewHolder(itemView: View, val longClick: (ReportDetails) -> Boolean) : RecyclerView.ViewHolder(itemView)
     {
-        fun bindReport(reportDetails: ReportDetails, listener: (ReportDetails) -> Unit) = with(reportDetails) {
+        fun bindReport(reportDetails: ReportDetails) {
+            with(reportDetails)
+            {
+                itemView.isDuplicateParentStateEnabled = true
+                itemView.history_item_title.text = reportDetails.title
+                itemView.history_item_description.text = reportDetails.description
+                itemView.history_item_size.text = reportDetails.size.toString() + " MB"
+                val dangerState = DangerStateProvider.getDangerStateByValue(reportDetails.value)
 
-            itemView.isDuplicateParentStateEnabled = true
-            itemView.history_item_title.text = reportDetails.title
-            itemView.history_item_description.text = reportDetails.description
-            itemView.history_item_size.text = reportDetails.size.toString() + " MB"
-            var dangerState = DangerStateProvider.getDangerStateByValue(reportDetails.value)
-
-            itemView.danger_layout.SetDangerState(dangerState)
-            itemView.history_item_value.text = reportDetails.value.toString()
-            setTextColorByDanger(reportDetails.value, itemView.history_item_value)
-
-            //TODO: Bottoni e click (edit sul click della view)
-            //setOnClickListener { listener(mReportManager) }
-
+                itemView.danger_layout.SetDangerState(dangerState)
+                itemView.history_item_value.text = reportDetails.value.toString()
+                setTextColorByDanger(reportDetails.value, itemView.history_item_value)
+                itemView.setOnLongClickListener { longClick(this) }
+            }
         }
 
         //Per non mettere il mContext qui dentro, altrimenti avrei messo tutto come statico in DAngerStateProvider
