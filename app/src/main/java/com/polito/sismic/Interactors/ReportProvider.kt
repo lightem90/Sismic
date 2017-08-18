@@ -1,8 +1,8 @@
 package com.polito.sismic.Interactors
 
-import android.app.Activity
 import android.content.Intent
 import android.support.v7.app.AlertDialog
+import com.polito.sismic.Domain.Report
 import com.polito.sismic.Extensions.toast
 import com.polito.sismic.Presenters.ReportActivity.ReportActivity
 import com.polito.sismic.R
@@ -28,7 +28,7 @@ class ReportProvider(val caller: ReportActivity) {
 
             val report = dbInteractor.getReportForId(reportId.toString(), userName)
             if (report == null) errorInCreatingReport()
-            return ReportManager(report!!.reportDetails, dbInteractor)
+            return ReportManager(report!!, dbInteractor)
 
         }
         else
@@ -53,7 +53,8 @@ class ReportProvider(val caller: ReportActivity) {
 
     private fun createFromNew(userName: String, title : String, description : String) : ReportManager {
 
-        val report = dbInteractor.createReportDetailsForUser(userName, title, description)
+        val reportDetails = dbInteractor.createReportDetailsForUser(userName, title, description)
+        val report = Report(reportDetails, listOf(), listOf())
         return ReportManager(report, dbInteractor)
     }
 

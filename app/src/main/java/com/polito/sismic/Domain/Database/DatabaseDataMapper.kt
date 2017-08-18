@@ -16,7 +16,7 @@ class DatabaseDataMapper {
     }
 
     fun convertReportDetailsFromDomain(reportDetails: ReportDetails) : DatabaseReportDetails = with (reportDetails) {
-        return DatabaseReportDetails(id, title, description, userIdentifier, date.toFormattedString(), size, value)
+        return DatabaseReportDetails(title, description, userIdentifier, date.toFormattedString(), size, value)
     }
 
     fun convertMediaToDomain(databaseReportMedia: DatabaseReportMedia): ReportMedia = with(databaseReportMedia)
@@ -26,18 +26,18 @@ class DatabaseDataMapper {
 
     fun convertMediaFromDomain(reportId : Int, reportMedia : ReportMedia) : DatabaseReportMedia = with (reportMedia)
     {
-        return DatabaseReportMedia(id, url, type, note, size, reportId)
+        return DatabaseReportMedia(url, type, note, size, reportId)
     }
 
     fun  convertReportFromDomain(report: Report): DatabaseReport = with(report){
 
-        var databaseReportDetails = convertReportDetailsFromDomain(reportDetails)
-        var databaseMediaList = with (mediaList)
+        val databaseReportDetails = convertReportDetailsFromDomain(reportDetails)
+        val databaseMediaList = with (mediaList)
         {
             map {convertMediaFromDomain(databaseReportDetails._id, it)}
         }
 
-        var databaseSection = with(sectionList)
+        val databaseSection = with(sectionList)
         {
             map { convertDomainSectionToDatabaseSection(databaseReportDetails._id, it) }
         }

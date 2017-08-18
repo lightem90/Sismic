@@ -11,6 +11,7 @@ import com.github.fafaldo.fabtoolbar.widget.FABToolbarLayout
 import com.polito.sismic.Domain.ReportSection
 import com.polito.sismic.Interactors.Helpers.UiMapper
 import com.polito.sismic.Presenters.CustomLayout.FragmentScrollableCanvas
+import com.polito.sismic.Presenters.ReportActivity.ParametersInjected
 import com.polito.sismic.R
 import com.stepstone.stepper.BlockingStep
 import com.stepstone.stepper.StepperLayout
@@ -20,7 +21,7 @@ import com.stepstone.stepper.VerificationError
 /**
  * Created by Matteo on 29/07/2017.
  */
-abstract class BaseReportFragment : Fragment(), BlockingStep {
+abstract class BaseReportFragment : Fragment(), BlockingStep, ParametersInjected {
 
     private var mParametersCallback : BaseReportFragment.ParametersManager? = null
     //wrap the mapper into interactor
@@ -54,11 +55,6 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
                 activity.findViewById<FloatingActionButton>(R.id.fabtoolbar_fab),
                 activity.findViewById<StepperLayout>(R.id.stepperLayout))
 
-        //TODO: handle edit In the case I'm editing, it must visualize the data already saved!
-        //var dtoForHeader = arguments.getParcelable<ReportDTO>("report")
-        //mReportManager = ReportManager(context, dtoForHeader)
-        //if (dtoForHeader != null) onInitializeParametersForEdit(view, mReportManager!!)
-
         //Requires api 23
         //scrollableCanvas.setOnScrollChangeListener(View.OnScrollChangeListener({
         //    view, scrollX, scrollY, oldScrollX, oldScroolY ->
@@ -70,8 +66,9 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
-    //todo
-    //abstract fun onInitializeParametersForEdit(inflatingView: View, reportManager: ReportManager)
+    override fun onParametersInjectedForEdit(sectionList: List<ReportSection>) {
+        mUiMapper.setInjectedDomainValueForEdit(sectionList, this)
+    }
     //Each fragment must implement this, so the activity is in charge to save the data
     override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback?) {
         mParametersCallback?.onParametersConfirmed(mUiMapper.getDomainSectionFor(this))

@@ -48,6 +48,46 @@ class UiMapper {
         return ErroreSection("error")
     }
 
+    fun setInjectedDomainValueForEdit(sectionList : List<ReportSection>, baseReportFragment: BaseReportFragment) = with (baseReportFragment)
+    {
+        when (this)
+        {
+            is InfoLocReportFragment ->
+            {
+                val localizationSection = sectionList.filterIsInstance<LocalizationInfoSection>().firstOrNull()
+                localizationSection?.let {
+                    lat_parameter.setParameterValue(localizationSection.latitude)
+                    long_parameter.setParameterValue(localizationSection.longitude)
+                    country_parameter.setParameterValue(localizationSection.country)
+                    region_parameter.setParameterValue(localizationSection.region)
+                    province_parameter.setParameterValue(localizationSection.province)
+                    comune_parameter.setParameterValue(localizationSection.comune)
+                    address_parameter.setParameterValue(localizationSection.address)
+                    zona_sismica_parameter.setParameterValue(localizationSection.zone)
+                    codice_istat_parameter.setParameterValue(localizationSection.code)
+                }
+            }
+            is CatastoReportFragment ->
+            {
+                val catastoSection = sectionList.filterIsInstance<CatastoReportSection>().firstOrNull()
+                catastoSection?.let {
+                    foglio_parameter.setParameterValue(catastoSection.foglio)
+                    mappale_parameter.setParameterValue(catastoSection.mappale)
+                    particella_parameter.setParameterValue(catastoSection.particella)
+                    foglio_cart_parameter.setParameterValue(catastoSection.foglio_cartografia)
+                    edificio_parameter.setParameterValue(catastoSection.edificio)
+                    aggr_str_parameter.setParameterValue(catastoSection.aggr_str)
+                    piano_urb_parameter.setParameterValue(catastoSection.piano_urb)
+                    zona_urb_parameter.setParameterValue(catastoSection.zona_urb)
+                    vincoli_urb_parameter.setParameterValue(catastoSection.vincoli_urb)
+                }
+            }
+
+            else -> {
+            }
+        }
+    }
+
     fun convertMediaForDomain(mediaFile: MediaFile) : ReportMedia = with(mediaFile)
     {
         return ReportMedia(-1, mediaFile.url, mediaFile.type, mediaFile.note, mediaFile.size)

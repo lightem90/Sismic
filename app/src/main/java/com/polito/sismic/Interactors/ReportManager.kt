@@ -11,25 +11,37 @@ import com.polito.sismic.Interactors.Helpers.UiMapper
 //if it's a new reportDetails its the temporary new reportDetails
 //TODO: handle the case of cancelling the modification of an existing reportDetails: in this case I would remove the reportDetails, the right thing to do would be
 //discard the changes keeping the reportDetails
-class ReportManager(private val reportDetails: ReportDetails, val database : DatabaseInteractor)
+class ReportManager(private val report: Report, val database: DatabaseInteractor)
 {
     //TODO: handle edit in some ways,
     // need an hashmap for "class" to handle back and forth edit
-    private var tmpSectionList : HashMap<String, ReportSection> = HashMap()
-    private var tmpMediaList   : MutableList<MediaFile>   = mutableListOf()
+    private var tmpSectionList : HashMap<String, ReportSection> = hashMapOf()
+    private var tmpMediaList   : MutableList<MediaFile> = mutableListOf()
+    private var mUiMapper : UiMapper = UiMapper()
 
-    fun deleteReport() {
-        database.delete(reportDetails)
+    init {
+        //if I'm editing the tmp replicas will have a value
+        report.mediaList.forEach{x -> tmpMediaList.add(mUiMapper.convertReportMediaFromDomain(x))}
+        report.sectionList.forEach{x -> tmpSectionList.put(x::class.java.toString(), x)}
     }
 
-    fun saveReportToDb() = with (UiMapper()){
-        val reportToSave = ReportDetails(reportDetails.id,
-                reportDetails.title,
-                reportDetails.description,
-                reportDetails.userIdentifier,
-                reportDetails.date,
+    fun getSectionToInject() : List<ReportSection>
+    {
+        return tmpSectionList.values.toList()
+    }
+
+    fun deleteReport() {
+        database.delete(report.reportDetails)
+    }
+
+    fun saveReportToDb() = with (mUiMapper){
+        val reportToSave = ReportDetails(report.reportDetails.id,
+                report.reportDetails.title,
+                report.reportDetails.description,
+                report.reportDetails.userIdentifier,
+                report.reportDetails.date,
                 tmpMediaList.sumByDouble { x -> x.size },
-                reportDetails.value)
+                report.reportDetails.value)
         //Save a copy of the original dto, needed to save value and size correctly, convert the media file for ui to domain for db..
         //not nice but still..
         val domainMediaList = mutableListOf<ReportMedia>()

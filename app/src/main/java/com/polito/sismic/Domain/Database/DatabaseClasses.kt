@@ -22,15 +22,13 @@ data class DatabaseReportDetails(var map: MutableMap<String, Any?>) {
     var size: Double by map
     var value: Int by map
 
-    constructor(_id: Int
-                , title: String
+    constructor(title: String
                 , description: String
                 , userID: String
                 , date: String
                 , size: Double
                 , value: Int)
             : this(HashMap()) {
-        this._id = _id
         this.title = title
         this.description = description
         this.userID = userID
@@ -55,8 +53,7 @@ data class DatabaseLocalizationSection(var map: MutableMap<String, Any?>) : Data
     var code: Int by map
     var report_id: Int by map
 
-    constructor(_id: Int,
-                latitude: Double,
+    constructor(latitude: Double,
                 longitude: Double,
                 country: String,
                 region: String,
@@ -66,7 +63,6 @@ data class DatabaseLocalizationSection(var map: MutableMap<String, Any?>) : Data
                 zone: String,
                 code: Int,
                 report_id: Int) : this(HashMap()) {
-        this._id = _id
         this.latitude = latitude
         this.longitude = longitude
         this.country = country
@@ -91,9 +87,9 @@ data class DatabaseCatastoSection(var map: MutableMap<String, Any?>) : DatabaseS
     var zona_urb: String by map
     var piano_urb: String by map
     var vincoli_urb: String by map
+    var report_id: Int by map
 
-    constructor(_id: Int,
-                foglio: String,
+    constructor(foglio: String,
                 mappale: String,
                 particella: String,
                 foglio_cart: String,
@@ -101,10 +97,10 @@ data class DatabaseCatastoSection(var map: MutableMap<String, Any?>) : DatabaseS
                 aggr_str: String,
                 zona_urb: String,
                 piano_urb: String,
-                vincoli_urb: String
+                vincoli_urb: String,
+                report_id: Int
     )
             : this(HashMap()) {
-        this._id = _id
         this.foglio = foglio
         this.mappale = mappale
         this.particella = particella
@@ -114,6 +110,7 @@ data class DatabaseCatastoSection(var map: MutableMap<String, Any?>) : DatabaseS
         this.zona_urb = zona_urb
         this.piano_urb = piano_urb
         this.vincoli_urb = vincoli_urb
+        this.report_id = report_id
     }
 }
 
@@ -125,13 +122,11 @@ data class DatabaseReportMedia(var map: MutableMap<String, Any?>) {
     var size: Double by map
     var report_id: Int by map
 
-    constructor(_id: Int,
-                filepath: String,
+    constructor(filepath: String,
                 type: String,
                 note: String,
                 size: Double,
                 report_id: Int) : this(HashMap()) {
-        this._id = _id
         this.filepath = filepath
         this.type = type
         this.note = note

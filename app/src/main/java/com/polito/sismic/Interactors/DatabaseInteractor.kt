@@ -84,7 +84,7 @@ class DatabaseInteractor(val reportDatabaseHelper: ReportDatabaseHelper = Report
 
         //there's a smarter way to do this
         var listToReturn = mutableListOf<ReportDetails>()
-        reports.forEach { x -> listToReturn.add(dataMapper.convertReportDetailsToDomain(x)) }
+        reports.forEach {listToReturn.add(dataMapper.convertReportDetailsToDomain(it)) }
         listToReturn.toList()
     }
 

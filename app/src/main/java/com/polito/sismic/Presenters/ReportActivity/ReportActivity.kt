@@ -22,6 +22,13 @@ import com.polito.sismic.R
 import kotlinx.android.synthetic.main.activity_report.*
 
 
+
+interface ParametersInjected
+{
+    fun onParametersInjectedForEdit(sectionList: List<ReportSection>)
+}
+
+
 class ReportActivity : AppCompatActivity(),
         InfoLocReportFragment.CurrentLocationProvided,
         BaseReportFragment.ParametersManager,
@@ -41,7 +48,7 @@ class ReportActivity : AppCompatActivity(),
 
         mReportManager?.let {
             //means i'm editing
-            initializeFromManager(mReportManager!!)
+            initializeFromManager(mReportManager!!, true)
         }
 
     }
@@ -93,7 +100,7 @@ class ReportActivity : AppCompatActivity(),
         return createFromNew
     }
 
-    private fun initializeFromManager(reportManager: ReportManager)
+    private fun initializeFromManager(reportManager: ReportManager, editing : Boolean = false)
     {
         //To handle user action, it uses other interactor to pilot the ui changes to the domain
         mUserActionInteractor = UserActionInteractor(reportManager, this)
@@ -105,6 +112,10 @@ class ReportActivity : AppCompatActivity(),
         audio.setOnClickListener{ mUserActionInteractor.onActionRequested(UserActionType.AudioRequest)}
         draw.setOnClickListener{ mUserActionInteractor.onActionRequested(UserActionType.SketchRequest)}
         note.setOnClickListener{ mUserActionInteractor.onActionRequested(UserActionType.NoteRequest)}
+
+        if (editing) supportFragmentManager.fragments
+                .filterIsInstance<ParametersInjected>()
+                .forEach{x -> x.onParametersInjectedForEdit(reportManager.getSectionToInject())}
 
         mGoogleApiClient = GoogleApiClient.Builder(this)
                 .addApi(Places.GEO_DATA_API)
