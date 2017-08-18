@@ -64,7 +64,8 @@ class ReportDatabaseHelper(ctx: Context = App.instance) : ManagedSQLiteOpenHelpe
                         CatastoInfoTable.AGGR_STR to TEXT,
                         CatastoInfoTable.PIANO_URB to TEXT,
                         CatastoInfoTable.VINCOLI_URB to TEXT,
-                        CatastoInfoTable.ZONA_URB to TEXT)
+                        CatastoInfoTable.ZONA_URB to TEXT,
+                        CatastoInfoTable.REPORT_ID to INTEGER)
         )
     }
 
@@ -72,6 +73,7 @@ class ReportDatabaseHelper(ctx: Context = App.instance) : ManagedSQLiteOpenHelpe
         // Here you can upgrade tables, as usual
         db.dropTable(ReportTable.NAME, true)
         db.dropTable(LocalizationInfoTable.NAME, true)
+        db.dropTable(CatastoInfoTable.NAME, true)
         db.dropTable(ReportMediaTable.NAME, true)
         onCreate(db)
     }

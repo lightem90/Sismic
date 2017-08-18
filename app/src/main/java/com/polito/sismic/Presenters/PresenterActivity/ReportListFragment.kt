@@ -44,11 +44,8 @@ class ReportListFragment : Fragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //TODO lambda for edit
         history_container.layoutManager = LinearLayoutManager(activity)
-        var reportList = DatabaseInteractor().getAllReportsDetails()
-
-        var adapter = ReportAdapter(reportList)
+        val adapter = ReportAdapter(activity, DatabaseInteractor().getAllReportsDetails())
         {
             //on long press, edit the whole report
             startReportEditing(it)

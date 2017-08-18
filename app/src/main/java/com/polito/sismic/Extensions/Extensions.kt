@@ -46,7 +46,8 @@ fun SQLiteDatabase.clear(tableName: String) {
     execSQL("delete from $tableName")
 }
 
-fun SelectQueryBuilder.byId(id: Long) = whereSimple("_id = ?", id.toString())
+fun SelectQueryBuilder.byId(id: String) = whereSimple("_id = ?", id)
+fun SelectQueryBuilder.byReportId(id: String) = whereSimple("report_id = ?", id)
 
 class NotNullSingleValueVar<T> {
 

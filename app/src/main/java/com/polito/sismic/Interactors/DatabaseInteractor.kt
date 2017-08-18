@@ -4,6 +4,7 @@ import com.polito.sismic.Domain.CatastoReportSection
 import com.polito.sismic.Domain.Database.*
 import com.polito.sismic.Domain.Report
 import com.polito.sismic.Domain.ReportDetails
+import com.polito.sismic.Domain.ReportSection
 import com.polito.sismic.Extensions.*
 import org.jetbrains.anko.db.SqlOrderDirection
 import org.jetbrains.anko.db.insert
@@ -58,22 +59,21 @@ class DatabaseInteractor(val reportDatabaseHelper: ReportDatabaseHelper = Report
                 .whereSimple(mediaSectionRequest, reportID)
                 .parseList  { DatabaseReportMedia(HashMap(it)) }
 
-        val sectionRequest = "${LocalizationInfoTable.REPORT_ID} = ?"
         val databaseLocalizationInfo = select(LocalizationInfoTable.NAME)
-                .whereSimple(sectionRequest, reportID)
-                .parseOpt  { DatabaseLocalizationSection(HashMap(it)) } as DatabaseSection
+                .byReportId(reportID)
+                .parseOpt  { DatabaseLocalizationSection(HashMap(it)) }
 
         val databaseCatastoInfo = select(CatastoInfoTable.NAME)
-                .whereSimple(sectionRequest, reportID)
-                .parseOpt  { DatabaseCatastoSection(HashMap(it)) } as DatabaseSection
+                .byReportId(reportID)
+                .parseOpt  { DatabaseCatastoSection(HashMap(it)) }
         //TODO, add others!
 
         val sectionList = listOf(databaseLocalizationInfo, databaseCatastoInfo)
-        //TODO, it doesn't need just the ReportDetails, but the report section as well, these are just details!
         databaseReportDetails?.let { dataMapper.convertReportToDomain(DatabaseReport(
                 databaseReportDetails,
                 databaseMediaInfo,
-                sectionList.filterNotNull())) }
+                sectionList.filterNotNull()))
+        }
     }
 
     fun getAllReportsDetails(): List<ReportDetails> = reportDatabaseHelper.use {
@@ -104,11 +104,10 @@ class DatabaseInteractor(val reportDatabaseHelper: ReportDatabaseHelper = Report
             insertEachSectionIntoCorrectTable(sections)
             mediaList.forEach{ (map) -> insert(ReportMediaTable.NAME, *map.toVarargArray())}
         }
-
     }
 
     //TODO: delete all sections with report_id as well
-    fun  delete(reportDetails: ReportDetails) = reportDatabaseHelper.use {
+    fun delete(reportDetails: ReportDetails) = reportDatabaseHelper.use {
         with(dataMapper.convertReportDetailsFromDomain(reportDetails))
         {
             delete(ReportTable.NAME, "${ReportTable.ID} = ?", arrayOf(_id.toString()))
@@ -121,6 +120,10 @@ class DatabaseInteractor(val reportDatabaseHelper: ReportDatabaseHelper = Report
             when (section) {
                 is DatabaseLocalizationSection -> {
                     insert(LocalizationInfoTable.NAME, *section.map.toVarargArray())
+                }
+                is DatabaseCatastoSection ->
+                {
+                    insert(CatastoInfoTable.NAME, *section.map.toVarargArray())
                 }
             }
         }

@@ -6,6 +6,7 @@ import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import com.polito.sismic.Domain.Database.ReportDatabaseHelper
 import com.polito.sismic.R
 import kotlinx.android.synthetic.main.activity_presenter.*
 
@@ -53,6 +54,8 @@ class PresenterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_presenter)
 
+        //for debug
+        //deleteDatabase(ReportDatabaseHelper.DB_NAME)
         pushFragment(PresenterFragmentProvider.GetHomeFragment())
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
     }

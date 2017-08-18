@@ -28,7 +28,6 @@ object ReportMediaTable
     val REPORT_ID = "report_id"
 }
 
-//TODO
 object LocalizationInfoTable
 {
     val NAME = "Localization"
@@ -58,4 +57,7 @@ object CatastoInfoTable
     val ZONA_URB =          "zona_urb"
     val PIANO_URB =         "piano_urb"
     val VINCOLI_URB =       "vincoli_urb"
+    val REPORT_ID =         "report_id"
 }
+
+//TODO

@@ -80,7 +80,7 @@ data class DatabaseLocalizationSection(var map: MutableMap<String, Any?>) : Data
     }
 }
 
-data class DatabaseCatastoSection(var map: MutableMap<String, Any?>) {
+data class DatabaseCatastoSection(var map: MutableMap<String, Any?>) : DatabaseSection {
     var _id: Int by map
     var foglio: String by map
     var mappale: String by map

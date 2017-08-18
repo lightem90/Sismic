@@ -1,5 +1,6 @@
 package com.polito.sismic.Presenters.Adapters
 
+import android.content.Context
 import android.graphics.Color
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -16,12 +17,14 @@ import kotlinx.android.synthetic.main.history_item.view.*
  */
 
 //Manager of report list
-class ReportAdapter(val items: List<ReportDetails>, val longClick: (ReportDetails) -> Boolean) :
+class ReportAdapter(val mContext: Context,
+                    val items: List<ReportDetails>,
+                    val longClick: (ReportDetails) -> Boolean) :
         RecyclerView.Adapter<ReportAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder? {
         val v = parent.inflate(R.layout.history_item)
-        return ViewHolder(v, longClick)
+        return ViewHolder(v, longClick, mContext)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -36,7 +39,9 @@ class ReportAdapter(val items: List<ReportDetails>, val longClick: (ReportDetail
         return LayoutInflater.from(context).inflate(layoutRes, this, false)
     }
 
-    class ViewHolder(itemView: View, val longClick: (ReportDetails) -> Boolean) : RecyclerView.ViewHolder(itemView)
+    class ViewHolder(itemView: View,
+                     val longClick: (ReportDetails) -> Boolean,
+                     val mContext: Context) : RecyclerView.ViewHolder(itemView)
     {
         fun bindReport(reportDetails: ReportDetails) {
             with(reportDetails)
@@ -44,7 +49,7 @@ class ReportAdapter(val items: List<ReportDetails>, val longClick: (ReportDetail
                 itemView.isDuplicateParentStateEnabled = true
                 itemView.history_item_title.text = reportDetails.title
                 itemView.history_item_description.text = reportDetails.description
-                itemView.history_item_size.text = reportDetails.size.toString() + " MB"
+                itemView.history_item_size.text = String.format(mContext.getString(R.string.size_string), reportDetails.size)
                 val dangerState = DangerStateProvider.getDangerStateByValue(reportDetails.value)
 
                 itemView.danger_layout.SetDangerState(dangerState)

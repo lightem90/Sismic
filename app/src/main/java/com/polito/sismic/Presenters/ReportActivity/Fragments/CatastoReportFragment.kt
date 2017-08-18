@@ -15,7 +15,4 @@ class CatastoReportFragment : BaseReportFragment() {
     override fun onCreateView(inflater: LayoutInflater?, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View? {
         return inflateFragment(R.layout.catasto_report_layout, inflater, container)
     }
-
-
-
 }
