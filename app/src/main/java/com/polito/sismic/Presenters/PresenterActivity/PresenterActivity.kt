@@ -1,6 +1,7 @@
 package com.polito.sismic.Presenters.PresenterActivity
 
 import android.app.Fragment
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
@@ -12,6 +13,9 @@ import kotlinx.android.synthetic.main.activity_presenter.*
 
 class PresenterActivity : AppCompatActivity() {
 
+    companion object {
+        val REPORT_ACTIVITY = 50
+    }
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -58,5 +62,16 @@ class PresenterActivity : AppCompatActivity() {
         //deleteDatabase(ReportDatabaseHelper.DB_NAME)
         pushFragment(PresenterFragmentProvider.GetHomeFragment())
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REPORT_ACTIVITY)
+        {
+            val history = fragmentManager.findFragmentById(R.layout.report_list_fragment) as ReportListFragment?
+            history?.let {
+                history.invalidateAndReload()
+            }
+        }
     }
 }

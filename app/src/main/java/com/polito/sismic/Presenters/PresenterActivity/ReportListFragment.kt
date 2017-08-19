@@ -30,6 +30,7 @@ class ReportListFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         if (item != null) {
+            //TODO
             when (item.itemId)
             {
                 R.id.reorder_history_az -> return true;
@@ -53,13 +54,18 @@ class ReportListFragment : Fragment() {
         history_container.adapter = adapter
     }
 
+    fun invalidateAndReload()
+    {
+        history_container.adapter.notifyDataSetChanged()
+    }
+
     private fun startReportEditing(reportDetails: ReportDetails): Boolean {
 
-        var intent = Intent(activity, ReportActivity::class.java)
+        val intent = Intent(activity, ReportActivity::class.java)
         intent.putExtra("editing", true)
         intent.putExtra("report_id", reportDetails.id)
         intent.putExtra("username", reportDetails.userIdentifier)
-        startActivity(intent)
+        activity.startActivityForResult(intent, PresenterActivity.REPORT_ACTIVITY)
         return true
     }
 

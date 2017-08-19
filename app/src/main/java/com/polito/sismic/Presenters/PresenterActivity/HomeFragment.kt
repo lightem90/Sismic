@@ -26,7 +26,7 @@ class HomeFragment : Fragment() {
         val intent = Intent(activity, ReportActivity::class.java)
         val userDetails = LoginSharedPreferences.getLoggedUser(activity)
         intent.putExtra("username", userDetails.name)
-        startActivity(intent)
+        startActivityForResult(intent, PresenterActivity.REPORT_ACTIVITY)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
