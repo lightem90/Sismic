@@ -9,6 +9,7 @@ import com.polito.sismic.Domain.ReportSection
  */
 class DatabaseMapperHelper
 {
+    //TODO
     fun  getDomainClassForSection(section: DatabaseSection?): ReportSection? {
 
         when(section)

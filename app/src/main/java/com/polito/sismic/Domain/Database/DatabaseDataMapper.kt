@@ -16,7 +16,7 @@ class DatabaseDataMapper {
     }
 
     fun convertReportDetailsFromDomain(reportDetails: ReportDetails) : DatabaseReportDetails = with (reportDetails) {
-        return DatabaseReportDetails(title, description, userIdentifier, date.toFormattedString(), size, value)
+        return DatabaseReportDetails(id, title, description, userIdentifier, date.toFormattedString(), size, value)
     }
 
     fun convertMediaToDomain(databaseReportMedia: DatabaseReportMedia): ReportMedia = with(databaseReportMedia)
@@ -62,7 +62,6 @@ class DatabaseDataMapper {
 
     fun convertDatabaseSectionToDomain(section: DatabaseSection?) : ReportSection? = with (helper)
     {
-        //TODO with helper
         helper.getDomainClassForSection(section)
     }
 

@@ -93,6 +93,7 @@ class DatabaseInteractor(val reportDatabaseHelper: ReportDatabaseHelper = Report
         clear(ReportTable.NAME)
         clear(ReportMediaTable.NAME)
         clear(LocalizationInfoTable.NAME)
+        clear(CatastoInfoTable.NAME)
     }
 
     //TODO how to save section into correct table??
