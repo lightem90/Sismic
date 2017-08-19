@@ -1,5 +1,6 @@
 package com.polito.sismic.Interactors.Helpers
 
+import android.os.Parcelable
 import com.polito.sismic.Domain.*
 import com.polito.sismic.Presenters.ReportActivity.Fragments.*
 import kotlinx.android.synthetic.main.catasto_report_layout.*
@@ -14,9 +15,8 @@ import kotlinx.android.synthetic.main.info_loc_report_layout.*
 //the -1 is for reusing this class instead of creating another one just for the ui
 class UiMapper {
 
-    fun getDomainSectionFor(fragment: BaseReportFragment) : ReportSection = with(fragment){
+    fun getDomainParameterSectionFromFragment(fragment: BaseReportFragment) : ReportSection? = with(fragment){
         when (this) {
-
             is InfoLocReportFragment -> {
                 return LocalizationInfoSection(-1,
                         lat_parameter.getParameterValue(),
@@ -48,13 +48,24 @@ class UiMapper {
         return ErroreSection("error")
     }
 
-    fun setInjectedDomainValueForEdit(sectionList : List<ReportSection>, baseReportFragment: BaseReportFragment) = with (baseReportFragment)
+    fun mapDomainSectionToFragment(sectionList : List<ReportSection>, baseReportFragment: BaseReportFragment) : ReportSection?
+    {
+        when(baseReportFragment)
+        {
+            is InfoLocReportFragment -> return sectionList.filterIsInstance<LocalizationInfoSection>().firstOrNull()
+            is CatastoReportFragment -> return sectionList.filterIsInstance<CatastoReportSection>().firstOrNull()
+        }
+
+        return null
+    }
+
+    fun setInjectedDomainValueForEdit(sectionParams : ReportSection?, baseReportFragment: BaseReportFragment) = with (baseReportFragment)
     {
         when (this)
         {
             is InfoLocReportFragment ->
             {
-                val localizationSection = sectionList.filterIsInstance<LocalizationInfoSection>().firstOrNull()
+                val localizationSection = sectionParams as LocalizationInfoSection?
                 localizationSection?.let {
                     lat_parameter.setParameterValue(localizationSection.latitude)
                     long_parameter.setParameterValue(localizationSection.longitude)
@@ -69,7 +80,7 @@ class UiMapper {
             }
             is CatastoReportFragment ->
             {
-                val catastoSection = sectionList.filterIsInstance<CatastoReportSection>().firstOrNull()
+                val catastoSection = sectionParams as CatastoReportSection?
                 catastoSection?.let {
                     foglio_parameter.setParameterValue(catastoSection.foglio)
                     mappale_parameter.setParameterValue(catastoSection.mappale)

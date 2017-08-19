@@ -1,11 +1,13 @@
 package com.polito.sismic.Interactors
 
+import android.os.Parcelable
 import com.polito.sismic.Domain.Report
 import com.polito.sismic.Domain.ReportDetails
 import com.polito.sismic.Domain.ReportMedia
 import com.polito.sismic.Domain.ReportSection
 import com.polito.sismic.Interactors.Helpers.MediaFile
 import com.polito.sismic.Interactors.Helpers.UiMapper
+import com.polito.sismic.Presenters.ReportActivity.Fragments.BaseReportFragment
 
 //ReportDetails if I'm editing is the domain class that refers to a row in the db,
 //if it's a new reportDetails its the temporary new reportDetails
@@ -13,7 +15,6 @@ import com.polito.sismic.Interactors.Helpers.UiMapper
 //discard the changes keeping the reportDetails
 class ReportManager(private val report: Report, val database: DatabaseInteractor)
 {
-    //TODO: handle edit in some ways,
     // need an hashmap for "class" to handle back and forth edit
     private var tmpSectionList : HashMap<String, ReportSection> = hashMapOf()
     private var tmpMediaList   : MutableList<MediaFile> = mutableListOf()
@@ -56,6 +57,10 @@ class ReportManager(private val report: Report, val database: DatabaseInteractor
 
     fun  addMediaFile(lastAddedTmpFile: MediaFile) {
         tmpMediaList.add(lastAddedTmpFile)
+    }
+
+    fun getSectionParameterFor(fragment: BaseReportFragment): Parcelable? {
+        return mUiMapper.mapDomainSectionToFragment(tmpSectionList.values.toList(), fragment)
     }
 
 }

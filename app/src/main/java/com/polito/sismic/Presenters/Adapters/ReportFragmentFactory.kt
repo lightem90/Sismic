@@ -1,6 +1,7 @@
 package com.polito.sismic.Presenters.Adapters
 
 import android.content.Context
+import android.os.Bundle
 import com.polito.sismic.Interactors.ReportManager
 import com.polito.sismic.Presenters.ReportActivity.Fragments.*
 import com.polito.sismic.R
@@ -38,16 +39,15 @@ class ReportFragmentFactory(private val reportManager: ReportManager) {
             9 -> return pushFragment(mRiepilogoReportFragment)
             10 -> return pushFragment(mRisultatiReportFragment)
         }
-        //MAI
+        //NEVER
         return InvalidReportFragment()
     }
 
     private fun pushFragment(fragment: BaseReportFragment): Step {
 
-        //TODO: handle edit!
-        //var bundle = Bundle()
-        //bundle.putParcelable("report", reportManager.getParcelable())
-        //fragment.arguments = bundle
+        val bundle = Bundle()
+        bundle.putParcelable("report_section", reportManager.getSectionParameterFor(fragment))
+        fragment.arguments = bundle
 
         return fragment
     }

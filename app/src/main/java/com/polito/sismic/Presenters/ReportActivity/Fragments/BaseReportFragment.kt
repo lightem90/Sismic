@@ -11,7 +11,6 @@ import com.github.fafaldo.fabtoolbar.widget.FABToolbarLayout
 import com.polito.sismic.Domain.ReportSection
 import com.polito.sismic.Interactors.Helpers.UiMapper
 import com.polito.sismic.Presenters.CustomLayout.FragmentScrollableCanvas
-import com.polito.sismic.Presenters.ReportActivity.ParametersInjected
 import com.polito.sismic.R
 import com.stepstone.stepper.BlockingStep
 import com.stepstone.stepper.StepperLayout
@@ -21,29 +20,36 @@ import com.stepstone.stepper.VerificationError
 /**
  * Created by Matteo on 29/07/2017.
  */
-abstract class BaseReportFragment : Fragment(), BlockingStep, ParametersInjected {
+abstract class BaseReportFragment : Fragment(), BlockingStep {
 
     private var mParametersCallback : BaseReportFragment.ParametersManager? = null
     //wrap the mapper into interactor
     protected val mUiMapper : UiMapper = UiMapper()
+    protected var mReportSectionParameters : ReportSection? = null
 
     //Is' the activity the handler of the dto, each fragment only passes its own
     // parameters througth the callback when the button "next" is pressed
     //Each fragment must implement the method to get their own paramter name-value
     interface ParametersManager {
-        fun onParametersConfirmed(sectionParameters: ReportSection)
+        fun onParametersConfirmed(sectionParameters: ReportSection?)
         fun onParametersSaveRequest()
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return super.onCreateView(inflater, container, savedInstanceState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mReportSectionParameters = arguments.getParcelable<ReportSection>("report_section")
+    }
+
+    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        onParametersInjectedForEdit()
     }
 
     //In this way I can make every fragment scrollable and use protected properties avoiding replicated code
-    protected fun  inflateFragment(resId: Int, inflater: LayoutInflater?, container: ViewGroup?): View? {
+    protected fun inflateFragment(resId: Int, inflater: LayoutInflater?, container: ViewGroup?): View? {
 
         //Custom view any layout with "scrollable" style
-        var view = inflater!!.inflate(resId, container, false)
+        val view = inflater!!.inflate(resId, container, false)
         val baseLayout = inflater.inflate(R.layout.base_report_fragment, container, false)
         val scrollableCanvas = baseLayout.findViewById<FragmentScrollableCanvas>(R.id.base_fragment_scroll_view)
 
@@ -66,12 +72,13 @@ abstract class BaseReportFragment : Fragment(), BlockingStep, ParametersInjected
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
-    override fun onParametersInjectedForEdit(sectionList: List<ReportSection>) {
-        mUiMapper.setInjectedDomainValueForEdit(sectionList, this)
+    //maps domain values to ui (could be done by each fragment or by mapper)
+    fun onParametersInjectedForEdit() {
+        mUiMapper.setInjectedDomainValueForEdit(mReportSectionParameters, this)
     }
     //Each fragment must implement this, so the activity is in charge to save the data
     override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback?) {
-        mParametersCallback?.onParametersConfirmed(mUiMapper.getDomainSectionFor(this))
+        mParametersCallback?.onParametersConfirmed(mUiMapper.getDomainParameterSectionFromFragment(this))
         callback!!.goToNextStep()
     }
     override fun onCompleteClicked(callback: StepperLayout.OnCompleteClickedCallback?) {
