@@ -57,9 +57,8 @@ class LocalizationActionHelper {
         if(mFusedLocationClient != null)
         {
             mFusedLocationClient!!.requestLocationUpdates(LocationRequest(), LocationCallback(), Looper.getMainLooper())
-            mFusedLocationClient!!.lastLocation?.addOnSuccessListener(caller, OnSuccessListener<Location> { location ->
+            mFusedLocationClient!!.lastLocation?.addOnSuccessListener(caller, { location ->
                 // Got last known location. In some rare situations this can be null.
-                //Rimbalzo di eventi tra activity e fragment
                 mLocationCallback?.onLocationAcquired(location)
             })
             mFusedLocationClient!!.removeLocationUpdates(LocationCallback())

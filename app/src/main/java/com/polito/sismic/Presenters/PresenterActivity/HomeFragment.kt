@@ -4,6 +4,8 @@ import android.app.Fragment
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
+import com.polito.sismic.Domain.Database.ReportDatabaseHelper
+import com.polito.sismic.Interactors.DatabaseInteractor
 import com.polito.sismic.Interactors.Helpers.LoginSharedPreferences
 import com.polito.sismic.Presenters.ReportActivity.ReportActivity
 import com.polito.sismic.R
@@ -38,7 +40,14 @@ class HomeFragment : Fragment() {
         if (item != null) {
             when (item.itemId)
             {
-                R.id.profile_info -> return true;
+                //TODO: per debug
+                R.id.profile_info ->
+                {
+                    DatabaseInteractor().cleanDatabase()
+                    //for debug
+                    activity.deleteDatabase(ReportDatabaseHelper.DB_NAME)
+                    return true
+                }
             }
         }
         return false

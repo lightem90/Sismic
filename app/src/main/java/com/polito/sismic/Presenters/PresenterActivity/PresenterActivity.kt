@@ -58,8 +58,6 @@ class PresenterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_presenter)
 
-        //for debug
-        //deleteDatabase(ReportDatabaseHelper.DB_NAME)
         pushFragment(PresenterFragmentProvider.GetHomeFragment())
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
     }

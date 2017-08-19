@@ -4,7 +4,9 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.database.sqlite.SQLiteDatabase
+import android.os.Bundle
 import android.widget.Toast
+import com.polito.sismic.Presenters.ReportActivity.Fragments.FragmentState
 import org.jetbrains.anko.db.MapRowParser
 import org.jetbrains.anko.db.SelectQueryBuilder
 import java.text.SimpleDateFormat
@@ -104,13 +106,23 @@ class Preference<T>(val context: Context, val name: String, val default: T) {
 
 fun String.toFormattedDate() : Date
 {
-    return SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(this)
+    return SimpleDateFormat("yyyy-MM-dd HH:mm:ss ").parse(this)
 }
 
 fun Date.toFormattedString() : String
 {
-    return SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(this)
+    return SimpleDateFormat("yyyy-MM-dd HH:mm:ss ").format(this)
 }
 
 fun <K, V : Any> Map<K, V?>.toVarargArray(): Array<out Pair<K, V>> =
         map({ Pair(it.key, it.value!!) }).toTypedArray()
+
+fun Bundle.putFragmentState(state : FragmentState)
+{
+    putParcelable("fragment_state", state)
+}
+
+fun Bundle.getFragmentState() : FragmentState?
+{
+    return getParcelable<FragmentState>("fragment_state")
+}

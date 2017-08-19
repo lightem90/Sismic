@@ -1,10 +1,12 @@
 package com.polito.sismic.Presenters.ReportActivity.Fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.support.annotation.Nullable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.polito.sismic.Domain.ReportSection
 import com.polito.sismic.R
 import kotlinx.android.synthetic.main.dati_sismogenetici_report_layout.*
 
@@ -24,12 +26,19 @@ class DatiSismoGeneticiReportFragment : BaseReportFragment() {
 //        list_nodi.adapter =
 
         nodi_request_button.setOnClickListener(
-                {
-                    fillListAsync()
-                    list_nodi.invalidate()
-                    buildGraph()
-                }
+            {
+                fillListAsync()
+                list_nodi.invalidate()
+                buildGraph()
+            }
         )
+    }
+
+    fun updateLabelsByCoordinate(latitude : String, longitude : String, address : String, zone : String)
+    {
+        report_datisimogenetici_coordinate_label.setValue(latitude + " " + longitude)
+        report_datisimogenetici_indirizzo.setValue(address)
+        report_datisimogenetici_zonasismica.setValue(zone)
     }
 
     private fun buildGraph() {

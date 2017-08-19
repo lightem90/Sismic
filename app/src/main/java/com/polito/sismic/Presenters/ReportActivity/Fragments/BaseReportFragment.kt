@@ -2,13 +2,19 @@ package com.polito.sismic.Presenters.ReportActivity.Fragments
 
 import android.content.Context
 import android.os.Bundle
+import android.os.Parcel
+import android.os.Parcelable
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.github.fafaldo.fabtoolbar.widget.FABToolbarLayout
+import com.polito.sismic.Domain.ReportDetails
+import com.polito.sismic.Domain.ReportMedia
 import com.polito.sismic.Domain.ReportSection
+import com.polito.sismic.Extensions.getFragmentState
+import com.polito.sismic.Extensions.toast
 import com.polito.sismic.Interactors.Helpers.UiMapper
 import com.polito.sismic.Presenters.CustomLayout.FragmentScrollableCanvas
 import com.polito.sismic.R
@@ -23,9 +29,10 @@ import com.stepstone.stepper.VerificationError
 abstract class BaseReportFragment : Fragment(), BlockingStep {
 
     private var mParametersCallback : BaseReportFragment.ParametersManager? = null
+    protected var mLocalizationInfoUser : BaseReportFragment.LocalizationInfoUser? = null
     //wrap the mapper into interactor
     protected val mUiMapper : UiMapper = UiMapper()
-    protected var mReportSectionParameters : ReportSection? = null
+    protected var mFragmentState : FragmentState? = null
 
     //Is' the activity the handler of the dto, each fragment only passes its own
     // parameters througth the callback when the button "next" is pressed
@@ -35,9 +42,22 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
         fun onParametersSaveRequest()
     }
 
+    interface LocalizationInfoUser
+    {
+        fun onLocalizationDataConfirmed(latitude : String, longitude : String, address : String, zone : String)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mReportSectionParameters = arguments.getParcelable<ReportSection>("report_section")
+        mFragmentState = arguments.getFragmentState()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
@@ -74,7 +94,7 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
 
     //maps domain values to ui (could be done by each fragment or by mapper)
     fun onParametersInjectedForEdit() {
-        mUiMapper.setInjectedDomainValueForEdit(mReportSectionParameters, this)
+        mUiMapper.setInjectedDomainValueForEdit(mFragmentState?.mReportSectionParameters, this)
     }
     //Each fragment must implement this, so the activity is in charge to save the data
     override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback?) {
@@ -90,7 +110,12 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
         callback?.goToPrevStep()
     }
 
+    override fun onError(error: VerificationError) {
+        activity.toast(error.errorMessage)
+    }
+
     override fun onAttach(context: Context?) {
+
         super.onAttach(context)
         try
         {
@@ -98,6 +123,13 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
         }
         catch (e: ClassCastException) {
             throw ClassCastException(context!!.toString() + " must implement OnParametersConfirmed")
+        }
+        try
+        {
+            mLocalizationInfoUser = context as LocalizationInfoUser?
+        }
+        catch (e : ClassCastException){
+            throw ClassCastException(context!!.toString() + " must implement LocalizationInfoUser")
         }
     }
 
@@ -109,6 +141,30 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
     //Eventually in derived classes
     override fun onSelected() {    }
     override fun verifyStep(): VerificationError? { return null }
-    override fun onError(error: VerificationError) { }
+}
+
+data class FragmentState(var mReportSectionParameters: ReportSection? = null,
+                         var mReportDetails: ReportDetails? = null,
+                         var mReportMedia: Array<ReportMedia>) : Parcelable {
+    constructor(source: Parcel) : this(
+            source.readParcelable<ReportSection>(ReportSection::class.java.classLoader),
+            source.readParcelable<ReportDetails>(ReportDetails::class.java.classLoader),
+            source.readParcelableArray(ReportMedia::class.java.classLoader) as Array<ReportMedia>
+    )
+
+    override fun describeContents() = 0
+
+    override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
+        writeParcelable(mReportSectionParameters, 0)
+        writeParcelable(mReportDetails, 0)
+        writeParcelableArray(mReportMedia, 0)
+    }
+
+    companion object {
+        @JvmField val CREATOR: Parcelable.Creator<FragmentState> = object : Parcelable.Creator<FragmentState> {
+            override fun createFromParcel(source: Parcel): FragmentState = FragmentState(source)
+            override fun newArray(size: Int): Array<FragmentState?> = arrayOfNulls(size)
+        }
+    }
 }
 

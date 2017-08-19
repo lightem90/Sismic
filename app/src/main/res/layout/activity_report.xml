@@ -20,6 +20,7 @@
         android:id="@+id/stepperLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:ms_showErrorStateEnabled="true"
         app:ms_showBackButtonOnFirstStep="false"
         app:ms_completeButtonText="@string/report_complete"
         app:ms_stepperType="tabs" />

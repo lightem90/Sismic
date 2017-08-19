@@ -180,6 +180,7 @@
     <string name="report_description">Descrizione</string>
     <string name="report_description_hint">Descrizione riassuntiva del report</string>
     <string name="size_string">%.2f MB</string>
+    <string name="verification_empty_field">Il campo %s non può essere vuoto</string>
 
 
 </resources>

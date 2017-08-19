@@ -8,15 +8,16 @@ import android.view.MenuItem
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.places.Places
-import com.polito.sismic.Interactors.ReportManager
-import com.polito.sismic.Interactors.ReportProvider
 import com.polito.sismic.Domain.ReportSection
 import com.polito.sismic.Extensions.toast
 import com.polito.sismic.Interactors.DomainInteractor
 import com.polito.sismic.Interactors.Helpers.UserActionType
+import com.polito.sismic.Interactors.ReportManager
+import com.polito.sismic.Interactors.ReportProvider
 import com.polito.sismic.Interactors.UserActionInteractor
 import com.polito.sismic.Presenters.Adapters.ReportFragmentsAdapter
 import com.polito.sismic.Presenters.ReportActivity.Fragments.BaseReportFragment
+import com.polito.sismic.Presenters.ReportActivity.Fragments.DatiSismoGeneticiReportFragment
 import com.polito.sismic.Presenters.ReportActivity.Fragments.InfoLocReportFragment
 import com.polito.sismic.R
 import kotlinx.android.synthetic.main.activity_report.*
@@ -25,7 +26,16 @@ import kotlinx.android.synthetic.main.activity_report.*
 class ReportActivity : AppCompatActivity(),
         InfoLocReportFragment.CurrentLocationProvided,
         BaseReportFragment.ParametersManager,
-        GoogleApiClient.OnConnectionFailedListener {
+        GoogleApiClient.OnConnectionFailedListener,
+        BaseReportFragment.LocalizationInfoUser {
+
+
+    override fun onLocalizationDataConfirmed(latitude : String, longitude : String, address : String, zone : String) {
+        supportFragmentManager.fragments
+                .filterIsInstance<DatiSismoGeneticiReportFragment>()
+                .firstOrNull()?.
+                updateLabelsByCoordinate(latitude, longitude, address, zone)
+    }
 
     private lateinit var  mGoogleApiClient: GoogleApiClient
     private lateinit var  mUserActionInteractor: UserActionInteractor
@@ -57,7 +67,7 @@ class ReportActivity : AppCompatActivity(),
     }
 
     override fun onLocationAcquired(location: Location) {
-        supportFragmentManager.fragments.filterIsInstance<InfoLocReportFragment>().first().updateByLocation(location)
+        supportFragmentManager.fragments.filterIsInstance<InfoLocReportFragment>().firstOrNull()?.updateByLocation(location)
     }
 
     //If I pass an Uri, data will be null

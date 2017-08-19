@@ -8,6 +8,7 @@ import com.polito.sismic.Domain.ReportSection
 import com.polito.sismic.Interactors.Helpers.MediaFile
 import com.polito.sismic.Interactors.Helpers.UiMapper
 import com.polito.sismic.Presenters.ReportActivity.Fragments.BaseReportFragment
+import com.polito.sismic.Presenters.ReportActivity.Fragments.FragmentState
 
 //ReportDetails if I'm editing is the domain class that refers to a row in the db,
 //if it's a new reportDetails its the temporary new reportDetails
@@ -24,11 +25,6 @@ class ReportManager(private val report: Report, val database: DatabaseInteractor
         //if I'm editing the tmp replicas will have a value
         report.mediaList.forEach{x -> tmpMediaList.add(mUiMapper.convertReportMediaFromDomain(x))}
         report.sectionList.forEach{x -> tmpSectionList.put(x::class.java.toString(), x)}
-    }
-
-    fun getSectionToInject() : List<ReportSection>
-    {
-        return tmpSectionList.values.toList()
     }
 
     fun deleteReport() {
@@ -55,12 +51,25 @@ class ReportManager(private val report: Report, val database: DatabaseInteractor
         tmpSectionList.put(sectionParameters::class.toString(), sectionParameters)
     }
 
-    fun  addMediaFile(lastAddedTmpFile: MediaFile) {
+    fun addMediaFile(lastAddedTmpFile: MediaFile) {
         tmpMediaList.add(lastAddedTmpFile)
     }
 
     fun getSectionParameterFor(fragment: BaseReportFragment): Parcelable? {
         return mUiMapper.mapDomainSectionToFragment(tmpSectionList.values.toList(), fragment)
+    }
+
+    private fun getReportArray() : Array<ReportMedia>
+    {
+        val toReturn = mutableListOf<ReportMedia>()
+        tmpMediaList.forEach { toReturn.add(mUiMapper.convertMediaForDomain(it)) }
+        return toReturn.toTypedArray<ReportMedia>()
+    }
+
+    fun createStateFor(fragment: BaseReportFragment) : FragmentState
+    {
+        return FragmentState(getSectionParameterFor(fragment) as ReportSection?,
+                report.reportDetails, getReportArray())
     }
 
 }

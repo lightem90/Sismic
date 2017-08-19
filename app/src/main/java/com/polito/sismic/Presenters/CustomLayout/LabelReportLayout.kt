@@ -54,7 +54,7 @@ class LabelReportLayout : LinearLayout {
 
     fun setValue(newValue : String)
     {
-        report_label_value.setText(newValue)
+        report_label_value.text = newValue
     }
 
     fun getValue() : String

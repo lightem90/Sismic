@@ -9,22 +9,23 @@ import android.view.*
 import com.google.android.gms.location.places.Place
 import com.polito.sismic.AsyncTasks.PlaceDetailsTask
 import com.polito.sismic.Domain.ReportSection
+import com.polito.sismic.Extensions.toFormattedString
 import com.polito.sismic.Extensions.toast
 import com.polito.sismic.Interactors.Helpers.LocalizationActionHelper
 import com.polito.sismic.Interactors.Helpers.LocalizationActionType
 import com.polito.sismic.Interactors.Helpers.PermissionsHelper
 import com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
 import com.polito.sismic.R
+import com.stepstone.stepper.StepperLayout
+import com.stepstone.stepper.VerificationError
+import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.info_loc_report_layout.*
 
 
 /**
  * Created by Matteo on 29/07/2017.
  */
-class InfoLocReportFragment : BaseReportFragment(),
-        ParameterReportLayout.RegionSelectedListener,
-        ParameterReportLayout.ProvinceSelectedListener {
-
+class InfoLocReportFragment : BaseReportFragment(){
 
     private var  mLocationCallback: InfoLocReportFragment.CurrentLocationProvided? = null
     //private var  mLocationSuggestionsHelper : LocationSuggestionsHelper? = null
@@ -35,10 +36,17 @@ class InfoLocReportFragment : BaseReportFragment(),
         super.onCreate(savedInstanceState)
         mPermissionHelper.checAndAskLocationPermissions(activity, this)
         setHasOptionsMenu(true)
-        //mLocationSuggestionsHelper = LocationSuggestionsHelper(activity)
-        //mLocationSuggestionsHelper!!.initialize()
     }
 
+    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        mFragmentState?.mReportDetails?.let {
+            report_info_name_label.setValue(mFragmentState!!.mReportDetails!!.userIdentifier)
+            report_info_number_label.setValue(mFragmentState!!.mReportDetails!!.id.toString())
+            report_info_date_label.setValue(mFragmentState!!.mReportDetails!!.date.toFormattedString())
+        }
+    }
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -142,19 +150,40 @@ class InfoLocReportFragment : BaseReportFragment(),
     {
         lat_parameter.setParameterValue("%.4f".format(location.latitude))
         long_parameter.setParameterValue("%.4f".format(location.longitude))
+        country_parameter.setParameterValue("italia")
+        region_parameter.setParameterValue("marche")
+        province_parameter.setParameterValue("pesaro")
+        comune_parameter.setParameterValue("pesaro")
+        address_parameter.setParameterValue("via achilli")
+        zona_sismica_parameter.setParameterValue("1")
+        codice_istat_parameter.setParameterValue("2")
+        cap_parameter.setParameterValue("61122")
     }
 
     private fun askGoogleForPlaceId(place: Place) {
         PlaceDetailsTask(view!!, context).execute(place)
     }
 
-    //Is the helper of the fragment that gives back the suggestions to its own children
-    override fun OnRegionSelected(newRegion: String) {
-        //province_parameter.setSuggestions(mLocationSuggestionsHelper!!.getProvinceByRegion(newRegion))
+    //all parameters must have a value
+    override fun verifyStep(): VerificationError? {
+        if (lat_parameter.isEmpty()) return VerificationError(String.format(resources.getString(R.string.verification_empty_field), lat_parameter.getTitle()))
+        if (long_parameter.isEmpty()) return VerificationError(String.format(resources.getString(R.string.verification_empty_field), long_parameter.getTitle()))
+        if (country_parameter.isEmpty()) return VerificationError(String.format(resources.getString(R.string.verification_empty_field), country_parameter.getTitle()))
+        if (region_parameter.isEmpty()) return VerificationError(String.format(resources.getString(R.string.verification_empty_field), region_parameter.getTitle()))
+        if (province_parameter.isEmpty()) return VerificationError(String.format(resources.getString(R.string.verification_empty_field), province_parameter.getTitle()))
+        if (comune_parameter.isEmpty()) return VerificationError(String.format(resources.getString(R.string.verification_empty_field), comune_parameter.getTitle()))
+        if (address_parameter.isEmpty()) return VerificationError(String.format(resources.getString(R.string.verification_empty_field), address_parameter.getTitle()))
+        if (zona_sismica_parameter.isEmpty()) return VerificationError(String.format(resources.getString(R.string.verification_empty_field), zona_sismica_parameter.getTitle()))
+        if (codice_istat_parameter.isEmpty()) return VerificationError(String.format(resources.getString(R.string.verification_empty_field), codice_istat_parameter.getTitle()))
+        return super.verifyStep()
     }
 
-    override fun OnProvinceSelected(newProvince: String) {
-        //comune_parameter.setSuggestions(mLocationSuggestionsHelper!!.getLocalityByProvince(newProvince))
+    override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback?) {
+        mLocalizationInfoUser?.onLocalizationDataConfirmed(lat_parameter.getParameterValue(),
+                long_parameter.getParameterValue(),
+                address_parameter.getParameterValue(),
+                zona_sismica_parameter.getParameterValue())
+        super.onNextClicked(callback)
     }
 }
 

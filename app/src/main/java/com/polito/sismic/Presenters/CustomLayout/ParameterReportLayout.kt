@@ -12,15 +12,16 @@ import android.widget.TextView
 import com.polito.sismic.R
 import kotlinx.android.synthetic.main.report_parameter_layout.view.*
 import android.widget.ArrayAdapter
+import android.os.Bundle
+import android.os.Parcelable
+
+
 
 
 /**
  * Created by Matteo on 02/08/2017.
  */
 class ParameterReportLayout : LinearLayout{
-
-    private var onRegionCallback    : RegionSelectedListener? = null
-    private var onProvinceCallback  : ProvinceSelectedListener? = null
 
     @JvmOverloads
     constructor(
@@ -95,31 +96,25 @@ class ParameterReportLayout : LinearLayout{
                 else
                     section_parameter_help.visibility = View.INVISIBLE
             }
-
             typedArray.recycle()
         }
     }
 
-    fun setRegionListenerCallback(callback : RegionSelectedListener?)
+    fun getTitle() : String
     {
-        onRegionCallback = callback
-    }
-
-    fun setProvinceListenerCallback(callback : ProvinceSelectedListener)
-    {
-        onProvinceCallback = callback
+        return section_parameter_title.text.toString()
     }
 
     fun setSuggestions(newSuggestions : Array<String>)
     {
-        if (newSuggestions.size > 0)
+        if (newSuggestions.isNotEmpty())
         {
-            var autoSugg = ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, newSuggestions)
+            val autoSugg = ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, newSuggestions)
             section_parameter_value.setAdapter(autoSugg)
-            section_parameter_value.onItemClickListener = AdapterView.
-                    OnItemClickListener { _, _, _, _ ->
-                        onRegionCallback?.OnRegionSelected(getParameterValue())
-                        onProvinceCallback?.OnProvinceSelected(getParameterValue())}
+            //section_parameter_value.onItemClickListener = AdapterView.
+            //        OnItemClickListener { _, _, _, _ ->
+            //            onRegionCallback?.OnRegionSelected(getParameterValue())
+            //            onProvinceCallback?.OnProvinceSelected(getParameterValue())}
             autoSugg.notifyDataSetChanged()
         }
     }
@@ -137,6 +132,26 @@ class ParameterReportLayout : LinearLayout{
     fun isEmpty() : Boolean
     {
         return section_parameter_value.text.isEmpty()
+    }
+
+    public override fun onSaveInstanceState(): Parcelable {
+        val bundle = Bundle()
+        bundle.putParcelable("superState", super.onSaveInstanceState())
+        val toSave = getParameterValue()
+        bundle.putString("value", toSave)
+        return bundle
+    }
+
+    public override fun onRestoreInstanceState(state: Parcelable) {
+        var customState = state
+        if (customState is Bundle)
+        {
+            val bundle = customState
+            val toRestore = bundle.getString("value")
+            setParameterValue(toRestore)
+            customState = bundle.getParcelable<Parcelable>("superState")
+        }
+        super.onRestoreInstanceState(customState)
     }
 
 }
