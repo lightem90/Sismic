@@ -6,7 +6,6 @@ import android.content.SharedPreferences
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.widget.Toast
-import com.polito.sismic.Domain.Report
 import com.polito.sismic.Interactors.ReportExtraInfo
 import com.polito.sismic.Presenters.ReportActivity.Fragments.FragmentState
 import org.jetbrains.anko.db.MapRowParser
@@ -141,4 +140,13 @@ fun Bundle.getReportExtraInfo(keyList : List<String>) : ReportExtraInfo
         listOfValues.add(it to String(getCharArray(it)))
     }
     return ReportExtraInfo(listOfValues)
+}
+
+fun Double.getPowerOfTwoForSampleRatio(): Int
+{
+    val k = Integer.highestOneBit(Math.floor(this).toInt())
+    if (k == 0)
+        return 1
+    else
+        return k
 }

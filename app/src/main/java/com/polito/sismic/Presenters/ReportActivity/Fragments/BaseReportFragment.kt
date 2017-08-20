@@ -2,16 +2,12 @@ package com.polito.sismic.Presenters.ReportActivity.Fragments
 
 import android.content.Context
 import android.os.Bundle
-import android.os.Parcel
-import android.os.Parcelable
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.github.fafaldo.fabtoolbar.widget.FABToolbarLayout
-import com.polito.sismic.Domain.ReportDetails
-import com.polito.sismic.Domain.ReportMedia
 import com.polito.sismic.Domain.ReportSection
 import com.polito.sismic.Extensions.getFragmentState
 import com.polito.sismic.Extensions.toast
@@ -52,13 +48,6 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
         mFragmentState = arguments.getFragmentState()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-    }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -66,15 +55,16 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
     }
 
     //In this way I can make every fragment scrollable and use protected properties avoiding replicated code
-    protected fun inflateFragment(resId: Int, inflater: LayoutInflater?, container: ViewGroup?): View? {
+    protected fun inflateFragment(resId: Int, inflater: LayoutInflater?, container: ViewGroup?, needScrollable : Boolean = true): View? {
 
         //Custom view any layout with "scrollable" style
         val view = inflater!!.inflate(resId, container, false)
-        val baseLayout = inflater.inflate(R.layout.base_report_fragment, container, false)
-        val scrollableCanvas = baseLayout.findViewById<FragmentScrollableCanvas>(R.id.base_fragment_scroll_view)
-
         //For hiding the created bottom action bar (on fab pressure)
         view.setOnClickListener({ hideBottomActions() })
+        if (!needScrollable) return view
+
+        val baseLayout = inflater.inflate(R.layout.base_report_fragment, container, false)
+        val scrollableCanvas = baseLayout.findViewById<FragmentScrollableCanvas>(R.id.base_fragment_scroll_view)
         scrollableCanvas.addView(view)
         //Must be called or it crashes on scroll!!!
         scrollableCanvas.setObjectsToHideOnScroll(activity.findViewById<FABToolbarLayout>(R.id.fabtoolbar),
@@ -143,30 +133,5 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
     //Eventually in derived classes
     override fun onSelected() {    }
     override fun verifyStep(): VerificationError? { return null }
-}
-
-data class FragmentState(var mReportSectionParameters: ReportSection? = null,
-                         var mReportDetails: ReportDetails? = null,
-                         var mReportMedia: Array<ReportMedia>) : Parcelable {
-    constructor(source: Parcel) : this(
-            source.readParcelable<ReportSection>(ReportSection::class.java.classLoader),
-            source.readParcelable<ReportDetails>(ReportDetails::class.java.classLoader),
-            source.readParcelableArray(ReportMedia::class.java.classLoader) as Array<ReportMedia>
-    )
-
-    override fun describeContents() = 0
-
-    override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
-        writeParcelable(mReportSectionParameters, 0)
-        writeParcelable(mReportDetails, 0)
-        writeParcelableArray(mReportMedia, 0)
-    }
-
-    companion object {
-        @JvmField val CREATOR: Parcelable.Creator<FragmentState> = object : Parcelable.Creator<FragmentState> {
-            override fun createFromParcel(source: Parcel): FragmentState = FragmentState(source)
-            override fun newArray(size: Int): Array<FragmentState?> = arrayOfNulls(size)
-        }
-    }
 }
 

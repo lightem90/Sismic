@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.activity_presenter.*
 class PresenterActivity : AppCompatActivity(),
         ReportListFragment.HistoryReload {
 
-    val fragmentFactory : PresenterFragmentFactory = PresenterFragmentFactory()
+    private val fragmentFactory : PresenterFragmentFactory = PresenterFragmentFactory()
     companion object {
         val REPORT_ACTIVITY = 50
     }

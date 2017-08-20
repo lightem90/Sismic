@@ -1,5 +1,6 @@
 package com.polito.sismic.Interactors
 
+import android.net.Uri
 import android.os.Parcelable
 import com.polito.sismic.Domain.Report
 import com.polito.sismic.Domain.ReportDetails
@@ -9,6 +10,7 @@ import com.polito.sismic.Interactors.Helpers.MediaFile
 import com.polito.sismic.Interactors.Helpers.UiMapper
 import com.polito.sismic.Presenters.ReportActivity.Fragments.BaseReportFragment
 import com.polito.sismic.Presenters.ReportActivity.Fragments.FragmentState
+import java.io.File
 
 //ReportDetails if I'm editing is the domain class that refers to a row in the db,
 //if it's a new reportDetails its the temporary new reportDetails
@@ -30,7 +32,16 @@ class ReportManager (private val report: Report, val database: DatabaseInteracto
     //Delete only if its a new report
     fun deleteTmpReport()
     {
-        if (!editing) database.delete(report.reportDetails)
+        if (!editing)
+        {
+            database.delete(report.reportDetails)
+            report.mediaList.forEach {
+                val uri = Uri.parse(it.url)
+                if (uri != null) {
+                    File(uri.path).delete()
+                }
+            }
+        }
     }
 
     fun saveReportToDb() = with (mUiMapper){
