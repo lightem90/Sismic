@@ -20,7 +20,6 @@ class ReportProvider(val caller: ReportActivity) {
     private val dbInteractor : DatabaseInteractor = DatabaseInteractor()
     fun getOrCreateReportManager(userName : String, intent : Intent) : ReportManager?
     {
-        //TODO: editing existing report
         if (intent.getBooleanExtra("editing", false))
         {
             val reportId = intent.getIntExtra("report_id", -1)
@@ -28,7 +27,7 @@ class ReportProvider(val caller: ReportActivity) {
 
             val report = dbInteractor.getReportForId(reportId.toString(), userName)
             if (report == null) errorInCreatingReport()
-            return ReportManager(report!!, dbInteractor)
+            return ReportManager(report!!, dbInteractor, true)
 
         }
         else

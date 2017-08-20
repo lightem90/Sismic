@@ -1,6 +1,7 @@
 package com.polito.sismic.Presenters.PresenterActivity
 
 import android.app.Fragment
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
@@ -16,6 +17,8 @@ import kotlinx.android.synthetic.main.home_fragment.view.*
  */
 class HomeFragment : Fragment() {
 
+    private var mHistoryCallback : ReportListFragment.HistoryReload? = null
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.home_fragment, container, false)
 
@@ -23,12 +26,23 @@ class HomeFragment : Fragment() {
         return view
     }
 
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        try
+        {
+            mHistoryCallback = context as ReportListFragment.HistoryReload
+        }
+        catch (e : ClassCastException){
+            throw ClassCastException(context!!.toString() + " must implement HistoryReload")
+        }
+    }
+
     fun startReportActivity()
     {
         val intent = Intent(activity, ReportActivity::class.java)
         val userDetails = LoginSharedPreferences.getLoggedUser(activity)
         intent.putExtra("username", userDetails.name)
-        startActivityForResult(intent, PresenterActivity.REPORT_ACTIVITY)
+        activity.startActivityForResult(intent, PresenterActivity.REPORT_ACTIVITY)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -46,6 +60,7 @@ class HomeFragment : Fragment() {
                     DatabaseInteractor().cleanDatabase()
                     //for debug
                     activity.deleteDatabase(ReportDatabaseHelper.DB_NAME)
+                    mHistoryCallback?.onHistoryReloadRequest()
                     return true
                 }
             }
@@ -57,5 +72,11 @@ class HomeFragment : Fragment() {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true);
     }
+
+    fun getFragmentTag() : String
+    {
+        return "home"
+    }
 }
+
 

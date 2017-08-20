@@ -1,10 +1,8 @@
 package com.polito.sismic.Interactors
 
-import com.polito.sismic.Domain.CatastoReportSection
 import com.polito.sismic.Domain.Database.*
 import com.polito.sismic.Domain.Report
 import com.polito.sismic.Domain.ReportDetails
-import com.polito.sismic.Domain.ReportSection
 import com.polito.sismic.Extensions.*
 import org.jetbrains.anko.db.SqlOrderDirection
 import org.jetbrains.anko.db.insert
@@ -48,6 +46,7 @@ class DatabaseInteractor(val reportDatabaseHelper: ReportDatabaseHelper = Report
     }
 
     fun getReportForId(reportID : String, userID: String) : Report? = reportDatabaseHelper.use {
+
         val reportDetailRequest = "${ReportTable.USERID} = ? AND ${ReportTable.ID} = ?"
         val databaseReportDetails = select(ReportTable.NAME)
                 .whereSimple(reportDetailRequest, userID, reportID)
@@ -83,7 +82,7 @@ class DatabaseInteractor(val reportDatabaseHelper: ReportDatabaseHelper = Report
                 .parseList { DatabaseReportDetails(HashMap(it)) }
 
         //there's a smarter way to do this
-        var listToReturn = mutableListOf<ReportDetails>()
+        val listToReturn = mutableListOf<ReportDetails>()
         reports.forEach {listToReturn.add(dataMapper.convertReportDetailsToDomain(it)) }
         listToReturn.toList()
     }
@@ -96,12 +95,13 @@ class DatabaseInteractor(val reportDatabaseHelper: ReportDatabaseHelper = Report
         clear(CatastoInfoTable.NAME)
     }
 
-    //TODO how to save section into correct table??
     fun save(report : Report) = reportDatabaseHelper.use {
 
+        //delete if exists (in the case I'm editing I delete the old one)
+        delete(report.reportDetails)
         with (dataMapper.convertReportFromDomain(report))
         {
-            update(ReportTable.NAME, *reportDetails.map.toVarargArray())
+            insert(ReportTable.NAME, *reportDetails.map.toVarargArray())
             insertEachSectionIntoCorrectTable(sections)
             mediaList.forEach{ (map) -> insert(ReportMediaTable.NAME, *map.toVarargArray())}
         }
@@ -112,6 +112,9 @@ class DatabaseInteractor(val reportDatabaseHelper: ReportDatabaseHelper = Report
         with(dataMapper.convertReportDetailsFromDomain(reportDetails))
         {
             delete(ReportTable.NAME, "${ReportTable.ID} = ?", arrayOf(_id.toString()))
+            delete(ReportMediaTable.NAME, "${ReportMediaTable.REPORT_ID} = ?", arrayOf(_id.toString()))
+            delete(LocalizationInfoTable.NAME, "${LocalizationInfoTable.REPORT_ID} = ?", arrayOf(_id.toString()))
+            delete(CatastoInfoTable.NAME, "${CatastoInfoTable.REPORT_ID} = ?", arrayOf(_id.toString()))
         }
     }
 
@@ -119,7 +122,8 @@ class DatabaseInteractor(val reportDatabaseHelper: ReportDatabaseHelper = Report
 
         sections.forEach {section ->
             when (section) {
-                is DatabaseLocalizationSection -> {
+                is DatabaseLocalizationSection ->
+                {
                     insert(LocalizationInfoTable.NAME, *section.map.toVarargArray())
                 }
                 is DatabaseCatastoSection ->

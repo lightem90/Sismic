@@ -19,6 +19,17 @@ import org.jetbrains.anko.startActivity
  */
 class ReportListFragment : Fragment() {
 
+    fun getFragmentTag() : String
+    {
+        return "report_list"
+    }
+
+    interface HistoryReload
+    {
+        fun onHistoryReloadRequest()
+    }
+
+    var mReportDetailsList :  MutableList<ReportDetails> = DatabaseInteractor().getAllReportsDetails().toMutableList()
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.report_list_fragment, container, false)
     }
@@ -46,7 +57,7 @@ class ReportListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         history_container.layoutManager = LinearLayoutManager(activity)
-        val adapter = ReportAdapter(activity, DatabaseInteractor().getAllReportsDetails())
+        val adapter = ReportAdapter(activity, mReportDetailsList)
         {
             //on long press, edit the whole report
             startReportEditing(it)
@@ -56,7 +67,9 @@ class ReportListFragment : Fragment() {
 
     fun invalidateAndReload()
     {
-        history_container.adapter.notifyDataSetChanged()
+        mReportDetailsList.clear()
+        mReportDetailsList.addAll(DatabaseInteractor().getAllReportsDetails().toMutableList())
+        history_container?.adapter?.notifyDataSetChanged()
     }
 
     private fun startReportEditing(reportDetails: ReportDetails): Boolean {

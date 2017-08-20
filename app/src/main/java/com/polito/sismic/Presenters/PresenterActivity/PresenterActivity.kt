@@ -7,12 +7,13 @@ import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-import com.polito.sismic.Domain.Database.ReportDatabaseHelper
 import com.polito.sismic.R
 import kotlinx.android.synthetic.main.activity_presenter.*
 
-class PresenterActivity : AppCompatActivity() {
+class PresenterActivity : AppCompatActivity(),
+        ReportListFragment.HistoryReload {
 
+    val fragmentFactory : PresenterFragmentFactory = PresenterFragmentFactory()
     companion object {
         val REPORT_ACTIVITY = 50
     }
@@ -20,27 +21,44 @@ class PresenterActivity : AppCompatActivity() {
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_home -> {
-                pushFragment(PresenterFragmentProvider.GetHomeFragment())
+
+                with(fragmentFactory.GetHomeFragment())
+                {
+                    pushFragment(this, this.getFragmentTag())
+                }
+
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_history -> {
-                pushFragment(PresenterFragmentProvider.GetReportListFragment())
+
+                with(fragmentFactory.GetReportListFragment())
+                {
+                    pushFragment(this, this.getFragmentTag())
+                }
+
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_profile -> {
-                pushFragment(PresenterFragmentProvider.GetProfileFragment())
+
+                with(fragmentFactory.GetProfileFragment())
+                {
+                    pushFragment(this, this.getFragmentTag())
+                }
+
                 return@OnNavigationItemSelectedListener true
             }
         }
         false
     }
 
-    private fun pushFragment(fragment: Fragment?) {
+    private fun pushFragment(fragment: Fragment?, tag : String) {
 
         if (fragmentManager != null) {
             val ft = fragmentManager.beginTransaction()
             if (ft != null) {
-                ft.replace(R.id.frame_canvas, fragment).commit()
+                ft.replace(R.id.frame_canvas, fragment, tag)
+                ft.addToBackStack(null)
+                ft.commit()
             }
         }
     }
@@ -58,7 +76,8 @@ class PresenterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_presenter)
 
-        pushFragment(PresenterFragmentProvider.GetHomeFragment())
+        val initialFrag = fragmentFactory.GetHomeFragment()
+        pushFragment(initialFrag, initialFrag.getFragmentTag())
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
     }
 
@@ -66,10 +85,15 @@ class PresenterActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REPORT_ACTIVITY)
         {
-            val history = fragmentManager.findFragmentById(R.layout.report_list_fragment) as ReportListFragment?
-            history?.let {
-                history.invalidateAndReload()
-            }
+            onHistoryReloadRequest()
+        }
+    }
+
+    override fun onHistoryReloadRequest() {
+        val history = fragmentManager.findFragmentByTag("report_list") as ReportListFragment?
+        history?.let {
+            history.invalidateAndReload()
         }
     }
 }
+

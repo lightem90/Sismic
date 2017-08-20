@@ -12,9 +12,8 @@ import com.polito.sismic.Presenters.ReportActivity.Fragments.FragmentState
 
 //ReportDetails if I'm editing is the domain class that refers to a row in the db,
 //if it's a new reportDetails its the temporary new reportDetails
-//TODO: handle the case of cancelling the modification of an existing reportDetails: in this case I would remove the reportDetails, the right thing to do would be
 //discard the changes keeping the reportDetails
-class ReportManager(private val report: Report, val database: DatabaseInteractor)
+class ReportManager (private val report: Report, val database: DatabaseInteractor, val editing: Boolean = false)
 {
     // need an hashmap for "class" to handle back and forth edit
     private var tmpSectionList : HashMap<String, ReportSection> = hashMapOf()
@@ -28,8 +27,10 @@ class ReportManager(private val report: Report, val database: DatabaseInteractor
         report.sectionList.forEach{x -> tmpSectionList.put(x::class.java.toString(), x)}
     }
 
-    fun deleteReport() {
-        database.delete(report.reportDetails)
+    //Delete only if its a new report
+    fun deleteTmpReport()
+    {
+        if (!editing) database.delete(report.reportDetails)
     }
 
     fun saveReportToDb() = with (mUiMapper){

@@ -17,6 +17,12 @@ import org.jetbrains.anko.startActivity
  */
 class ProfileFragment : Fragment() {
 
+
+    fun getFragmentTag() : String
+    {
+        return "profile"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
