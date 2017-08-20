@@ -42,11 +42,11 @@ class DatabaseMapperHelper
 
     fun convertLocalizationDataToDomain(localizationSection: DatabaseLocalizationSection) : LocalizationInfoSection = with (localizationSection)
     {
-        return LocalizationInfoSection(_id, latitude.toString(), longitude.toString(), country, region, province, comune, address, zone, code.toString())
+        return LocalizationInfoSection(_id, latitude.toString(), longitude.toString(), country, region, province, comune, address, cap, zone, code.toString())
     }
 
     fun convertLocalizationDataFromDomain(reportId : Int, localizationInfoSection: LocalizationInfoSection) : DatabaseLocalizationSection = with (localizationInfoSection)
     {
-        return DatabaseLocalizationSection(latitude.toDouble(), longitude.toDouble(), country, region, province, comune, address, zone, code.toInt(), reportId)
+        return DatabaseLocalizationSection(latitude.toDouble(), longitude.toDouble(), country, region, province, comune, address, cap, zone, code.toInt(), reportId)
     }
 }

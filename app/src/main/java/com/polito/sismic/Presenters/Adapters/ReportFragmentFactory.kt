@@ -3,6 +3,7 @@ package com.polito.sismic.Presenters.Adapters
 import android.content.Context
 import android.os.Bundle
 import com.polito.sismic.Extensions.putFragmentState
+import com.polito.sismic.Extensions.putReportExtraInfo
 import com.polito.sismic.Interactors.ReportManager
 import com.polito.sismic.Presenters.ReportActivity.Fragments.*
 import com.polito.sismic.R
@@ -48,6 +49,9 @@ class ReportFragmentFactory(private val reportManager: ReportManager) {
 
         val bundle = Bundle()
         bundle.putFragmentState(reportManager.createStateFor(fragment))
+        if (reportManager.mExtraInfo != null){
+            bundle.putReportExtraInfo(reportManager.mExtraInfo!!)
+        }
         fragment.arguments = bundle
 
         return fragment

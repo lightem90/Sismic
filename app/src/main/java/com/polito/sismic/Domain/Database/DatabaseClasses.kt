@@ -51,6 +51,7 @@ data class DatabaseLocalizationSection(var map: MutableMap<String, Any?>) : Data
     var province: String by map
     var comune: String by map
     var address: String by map
+    var cap : String by map
     var zone: String by map
     var code: Int by map
     var report_id: Int by map
@@ -62,6 +63,7 @@ data class DatabaseLocalizationSection(var map: MutableMap<String, Any?>) : Data
                 province: String,
                 comune: String,
                 address: String,
+                cap : String,
                 zone: String,
                 code: Int,
                 report_id: Int) : this(HashMap()) {
@@ -72,6 +74,7 @@ data class DatabaseLocalizationSection(var map: MutableMap<String, Any?>) : Data
         this.province = province
         this.comune = comune
         this.address = address
+        this.cap = cap
         this.zone = zone
         this.code = code
         this.report_id = report_id

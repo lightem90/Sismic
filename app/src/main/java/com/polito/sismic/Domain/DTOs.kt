@@ -96,10 +96,12 @@ data class LocalizationInfoSection(val id: Int,
                                    val province: String,
                                    val comune: String,
                                    val address: String,
+                                   val cap: String,
                                    val zone: String,
-                                   val code: String) : ReportSection {
+                                   val code: String) : ReportSection, Parcelable {
     constructor(source: Parcel) : this(
             source.readInt(),
+            source.readString(),
             source.readString(),
             source.readString(),
             source.readString(),
@@ -122,6 +124,7 @@ data class LocalizationInfoSection(val id: Int,
         writeString(province)
         writeString(comune)
         writeString(address)
+        writeString(cap)
         writeString(zone)
         writeString(code)
     }

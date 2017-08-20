@@ -26,6 +26,7 @@ class UiMapper {
                         province_parameter.getParameterValue(),
                         comune_parameter.getParameterValue(),
                         address_parameter.getParameterValue(),
+                        cap_parameter.getParameterValue(),
                         zona_sismica_parameter.getParameterValue(),
                         codice_istat_parameter.getParameterValue())
             }
@@ -59,7 +60,7 @@ class UiMapper {
         return null
     }
 
-    fun setInjectedDomainValueForEdit(sectionParams : ReportSection?, baseReportFragment: BaseReportFragment) = with (baseReportFragment)
+    fun setInjectedDomainValueForEdit(sectionParams : ReportSection, baseReportFragment: BaseReportFragment) = with (baseReportFragment)
     {
         when (this)
         {
@@ -74,6 +75,7 @@ class UiMapper {
                     province_parameter.setParameterValue(localizationSection.province)
                     comune_parameter.setParameterValue(localizationSection.comune)
                     address_parameter.setParameterValue(localizationSection.address)
+                    cap_parameter.setParameterValue(localizationSection.cap)
                     zona_sismica_parameter.setParameterValue(localizationSection.zone)
                     codice_istat_parameter.setParameterValue(localizationSection.code)
                 }

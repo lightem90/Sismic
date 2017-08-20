@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.polito.sismic.Domain.ReportSection
+import com.polito.sismic.Extensions.getReportExtraInfo
 import com.polito.sismic.R
 import kotlinx.android.synthetic.main.dati_sismogenetici_report_layout.*
 
@@ -21,6 +22,13 @@ class DatiSismoGeneticiReportFragment : BaseReportFragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val extraInfo = arguments.getReportExtraInfo(listOf("latitude", "longitude", "address", "zone"))
+        //Must never fail!
+        updateLabelsByCoordinate(extraInfo.extraValues.find { it.first == "latitude" }?.second.toString(),
+                extraInfo.extraValues.find { it.first == "longitude" }?.second.toString(),
+                extraInfo.extraValues.find { it.first == "address" }?.second.toString(),
+                extraInfo.extraValues.find { it.first == "zone" }?.second.toString())
 
         //TODO lista vuota, al click del pulsante parte l'acquisizione
 //        list_nodi.adapter =

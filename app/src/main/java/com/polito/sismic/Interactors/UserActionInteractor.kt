@@ -74,7 +74,7 @@ class UserActionInteractor(val mReportManager: ReportManager,
         val audioRecordIntent = Intent(MediaStore.Audio.Media.RECORD_SOUND_ACTION)
         if (audioRecordIntent.resolveActivity(caller.packageManager) != null) {
 
-            var audio = reportMediaInteractor.createFileForMedia(MediaType.Audio)
+            val audio = reportMediaInteractor.createFileForMedia(MediaType.Audio)
             audioRecordIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.parse(audio?.url))
             caller.startActivityForResult(audioRecordIntent, USER_ACTION_AUDIO)
         }
@@ -84,7 +84,7 @@ class UserActionInteractor(val mReportManager: ReportManager,
         val takeVideoIntent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
         if (takeVideoIntent.resolveActivity(caller.packageManager) != null) {
 
-            var video = reportMediaInteractor.createFileForMedia(MediaType.Video)
+            val video = reportMediaInteractor.createFileForMedia(MediaType.Video)
             takeVideoIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.parse(video?.url))
             caller.startActivityForResult(takeVideoIntent, USER_ACTION_VIDEO)
         }
@@ -92,11 +92,11 @@ class UserActionInteractor(val mReportManager: ReportManager,
 
     private fun startPictureIntent(caller: Activity) {
 
-        var takePictureIntent : Intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        val takePictureIntent : Intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         // Ensure that there's a camera activity to handle the intent
         if (takePictureIntent.resolveActivity(caller.packageManager) != null)
         {
-            var photo = reportMediaInteractor.createFileForMedia(MediaType.Picture)
+            val photo = reportMediaInteractor.createFileForMedia(MediaType.Picture)
             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.parse(photo?.url))
             caller.startActivityForResult(takePictureIntent, USER_ACTION_PIC)
         }

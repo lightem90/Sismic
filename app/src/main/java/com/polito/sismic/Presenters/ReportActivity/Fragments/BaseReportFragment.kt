@@ -94,7 +94,9 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
 
     //maps domain values to ui (could be done by each fragment or by mapper)
     fun onParametersInjectedForEdit() {
-        mUiMapper.setInjectedDomainValueForEdit(mFragmentState?.mReportSectionParameters, this)
+        mFragmentState?.mReportSectionParameters?.let {
+            mUiMapper.setInjectedDomainValueForEdit(mFragmentState!!.mReportSectionParameters!!, this)
+        }
     }
     //Each fragment must implement this, so the activity is in charge to save the data
     override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback?) {

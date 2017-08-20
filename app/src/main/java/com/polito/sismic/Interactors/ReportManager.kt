@@ -20,6 +20,7 @@ class ReportManager(private val report: Report, val database: DatabaseInteractor
     private var tmpSectionList : HashMap<String, ReportSection> = hashMapOf()
     private var tmpMediaList   : MutableList<MediaFile> = mutableListOf()
     private var mUiMapper : UiMapper = UiMapper()
+    var mExtraInfo : ReportExtraInfo? = null
 
     init {
         //if I'm editing the tmp replicas will have a value
@@ -71,5 +72,7 @@ class ReportManager(private val report: Report, val database: DatabaseInteractor
         return FragmentState(getSectionParameterFor(fragment) as ReportSection?,
                 report.reportDetails, getReportArray())
     }
-
 }
+
+//to send data when creating fragments, since they are not created all at start but they switch state in supportfragmentmanager
+class ReportExtraInfo (val extraValues: MutableList<Pair<String, Any?>> = mutableListOf())

@@ -76,9 +76,11 @@ class ReportMediaInteractor(val mReportManager: ReportManager,
 
     fun finalizeLastMedia(stringExtra: String? = null)
     {
-        lastAddedTmpFile!!.note = if (stringExtra  == null) "" else stringExtra
-        lastAddedTmpFile!!.size = getSizeFromUri(Uri.parse(lastAddedTmpFile!!.url))
-        mReportManager.addMediaFile(lastAddedTmpFile!!)
+        lastAddedTmpFile?.let {
+            lastAddedTmpFile!!.note = if (stringExtra  == null) "" else stringExtra
+            lastAddedTmpFile!!.size = if (lastAddedTmpFile!!.type == "Note") 0.0 else getSizeFromUri(Uri.parse(lastAddedTmpFile!!.url))
+            mReportManager.addMediaFile(lastAddedTmpFile!!)
+        }
     }
 
     private fun getSizeFromUri(path: Uri): Double {

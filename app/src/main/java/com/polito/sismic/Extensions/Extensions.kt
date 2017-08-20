@@ -6,6 +6,8 @@ import android.content.SharedPreferences
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.widget.Toast
+import com.polito.sismic.Domain.Report
+import com.polito.sismic.Interactors.ReportExtraInfo
 import com.polito.sismic.Presenters.ReportActivity.Fragments.FragmentState
 import org.jetbrains.anko.db.MapRowParser
 import org.jetbrains.anko.db.SelectQueryBuilder
@@ -125,4 +127,18 @@ fun Bundle.putFragmentState(state : FragmentState)
 fun Bundle.getFragmentState() : FragmentState?
 {
     return getParcelable<FragmentState>("fragment_state")
+}
+
+fun Bundle.putReportExtraInfo(extraInfo: ReportExtraInfo)
+{
+    extraInfo.extraValues.forEach { putCharArray(it.first, it.second.toString().toCharArray()) }
+}
+
+fun Bundle.getReportExtraInfo(keyList : List<String>) : ReportExtraInfo
+{
+    val listOfValues = mutableListOf<Pair<String, Any?>>()
+    keyList.forEach{
+        listOfValues.add(it to String(getCharArray(it)))
+    }
+    return ReportExtraInfo(listOfValues)
 }

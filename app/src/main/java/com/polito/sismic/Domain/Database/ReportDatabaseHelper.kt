@@ -48,6 +48,7 @@ class ReportDatabaseHelper(ctx: Context = App.instance) : ManagedSQLiteOpenHelpe
                         LocalizationInfoTable.PROVINCE to TEXT,
                         LocalizationInfoTable.COMUNE to TEXT,
                         LocalizationInfoTable.ADDRESS to TEXT,
+                        LocalizationInfoTable.CAP to TEXT,
                         LocalizationInfoTable.SISMIC_ZONE to TEXT,
                         LocalizationInfoTable.ISTAT_CODE to INTEGER,
                         LocalizationInfoTable.REPORT_ID to INTEGER

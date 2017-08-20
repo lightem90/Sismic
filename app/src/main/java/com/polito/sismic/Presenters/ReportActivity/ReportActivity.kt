@@ -10,14 +10,10 @@ import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.places.Places
 import com.polito.sismic.Domain.ReportSection
 import com.polito.sismic.Extensions.toast
-import com.polito.sismic.Interactors.DomainInteractor
+import com.polito.sismic.Interactors.*
 import com.polito.sismic.Interactors.Helpers.UserActionType
-import com.polito.sismic.Interactors.ReportManager
-import com.polito.sismic.Interactors.ReportProvider
-import com.polito.sismic.Interactors.UserActionInteractor
 import com.polito.sismic.Presenters.Adapters.ReportFragmentsAdapter
 import com.polito.sismic.Presenters.ReportActivity.Fragments.BaseReportFragment
-import com.polito.sismic.Presenters.ReportActivity.Fragments.DatiSismoGeneticiReportFragment
 import com.polito.sismic.Presenters.ReportActivity.Fragments.InfoLocReportFragment
 import com.polito.sismic.R
 import kotlinx.android.synthetic.main.activity_report.*
@@ -28,14 +24,6 @@ class ReportActivity : AppCompatActivity(),
         BaseReportFragment.ParametersManager,
         GoogleApiClient.OnConnectionFailedListener,
         BaseReportFragment.LocalizationInfoUser {
-
-
-    override fun onLocalizationDataConfirmed(latitude : String, longitude : String, address : String, zone : String) {
-        supportFragmentManager.fragments
-                .filterIsInstance<DatiSismoGeneticiReportFragment>()
-                .firstOrNull()?.
-                updateLabelsByCoordinate(latitude, longitude, address, zone)
-    }
 
     private lateinit var  mGoogleApiClient: GoogleApiClient
     private lateinit var  mUserActionInteractor: UserActionInteractor
@@ -67,7 +55,23 @@ class ReportActivity : AppCompatActivity(),
     }
 
     override fun onLocationAcquired(location: Location) {
-        supportFragmentManager.fragments.filterIsInstance<InfoLocReportFragment>().firstOrNull()?.updateByLocation(location)
+        //Can do this, called into this very same fragment, so I'm sure it lives
+        supportFragmentManager.fragments
+                .filterIsInstance<InfoLocReportFragment>()
+                .firstOrNull()
+                ?.updateByLocation(location)
+    }
+
+    override fun onLocalizationDataConfirmed(latitude : String, longitude : String, address : String, zone : String) {
+        //cant do this, since this fragment is not created yet
+        //supportFragmentManager.fragments
+        //        .filterIsInstance<DatiSismoGeneticiReportFragment>()
+        //        .firstOrNull()
+        //        ?.updateLabelsByCoordinate(latitude, longitude, address, zone)
+        mReportManager!!.mExtraInfo = ReportExtraInfo(mutableListOf("latitude" to latitude,
+                "longitude" to longitude,
+                "address" to address,
+                "zone" to zone))
     }
 
     //If I pass an Uri, data will be null
@@ -106,6 +110,7 @@ class ReportActivity : AppCompatActivity(),
     private fun initializeFromManager(reportManager: ReportManager)
     {
         //To handle user action, it uses other interactor to pilot the ui changes to the domain
+        if (mReportManager == null) mReportManager = reportManager
         mUserActionInteractor = UserActionInteractor(reportManager, this)
         mDomainInteractor = DomainInteractor(reportManager)
         stepperLayout.adapter = ReportFragmentsAdapter(supportFragmentManager, this, reportManager)

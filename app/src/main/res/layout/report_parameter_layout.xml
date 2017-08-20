@@ -27,7 +27,8 @@
             app:srcCompat="@drawable/ic_help_black_24dp"/>
         
     </RelativeLayout>
-    
+
+    <!-- May god curse you forever Mr. "saveEnabled" -->
     <AutoCompleteTextView
         android:id="@+id/section_parameter_value"
         android:saveEnabled="false"
