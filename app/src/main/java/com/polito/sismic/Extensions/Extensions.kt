@@ -13,6 +13,9 @@ import org.jetbrains.anko.db.SelectQueryBuilder
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.reflect.KProperty
+import android.media.ExifInterface
+
+
 
 /**
  * Created by Matteo on 07/08/2017.

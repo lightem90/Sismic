@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.polito.sismic.Domain.ReportMedia
 import com.polito.sismic.Presenters.Adapters.ReportImageAdapter
+import com.polito.sismic.Presenters.Adapters.ReportStringAdapter
 import com.polito.sismic.Presenters.Adapters.ReportVideoAdapter
 import com.polito.sismic.R
 import kotlinx.android.synthetic.main.riepilogo_report_layout.*
@@ -15,14 +16,14 @@ import kotlinx.android.synthetic.main.riepilogo_report_layout.*
  * Created by Matteo on 30/07/2017.
  */
 
-//TODO, parametri
 class RiepilogoReportFragment : BaseReportFragment() {
 
     var mImageList : MutableList<ReportMedia> = mutableListOf()
     var mVideoList : MutableList<ReportMedia> = mutableListOf()
     var mAudioList : MutableList<ReportMedia> = mutableListOf()
     var mNoteList :  MutableList<ReportMedia> = mutableListOf()
-    //It isn't inflated into scrollview
+
+
     override fun onCreateView(inflater: LayoutInflater?, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View? {
         return inflateFragment(R.layout.riepilogo_report_layout, inflater, container)
     }
@@ -40,10 +41,10 @@ class RiepilogoReportFragment : BaseReportFragment() {
 
         mNoteList.clear()
         mNoteList = mFragmentState!!.mReportMedia.filter { !it.note.isEmpty() }.toMutableList()
-        note_grid.adapter = ReportImageAdapter(mNoteList, activity)
+        note_grid.adapter = ReportStringAdapter(mNoteList, activity)
 
         mAudioList.clear()
         mAudioList = mFragmentState!!.mReportMedia.filter { it.type == "\".mp3\"" }.toMutableList()
-        audio_grid.adapter = ReportImageAdapter(mAudioList, activity)
+        audio_grid.adapter = ReportStringAdapter(mAudioList, activity)
     }
 }
