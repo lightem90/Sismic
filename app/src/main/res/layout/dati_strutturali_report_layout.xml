@@ -1,4 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout style="@style/scrollableLayout">
+<LinearLayout style="@style/scrollableLayout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        style="@style/sectionTitle"
+        android:text="@string/fondazioni_title"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
+        android:id="@+id/fondazioni_type"
+        app:report_parameter_title="@string/fondazioni_type"
+        app:report_parameter_hint="@string/fondazioni_type_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
+        android:id="@+id/fondazioni_h"
+        app:report_parameter_title="@string/fondazioni_h"
+        app:report_parameter_hint="@string/fondazioni_h_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        style="@style/sectionTitle"
+        android:text="@string/solaio_title"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
+        android:id="@+id/solaio_type_1"
+        app:report_parameter_title="@string/solaio_type_1"
+        app:report_parameter_hint="@string/solaio_type_1_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
+        android:id="@+id/solaio_type_2"
+        app:report_parameter_title="@string/solaio_type_2"
+        app:report_parameter_hint="@string/solaio_type_2_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/solaio_g1"
+        android:text="@string/g1_default"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
+        android:id="@+id/solaio_g2"
+        app:report_parameter_title="@string/solaio_g2"
+        app:report_parameter_hint="@string/solaio_g2_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
+        android:id="@+id/solaio_qk"
+        app:report_parameter_title="@string/solaio_qk"
+        app:report_parameter_hint="@string/solaio_qk_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/calcola_q"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/colorAccent"
+        android:text="@string/calcola_q"/>
+
+    <TextView
+        style="@style/sectionTitle"
+        android:text="@string/copertura_title"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
+        android:id="@+id/copertura_type_1"
+        app:report_parameter_title="@string/copertura_type_1"
+        app:report_parameter_hint="@string/copertura_type_1_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
+        android:id="@+id/copertura_type_2"
+        app:report_parameter_title="@string/copertura_type_2"
+        app:report_parameter_hint="@string/copertura_type_2_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/copertura_g1"
+        android:text="@string/g1_default"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
+        android:id="@+id/copertura_g2"
+        app:report_parameter_title="@string/copertura_g2"
+        app:report_parameter_hint="@string/copertura_g2_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
+        android:id="@+id/copertura_qk"
+        app:report_parameter_title="@string/copertura_qk"
+        app:report_parameter_hint="@string/copertura_qk_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>

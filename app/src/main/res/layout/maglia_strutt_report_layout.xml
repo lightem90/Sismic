@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/scrollableLayout">
+
+    <TextView
+        style="@style/sectionTitle"
+        android:text="@string/direzione_x"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
+        android:id="@+id/num_x"
+        app:report_parameter_title="@string/num_x_title"
+        app:report_parameter_hint="@string/num_x_title_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
+        android:id="@+id/dist_x"
+        app:report_parameter_title="@string/dist_x"
+        app:report_parameter_hint="@string/dist_x_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        style="@style/sectionTitle"
+        android:text="@string/direzione_y"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
+        android:id="@+id/num_y"
+        app:report_parameter_title="@string/num_y_title"
+        app:report_parameter_hint="@string/num_y_title_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
+        android:id="@+id/dist_y"
+        app:report_parameter_title="@string/dist_y"
+        app:report_parameter_hint="@string/dist_y_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/ok"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/colorAccent"
+        android:text="@string/ok"/>
+
+    <TextView
+        style="@style/sectionTitle"
+        android:text="@string/posizione_pilastri"/>
+
+</LinearLayout>

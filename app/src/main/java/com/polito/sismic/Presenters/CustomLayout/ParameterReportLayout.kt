@@ -47,15 +47,15 @@ class ParameterReportLayout : LinearLayout{
 
     //Need for dependent parameters (in our case Country -> Region -> Province -> Locality)
     //In this way we can display each time the already filtered values (read by xml)
-    interface RegionSelectedListener
-    {
-        fun OnRegionSelected(newRegion : String)
-    }
-
-    interface ProvinceSelectedListener
-    {
-        fun OnProvinceSelected(newProvince : String)
-    }
+    //interface RegionSelectedListener
+    //{
+    //    fun OnRegionSelected(newRegion : String)
+    //}
+//
+    //interface ProvinceSelectedListener
+    //{
+    //    fun OnProvinceSelected(newProvince : String)
+    //}
 
     private fun init(context : Context, attrs : AttributeSet?) {
 

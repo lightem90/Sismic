@@ -1,4 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout style="@style/scrollableLayout">
+<LinearLayout style="@style/scrollableLayout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        style="@style/sectionTitle"
+        android:text="@string/pilastri_materiale_title"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
+        android:id="@+id/calc_classe_parameter"
+        app:report_parameter_title="@string/calc_classe_parameter"
+        app:report_parameter_hint="@string/calc_classe_parameter_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
+        android:id="@+id/calc_classe_res_parameter"
+        app:report_parameter_title="@string/calc_classe_res_parameter"
+        app:report_parameter_hint="@string/calc_classe_res_parameter_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
+        android:id="@+id/acc_classe_parameter"
+        app:report_parameter_title="@string/acc_classe_parameter"
+        app:report_parameter_hint="@string/acc_classe_parameter_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
+        android:id="@+id/acc_classe_res_parameter"
+        app:report_parameter_title="@string/acc_classe_res_parameter"
+        app:report_parameter_hint="@string/acc_classe_res_parameter_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        style="@style/sectionTitle"
+        android:text="@string/pilastri_geometria_title"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
+        android:id="@+id/sezione_bx_parameter"
+        app:report_parameter_title="@string/sezione_bx_parameter"
+        app:report_parameter_hint="@string/sezione_bx_parameter_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
+        android:id="@+id/sezione_hy_parameter"
+        app:report_parameter_title="@string/sezione_hy_parameter"
+        app:report_parameter_hint="@string/sezione_hy_parameter_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
+        android:id="@+id/sezione_c_parameter"
+        app:report_parameter_title="@string/sezione_c_parameter"
+        app:report_parameter_hint="@string/sezione_c_parameter_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
+        android:id="@+id/armatura_1"
+        app:report_parameter_title="@string/armatura_1"
+        app:report_parameter_hint="@string/armatura_1_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
+        android:id="@+id/armatura_2"
+        app:report_parameter_title="@string/armatura_2"
+        app:report_parameter_hint="@string/armatura_2_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/ok"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/colorAccent"
+        android:text="@string/ok"/>
+
+    <TextView
+        style="@style/sectionTitle"
+        android:text="@string/dominio_resistenza_title"/>
 
 </LinearLayout>
