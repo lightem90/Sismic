@@ -1,11 +1,14 @@
 package com.polito.sismic.Interactors
 
 import android.net.Uri
+import android.os.Bundle
 import android.os.Parcelable
 import com.polito.sismic.Domain.Report
 import com.polito.sismic.Domain.ReportDetails
 import com.polito.sismic.Domain.ReportMedia
 import com.polito.sismic.Domain.ReportSection
+import com.polito.sismic.Extensions.putFragmentState
+import com.polito.sismic.Extensions.putReportExtraInfo
 import com.polito.sismic.Interactors.Helpers.MediaFile
 import com.polito.sismic.Interactors.Helpers.UiMapper
 import com.polito.sismic.Presenters.ReportActivity.Fragments.BaseReportFragment
@@ -79,10 +82,18 @@ class ReportManager (private val report: Report, val database: DatabaseInteracto
         return toReturn.toTypedArray<ReportMedia>()
     }
 
-    fun createStateFor(fragment: BaseReportFragment) : FragmentState
+    fun createStateFor(fragment: BaseReportFragment) : Bundle
     {
-        return FragmentState(getSectionParameterFor(fragment) as ReportSection?,
-                report.reportDetails, getReportArray())
+        val bundle = Bundle()
+        bundle.putFragmentState(
+                FragmentState(getSectionParameterFor(fragment) as ReportSection?,
+                report.reportDetails,
+                getReportArray()))
+
+        if (mExtraInfo != null){
+            bundle.putReportExtraInfo(mExtraInfo!!)
+        }
+        return bundle
     }
 }
 

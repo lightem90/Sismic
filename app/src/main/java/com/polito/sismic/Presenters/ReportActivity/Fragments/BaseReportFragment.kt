@@ -24,13 +24,14 @@ import com.stepstone.stepper.VerificationError
  */
 abstract class BaseReportFragment : Fragment(), BlockingStep {
 
-    private var mParametersCallback : BaseReportFragment.ParametersManager? = null
-    protected var mLocalizationInfoUser : BaseReportFragment.LocalizationInfoUser? = null
+    private var     mParametersCallback : BaseReportFragment.ParametersManager? = null
+    protected var   mLocalizationInfoUser : BaseReportFragment.LocalizationInfoUser? = null
+    protected var   mNodeRequestCallback: BaseReportFragment.NodeCaluclationRequest? = null
     //wrap the mapper into interactor
     protected val mUiMapper : UiMapper = UiMapper()
     protected var mFragmentState : FragmentState? = null
 
-    //Is' the activity the handler of the dto, each fragment only passes its own
+    //Is the activity the handler of the dto, each fragment only passes its own
     // parameters througth the callback when the button "next" is pressed
     //Each fragment must implement the method to get their own paramter name-value
     interface ParametersManager {
@@ -43,11 +44,20 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
         fun onLocalizationDataConfirmed(latitude : String, longitude : String, address : String, zone : String)
     }
 
+    interface NodeCaluclationRequest
+    {
+        fun onNodesCalculationRequested()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mFragmentState = arguments.getFragmentState()
     }
 
+    fun updateState(newState : Bundle?)
+    {
+        mFragmentState = newState?.getFragmentState()
+    }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -122,6 +132,13 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
         }
         catch (e : ClassCastException){
             throw ClassCastException(context!!.toString() + " must implement LocalizationInfoUser")
+        }
+        try
+        {
+            mNodeRequestCallback = context as NodeCaluclationRequest?
+        }
+        catch (e : ClassCastException){
+            throw ClassCastException(context!!.toString() + " must implement NodeCaluclationRequest")
         }
     }
 

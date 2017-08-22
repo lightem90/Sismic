@@ -11,6 +11,7 @@ import com.google.android.gms.location.places.Places
 import com.polito.sismic.Domain.ReportSection
 import com.polito.sismic.Extensions.toast
 import com.polito.sismic.Interactors.*
+import com.polito.sismic.Interactors.Helpers.ParametersForCoordinateHelper
 import com.polito.sismic.Interactors.Helpers.UserActionType
 import com.polito.sismic.Presenters.Adapters.ReportFragmentsAdapter
 import com.polito.sismic.Presenters.ReportActivity.Fragments.BaseReportFragment
@@ -23,12 +24,14 @@ class ReportActivity : AppCompatActivity(),
         InfoLocReportFragment.CurrentLocationProvided,
         BaseReportFragment.ParametersManager,
         GoogleApiClient.OnConnectionFailedListener,
-        BaseReportFragment.LocalizationInfoUser {
+        BaseReportFragment.LocalizationInfoUser,
+        BaseReportFragment.NodeCaluclationRequest{
 
     private lateinit var  mGoogleApiClient: GoogleApiClient
     private lateinit var  mUserActionInteractor: UserActionInteractor
     private lateinit var  mDomainInteractor : DomainInteractor
     private var  mReportManager : ReportManager? = null
+    private var mCoordinateHelper : ParametersForCoordinateHelper = ParametersForCoordinateHelper(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,12 +39,10 @@ class ReportActivity : AppCompatActivity(),
 
         //Creating row for report in db if user is logged in
         mReportManager = ReportProvider(this).getOrCreateReportManager(checkLogin(), intent)
-
         mReportManager?.let {
             //means i'm editing
             initializeFromManager(mReportManager!!)
         }
-
     }
 
     private fun checkLogin() : String {
@@ -72,6 +73,14 @@ class ReportActivity : AppCompatActivity(),
                 "longitude" to longitude,
                 "address" to address,
                 "zone" to zone))
+    }
+
+    override fun onNodesCalculationRequested() {
+
+        mCoordinateHelper.initialize()
+        supportFragmentManager.fragments
+                .filterIsInstance<BaseReportFragment>()
+                .forEach { it.updateState(mReportManager?.createStateFor(it)) }
     }
 
     //If I pass an Uri, data will be null

@@ -1,11 +1,13 @@
 package com.polito.sismic.Presenters.ReportActivity.Fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.support.annotation.Nullable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.polito.sismic.R
+import com.stepstone.stepper.StepperLayout
 
 /**
  * Created by Matteo on 29/07/2017.
@@ -14,5 +16,10 @@ class CatastoReportFragment : BaseReportFragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View? {
         return inflateFragment(R.layout.catasto_report_layout, inflater, container)
+    }
+
+    override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback?) {
+        mNodeRequestCallback?.onNodesCalculationRequested()
+        super.onNextClicked(callback)
     }
 }

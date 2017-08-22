@@ -50,13 +50,7 @@ class ReportFragmentFactory(private val reportManager: ReportManager) {
 
     private fun pushFragment(fragment: BaseReportFragment): Step {
 
-        val bundle = Bundle()
-        bundle.putFragmentState(reportManager.createStateFor(fragment))
-        if (reportManager.mExtraInfo != null){
-            bundle.putReportExtraInfo(reportManager.mExtraInfo!!)
-        }
-        fragment.arguments = bundle
-
+        fragment.arguments = reportManager.createStateFor(fragment)
         return fragment
     }
 
