@@ -7,4 +7,5 @@
     <dimen name="report_parameter_title_height">24dp</dimen>
     <dimen name="report_parameter_value_height">72dp</dimen>
     <dimen name="grid_vertical_margin">8dp</dimen>
+    <dimen name="spinner_padding_horizontal">48dp</dimen>
 </resources>

@@ -110,4 +110,15 @@
         <item name="android:background">@color/black_overlay</item>
     </style>
 
+    <style name="CustomToggleButton">
+
+        <item name="android:background">@drawable/custom_toggle</item>
+        <item name="android:textColor">@color/custom_toggle_text_color</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginRight">@dimen/grid_vertical_margin</item>
+
+    </style>
+
 </resources>
