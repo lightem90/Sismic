@@ -147,8 +147,8 @@
     <string name="confirm_report_back_message">Proseguendo tutti i dati andranno persi. Continuare?</string>
     <string name="error_saving_file">Errore nel salvataggio file</string>
     <string name="correctly_saving_file">File salvato correttamente</string>
-    <string name="report_rilievo_esterno_title">RILIEVO ESTERNO</string>
-    <string name="report_rilievo_interno_title">RILIEVO INTERNO</string>
+    <string name="report_rilievo_esterno_title">RILIEVO ESTERNO FABBRICATO</string>
+    <string name="report_rilievo_interno_title">RILIEVO PLANIMETRICO ESTERNO</string>
     <string name="piani_numero_parameter">Numero piani</string>
     <string name="piani_numero_parameter_hint">Inserire numero piani</string>
     <string name="altezza_piano_parameter_hint">Inserisci l\'altezza di un singolo piano</string>
@@ -188,14 +188,8 @@
     <string name="maglia_strutt_title">Maglia strutturale</string>
     <string name="pilastri_materiale_title">MATERIALE</string>
     <string name="pilastri_geometria_title">GEOMETRIA</string>
-    <string name="calc_classe_parameter">Classe</string>
-    <string name="calc_classe_parameter_hint">Classe calcestruzzo (es: C25/30)</string>
-    <string name="calc_classe_res_parameter">Resistenza calcestruzzo</string>
-    <string name="calc_classe_res_parameter_hint">Resistenza calcestruzzo (es: L.C.-3)</string>
-    <string name="acc_classe_parameter">Classe</string>
-    <string name="acc_classe_parameter_hint">Classe acciaio (es: B450A)</string>
-    <string name="acc_classe_res_parameter">Resistenza acciaio</string>
-    <string name="acc_classe_res_parameter_hint">Resistenza acciaio (es: L.C.-3)</string>
+    <string name="calc_classe_parameter">Classe calcestruzzo</string>
+    <string name="acc_classe_parameter">Classe acciaio</string>
     <string name="dominio_resistenza_title">DOMINIO DI RESISTENZA</string>
     <string name="sezione_bx_parameter">SEZIONE: B(x)</string>
     <string name="sezione_bx_parameter_hint">B(x)</string>
@@ -251,6 +245,16 @@
     <string name="vita_reale_label">Vita reale (Vn * Cu) =</string>
     <string name="categoria_classe_duttilita_parameter_cda">CDA</string>
     <string name="categoria_classe_duttilita_parameter_cdb">CDB</string>
+    <string name="fondazioni_type_platea">Platea</string>
+    <string name="fondazioni_type_trave">Travi</string>
+    <string name="fondazioni_type_plinti">Plinti</string>
+    <string name="calc_classe_res_parameter_lc1">L.C.-1</string>
+    <string name="calc_classe_res_parameter_lc2">L.C.-2</string>
+    <string name="calc_classe_res_parameter_lc3">L.C.-3</string>
+    <string name="calc_liv_con_parameter">Livello conoscenza</string>
+    <string name="acc_liv_con_parameter">Livello conoscenza</string>
+    <string name="acc_classe_parameter_A">B450A</string>
+    <string name="acc_classe_parameter_C">B450C</string>
 
 
 </resources>

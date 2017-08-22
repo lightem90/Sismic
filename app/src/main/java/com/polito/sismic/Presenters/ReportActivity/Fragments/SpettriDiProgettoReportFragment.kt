@@ -17,6 +17,31 @@ class SpettriDiProgettoReportFragment : BaseReportFragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        regolare_in_altezza.setOnClickListener { context.toast(R.string.error_not_supported) }
+        regolare_in_altezza.setOnClickListener {
+            context.toast(R.string.error_not_supported)
+            regolare_in_altezza.isChecked = true
+        }
+
+        categoria_classe_duttilita_parameter_cda.setOnCheckedChangeListener { _, flag ->
+            if (flag)
+            {
+                categoria_classe_duttilita_parameter_cdb.isChecked = false
+            }
+            else
+            {
+                categoria_classe_duttilita_parameter_cda.isClickable = true
+            }
+        }
+
+        categoria_classe_duttilita_parameter_cdb.setOnCheckedChangeListener { _, flag ->
+            if (flag)
+            {
+                categoria_classe_duttilita_parameter_cda.isChecked = false
+            }
+            else
+            {
+                categoria_classe_duttilita_parameter_cdb.isClickable = true
+            }
+        }
     }
 }

@@ -7,12 +7,34 @@
         style="@style/sectionTitle"
         android:text="@string/fondazioni_title"/>
 
-    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
-        android:id="@+id/fondazioni_type"
-        app:report_parameter_title="@string/fondazioni_type"
-        app:report_parameter_hint="@string/fondazioni_type_hint"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+    <TextView
+        android:text="@string/fondazioni_type"
+        style="@style/sectionButtonTitle"/>
+
+    <LinearLayout style="@style/toggleButtonsContainer">
+
+        <ToggleButton
+            android:id="@+id/fondazioni_type_platea"
+            android:checked="true"
+            android:textOn="@string/fondazioni_type_platea"
+            android:textOff="@string/fondazioni_type_platea"
+            style="@style/CustomToggleButton"/>
+
+        <ToggleButton
+            android:id="@+id/fondazioni_type_trave"
+            android:checked="false"
+            style="@style/CustomToggleButton"
+            android:textOn="@string/fondazioni_type_trave"
+            android:textOff="@string/fondazioni_type_trave"/>
+
+        <ToggleButton
+            android:id="@+id/fondazioni_type_plinti"
+            android:checked="false"
+            android:textOn="@string/fondazioni_type_plinti"
+            android:textOff="@string/fondazioni_type_plinti"
+            style="@style/CustomToggleButton"/>
+
+    </LinearLayout>
 
     <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
         android:id="@+id/fondazioni_h"

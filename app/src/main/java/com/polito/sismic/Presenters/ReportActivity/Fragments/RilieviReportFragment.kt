@@ -20,6 +20,9 @@ class RilieviReportFragment : BaseReportFragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
 
-        regolare_in_altezza.setOnClickListener { context.toast(R.string.error_not_supported) }
+        regolare_in_altezza.setOnClickListener {
+            context.toast(R.string.error_not_supported)
+            regolare_in_altezza.isChecked = true
+        }
     }
 }

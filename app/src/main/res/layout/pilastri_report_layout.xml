@@ -7,33 +7,98 @@
         style="@style/sectionTitle"
         android:text="@string/pilastri_materiale_title"/>
 
-    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
-        android:id="@+id/calc_classe_parameter"
-        app:report_parameter_title="@string/calc_classe_parameter"
-        app:report_parameter_hint="@string/calc_classe_parameter_hint"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+    <LinearLayout
+        style="@style/spinnerContainer">
 
-    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
-        android:id="@+id/calc_classe_res_parameter"
-        app:report_parameter_title="@string/calc_classe_res_parameter"
-        app:report_parameter_hint="@string/calc_classe_res_parameter_hint"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        <TextView
+            style="@style/sectionSpinnerTitle"
+            android:text="@string/calc_classe_parameter" />
 
-    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
-        android:id="@+id/acc_classe_parameter"
-        app:report_parameter_title="@string/acc_classe_parameter"
-        app:report_parameter_hint="@string/acc_classe_parameter_hint"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        <Spinner
+            android:id="@+id/calc_classe_parameter"
+            style="@style/spinnerStyle"
+            android:entries="@array/classi_calcestruzzo"/>
 
-    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
-        android:id="@+id/acc_classe_res_parameter"
-        app:report_parameter_title="@string/acc_classe_res_parameter"
-        app:report_parameter_hint="@string/acc_classe_res_parameter_hint"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <TextView
+        android:text="@string/calc_liv_con_parameter"
+        style="@style/sectionButtonTitle"/>
+
+    <LinearLayout style="@style/toggleButtonsContainer">
+
+        <ToggleButton
+            android:id="@+id/calc_classe_res_parameter_lc1"
+            android:checked="true"
+            android:textOn="@string/calc_classe_res_parameter_lc1"
+            android:textOff="@string/calc_classe_res_parameter_lc1"
+            style="@style/CustomToggleButton"/>
+
+        <ToggleButton
+            android:id="@+id/calc_classe_res_parameter_lc2"
+            android:checked="false"
+            style="@style/CustomToggleButton"
+            android:textOn="@string/calc_classe_res_parameter_lc2"
+            android:textOff="@string/calc_classe_res_parameter_lc2"/>
+
+        <ToggleButton
+            android:id="@+id/calc_classe_res_parameter_lc3"
+            android:checked="false"
+            android:textOn="@string/calc_classe_res_parameter_lc3"
+            android:textOff="@string/calc_classe_res_parameter_lc3"
+            style="@style/CustomToggleButton"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:text="@string/acc_classe_parameter"
+        style="@style/sectionButtonTitle"/>
+
+    <LinearLayout style="@style/toggleButtonsContainer">
+
+        <ToggleButton
+            android:id="@+id/acc_classe_parameter_A"
+            android:checked="true"
+            android:textOn="@string/acc_classe_parameter_A"
+            android:textOff="@string/acc_classe_parameter_A"
+            style="@style/CustomToggleButton"/>
+
+        <ToggleButton
+            android:id="@+id/acc_classe_parameter_C"
+            android:checked="false"
+            style="@style/CustomToggleButton"
+            android:textOn="@string/acc_classe_parameter_C"
+            android:textOff="@string/acc_classe_parameter_C"/>
+    </LinearLayout>
+
+    <TextView
+        android:text="@string/acc_liv_con_parameter"
+        style="@style/sectionButtonTitle"/>
+
+    <LinearLayout style="@style/toggleButtonsContainer">
+
+        <ToggleButton
+            android:id="@+id/acc_classe_res_parameter_lc1"
+            android:checked="true"
+            android:textOn="@string/calc_classe_res_parameter_lc1"
+            android:textOff="@string/calc_classe_res_parameter_lc1"
+            style="@style/CustomToggleButton"/>
+
+        <ToggleButton
+            android:id="@+id/acc_classe_res_parameter_lc2"
+            android:checked="false"
+            style="@style/CustomToggleButton"
+            android:textOn="@string/calc_classe_res_parameter_lc2"
+            android:textOff="@string/calc_classe_res_parameter_lc2"/>
+
+        <ToggleButton
+            android:id="@+id/acc_classe_res_parameter_lc3"
+            android:checked="false"
+            android:textOn="@string/calc_classe_res_parameter_lc3"
+            android:textOff="@string/calc_classe_res_parameter_lc3"
+            style="@style/CustomToggleButton"/>
+
+    </LinearLayout>
 
     <TextView
         style="@style/sectionTitle"
