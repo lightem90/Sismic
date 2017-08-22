@@ -66,7 +66,7 @@ class ParametriSismiciReportFragment : BaseReportFragment() {
 
         classe_parameter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 
-            override fun onItemSelected(parent: AdapterView<*>, mView: View, pos: Int, id: Long) {
+            override fun onItemSelected(parent: AdapterView<*>, mView: View?, pos: Int, id: Long) {
                 setVitaReale(pos)
             }
             override fun onNothingSelected(parent: AdapterView<out Adapter>?) {  }

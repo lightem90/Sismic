@@ -50,7 +50,7 @@ class SketchActivity : AppCompatActivity() {
 
         try
         {
-            var byteArrayToSave = dv.getDrawingToSave()
+            val byteArrayToSave = dv.getDrawingToSave()
             val outputStream = contentResolver.openOutputStream(uriToSave)
             outputStream.write(byteArrayToSave.toByteArray())
             exitWithSuccess()
