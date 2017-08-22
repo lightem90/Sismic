@@ -1,4 +1,4 @@
-package com.polito.sismic.Presenters
+package com.polito.sismic.Presenters.ReportActivity.Fragments
 
 import android.content.Context
 import android.os.Bundle

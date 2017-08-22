@@ -244,6 +244,7 @@
     <string name="copertura_g2_hint">kN/mq</string>
     <string name="copertura_qk">QK:</string>
     <string name="copertura_qk_hint">kN/mq</string>
+    <string name="error_not_supported">Funzionalità non supportata</string>
 
 
 </resources>

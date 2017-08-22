@@ -47,6 +47,7 @@
 
     <CheckBox
         android:id="@+id/regolare_in_altezza"
+        android:checked="true"
         android:text="@string/report_regolare_altezza"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

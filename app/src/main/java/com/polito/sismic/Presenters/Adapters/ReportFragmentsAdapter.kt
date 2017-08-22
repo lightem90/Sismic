@@ -3,7 +3,7 @@ package com.polito.sismic.Presenters.Adapters
 import android.support.v4.app.FragmentManager
 import com.polito.sismic.Interactors.ReportManager
 import com.polito.sismic.Presenters.ReportActivity.ReportActivity
-import com.polito.sismic.Presenters.ReportFragmentFactory
+import com.polito.sismic.Presenters.ReportActivity.Fragments.ReportFragmentFactory
 import com.stepstone.stepper.Step
 import com.stepstone.stepper.VerificationError
 import com.stepstone.stepper.adapter.AbstractFragmentStepAdapter

@@ -16,12 +16,12 @@ import android.os.Bundle
 import android.os.Parcelable
 
 
-
-
 /**
  * Created by Matteo on 02/08/2017.
  */
 class ParameterReportLayout : LinearLayout{
+
+    private var dataConfirmedCallback : ((newValue: String) -> Unit)? = null
 
     @JvmOverloads
     constructor(
@@ -44,18 +44,6 @@ class ParameterReportLayout : LinearLayout{
     {
         init(context, attrs)
     }
-
-    //Need for dependent parameters (in our case Country -> Region -> Province -> Locality)
-    //In this way we can display each time the already filtered values (read by xml)
-    //interface RegionSelectedListener
-    //{
-    //    fun OnRegionSelected(newRegion : String)
-    //}
-//
-    //interface ProvinceSelectedListener
-    //{
-    //    fun OnProvinceSelected(newProvince : String)
-    //}
 
     private fun init(context : Context, attrs : AttributeSet?) {
 
@@ -111,17 +99,23 @@ class ParameterReportLayout : LinearLayout{
         {
             val autoSugg = ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, newSuggestions)
             section_parameter_value.setAdapter(autoSugg)
-            //section_parameter_value.onItemClickListener = AdapterView.
-            //        OnItemClickListener { _, _, _, _ ->
-            //            onRegionCallback?.OnRegionSelected(getParameterValue())
-            //            onProvinceCallback?.OnProvinceSelected(getParameterValue())}
+            section_parameter_value.onItemClickListener = AdapterView.
+                    OnItemClickListener { _, _, _, _ ->
+                        dataConfirmedCallback?.invoke(getParameterValue())
+                    }
             autoSugg.notifyDataSetChanged()
         }
+    }
+
+    fun attachDataConfirmedCallback(callback: (m: String) -> Unit)
+    {
+        dataConfirmedCallback = callback
     }
 
     fun setParameterValue(newValue : String)
     {
         section_parameter_value.setText(newValue, TextView.BufferType.EDITABLE)
+        dataConfirmedCallback?.invoke(getParameterValue())
     }
 
     fun getParameterValue() : String
@@ -154,6 +148,10 @@ class ParameterReportLayout : LinearLayout{
         super.onRestoreInstanceState(customState)
     }
 
+}
+interface DataConfirmedCallback
+{
+    fun onDataConfirmed(newValue : String)
 }
 
 

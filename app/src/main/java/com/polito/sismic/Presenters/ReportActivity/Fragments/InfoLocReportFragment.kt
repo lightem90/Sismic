@@ -8,17 +8,12 @@ import android.support.annotation.Nullable
 import android.view.*
 import com.google.android.gms.location.places.Place
 import com.polito.sismic.AsyncTasks.PlaceDetailsTask
-import com.polito.sismic.Domain.ReportSection
 import com.polito.sismic.Extensions.toFormattedString
 import com.polito.sismic.Extensions.toast
-import com.polito.sismic.Interactors.Helpers.LocalizationActionHelper
-import com.polito.sismic.Interactors.Helpers.LocalizationActionType
-import com.polito.sismic.Interactors.Helpers.PermissionsHelper
-import com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
+import com.polito.sismic.Interactors.Helpers.*
 import com.polito.sismic.R
 import com.stepstone.stepper.StepperLayout
 import com.stepstone.stepper.VerificationError
-import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.info_loc_report_layout.*
 
 
@@ -28,14 +23,16 @@ import kotlinx.android.synthetic.main.info_loc_report_layout.*
 class InfoLocReportFragment : BaseReportFragment(){
 
     private var  mLocationCallback: InfoLocReportFragment.CurrentLocationProvided? = null
-    //private var  mLocationSuggestionsHelper : LocationSuggestionsHelper? = null
     private var  mActionHelper = LocalizationActionHelper()
     private var  mPermissionHelper = PermissionsHelper()
+    private lateinit var  mLocaliationInfoHelper : LocationInfoHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mPermissionHelper.checAndAskLocationPermissions(activity, this)
         setHasOptionsMenu(true)
+        mLocaliationInfoHelper = LocationInfoHelper(activity)
+        mLocaliationInfoHelper.initialize()
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
@@ -45,6 +42,16 @@ class InfoLocReportFragment : BaseReportFragment(){
             report_info_name_label.setValue(mFragmentState!!.mReportDetails!!.userIdentifier)
             report_info_number_label.setValue(mFragmentState!!.mReportDetails!!.id.toString())
             report_info_date_label.setValue(mFragmentState!!.mReportDetails!!.date.toFormattedString())
+        }
+
+        comune_parameter.attachDataConfirmedCallback {newComune ->
+            mLocaliationInfoHelper.setZoneCodeForComune(zona_sismica_parameter, codice_istat_parameter, newComune)
+        }
+        province_parameter.attachDataConfirmedCallback{ newProvince ->
+            mLocaliationInfoHelper.setComuniSuggestionForProvince(comune_parameter, newProvince)
+        }
+        region_parameter.attachDataConfirmedCallback{ newRegion ->
+            mLocaliationInfoHelper.setProvinceSuggestionForRegion(province_parameter, newRegion)
         }
     }
 
