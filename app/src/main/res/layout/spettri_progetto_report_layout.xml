@@ -38,19 +38,31 @@
         style="@style/sectionTitle"
         android:text="@string/report_fattoredistruttura_title"/>
 
-    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
-        android:id="@+id/categoria_classe_duttilità_parameter"
-        app:report_parameter_title="@string/categoria_classe_duttilita_parameter"
-        app:report_parameter_hint="@string/categoria_classe_duttilita_parameter_hint"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+    <TextView
+        android:text="@string/categoria_classe_duttilita_parameter"
+        style="@style/sectionButtonTitle"/>
 
-    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
-        android:id="@+id/categoria_regolarità_parameter"
-        app:report_parameter_title="@string/categoria_regolarita_parameter"
-        app:report_parameter_hint="@string/categoria_regolarita_parameter_hint"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+    <LinearLayout style="@style/toggleButtonsContainer">
+
+        <ToggleButton
+            android:id="@+id/categoria_classe_duttilita_parameter_cda"
+            android:checked="true"
+            android:textOn="@string/categoria_classe_duttilita_parameter_cda"
+            android:textOff="@string/categoria_classe_duttilita_parameter_cda"
+            style="@style/CustomToggleButton"/>
+
+        <ToggleButton
+            android:id="@+id/categoria_classe_duttilita_parameter_cdb"
+            android:checked="false"
+            style="@style/CustomToggleButton"
+            android:textOn="@string/categoria_classe_duttilita_parameter_cdb"
+            android:textOff="@string/categoria_classe_duttilita_parameter_cdb"/>
+    </LinearLayout>
+
+    <CheckBox
+        style="@style/checkBoxStyle"
+        android:id="@+id/regolare_in_altezza"
+        android:text="@string/report_regolare_altezza" />
 
     <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
         android:id="@+id/categoria_tipologia_parameter"

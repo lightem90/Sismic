@@ -5,11 +5,18 @@ import android.support.annotation.Nullable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.polito.sismic.Extensions.toast
 import com.polito.sismic.R
+import kotlinx.android.synthetic.main.spettri_progetto_report_layout.*
 
 class SpettriDiProgettoReportFragment : BaseReportFragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View? {
         return inflateFragment(R.layout.spettri_progetto_report_layout, inflater, container)
+    }
+
+    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        regolare_in_altezza.setOnClickListener { context.toast(R.string.error_not_supported) }
     }
 }

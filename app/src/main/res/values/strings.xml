@@ -124,7 +124,7 @@
     <string name="categoria_topografica_parameter_hint">Categoria topografica</string>
     <string name="categoria_classe_duttilita_parameter">Classe di duttilità</string>
     <string name="categoria_classe_duttilita_parameter_hint">TODO</string>
-    <string name="categoria_regolarita_parameter">Regolarità</string>
+    <string name="categoria_regolarita_parameter">Struttura regolare in altezza</string>
     <string name="categoria_regolarita_parameter_hint">TODO</string>
     <string name="categoria_tipologia_parameter">Tipologia</string>
     <string name="categoria_tipologia_parameter_hint">TODO</string>
@@ -249,6 +249,8 @@
     <string name="report_vita_parameter_50">50</string>
     <string name="report_vita_parameter_100">100</string>
     <string name="vita_reale_label">Vita reale (Vn * Cu) =</string>
+    <string name="categoria_classe_duttilita_parameter_cda">CDA</string>
+    <string name="categoria_classe_duttilita_parameter_cdb">CDB</string>
 
 
 </resources>
