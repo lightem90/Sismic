@@ -9,18 +9,9 @@
 
     <TextView
         android:text="@string/report_vita_parameter"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:paddingStart="@dimen/ms_material_button_padding_horizontal"
-        android:paddingLeft="@dimen/ms_material_button_padding_horizontal"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
-        style="@style/sectionParameterTitle"/>
+        style="@style/sectionButtonTitle"/>
 
-    <LinearLayout
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <LinearLayout style="@style/toggleButtonsContainer">
 
         <ToggleButton
             android:id="@+id/vita_nominale_30"
@@ -46,28 +37,16 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/report_parameter_value_height"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+        style="@style/spinnerContainer">
 
         <TextView
-            style="@style/sectionParameterTitle"
-            android:layout_marginLeft="@dimen/ms_material_button_padding_horizontal"
-            android:layout_marginRight="@dimen/ms_material_button_padding_horizontal"
-            android:layout_marginStart="@dimen/ms_material_button_padding_horizontal"
-            android:layout_gravity="center_vertical"
+            style="@style/sectionSpinnerTitle"
             android:text="@string/report_classe_parameter" />
 
         <Spinner
             android:id="@+id/classe_parameter"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/spinner_padding_horizontal"
-            android:layout_marginRight="@dimen/spinner_padding_horizontal"
-            android:entries="@array/classi"
-            android:layout_gravity="center_vertical"/>
+            style="@style/spinnerStyle"
+            android:entries="@array/classi"/>
 
     </LinearLayout>
 

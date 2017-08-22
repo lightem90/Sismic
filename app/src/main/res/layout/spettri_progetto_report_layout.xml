@@ -7,19 +7,32 @@
         style="@style/sectionTitle"
         android:text="@string/report_caratteristichesottosuolo_title"/>
 
-    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
-        android:id="@+id/catetoria_suolo_parameter"
-        app:report_parameter_title="@string/catetoria_suolo_parameter"
-        app:report_parameter_hint="@string/catetoria_suolo_parameter_hint"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
 
-    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
-        android:id="@+id/categoria_topografica_parameter"
-        app:report_parameter_title="@string/categoria_topografica_parameter"
-        app:report_parameter_hint="@string/categoria_topografica_parameter_hint"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+    <LinearLayout
+        style="@style/spinnerContainer">
+
+        <TextView
+            style="@style/sectionSpinnerTitle"
+            android:text="@string/categoria_suolo_parameter" />
+
+        <Spinner
+            android:id="@+id/categoria_suolo_parameter"
+            style="@style/spinnerStyle"
+            android:entries="@array/cat_suolo"/>
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/spinnerContainer">
+
+        <TextView
+            style="@style/sectionSpinnerTitle"
+            android:text="@string/categoria_topografica_parameter" />
+
+        <Spinner
+            android:id="@+id/categoria_topografica_parameter"
+            style="@style/spinnerStyle"
+            android:entries="@array/cat_topografica"/>
+    </LinearLayout>
 
     <TextView
         style="@style/sectionTitle"

@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -82,6 +82,44 @@
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">14sp</item>
         <item name="android:maxLines">1</item>
+    </style>
+
+    <style name="sectionButtonTitle" parent="sectionParameterTitle">
+        <item name="android:layout_marginTop">@dimen/activity_vertical_margin</item>
+        <item name="android:paddingStart" tools:targetApi="jelly_bean_mr1">@dimen/ms_material_button_padding_horizontal</item>
+        <item name="android:paddingLeft">@dimen/ms_material_button_padding_horizontal</item>
+        <item name="android:layout_marginBottom">@dimen/activity_vertical_margin</item>
+    </style>
+
+    <style name="sectionSpinnerTitle" parent="sectionParameterTitle">
+        <item name="android:layout_marginLeft">@dimen/ms_material_button_padding_horizontal</item>
+        <item name="android:layout_marginRight">@dimen/ms_material_button_padding_horizontal</item>
+        <item name="android:layout_marginStart" tools:targetApi="jelly_bean_mr1">@dimen/ms_material_button_padding_horizontal</item>
+        <item name="android:layout_gravity">center_vertical</item>
+    </style>
+
+    <style name="spinnerStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">@dimen/spinner_padding_horizontal</item>
+        <item name="android:layout_marginRight">@dimen/spinner_padding_horizontal</item>
+        <item name="android:layout_gravity">center_vertical</item>
+    </style>
+
+    <style name="spinnerContainer">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/report_parameter_value_height</item>
+        <item name="android:layout_marginTop">@dimen/activity_vertical_margin</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="toggleButtonsContainer">
+        <item name="android:layout_marginLeft">@dimen/activity_horizontal_margin</item>
+        <item name="android:layout_marginRight">@dimen/activity_horizontal_margin</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
     </style>
 
     <style name="sectionParameterValue">

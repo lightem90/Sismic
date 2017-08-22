@@ -36,4 +36,19 @@
         <item>IV</item>
     </string-array>
 
+    <string-array name="cat_suolo">
+        <item>A</item>
+        <item>B</item>
+        <item>C</item>
+        <item>D</item>
+        <item>E</item>
+    </string-array>
+
+    <string-array name="cat_topografica">
+        <item>T1</item>
+        <item>T2</item>
+        <item>T3</item>
+        <item>T4</item>
+    </string-array>
+
 </resources>

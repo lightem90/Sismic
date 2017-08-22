@@ -118,7 +118,7 @@
     <string name="report_spettridiprogetto_title">SPETTRI DI PROGETTO</string>
     <string name="report_caratteristichesottosuolo_title">CARATTERISTICHE SOTTOSUOLO</string>
     <string name="report_fattoredistruttura_title">FATTORE DI STRUTTURA</string>
-    <string name="catetoria_suolo_parameter">Categoria suolo</string>
+    <string name="categoria_suolo_parameter">Categoria suolo</string>
     <string name="catetoria_suolo_parameter_hint">Categoria suolo</string>
     <string name="categoria_topografica_parameter">Categoria topografica</string>
     <string name="categoria_topografica_parameter_hint">Categoria topografica</string>
