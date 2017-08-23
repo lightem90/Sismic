@@ -8,6 +8,8 @@ import android.view.MenuItem
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.places.Places
+import com.polito.sismic.Domain.LocationExtraInfo
+import com.polito.sismic.Domain.ReportExtraInfo
 import com.polito.sismic.Domain.ReportSection
 import com.polito.sismic.Extensions.toast
 import com.polito.sismic.Interactors.*
@@ -63,21 +65,31 @@ class ReportActivity : AppCompatActivity(),
                 ?.updateByLocation(location)
     }
 
-    override fun onLocalizationDataConfirmed(latitude : String, longitude : String, address : String, zone : String) {
+    override fun onLocalizationDataConfirmed(locationExtraInfo: LocationExtraInfo) {
         //cant do this, since this fragment is not created yet
         //supportFragmentManager.fragments
         //        .filterIsInstance<DatiSismoGeneticiReportFragment>()
         //        .firstOrNull()
-        //        ?.updateLabelsByCoordinate(latitude, longitude, address, zone)
-        mReportManager!!.mExtraInfo = ReportExtraInfo(mutableListOf("latitude" to latitude,
-                "longitude" to longitude,
-                "address" to address,
-                "zone" to zone))
+        //        ?.updateLabelsByCoordinate(latitude, longitude, address, address)
+        mReportManager!!.mExtraInfo = ReportExtraInfo(locationExtraInfo)
+
     }
 
     override fun onNodesCalculationRequested() {
 
         mCoordinateHelper.initialize()
+
+        val nodeList = mReportManager?.mExtraInfo?.let {
+            mCoordinateHelper.getClosestPointsTo(mReportManager!!.mExtraInfo!!.locationExtraInfo.longitude,
+                    mReportManager!!.mExtraInfo!!.locationExtraInfo.latitude)
+        }
+
+        mReportManager!!.mExtraInfo!!.locationExtraInfo = LocationExtraInfo(mReportManager!!.mExtraInfo!!.locationExtraInfo.latitude,
+                mReportManager!!.mExtraInfo!!.locationExtraInfo.longitude,
+                mReportManager!!.mExtraInfo!!.locationExtraInfo.address,
+                mReportManager!!.mExtraInfo!!.locationExtraInfo.zone,
+                nodeList)
+
         supportFragmentManager.fragments
                 .filterIsInstance<BaseReportFragment>()
                 .forEach { it.updateState(mReportManager?.createStateFor(it)) }

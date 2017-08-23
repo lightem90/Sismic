@@ -8,6 +8,7 @@ import android.support.annotation.Nullable
 import android.view.*
 import com.google.android.gms.location.places.Place
 import com.polito.sismic.AsyncTasks.PlaceDetailsTask
+import com.polito.sismic.Domain.LocationExtraInfo
 import com.polito.sismic.Extensions.toFormattedString
 import com.polito.sismic.Extensions.toast
 import com.polito.sismic.Interactors.Helpers.*
@@ -186,10 +187,9 @@ class InfoLocReportFragment : BaseReportFragment(){
     }
 
     override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback?) {
-        mLocalizationInfoUser?.onLocalizationDataConfirmed(lat_parameter.getParameterValue(),
-                long_parameter.getParameterValue(),
-                address_parameter.getParameterValue(),
-                zona_sismica_parameter.getParameterValue())
+
+        val info = mUiMapper.createLocationExtraInfoFromFragment(this)
+        mLocalizationInfoUser?.onLocalizationDataConfirmed(info)
         super.onNextClicked(callback)
     }
 }

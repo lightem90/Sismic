@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.polito.sismic.Domain.ReportDetails
+import com.polito.sismic.Extensions.inflate
 import com.polito.sismic.Interactors.Helpers.DangerStateProvider
 import com.polito.sismic.R
 import kotlinx.android.synthetic.main.history_item.view.*
@@ -33,10 +34,6 @@ class ReportAdapter(val mContext: Context,
 
     override fun getItemCount(): Int {
         return items.size
-    }
-
-    fun ViewGroup.inflate(layoutRes: Int): View {
-        return LayoutInflater.from(context).inflate(layoutRes, this, false)
     }
 
     class ViewHolder(itemView: View,

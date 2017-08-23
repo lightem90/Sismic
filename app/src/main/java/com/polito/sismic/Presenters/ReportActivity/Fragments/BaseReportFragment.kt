@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.github.fafaldo.fabtoolbar.widget.FABToolbarLayout
+import com.polito.sismic.Domain.LocationExtraInfo
 import com.polito.sismic.Domain.ReportSection
 import com.polito.sismic.Extensions.getFragmentState
 import com.polito.sismic.Extensions.toast
@@ -41,7 +42,7 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
 
     interface LocalizationInfoUser
     {
-        fun onLocalizationDataConfirmed(latitude : String, longitude : String, address : String, zone : String)
+        fun onLocalizationDataConfirmed(locationExtraInfo: LocationExtraInfo)
     }
 
     interface NodeCaluclationRequest
@@ -57,6 +58,11 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
     fun updateState(newState : Bundle?)
     {
         mFragmentState = newState?.getFragmentState()
+        onStateUpdated()
+    }
+
+    open fun onStateUpdated() {
+        return
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
@@ -64,7 +70,7 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
         onParametersInjectedForEdit()
     }
 
-    //In this way I can make every fragment scrollable and use protected properties avoiding replicated code
+    //In this way I can make every fragment scrollable and use protected properties avoiding replicated zone
     protected fun inflateFragment(resId: Int, inflater: LayoutInflater?, container: ViewGroup?, needScrollable : Boolean = true): View? {
 
         //Custom view any layout with "scrollable" style

@@ -2,7 +2,6 @@ package com.polito.sismic.Domain
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.polito.sismic.Presenters.PresenterActivity.ReportListFragment
 import java.util.*
 
 /**
@@ -13,6 +12,79 @@ import java.util.*
 interface ReportSection : Parcelable
 {
 
+}
+
+
+data class CloseNodeData(val id: String, val longitude: Double, val latitude: Double, val distance: Double) : Parcelable {
+    constructor(source: Parcel) : this(
+            source.readString(),
+            source.readDouble(),
+            source.readDouble(),
+            source.readDouble()
+    )
+
+    override fun describeContents() = 0
+
+    override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
+        writeString(id)
+        writeDouble(longitude)
+        writeDouble(latitude)
+        writeDouble(distance)
+    }
+
+    companion object {
+        @JvmField val CREATOR: Parcelable.Creator<CloseNodeData> = object : Parcelable.Creator<CloseNodeData> {
+            override fun createFromParcel(source: Parcel): CloseNodeData = CloseNodeData(source)
+            override fun newArray(size: Int): Array<CloseNodeData?> = arrayOfNulls(size)
+        }
+    }
+}
+
+//to send data when creating fragments, since they are not created all at start but they switch state in supportfragmentmanager
+data class ReportExtraInfo(var locationExtraInfo: LocationExtraInfo) : Parcelable {
+    constructor(source: Parcel) : this(
+            source.readParcelable<LocationExtraInfo>(LocationExtraInfo::class.java.classLoader)
+    )
+
+    override fun describeContents() = 0
+
+    override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
+        writeParcelable(locationExtraInfo, 0)
+    }
+
+    companion object {
+        @JvmField val CREATOR: Parcelable.Creator<ReportExtraInfo> = object : Parcelable.Creator<ReportExtraInfo> {
+            override fun createFromParcel(source: Parcel): ReportExtraInfo = ReportExtraInfo(source)
+            override fun newArray(size: Int): Array<ReportExtraInfo?> = arrayOfNulls(size)
+        }
+    }
+}
+
+data class LocationExtraInfo(val latitude: Double, val longitude: Double, val address: String, val zone: String, val close_points: List<CloseNodeData>?) : Parcelable {
+    constructor(source: Parcel) : this(
+            source.readDouble(),
+            source.readDouble(),
+            source.readString(),
+            source.readString(),
+            source.createTypedArrayList(CloseNodeData.CREATOR)
+    )
+
+    override fun describeContents() = 0
+
+    override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
+        writeDouble(latitude)
+        writeDouble(longitude)
+        writeString(address)
+        writeString(zone)
+        writeTypedList(close_points)
+    }
+
+    companion object {
+        @JvmField val CREATOR: Parcelable.Creator<LocationExtraInfo> = object : Parcelable.Creator<LocationExtraInfo> {
+            override fun createFromParcel(source: Parcel): LocationExtraInfo = LocationExtraInfo(source)
+            override fun newArray(size: Int): Array<LocationExtraInfo?> = arrayOfNulls(size)
+        }
+    }
 }
 
 //It contains the whole report data

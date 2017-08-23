@@ -5,16 +5,17 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
-import com.polito.sismic.Interactors.ReportExtraInfo
 import com.polito.sismic.Presenters.ReportActivity.Fragments.FragmentState
 import org.jetbrains.anko.db.MapRowParser
 import org.jetbrains.anko.db.SelectQueryBuilder
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.reflect.KProperty
-import android.media.ExifInterface
-
+import com.polito.sismic.Domain.ReportExtraInfo
 
 
 /**
@@ -131,18 +132,18 @@ fun Bundle.getFragmentState() : FragmentState?
     return getParcelable<FragmentState>("fragment_state")
 }
 
-fun Bundle.putReportExtraInfo(extraInfo: ReportExtraInfo)
+fun Bundle.putReportExtraInfo(extraInfo: ReportExtraInfo?)
 {
-    extraInfo.extraValues.forEach { putCharArray(it.first, it.second.toString().toCharArray()) }
+    putParcelable("extra_info", extraInfo)
 }
 
-fun Bundle.getReportExtraInfo(keyList : List<String>) : ReportExtraInfo
+fun Bundle.getReportExtraInfo() : ReportExtraInfo?
 {
-    val listOfValues = mutableListOf<Pair<String, Any?>>()
-    keyList.forEach{
-        listOfValues.add(it to String(getCharArray(it)))
-    }
-    return ReportExtraInfo(listOfValues)
+    return getParcelable<ReportExtraInfo>("extra_info")
+}
+
+fun ViewGroup.inflate(layoutRes: Int): View {
+    return LayoutInflater.from(context).inflate(layoutRes, this, false)
 }
 
 fun Double.getPowerOfTwoForSampleRatio(): Int

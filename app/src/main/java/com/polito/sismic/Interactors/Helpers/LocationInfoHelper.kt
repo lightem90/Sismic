@@ -45,7 +45,7 @@ class LocationInfoHelper(val mContext : Context){
                 mComuneForProvinceMap.put(provincia, mutableListOf(comune))
             }
 
-            //mapping between comune and classification / code
+            //mapping between comune and classification / zone
             mZoneCodeForComune.put(comune, Triple(comune, codiceistat, classificazione))
         }
     }

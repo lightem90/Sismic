@@ -3,10 +3,7 @@ package com.polito.sismic.Interactors
 import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
-import com.polito.sismic.Domain.Report
-import com.polito.sismic.Domain.ReportDetails
-import com.polito.sismic.Domain.ReportMedia
-import com.polito.sismic.Domain.ReportSection
+import com.polito.sismic.Domain.*
 import com.polito.sismic.Extensions.putFragmentState
 import com.polito.sismic.Extensions.putReportExtraInfo
 import com.polito.sismic.Interactors.Helpers.MediaFile
@@ -90,12 +87,8 @@ class ReportManager (private val report: Report, val database: DatabaseInteracto
                 report.reportDetails,
                 getReportArray()))
 
-        if (mExtraInfo != null){
-            bundle.putReportExtraInfo(mExtraInfo!!)
-        }
+        bundle.putReportExtraInfo(mExtraInfo)
+
         return bundle
     }
 }
-
-//to send data when creating fragments, since they are not created all at start but they switch state in supportfragmentmanager
-class ReportExtraInfo (val extraValues: MutableList<Pair<String, Any?>> = mutableListOf())

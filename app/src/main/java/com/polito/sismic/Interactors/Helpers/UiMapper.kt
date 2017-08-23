@@ -1,6 +1,5 @@
 package com.polito.sismic.Interactors.Helpers
 
-import android.os.Parcelable
 import com.polito.sismic.Domain.*
 import com.polito.sismic.Presenters.ReportActivity.Fragments.*
 import kotlinx.android.synthetic.main.catasto_report_layout.*
@@ -109,6 +108,15 @@ class UiMapper {
     fun convertReportMediaFromDomain(reportMedia: ReportMedia) : MediaFile = with(reportMedia)
     {
         return MediaFile(type, url, note, size)
+    }
+
+    fun createLocationExtraInfoFromFragment(infoLocReportFragment: InfoLocReportFragment) : LocationExtraInfo
+    {
+        return LocationExtraInfo(infoLocReportFragment.lat_parameter.getParameterValue().toDouble(),
+                infoLocReportFragment.long_parameter.getParameterValue().toDouble(),
+                infoLocReportFragment.address_parameter.getParameterValue(),
+                infoLocReportFragment.zona_sismica_parameter.getParameterValue(),
+                listOf<CloseNodeData>())
     }
 }
 
