@@ -1,6 +1,5 @@
 package com.polito.sismic.Presenters.ReportActivity.Fragments
 
-import android.content.Context
 import android.os.Bundle
 import android.support.annotation.Nullable
 import android.view.LayoutInflater
@@ -19,7 +18,7 @@ class CatastoReportFragment : BaseReportFragment() {
     }
 
     override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback?) {
-        mNodeRequestCallback?.onNodesCalculationRequested()
+        mNodeRequestCallback?.onClosedNodesCalculationRequested()
         super.onNextClicked(callback)
     }
 }

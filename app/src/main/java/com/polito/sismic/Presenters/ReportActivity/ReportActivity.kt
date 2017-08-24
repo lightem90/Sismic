@@ -71,24 +71,25 @@ class ReportActivity : AppCompatActivity(),
         //        .filterIsInstance<DatiSismoGeneticiReportFragment>()
         //        .firstOrNull()
         //        ?.updateLabelsByCoordinate(latitude, longitude, address, address)
-        mReportManager!!.mExtraInfo = ReportExtraInfo(locationExtraInfo)
+        mReportManager!!.addLocationExtraInfo(locationExtraInfo)
 
     }
 
-    override fun onNodesCalculationRequested() {
+    override fun onClosedNodesCalculationRequested() {
 
         mCoordinateHelper.initialize()
 
-        val nodeList = mReportManager?.mExtraInfo?.let {
-            mCoordinateHelper.getClosestPointsTo(mReportManager!!.mExtraInfo!!.locationExtraInfo.longitude,
-                    mReportManager!!.mExtraInfo!!.locationExtraInfo.latitude)
+        val nodeList = mReportManager?.let {
+            mCoordinateHelper.getClosestPointsTo(mReportManager!!.getExtraLongitudeCoordinate(),
+                    mReportManager!!.getExtraLatitudeCoordinate())
         }
 
-        mReportManager!!.mExtraInfo!!.locationExtraInfo = LocationExtraInfo(mReportManager!!.mExtraInfo!!.locationExtraInfo.latitude,
-                mReportManager!!.mExtraInfo!!.locationExtraInfo.longitude,
-                mReportManager!!.mExtraInfo!!.locationExtraInfo.address,
-                mReportManager!!.mExtraInfo!!.locationExtraInfo.zone,
+        mReportManager!!.addLocationExtraInfo(LocationExtraInfo(mReportManager!!.getExtraLatitudeCoordinate(),
+                mReportManager!!.getExtraLongitudeCoordinate(),
+                mReportManager!!.getExtraAddress(),
+                mReportManager!!.getExtraZone(),
                 nodeList)
+        )
 
         supportFragmentManager.fragments
                 .filterIsInstance<BaseReportFragment>()

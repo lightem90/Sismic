@@ -21,7 +21,7 @@ class ReportManager (private val report: Report, val database: DatabaseInteracto
     private var tmpSectionList : HashMap<String, ReportSection> = hashMapOf()
     private var tmpMediaList   : MutableList<MediaFile> = mutableListOf()
     private var mUiMapper : UiMapper = UiMapper()
-    var mExtraInfo : ReportExtraInfo? = null
+    private var mExtraInfo : ReportExtraInfo? = null
 
     init {
         //if I'm editing the tmp replicas will have a value
@@ -88,7 +88,32 @@ class ReportManager (private val report: Report, val database: DatabaseInteracto
                 getReportArray()))
 
         bundle.putReportExtraInfo(mExtraInfo)
-
         return bundle
     }
+
+    fun addLocationExtraInfo(locationExtraInfo: LocationExtraInfo) {
+        if (mExtraInfo == null) mExtraInfo = ReportExtraInfo(locationExtraInfo)
+        else mExtraInfo!!.locationExtraInfo = locationExtraInfo
+    }
+
+    fun getExtraLongitudeCoordinate() : Double
+    {
+        return if (mExtraInfo != null) mExtraInfo!!.locationExtraInfo.longitude else -1.0
+    }
+    fun getExtraLatitudeCoordinate() : Double
+    {
+        return if (mExtraInfo != null) mExtraInfo!!.locationExtraInfo.latitude else -1.0
+    }
+
+    fun getExtraAddress() : String
+    {
+        return if (mExtraInfo != null) mExtraInfo!!.locationExtraInfo.address else ""
+    }
+
+    fun getExtraZone() : String
+    {
+        return if (mExtraInfo != null) mExtraInfo!!.locationExtraInfo.zone else ""
+    }
+
+
 }

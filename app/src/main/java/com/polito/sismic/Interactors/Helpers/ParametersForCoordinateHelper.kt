@@ -12,12 +12,12 @@ class ParametersForCoordinateHelper(val mContext : Context) {
         val SENSIBILITY = 0.025
         fun distFrom(lat1: Double, lng1: Double, lat2: Double, lng2: Double): Double {
             val earthRadius = 6371000.0 //meters
-            val dLat = Math.toRadians((lat2 - lat1).toDouble())
-            val dLng = Math.toRadians((lng2 - lng1).toDouble())
-            val a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(Math.toRadians(lat1.toDouble())) * Math.cos(Math.toRadians(lat2.toDouble())) *
+            val dLat = Math.toRadians((lat2 - lat1))
+            val dLng = Math.toRadians((lng2 - lng1))
+            val a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
                     Math.sin(dLng / 2) * Math.sin(dLng / 2)
             val c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
-            val dist = (earthRadius * c).toDouble()
+            val dist = (earthRadius * c)
 
             return dist / 1000 //(KM)
         }
@@ -47,10 +47,13 @@ class ParametersForCoordinateHelper(val mContext : Context) {
     fun getClosestPointsTo(x : Double, y : Double) : List<CloseNodeData>
     {
         if (!initialized) return listOf()
-        val result = mutableListOf<Pair<String, Double>>()
+        if (x == -1.0 || y == -1.0) return listOf()
+        var result = mutableListOf<Pair<String, Double>>()
         var initIndex = 0
-        //get to the closest point in longitude
-        while (mCoordinateArray[initIndex].second < x) initIndex++
+        //get to the closest point in longitude (not safe)
+        while (mCoordinateArray[initIndex].second < x) {
+            initIndex++
+        }
 
         //search left and right from initial index. it stops when the distance from a point is greater than the sum of the closest one
         //the return lists have an index for the map to the point and the distance from the input point
@@ -60,6 +63,7 @@ class ParametersForCoordinateHelper(val mContext : Context) {
         result.addAll(leftValues)
         result.addAll(rightValues)
         result.sortBy { it.second }
+        result = result.subList(0, 4)
         return result.map { CloseNodeData(it.first,
                 getDataForNode(it.first, CoordinateDatabaseParameters.LON),
                 getDataForNode(it.first, CoordinateDatabaseParameters.LAT),

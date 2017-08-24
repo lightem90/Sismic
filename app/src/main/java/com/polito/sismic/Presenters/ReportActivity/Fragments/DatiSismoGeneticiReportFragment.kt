@@ -16,7 +16,9 @@ import kotlinx.android.synthetic.main.dati_sismogenetici_report_layout.*
  */
 class DatiSismoGeneticiReportFragment : BaseReportFragment() {
 
-    var mNodeList : List<CloseNodeData> = listOf()
+    var mNodeList : MutableList<CloseNodeData> = mutableListOf()
+    lateinit var mNodeAdapter : NodeListAdapter
+
     override fun onCreateView(inflater: LayoutInflater?, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View? {
         return inflateFragment(R.layout.dati_sismogenetici_report_layout, inflater, container)
     }
@@ -24,23 +26,24 @@ class DatiSismoGeneticiReportFragment : BaseReportFragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        list_nodi.adapter = NodeListAdapter(activity, mNodeList)
+        mNodeAdapter = NodeListAdapter(context, mNodeList)
+        list_nodi.adapter = mNodeAdapter
     }
 
     override fun onStateUpdated() {
 
-        val extraInfo = arguments.getReportExtraInfo()
-        if (extraInfo?.locationExtraInfo?.close_points != null)
+        if (mExtraInfo?.locationExtraInfo?.close_points != null)
         {
-            mNodeList = extraInfo.locationExtraInfo.close_points!!
-            list_nodi.adapter.notifyDataSetChanged()
+            mNodeList.clear()
+            mNodeList.addAll(mExtraInfo!!.locationExtraInfo.close_points!!)
+            mNodeAdapter.notifyDataSetChanged()
         }
 
         //Must never fail!
-        updateLabelsByCoordinate(extraInfo!!.locationExtraInfo.latitude.toString(),
-                extraInfo.locationExtraInfo.latitude.toString(),
-                extraInfo.locationExtraInfo.address,
-                extraInfo.locationExtraInfo.zone)
+        updateLabelsByCoordinate(mExtraInfo!!.locationExtraInfo.latitude.toString(),
+                mExtraInfo!!.locationExtraInfo.latitude.toString(),
+                mExtraInfo!!.locationExtraInfo.address,
+                mExtraInfo!!.locationExtraInfo.zone)
     }
 
     fun updateLabelsByCoordinate(latitude : String, longitude : String, address : String, zone : String)

@@ -255,6 +255,10 @@
     <string name="acc_liv_con_parameter">Livello conoscenza</string>
     <string name="acc_classe_parameter_A">B450A</string>
     <string name="acc_classe_parameter_C">B450C</string>
+    <string name="nodelist_id_header">ID</string>
+    <string name="nodelist_longitude_header">LONGITUDINE</string>
+    <string name="nodelist_latitude_header">LATITUDINE</string>
+    <string name="nodelist_distance_header">DISTANZA (Km)</string>
 
 
 </resources>

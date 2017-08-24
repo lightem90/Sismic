@@ -9,8 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 import com.github.fafaldo.fabtoolbar.widget.FABToolbarLayout
 import com.polito.sismic.Domain.LocationExtraInfo
+import com.polito.sismic.Domain.ReportExtraInfo
 import com.polito.sismic.Domain.ReportSection
 import com.polito.sismic.Extensions.getFragmentState
+import com.polito.sismic.Extensions.getReportExtraInfo
 import com.polito.sismic.Extensions.toast
 import com.polito.sismic.Interactors.Helpers.UiMapper
 import com.polito.sismic.Presenters.CustomLayout.FragmentScrollableCanvas
@@ -31,6 +33,7 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
     //wrap the mapper into interactor
     protected val mUiMapper : UiMapper = UiMapper()
     protected var mFragmentState : FragmentState? = null
+    protected var mExtraInfo : ReportExtraInfo? = null
 
     //Is the activity the handler of the dto, each fragment only passes its own
     // parameters througth the callback when the button "next" is pressed
@@ -47,17 +50,19 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
 
     interface NodeCaluclationRequest
     {
-        fun onNodesCalculationRequested()
+        fun onClosedNodesCalculationRequested()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mFragmentState = arguments.getFragmentState()
+        mExtraInfo = arguments.getReportExtraInfo()
     }
 
     fun updateState(newState : Bundle?)
     {
         mFragmentState = newState?.getFragmentState()
+        mExtraInfo = newState?.getReportExtraInfo()
         onStateUpdated()
     }
 

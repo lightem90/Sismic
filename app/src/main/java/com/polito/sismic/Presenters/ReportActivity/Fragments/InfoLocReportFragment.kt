@@ -186,6 +186,7 @@ class InfoLocReportFragment : BaseReportFragment(){
         return super.verifyStep()
     }
 
+    //callback to activity, must add location info to all other fragments
     override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback?) {
 
         val info = mUiMapper.createLocationExtraInfoFromFragment(this)
