@@ -36,15 +36,15 @@
 
     </android.support.v7.widget.RecyclerView>
 
-    <!--
+
     <Button
         android:id="@+id/nodi_request_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/white"
         android:backgroundTint="@color/colorAccent"
-        android:text="@string/nodi_request_button_text"/>
-    -->
+        android:text="@string/nodegraph_button_text"/>
+
 
     <TextView
         android:text="@string/report_spettrodirisposta_title"

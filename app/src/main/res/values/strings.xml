@@ -259,6 +259,9 @@
     <string name="nodelist_longitude_header">LONGITUDINE</string>
     <string name="nodelist_latitude_header">LATITUDINE</string>
     <string name="nodelist_distance_header">DISTANZA (Km)</string>
+    <string name="km_format">%.4f</string>
+    <string name="coordinate_label">%s %s</string>
+    <string name="nodegraph_button_text">Costruisci grafico</string>
 
 
 </resources>

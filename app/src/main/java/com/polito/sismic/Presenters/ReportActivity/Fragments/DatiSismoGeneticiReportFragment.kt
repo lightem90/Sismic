@@ -2,6 +2,7 @@ package com.polito.sismic.Presenters.ReportActivity.Fragments
 
 import android.os.Bundle
 import android.support.annotation.Nullable
+import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +18,6 @@ import kotlinx.android.synthetic.main.dati_sismogenetici_report_layout.*
 class DatiSismoGeneticiReportFragment : BaseReportFragment() {
 
     var mNodeList : MutableList<CloseNodeData> = mutableListOf()
-    lateinit var mNodeAdapter : NodeListAdapter
 
     override fun onCreateView(inflater: LayoutInflater?, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View? {
         return inflateFragment(R.layout.dati_sismogenetici_report_layout, inflater, container)
@@ -26,8 +26,8 @@ class DatiSismoGeneticiReportFragment : BaseReportFragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mNodeAdapter = NodeListAdapter(context, mNodeList)
-        list_nodi.adapter = mNodeAdapter
+        list_nodi.layoutManager = LinearLayoutManager(context)
+        list_nodi.adapter = NodeListAdapter(context, mNodeList)
     }
 
     override fun onStateUpdated() {
@@ -36,19 +36,19 @@ class DatiSismoGeneticiReportFragment : BaseReportFragment() {
         {
             mNodeList.clear()
             mNodeList.addAll(mExtraInfo!!.locationExtraInfo.close_points!!)
-            mNodeAdapter.notifyDataSetChanged()
+            list_nodi.adapter.notifyDataSetChanged()
         }
 
         //Must never fail!
         updateLabelsByCoordinate(mExtraInfo!!.locationExtraInfo.latitude.toString(),
-                mExtraInfo!!.locationExtraInfo.latitude.toString(),
+                mExtraInfo!!.locationExtraInfo.longitude.toString(),
                 mExtraInfo!!.locationExtraInfo.address,
                 mExtraInfo!!.locationExtraInfo.zone)
     }
 
     fun updateLabelsByCoordinate(latitude : String, longitude : String, address : String, zone : String)
     {
-        report_datisimogenetici_coordinate_label.setValue(latitude + " " + longitude)
+        report_datisimogenetici_coordinate_label.setValue(String.format(context.getString(R.string.coordinate_label), longitude, latitude))
         report_datisimogenetici_indirizzo.setValue(address)
         report_datisimogenetici_zonasismica.setValue(zone)
     }
