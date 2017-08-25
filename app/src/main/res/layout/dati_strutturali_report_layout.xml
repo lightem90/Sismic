@@ -47,19 +47,36 @@
         style="@style/sectionTitle"
         android:text="@string/solaio_title"/>
 
-    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
-        android:id="@+id/solaio_type_1"
-        app:report_parameter_title="@string/solaio_type_1"
-        app:report_parameter_hint="@string/solaio_type_1_hint"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+    <TextView
+        android:text="@string/solaio_type_title"
+        style="@style/sectionButtonTitle"/>
 
-    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
-        android:id="@+id/solaio_type_2"
-        app:report_parameter_title="@string/solaio_type_2"
-        app:report_parameter_hint="@string/solaio_type_2_hint"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+    <LinearLayout style="@style/toggleButtonsContainer">
+
+        <ToggleButton
+            android:id="@+id/solaio_type"
+            style="@style/CustomToggleButton"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginEnd="@dimen/place_autocomplete_button_padding"
+            android:layout_marginRight="@dimen/place_autocomplete_button_padding"
+            android:checked="true"
+            android:textOff="@string/solaio_type"
+            android:textOn="@string/solaio_type" />
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/spinnerContainer">
+
+        <TextView
+            style="@style/sectionSpinnerTitle"
+            android:text="@string/solaio_peso" />
+
+        <Spinner
+            android:id="@+id/solaio_peso"
+            style="@style/spinnerStyle"
+            android:entries="@array/solaio_pesi"/>
+    </LinearLayout>
 
     <TextView
         android:id="@+id/solaio_g1"
@@ -96,19 +113,36 @@
         style="@style/sectionTitle"
         android:text="@string/copertura_title"/>
 
-    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
-        android:id="@+id/copertura_type_1"
-        app:report_parameter_title="@string/copertura_type_1"
-        app:report_parameter_hint="@string/copertura_type_1_hint"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+    <TextView
+        android:text="@string/solaio_type_title"
+        style="@style/sectionButtonTitle"/>
 
-    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
-        android:id="@+id/copertura_type_2"
-        app:report_parameter_title="@string/copertura_type_2"
-        app:report_parameter_hint="@string/copertura_type_2_hint"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+    <LinearLayout style="@style/toggleButtonsContainer">
+
+        <ToggleButton
+            android:id="@+id/copertura_type"
+            style="@style/CustomToggleButton"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginEnd="@dimen/place_autocomplete_button_padding"
+            android:layout_marginRight="@dimen/place_autocomplete_button_padding"
+            android:checked="true"
+            android:textOff="@string/copertura_type"
+            android:textOn="@string/copertura_type" />
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/spinnerContainer">
+
+        <TextView
+            style="@style/sectionSpinnerTitle"
+            android:text="@string/copertura_peso" />
+
+        <Spinner
+            android:id="@+id/copertura_peso"
+            style="@style/spinnerStyle"
+            android:entries="@array/copertura_pesi"/>
+    </LinearLayout>
 
     <TextView
         android:id="@+id/copertura_g1"

@@ -70,5 +70,41 @@
         <item>C90/105</item>
         <item>C100/120</item>
     </string-array>
+    <string-array name="solaio_pesi">
+        <item>12+4</item>
+        <item>12+5</item>
+        <item>14+4</item>
+        <item>14+5</item>
+        <item>16+4</item>
+        <item>16+5</item>
+        <item>18+4</item>
+        <item>18+5</item>
+        <item>20+4</item>
+        <item>20+5</item>
+        <item>22+4</item>
+        <item>22+5</item>
+        <item>24+4</item>
+        <item>24+5</item>
+        <item>25+4</item>
+        <item>25+5</item>
+    </string-array>
+    <string-array name="copertura_pesi">
+        <item>12+4</item>
+        <item>12+5</item>
+        <item>14+4</item>
+        <item>14+5</item>
+        <item>16+4</item>
+        <item>16+5</item>
+        <item>18+4</item>
+        <item>18+5</item>
+        <item>20+4</item>
+        <item>20+5</item>
+        <item>22+4</item>
+        <item>22+5</item>
+        <item>24+4</item>
+        <item>24+5</item>
+        <item>25+4</item>
+        <item>25+5</item>
+    </string-array>
 
 </resources>

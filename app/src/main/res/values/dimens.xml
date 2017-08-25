@@ -5,7 +5,7 @@
     <dimen name="activity_report_fab_margin_bottom">72dp</dimen>
     <dimen name="report_section_title_container_height">48dp</dimen>
     <dimen name="report_parameter_title_height">24dp</dimen>
-    <dimen name="report_parameter_value_height">72dp</dimen>
+    <dimen name="report_parameter_value_height">48dp</dimen>
     <dimen name="grid_vertical_margin">8dp</dimen>
     <dimen name="spinner_padding_horizontal">48dp</dimen>
 </resources>

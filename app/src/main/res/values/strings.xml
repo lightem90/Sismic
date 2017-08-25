@@ -262,6 +262,11 @@
     <string name="km_format">%.4f</string>
     <string name="coordinate_label">%s %s</string>
     <string name="nodegraph_button_text">Costruisci grafico</string>
+    <string name="solaio_peso">Peso solaio</string>
+    <string name="copertura_type">Latero-cemento</string>
+    <string name="solaio_type_title">Tipo solaio</string>
+    <string name="solaio_type">Latero-cemento</string>
+    <string name="copertura_peso">Peso copertura</string>
 
 
 </resources>

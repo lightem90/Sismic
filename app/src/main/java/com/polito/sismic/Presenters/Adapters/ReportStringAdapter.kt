@@ -1,6 +1,7 @@
 package com.polito.sismic.Presenters.Adapters
 
 import android.content.Context
+import android.net.Uri
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
@@ -39,8 +40,9 @@ class ReportStringAdapter (val imageList : List<ReportMedia>,
             textView = convertView as TextView
         }
 
-        val text = if (imageList[position].type == "\".mp3\"") imageList[position].url else imageList[position].note
-        textView.setText(text)
+        textView.text = if (imageList[position].type == "\".mp3\"")
+            Uri.parse(imageList[position].url).path.toString()
+        else imageList[position].note
 
         return textView
     }

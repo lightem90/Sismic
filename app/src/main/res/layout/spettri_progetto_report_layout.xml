@@ -46,17 +46,21 @@
 
         <ToggleButton
             android:id="@+id/categoria_classe_duttilita_parameter_cda"
+            style="@style/CustomToggleButton"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginEnd="@dimen/place_autocomplete_button_padding"
+            android:layout_marginRight="@dimen/place_autocomplete_button_padding"
             android:checked="true"
-            android:textOn="@string/categoria_classe_duttilita_parameter_cda"
             android:textOff="@string/categoria_classe_duttilita_parameter_cda"
-            style="@style/CustomToggleButton"/>
+            android:textOn="@string/categoria_classe_duttilita_parameter_cda" />
 
         <ToggleButton
             android:id="@+id/categoria_classe_duttilita_parameter_cdb"
-            android:checked="false"
             style="@style/CustomToggleButton"
-            android:textOn="@string/categoria_classe_duttilita_parameter_cdb"
-            android:textOff="@string/categoria_classe_duttilita_parameter_cdb"/>
+            android:checked="false"
+            android:textOff="@string/categoria_classe_duttilita_parameter_cdb"
+            android:textOn="@string/categoria_classe_duttilita_parameter_cdb"/>
     </LinearLayout>
 
     <CheckBox

@@ -85,9 +85,6 @@
     </style>
 
     <style name="sectionButtonTitle" parent="sectionParameterTitle">
-        <item name="android:layout_marginTop">@dimen/activity_vertical_margin</item>
-        <item name="android:paddingStart" tools:targetApi="jelly_bean_mr1">@dimen/grid_vertical_margin</item>
-        <item name="android:paddingTop" tools:targetApi="jelly_bean_mr1">@dimen/grid_vertical_margin</item>
         <item name="android:paddingLeft">@dimen/ms_material_button_padding_horizontal</item>
         <item name="android:layout_marginBottom">@dimen/grid_vertical_margin</item>
         <item name="android:layout_marginEnd" tools:targetApi="jelly_bean_mr1">@dimen/grid_vertical_margin</item>
@@ -103,7 +100,6 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginLeft">@dimen/spinner_padding_horizontal</item>
-        <item name="android:layout_marginRight">@dimen/spinner_padding_horizontal</item>
         <item name="android:layout_gravity">center_vertical</item>
     </style>
 
@@ -113,7 +109,6 @@
         <item name="android:layout_marginEnd" tools:targetApi="jelly_bean_mr1">@dimen/grid_vertical_margin</item>
         <item name="android:layout_marginBottom">@dimen/grid_vertical_margin</item>
         <item name="android:layout_marginTop">@dimen/grid_vertical_margin</item>
-        <item name="android:layout_marginStart" tools:targetApi="jelly_bean_mr1">@dimen/grid_vertical_margin</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:orientation">horizontal</item>
     </style>
@@ -123,8 +118,6 @@
         <item name="android:layout_marginRight">@dimen/activity_horizontal_margin</item>
         <item name="android:layout_marginEnd" tools:targetApi="jelly_bean_mr1">@dimen/grid_vertical_margin</item>
         <item name="android:layout_marginBottom">@dimen/grid_vertical_margin</item>
-        <item name="android:layout_marginTop">@dimen/grid_vertical_margin</item>
-        <item name="android:layout_marginStart" tools:targetApi="jelly_bean_mr1">@dimen/grid_vertical_margin</item>
         <item name="android:orientation">horizontal</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
