@@ -60,12 +60,12 @@ class DatabaseDataMapper {
     }
 
 
-    fun convertDatabaseSectionToDomain(section: DatabaseSection?) : ReportSection? = with (helper)
+    private fun convertDatabaseSectionToDomain(section: DatabaseSection?) : ReportSection? = with (helper)
     {
         helper.getDomainClassForSection(section)
     }
 
-    fun convertDomainSectionToDatabaseSection(reportId: Int, section : ReportSection) : DatabaseSection? = with(helper)
+    private fun convertDomainSectionToDatabaseSection(reportId: Int, section : ReportSection) : DatabaseSection? = with(helper)
     {
         helper.getDatabaseSectionForDomain(reportId, section)
     }

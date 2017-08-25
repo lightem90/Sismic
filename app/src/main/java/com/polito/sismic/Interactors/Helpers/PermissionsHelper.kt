@@ -32,13 +32,13 @@ class PermissionsHelper
         }
     }
 
-    fun handlePermissionResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray)
+    fun handlePermissionResult(requestCode: Int, grantResults: IntArray)
     {
         when (requestCode) {
             PERMISSION_POSITION -> {
                 // If request is cancelled, the result arrays are empty.
-                PERMISSION_POSITION_GRANTED = grantResults.size > 0 && grantResults[0] === PackageManager.PERMISSION_GRANTED
-                                                                    && grantResults[1] === PackageManager.PERMISSION_GRANTED
+                PERMISSION_POSITION_GRANTED = grantResults.isNotEmpty() && grantResults[0] === PackageManager.PERMISSION_GRANTED
+                                                                        && grantResults[1] === PackageManager.PERMISSION_GRANTED
             }
         }
     }

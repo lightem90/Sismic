@@ -34,6 +34,8 @@
             android:checked="true"
             android:textOn="@string/calc_classe_res_parameter_lc1"
             android:textOff="@string/calc_classe_res_parameter_lc1"
+            android:layout_marginRight="@dimen/grid_vertical_margin"
+            android:layout_marginEnd="@dimen/grid_vertical_margin"
             style="@style/CustomToggleButton"/>
 
         <ToggleButton
@@ -41,6 +43,8 @@
             android:checked="false"
             style="@style/CustomToggleButton"
             android:textOn="@string/calc_classe_res_parameter_lc2"
+            android:layout_marginRight="@dimen/grid_vertical_margin"
+            android:layout_marginEnd="@dimen/grid_vertical_margin"
             android:textOff="@string/calc_classe_res_parameter_lc2"/>
 
         <ToggleButton
@@ -64,6 +68,8 @@
             android:checked="true"
             android:textOn="@string/acc_classe_parameter_A"
             android:textOff="@string/acc_classe_parameter_A"
+            android:layout_marginRight="@dimen/grid_vertical_margin"
+            android:layout_marginEnd="@dimen/grid_vertical_margin"
             style="@style/CustomToggleButton"/>
 
         <ToggleButton
@@ -87,6 +93,7 @@
             android:checked="true"
             android:textOn="@string/calc_classe_res_parameter_lc1"
             android:textOff="@string/calc_classe_res_parameter_lc1"
+            android:layout_marginRight="@dimen/grid_vertical_margin"
             style="@style/CustomToggleButton"/>
 
         <ToggleButton
@@ -94,6 +101,7 @@
             android:checked="false"
             style="@style/CustomToggleButton"
             android:textOn="@string/calc_classe_res_parameter_lc2"
+            android:layout_marginRight="@dimen/grid_vertical_margin"
             android:textOff="@string/calc_classe_res_parameter_lc2"/>
 
         <ToggleButton
@@ -149,7 +157,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/white"
-        android:backgroundTint="@color/colorAccent"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginBottom="@dimen/grid_vertical_margin"
+        android:layout_marginTop="@dimen/grid_vertical_margin"
+        android:background="@color/colorAccent"
         android:text="@string/ok"/>
 
     <TextView

@@ -115,5 +115,9 @@ class ReportManager (private val report: Report, val database: DatabaseInteracto
         return if (mExtraInfo != null) mExtraInfo!!.locationExtraInfo.zone else ""
     }
 
+    fun getUserName(): String? {
+        return report.reportDetails.userIdentifier
+    }
+
 
 }

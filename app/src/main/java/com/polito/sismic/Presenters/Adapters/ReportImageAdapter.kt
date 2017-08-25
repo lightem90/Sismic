@@ -31,7 +31,7 @@ class ReportImageAdapter (val imageList : List<ReportMedia>,
 
     // create a new ImageView for each item referenced by the Adapter
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        var imageView: ImageView
+        val imageView: ImageView
         if (convertView == null) {
 
             // if it's not recycled, initialize some attributes

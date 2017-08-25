@@ -8,7 +8,6 @@ import android.support.annotation.Nullable
 import android.view.*
 import com.google.android.gms.location.places.Place
 import com.polito.sismic.AsyncTasks.PlaceDetailsTask
-import com.polito.sismic.Domain.LocationExtraInfo
 import com.polito.sismic.Extensions.toFormattedString
 import com.polito.sismic.Extensions.toast
 import com.polito.sismic.Interactors.Helpers.*
@@ -118,7 +117,7 @@ class InfoLocReportFragment : BaseReportFragment(){
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         //Setta la proprietà interna "permission granted"
-        mPermissionHelper.handlePermissionResult(requestCode, permissions, grantResults)
+        mPermissionHelper.handlePermissionResult(requestCode, grantResults)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

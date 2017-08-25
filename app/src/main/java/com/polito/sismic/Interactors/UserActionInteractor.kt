@@ -53,18 +53,20 @@ class UserActionInteractor(val mReportManager: ReportManager,
     }
 
     private fun startNoteIntent(caller: Activity) {
-        var intent = Intent(caller, NoteActivity::class.java)
+        val intent = Intent(caller, NoteActivity::class.java)
+        intent.putExtra("username", mReportManager.getUserName())
         reportMediaInteractor.createFileForMedia(MediaType.Note)
         caller.startActivityForResult(intent, USER_ACTION_NOTE)
     }
 
     private fun startSketchIntent(caller: Activity) {
 
-        var drawBitmap : Intent = Intent(caller, SketchActivity::class.java)
+        val drawBitmap = Intent(caller, SketchActivity::class.java)
         if (drawBitmap.resolveActivity(caller.packageManager) != null)
         {
-            var bitmap = reportMediaInteractor.createFileForMedia(MediaType.Picture)
+            val bitmap = reportMediaInteractor.createFileForMedia(MediaType.Picture)
             drawBitmap.putExtra(MediaStore.EXTRA_OUTPUT, Uri.parse(bitmap?.url))
+            drawBitmap.putExtra("username", mReportManager.getUserName())
             caller.startActivityForResult(drawBitmap, USER_ACTION_SKETCH)
         }
     }

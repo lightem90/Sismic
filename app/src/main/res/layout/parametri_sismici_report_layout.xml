@@ -18,6 +18,8 @@
             android:checked="true"
             android:textOn="@string/report_vita_parameter_30"
             android:textOff="@string/report_vita_parameter_30"
+            android:layout_marginRight="@dimen/grid_vertical_margin"
+            android:layout_marginEnd="@dimen/grid_vertical_margin"
             style="@style/CustomToggleButton"/>
 
         <ToggleButton
@@ -25,6 +27,8 @@
             android:checked="false"
             style="@style/CustomToggleButton"
             android:textOn="@string/report_vita_parameter_50"
+            android:layout_marginRight="@dimen/grid_vertical_margin"
+            android:layout_marginEnd="@dimen/grid_vertical_margin"
             android:textOff="@string/report_vita_parameter_50"/>
 
         <ToggleButton

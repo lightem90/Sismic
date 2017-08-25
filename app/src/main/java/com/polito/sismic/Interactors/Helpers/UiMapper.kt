@@ -102,12 +102,12 @@ class UiMapper {
 
     fun convertMediaForDomain(mediaFile: MediaFile) : ReportMedia = with(mediaFile)
     {
-        return ReportMedia(-1, mediaFile.url, mediaFile.type, mediaFile.note, mediaFile.size)
+        return ReportMedia(-1, mediaFile.url, mediaFile.type.toString(), mediaFile.note, mediaFile.size)
     }
 
     fun convertReportMediaFromDomain(reportMedia: ReportMedia) : MediaFile = with(reportMedia)
     {
-        return MediaFile(type, url, note, size)
+        return MediaFile(MediaType.values().first { it.toString() == type }, url, note, size)
     }
 
     fun createLocationExtraInfoFromFragment(infoLocReportFragment: InfoLocReportFragment) : LocationExtraInfo

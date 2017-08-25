@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.polito.sismic.Domain.ReportMedia
+import com.polito.sismic.Interactors.Helpers.MediaFile
+import com.polito.sismic.Interactors.Helpers.MediaType
 import com.polito.sismic.Presenters.Adapters.ReportImageAdapter
 import com.polito.sismic.Presenters.Adapters.ReportStringAdapter
 import com.polito.sismic.Presenters.Adapters.ReportVideoAdapter
@@ -32,19 +34,33 @@ class RiepilogoReportFragment : BaseReportFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         mImageList.clear()
-        mImageList = mFragmentState!!.mReportMedia.filter { it.type == "\".jpg\"" }.toMutableList()
+        mImageList = mFragmentState!!.mReportMedia
+                .filter {
+                    it.type == MediaType.Picture.toString() ||
+                    it.type == MediaType.Sketch.toString()
+                }
+                .toMutableList()
         image_grid.adapter = ReportImageAdapter(mImageList, activity)
 
         mVideoList.clear()
-        mVideoList = mFragmentState!!.mReportMedia.filter { it.type == "\".mp4\"" }.toMutableList()
+        mVideoList = mFragmentState!!.mReportMedia
+                .filter { it.type == MediaType.Video.toString() }
+                .toMutableList()
         video_grid.adapter = ReportVideoAdapter(mVideoList, activity)
 
         mNoteList.clear()
-        mNoteList = mFragmentState!!.mReportMedia.filter { !it.note.isEmpty() }.toMutableList()
+        mNoteList = mFragmentState!!.mReportMedia
+                .filter {
+                    !it.note.isEmpty() &&
+                    it.type == MediaType.Note.toString()
+                }
+                .toMutableList()
         note_grid.adapter = ReportStringAdapter(mNoteList, activity)
 
         mAudioList.clear()
-        mAudioList = mFragmentState!!.mReportMedia.filter { it.type == "\".mp3\"" }.toMutableList()
+        mAudioList = mFragmentState!!.mReportMedia
+                .filter { it.type == MediaType.Audio.toString() }
+                .toMutableList()
         audio_grid.adapter = ReportStringAdapter(mAudioList, activity)
     }
 }

@@ -14,6 +14,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import com.polito.sismic.Extensions.toast
 import android.content.Intent
+import android.view.MenuItem
 import java.io.File
 import java.io.FileOutputStream
 
@@ -22,6 +23,7 @@ import java.io.FileOutputStream
 //TODO: Make it more useful (draw lines, curves, changin color)
 class SketchActivity : AppCompatActivity() {
 
+    private lateinit var mUserName : String
     var uriToSave : Uri? = null
     private var mPaint: Paint? = null
 
@@ -31,6 +33,7 @@ class SketchActivity : AppCompatActivity() {
 
         val extras = intent.extras
         uriToSave = extras!!.get(MediaStore.EXTRA_OUTPUT) as Uri
+        mUserName = intent.getStringExtra("username")
 
         mPaint = Paint()
         mPaint!!.isAntiAlias = true
@@ -53,6 +56,7 @@ class SketchActivity : AppCompatActivity() {
             val byteArrayToSave = dv.getDrawingToSave()
             val outputStream = contentResolver.openOutputStream(uriToSave)
             outputStream.write(byteArrayToSave.toByteArray())
+            outputStream.close()
             exitWithSuccess()
         }
         catch (exc : Exception)
@@ -62,18 +66,30 @@ class SketchActivity : AppCompatActivity() {
         }
     }
 
-    fun exitWithError()
+    private fun exitWithError()
     {
         val intent = Intent()
+        intent.putExtra("username", mUserName)
         setResult(Activity.RESULT_CANCELED, intent)
         finish()
     }
 
-    fun exitWithSuccess()
+    private fun exitWithSuccess()
     {
         val intent = Intent()
+        intent.putExtra("username", mUserName)
         setResult(Activity.RESULT_OK, intent)
         finish()
+    }
+
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        if (item?.itemId == android.R.id.home) {
+
+            exitWithError()
+            return true
+        }
+        return false
     }
 }
 

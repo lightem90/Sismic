@@ -52,7 +52,7 @@ class ReportMediaInteractor(val mReportManager: ReportManager,
             MediaType.Note ->
             {
                 //Special case
-                lastAddedTmpFile = MediaFile("Note", "")
+                lastAddedTmpFile = MediaFile(type, "")
                 return lastAddedTmpFile
             }
         }
@@ -70,7 +70,7 @@ class ReportMediaInteractor(val mReportManager: ReportManager,
                 "com.polito.sismic",
                 file)
 
-        lastAddedTmpFile = MediaFile(suffix, fileUri!!.toString())
+        lastAddedTmpFile = MediaFile(type, fileUri!!.toString())
         return lastAddedTmpFile
     }
 
@@ -78,7 +78,7 @@ class ReportMediaInteractor(val mReportManager: ReportManager,
     {
         lastAddedTmpFile?.let {
             lastAddedTmpFile!!.note = if (stringExtra  == null) "" else stringExtra
-            lastAddedTmpFile!!.size = if (lastAddedTmpFile!!.type == "Note") 0.0 else getSizeFromUri(Uri.parse(lastAddedTmpFile!!.url))
+            lastAddedTmpFile!!.size = if (lastAddedTmpFile!!.type == MediaType.Note) 0.0 else getSizeFromUri(Uri.parse(lastAddedTmpFile!!.url))
             mReportManager.addMediaFile(lastAddedTmpFile!!)
         }
     }
@@ -94,7 +94,9 @@ class ReportMediaInteractor(val mReportManager: ReportManager,
     }
 
     fun deleteLastMedia() {
-        mContext.contentResolver.delete(Uri.parse(lastAddedTmpFile?.url), null, null)
+
+        if (lastAddedTmpFile?.type != MediaType.Note)
+            mContext.contentResolver.delete(Uri.parse(lastAddedTmpFile?.url), null, null)
     }
 
     fun  fixUriForAudio(data: Uri?) {
@@ -124,7 +126,7 @@ class ReportMediaInteractor(val mReportManager: ReportManager,
             do
             {
                 bos.write(buf)
-            } while (bis!!.read(buf) !== -1)
+            } while (bis.read(buf) !== -1)
 
         } catch (e: IOException)
         {

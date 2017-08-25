@@ -1,6 +1,6 @@
 package com.polito.sismic.Interactors.Helpers
 
-class MediaFile(var type : String,
+class MediaFile(var type : MediaType,
                 var url : String,
                 var note : String = "",
                 var size : Double = 0.0)
