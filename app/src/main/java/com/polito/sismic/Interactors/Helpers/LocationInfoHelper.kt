@@ -7,7 +7,7 @@ import com.polito.sismic.R
 /**
  * Created by Matteo on 22/08/2017.
  */
-class LocationInfoHelper(val mContext : Context){
+class LocationInfoHelper(mContext : Context){
 
     private val mCsvHelper : CsvHelper = CsvHelper(mContext)
     private val mProvinceForRegionMap : HashMap<String, MutableList<String>> = hashMapOf()

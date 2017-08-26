@@ -274,6 +274,14 @@ data class ErroreSection(val error: String) : ReportSection {
     }
 }
 
+data class UserDetails (val name : String,
+                        val address : String,
+                        val email : String,
+                        val phone : String,
+                        val qualification : String,
+                        val registration : String,
+                        val imageUri: String)
+
 
 
 

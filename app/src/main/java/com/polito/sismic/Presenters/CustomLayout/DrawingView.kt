@@ -82,7 +82,7 @@ class DrawingView : View {
         // these days you often need a "byte array". for example,
         // to save to parse.com or other cloud services
         val baos = ByteArrayOutputStream()
-        drawingCache.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        drawingCache.compress(Bitmap.CompressFormat.PNG, 75, baos)
         return baos
     }
 

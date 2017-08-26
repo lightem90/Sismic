@@ -45,8 +45,8 @@ class ReportMediaInteractor(val mReportManager: ReportManager,
             }
             MediaType.Sketch ->
             {
-                prefix += "JPEG_"
-                suffix = "\".jpg\""
+                prefix += "PNG_"
+                suffix = "\".png\""
                 storageDir = mContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
             }
             MediaType.Note ->
@@ -74,13 +74,11 @@ class ReportMediaInteractor(val mReportManager: ReportManager,
         return lastAddedTmpFile
     }
 
-    fun finalizeLastMedia(stringExtra: String? = null)
-    {
-        lastAddedTmpFile?.let {
-            lastAddedTmpFile!!.note = if (stringExtra  == null) "" else stringExtra
-            lastAddedTmpFile!!.size = if (lastAddedTmpFile!!.type == MediaType.Note) 0.0 else getSizeFromUri(Uri.parse(lastAddedTmpFile!!.url))
-            mReportManager.addMediaFile(lastAddedTmpFile!!)
-        }
+    fun finalizeLastMedia(stringExtra: String? = null) = with(lastAddedTmpFile) {
+
+        this!!.note = if (stringExtra  == null) "" else stringExtra
+        this.size = if (lastAddedTmpFile!!.type == MediaType.Note) 0.0 else getSizeFromUri(Uri.parse(lastAddedTmpFile!!.url))
+        mReportManager.addMediaFile(this)
     }
 
     private fun getSizeFromUri(path: Uri): Double {

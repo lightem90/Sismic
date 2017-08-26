@@ -122,7 +122,7 @@
         android:text="@string/copertura_title"/>
 
     <TextView
-        android:text="@string/solaio_type_title"
+        android:text="@string/copertura_type_title"
         style="@style/sectionButtonTitle"/>
 
     <LinearLayout style="@style/toggleButtonsContainer">

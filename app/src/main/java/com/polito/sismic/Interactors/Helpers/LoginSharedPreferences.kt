@@ -1,6 +1,7 @@
 package com.polito.sismic.Interactors.Helpers
 
 import android.content.Context
+import com.polito.sismic.Domain.UserDetails
 import com.polito.sismic.Extensions.edit
 
 /**
@@ -26,7 +27,7 @@ class LoginSharedPreferences {
 
         fun getLoggedUser(context: Context) : UserDetails = with(context)
         {
-            var sp = getSharedPreferences("login", Context.MODE_PRIVATE)
+            val sp = getSharedPreferences("login", Context.MODE_PRIVATE)
             UserDetails(sp.getString("name", ""),
                     sp.getString("address", ""),
                     sp.getString("email", ""),
@@ -57,13 +58,5 @@ class LoginSharedPreferences {
         }
     }
 }
-
-class UserDetails (val name : String,
-                   val address : String,
-                   val email : String,
-                   val phone : String,
-                   val qualification : String,
-                   val registration : String,
-                   val imageUri: String)
 
 

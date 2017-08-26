@@ -20,7 +20,9 @@ class CsvHelper(val mContext : Context)
             val inputStream = BufferedReader(inputStreamReader)
             inputStream.readLine() // Ignores the first line
             inputStream.forEachLine {
-                val arrayToAdd = it.split(",".toRegex()).dropLastWhile({ it.isEmpty() }).toTypedArray() // Splits the line up into a string array
+                val arrayToAdd = it.split(",".toRegex())
+                        .dropLastWhile({ it.isEmpty() })
+                        .toTypedArray() // Splits the line up into a string array
                 function.invoke(arrayToAdd)
                 toReturn.add(arrayToAdd)
             }

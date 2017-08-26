@@ -28,10 +28,12 @@ class DatiSismoGeneticiReportFragment : BaseReportFragment() {
 
         list_nodi.layoutManager = LinearLayoutManager(context)
         list_nodi.adapter = NodeListAdapter(context, mNodeList)
+
+        reloadFragment()
     }
 
-    override fun onStateUpdated() {
-
+    override fun reloadFragment()
+    {
         if (mExtraInfo?.locationExtraInfo?.close_points != null)
         {
             mNodeList.clear()
@@ -46,7 +48,7 @@ class DatiSismoGeneticiReportFragment : BaseReportFragment() {
                 mExtraInfo!!.locationExtraInfo.zone)
     }
 
-    fun updateLabelsByCoordinate(latitude : String, longitude : String, address : String, zone : String)
+    private fun updateLabelsByCoordinate(latitude : String, longitude : String, address : String, zone : String)
     {
         report_datisimogenetici_coordinate_label.setValue(String.format(context.getString(R.string.coordinate_label), longitude, latitude))
         report_datisimogenetici_indirizzo.setValue(address)

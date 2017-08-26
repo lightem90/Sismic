@@ -1,5 +1,6 @@
 package com.polito.sismic.Presenters.Adapters
 
+import android.content.Context
 import android.support.v4.app.FragmentManager
 import com.polito.sismic.Interactors.ReportManager
 import com.polito.sismic.Presenters.ReportActivity.ReportActivity
@@ -13,8 +14,8 @@ import com.stepstone.stepper.viewmodel.StepViewModel
 /**
  * Created by Matteo on 29/07/2017.
  */
-class ReportFragmentsAdapter(fragmentManager: FragmentManager, reportActivity: ReportActivity, val reportManager: ReportManager)
-    : AbstractFragmentStepAdapter(fragmentManager, reportActivity) {
+class ReportFragmentsAdapter(fragmentManager: FragmentManager, context: Context, reportManager: ReportManager)
+    : AbstractFragmentStepAdapter(fragmentManager, context) {
 
     private val fragmentFactory = ReportFragmentFactory(reportManager)
 
@@ -29,6 +30,11 @@ class ReportFragmentsAdapter(fragmentManager: FragmentManager, reportActivity: R
 
     override fun getViewModel(position: Int): StepViewModel {
         return fragmentFactory.createDecoratorForStep(position, context)
+    }
+
+    fun updateFragmentsData()
+    {
+        fragmentFactory.updateAllFragments()
     }
 }
 

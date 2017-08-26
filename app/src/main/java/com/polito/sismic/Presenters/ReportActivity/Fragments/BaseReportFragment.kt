@@ -54,25 +54,21 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         mFragmentState = arguments.getFragmentState()
         mExtraInfo = arguments.getReportExtraInfo()
-    }
-
-    fun updateState(newState : Bundle?)
-    {
-        mFragmentState = newState?.getFragmentState()
-        mExtraInfo = newState?.getReportExtraInfo()
-        onStateUpdated()
-    }
-
-    open fun onStateUpdated() {
-        return
+        super.onCreate(savedInstanceState)
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        mFragmentState = arguments?.getFragmentState()
+        mExtraInfo = arguments?.getReportExtraInfo()
         onParametersInjectedForEdit()
+    }
+
+    open fun reloadFragment()
+    {
+        return
     }
 
     //In this way I can make every fragment scrollable and use protected properties avoiding replicated zone
@@ -104,7 +100,7 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
     }
 
     //maps domain values to ui (could be done by each fragment or by mapper)
-    fun onParametersInjectedForEdit() {
+    private fun onParametersInjectedForEdit() {
         mFragmentState?.mReportSectionParameters?.let {
             mUiMapper.setInjectedDomainValueForEdit(mFragmentState!!.mReportSectionParameters!!, this)
         }

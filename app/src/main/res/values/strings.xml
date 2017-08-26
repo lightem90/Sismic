@@ -267,6 +267,7 @@
     <string name="solaio_type_title">Tipo solaio</string>
     <string name="solaio_type">Latero-cemento</string>
     <string name="copertura_peso">Peso copertura</string>
+    <string name="copertura_type_title">Tipo copertura</string>
 
 
 </resources>

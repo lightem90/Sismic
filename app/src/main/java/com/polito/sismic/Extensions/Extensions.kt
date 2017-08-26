@@ -9,13 +9,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.polito.sismic.Domain.ReportExtraInfo
+import com.polito.sismic.Presenters.Adapters.ReportFragmentsAdapter
 import com.polito.sismic.Presenters.ReportActivity.Fragments.FragmentState
+import com.stepstone.stepper.adapter.AbstractFragmentStepAdapter
+import com.stepstone.stepper.adapter.StepAdapter
 import org.jetbrains.anko.db.MapRowParser
 import org.jetbrains.anko.db.SelectQueryBuilder
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.reflect.KProperty
-import com.polito.sismic.Domain.ReportExtraInfo
 
 
 /**
@@ -153,4 +156,9 @@ fun Double.getPowerOfTwoForSampleRatio(): Int
         return 1
     else
         return k
+}
+
+fun StepAdapter.getCustomAdapter() : ReportFragmentsAdapter
+{
+    return this as ReportFragmentsAdapter
 }

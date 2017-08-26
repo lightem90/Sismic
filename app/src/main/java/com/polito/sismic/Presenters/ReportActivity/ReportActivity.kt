@@ -9,14 +9,15 @@ import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.places.Places
 import com.polito.sismic.Domain.LocationExtraInfo
-import com.polito.sismic.Domain.ReportExtraInfo
 import com.polito.sismic.Domain.ReportSection
+import com.polito.sismic.Extensions.getCustomAdapter
 import com.polito.sismic.Extensions.toast
 import com.polito.sismic.Interactors.*
 import com.polito.sismic.Interactors.Helpers.ParametersForCoordinateHelper
 import com.polito.sismic.Interactors.Helpers.UserActionType
 import com.polito.sismic.Presenters.Adapters.ReportFragmentsAdapter
 import com.polito.sismic.Presenters.ReportActivity.Fragments.BaseReportFragment
+import com.polito.sismic.Presenters.ReportActivity.Fragments.DatiSismoGeneticiReportFragment
 import com.polito.sismic.Presenters.ReportActivity.Fragments.InfoLocReportFragment
 import com.polito.sismic.R
 import kotlinx.android.synthetic.main.activity_report.*
@@ -72,7 +73,6 @@ class ReportActivity : AppCompatActivity(),
         //        .firstOrNull()
         //        ?.updateLabelsByCoordinate(latitude, longitude, address, address)
         mReportManager!!.addLocationExtraInfo(locationExtraInfo)
-
     }
 
     override fun onClosedNodesCalculationRequested() {
@@ -80,8 +80,10 @@ class ReportActivity : AppCompatActivity(),
         mCoordinateHelper.initialize()
 
         val nodeList = mReportManager?.let {
-            mCoordinateHelper.getClosestPointsTo(mReportManager!!.getExtraLongitudeCoordinate(),
-                    mReportManager!!.getExtraLatitudeCoordinate())
+            mCoordinateHelper.getClosestPointsTo(
+                    mReportManager!!.getExtraLongitudeCoordinate(),
+                    mReportManager!!.getExtraLatitudeCoordinate()
+            )
         }
 
         mReportManager!!.addLocationExtraInfo(LocationExtraInfo(mReportManager!!.getExtraLatitudeCoordinate(),
@@ -90,10 +92,18 @@ class ReportActivity : AppCompatActivity(),
                 mReportManager!!.getExtraZone(),
                 nodeList)
         )
+    }
 
+    //creates a new fragment state foreach active fragment, so everyone is updated
+    //the fragment not created will have the right arguments on creation
+    private fun updateStateForFragments()
+    {
+        stepperLayout.adapter.getCustomAdapter().updateFragmentsData()
+
+        //updates the fragment that has already called "createview"
         supportFragmentManager.fragments
                 .filterIsInstance<BaseReportFragment>()
-                .forEach { it.updateState(mReportManager?.createStateFor(it)) }
+                .forEach { it.reloadFragment() }
     }
 
     //If I pass an Uri, data will be null
@@ -101,6 +111,7 @@ class ReportActivity : AppCompatActivity(),
         super.onActivityResult(requestCode, resultCode, data)
 
         mUserActionInteractor.onActionResponse(requestCode, resultCode, data)
+        updateStateForFragments()
     }
 
     override fun onConnectionFailed(p0: ConnectionResult) {
@@ -122,6 +133,7 @@ class ReportActivity : AppCompatActivity(),
 
     override fun onParametersConfirmed(sectionParameters: ReportSection?) {
         sectionParameters?.let { mDomainInteractor.addDomainReportSection(sectionParameters) }
+        updateStateForFragments()
     }
 
     fun onNewReportConfirmed(createFromNew: ReportManager): ReportManager? {

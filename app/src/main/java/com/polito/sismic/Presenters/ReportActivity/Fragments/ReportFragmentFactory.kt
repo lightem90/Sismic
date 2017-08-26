@@ -87,5 +87,20 @@ class ReportFragmentFactory(private val reportManager: ReportManager) {
                 .setTitle(id)
                 .create()
     }
+
+    fun updateAllFragments() {
+        mInfoLocReportFragment.arguments = reportManager.createStateFor(mInfoLocReportFragment)
+        mCatastoReportFragment.arguments = reportManager.createStateFor(mCatastoReportFragment)
+        mDatiSismoGeneticiReportFragment.arguments = reportManager.createStateFor(mDatiSismoGeneticiReportFragment)
+        mParametriSismiciReportFragment.arguments = reportManager.createStateFor(mParametriSismiciReportFragment)
+        mSpettriDiProgettoReportFragment.arguments = reportManager.createStateFor(mSpettriDiProgettoReportFragment)
+        mDatiGeneraliReportFragment.arguments = reportManager.createStateFor(mDatiGeneraliReportFragment)
+        mDatiStrutturaliReportFragment.arguments = reportManager.createStateFor(mDatiStrutturaliReportFragment)
+        mRilieviReportFragment.arguments = reportManager.createStateFor(mRilieviReportFragment)
+        mPilastriReportFragment.arguments = reportManager.createStateFor(mPilastriReportFragment)
+        mMagliaStruttReportFragment.arguments = reportManager.createStateFor(mMagliaStruttReportFragment)
+        mRiepilogoReportFragment.arguments = reportManager.createStateFor(mRiepilogoReportFragment)
+        mRisultatiReportFragment.arguments = reportManager.createStateFor(mRisultatiReportFragment)
+    }
 }
 

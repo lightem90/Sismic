@@ -20,11 +20,10 @@ import kotlinx.android.synthetic.main.riepilogo_report_layout.*
 
 class RiepilogoReportFragment : BaseReportFragment() {
 
-    var mImageList : MutableList<ReportMedia> = mutableListOf()
-    var mVideoList : MutableList<ReportMedia> = mutableListOf()
-    var mAudioList : MutableList<ReportMedia> = mutableListOf()
-    var mNoteList :  MutableList<ReportMedia> = mutableListOf()
-
+    private var mImageList : MutableList<ReportMedia> = mutableListOf()
+    private var mVideoList : MutableList<ReportMedia> = mutableListOf()
+    private var mAudioList : MutableList<ReportMedia> = mutableListOf()
+    private var mNoteList :  MutableList<ReportMedia> = mutableListOf()
 
     override fun onCreateView(inflater: LayoutInflater?, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View? {
         return inflateFragment(R.layout.riepilogo_report_layout, inflater, container)
@@ -33,11 +32,16 @@ class RiepilogoReportFragment : BaseReportFragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mImageList.clear()
+        reloadFragment()
+    }
+
+    override fun reloadFragment()
+    {
+        mImageList.clear ()
         mImageList = mFragmentState!!.mReportMedia
                 .filter {
                     it.type == MediaType.Picture.toString() ||
-                    it.type == MediaType.Sketch.toString()
+                            it.type == MediaType.Sketch.toString()
                 }
                 .toMutableList()
         image_grid.adapter = ReportImageAdapter(mImageList, activity)
@@ -52,7 +56,7 @@ class RiepilogoReportFragment : BaseReportFragment() {
         mNoteList = mFragmentState!!.mReportMedia
                 .filter {
                     !it.note.isEmpty() &&
-                    it.type == MediaType.Note.toString()
+                            it.type == MediaType.Note.toString()
                 }
                 .toMutableList()
         note_grid.adapter = ReportStringAdapter(mNoteList, activity)

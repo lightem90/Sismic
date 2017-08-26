@@ -7,16 +7,11 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.support.v7.app.AppCompatActivity
-import com.polito.sismic.Presenters.CustomLayout.DrawingView
 import com.polito.sismic.R
 import kotlinx.android.synthetic.main.activity_sketch.*
-import android.graphics.Bitmap
-import android.graphics.Canvas
 import com.polito.sismic.Extensions.toast
 import android.content.Intent
 import android.view.MenuItem
-import java.io.File
-import java.io.FileOutputStream
 
 
 //Custom activity to draw something
@@ -24,7 +19,7 @@ import java.io.FileOutputStream
 class SketchActivity : AppCompatActivity() {
 
     private lateinit var mUserName : String
-    var uriToSave : Uri? = null
+    var mUriToSave: Uri? = null
     private var mPaint: Paint? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,7 +27,7 @@ class SketchActivity : AppCompatActivity() {
         setContentView(R.layout.activity_sketch)
 
         val extras = intent.extras
-        uriToSave = extras!!.get(MediaStore.EXTRA_OUTPUT) as Uri
+        mUriToSave = extras!!.get(MediaStore.EXTRA_OUTPUT) as Uri
         mUserName = intent.getStringExtra("username")
 
         mPaint = Paint()
@@ -54,7 +49,7 @@ class SketchActivity : AppCompatActivity() {
         try
         {
             val byteArrayToSave = dv.getDrawingToSave()
-            val outputStream = contentResolver.openOutputStream(uriToSave)
+            val outputStream = contentResolver.openOutputStream(mUriToSave)
             outputStream.write(byteArrayToSave.toByteArray())
             outputStream.close()
             exitWithSuccess()
