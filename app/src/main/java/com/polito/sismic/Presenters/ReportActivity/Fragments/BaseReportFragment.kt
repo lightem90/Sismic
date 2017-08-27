@@ -54,9 +54,9 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         mFragmentState = arguments.getFragmentState()
         mExtraInfo = arguments.getReportExtraInfo()
-        super.onCreate(savedInstanceState)
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
@@ -84,8 +84,8 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
         val scrollableCanvas = baseLayout.findViewById<FragmentScrollableCanvas>(R.id.base_fragment_scroll_view)
         scrollableCanvas.addView(view)
         //Must be called or it crashes on scroll!!!
-        scrollableCanvas.setObjectsToHideOnScroll(activity.findViewById<FABToolbarLayout>(R.id.fabtoolbar),
-                activity.findViewById<FloatingActionButton>(R.id.fabtoolbar_fab),
+        scrollableCanvas.setObjectsToHideOnScroll(activity.findViewById(R.id.fabtoolbar),
+                activity.findViewById(R.id.fabtoolbar_fab),
                 activity.findViewById<StepperLayout>(R.id.stepperLayout))
 
         //Requires api 23

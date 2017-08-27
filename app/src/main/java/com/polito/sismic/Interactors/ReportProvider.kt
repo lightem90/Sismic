@@ -1,6 +1,7 @@
 package com.polito.sismic.Interactors
 
 import android.content.Intent
+import android.database.sqlite.SQLiteException
 import android.support.v7.app.AlertDialog
 import com.polito.sismic.Domain.Report
 import com.polito.sismic.Extensions.toast
@@ -25,9 +26,16 @@ class ReportProvider(val caller: ReportActivity) {
             val reportId = intent.getIntExtra("report_id", -1)
             if (reportId == -1) errorInCreatingReport()
 
-            val report = dbInteractor.getReportForId(reportId.toString(), userName)
-            if (report == null) errorInCreatingReport()
-            return ReportManager(report!!, dbInteractor, true)
+            try {
+
+                val report = dbInteractor.getReportForId(reportId.toString(), userName)
+                if (report == null) errorInCreatingReport()
+                return ReportManager(report!!, dbInteractor, true)
+
+            } catch (e : SQLiteException)   //Usually when 2 reports with same id exists
+            {
+                caller.finish()
+            }
 
         }
         else

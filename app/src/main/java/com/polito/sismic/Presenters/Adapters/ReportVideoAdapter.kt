@@ -15,8 +15,8 @@ import java.io.File
 /**
  * Created by Matteo on 20/08/2017.
  */
-class ReportVideoAdapter (val imageList : List<ReportMedia>,
-                          val mContext: Context) : BaseAdapter()
+class ReportVideoAdapter (private val imageList : List<ReportMedia>,
+                          private val mContext: Context) : BaseAdapter()
 {
 
     override fun getCount(): Int {
@@ -44,11 +44,22 @@ class ReportVideoAdapter (val imageList : List<ReportMedia>,
         }
 
         //TODO, non credo funzioni
-        val file = File(Uri.parse(imageList[position].url).path)
-        val thumb = ThumbnailUtils.createVideoThumbnail(file.absolutePath,
+        val path = getPath(Uri.parse(imageList[position].url))
+        val thumb = ThumbnailUtils.createVideoThumbnail(path,
                 MediaStore.Images.Thumbnails.MINI_KIND)
         imageView.setImageBitmap(thumb)
 
         return imageView
+    }
+
+    private fun getPath(uri: Uri): String {
+        val projection = arrayOf(MediaStore.Images.Media.DATA)
+        val cursor = mContext.contentResolver.query(uri, projection, null, null, null)
+        val column_index = cursor
+                .getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+        cursor.moveToFirst()
+        val toReturn = cursor.getString(column_index)
+        cursor.close()
+        return toReturn
     }
 }

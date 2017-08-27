@@ -13,8 +13,8 @@ import com.squareup.picasso.Picasso
 /**
  * Created by Matteo on 20/08/2017.
  */
-class ReportImageAdapter (val imageList : List<ReportMedia>,
-                          val mContext: Context) : BaseAdapter()
+class ReportImageAdapter (private val imageList : List<ReportMedia>,
+                          private val mContext: Context) : BaseAdapter()
 {
 
     override fun getCount(): Int {

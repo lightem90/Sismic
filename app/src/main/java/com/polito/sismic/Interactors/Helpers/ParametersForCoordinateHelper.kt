@@ -7,14 +7,17 @@ import com.polito.sismic.R
 //Could work with classes but with indexes is faster
 class ParametersForCoordinateHelper(val mContext : Context) {
 
-
     companion object {
+
         val SENSIBILITY = 0.025
         fun distFrom(lat1: Double, lng1: Double, lat2: Double, lng2: Double): Double {
             val earthRadius = 6371000.0 //meters
             val dLat = Math.toRadians((lat2 - lat1))
             val dLng = Math.toRadians((lng2 - lng1))
-            val a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
+
+            val a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                    Math.cos(Math.toRadians(lat1)) *
+                    Math.cos(Math.toRadians(lat2)) *
                     Math.sin(dLng / 2) * Math.sin(dLng / 2)
             val c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
             val dist = (earthRadius * c)
@@ -57,13 +60,14 @@ class ParametersForCoordinateHelper(val mContext : Context) {
 
         //search left and right from initial index. it stops when the distance from a point is greater than the sum of the closest one
         //the return lists have an index for the map to the point and the distance from the input point
-        val leftValues =  innerGetClosestPoint(x, y, true, initIndex, Double.MAX_VALUE, mutableListOf<Pair<String, Double>>())
-        val rightValues =  innerGetClosestPoint(x, y, false, initIndex, Double.MAX_VALUE, mutableListOf<Pair<String, Double>>())
+        val leftValues =  innerGetClosestPoint(x, y, true, initIndex, Double.MAX_VALUE, mutableListOf())
+        val rightValues =  innerGetClosestPoint(x, y, false, initIndex, Double.MAX_VALUE, mutableListOf())
 
         result.addAll(leftValues)
         result.addAll(rightValues)
         result.sortBy { it.second }
         result = result.subList(0, 4)
+        //retuns a list of nodes with id, long, latitude and distance from input coordinate (in km)
         return result.map { CloseNodeData(it.first,
                 getDataForNode(it.first, CoordinateDatabaseParameters.LON),
                 getDataForNode(it.first, CoordinateDatabaseParameters.LAT),

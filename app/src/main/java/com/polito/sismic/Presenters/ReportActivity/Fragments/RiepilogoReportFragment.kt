@@ -41,7 +41,7 @@ class RiepilogoReportFragment : BaseReportFragment() {
         mImageList = mFragmentState!!.mReportMedia
                 .filter {
                     it.type == MediaType.Picture.toString() ||
-                            it.type == MediaType.Sketch.toString()
+                    it.type == MediaType.Sketch.toString()
                 }
                 .toMutableList()
         image_grid.adapter = ReportImageAdapter(mImageList, activity)
@@ -56,7 +56,7 @@ class RiepilogoReportFragment : BaseReportFragment() {
         mNoteList = mFragmentState!!.mReportMedia
                 .filter {
                     !it.note.isEmpty() &&
-                            it.type == MediaType.Note.toString()
+                    it.type == MediaType.Note.toString()
                 }
                 .toMutableList()
         note_grid.adapter = ReportStringAdapter(mNoteList, activity)

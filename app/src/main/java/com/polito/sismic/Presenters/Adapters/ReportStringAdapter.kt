@@ -7,13 +7,14 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
 import com.polito.sismic.Domain.ReportMedia
+import com.polito.sismic.Interactors.Helpers.MediaType
 
 
 /**
  * Created by Matteo on 20/08/2017.
  */
-class ReportStringAdapter (val imageList : List<ReportMedia>,
-                          val mContext: Context) : BaseAdapter()
+class ReportStringAdapter (private val imageList : List<ReportMedia>,
+                           private val mContext: Context) : BaseAdapter()
 {
 
     override fun getCount(): Int {
@@ -40,9 +41,11 @@ class ReportStringAdapter (val imageList : List<ReportMedia>,
             textView = convertView as TextView
         }
 
-        textView.text = if (imageList[position].type == "\".mp3\"")
+        textView.text =
+        if (imageList[position].type == MediaType.Audio.toString())
             Uri.parse(imageList[position].url).path.toString()
-        else imageList[position].note
+        else
+            imageList[position].note
 
         return textView
     }
