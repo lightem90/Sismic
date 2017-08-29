@@ -7,7 +7,6 @@ import com.polito.sismic.Extensions.*
 import org.jetbrains.anko.db.SqlOrderDirection
 import org.jetbrains.anko.db.insert
 import org.jetbrains.anko.db.select
-import org.jetbrains.anko.db.update
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -65,6 +64,32 @@ class DatabaseInteractor(val reportDatabaseHelper: ReportDatabaseHelper = Report
         val databaseCatastoInfo = select(CatastoInfoTable.NAME)
                 .byReportId(reportID)
                 .parseOpt  { DatabaseCatastoSection(HashMap(it)) }
+
+        val datiSismoGeneticiInfo = select(DatiSismogeneticiInfoTable.NAME)
+                .byReportId(reportID)
+                .parseOpt  { DatabaseDatiSismogenetici(HashMap(it)) }
+
+        val parametriSismiciInfo = select(ParametriSismiciInfoTable.NAME)
+                .byReportId(reportID)
+                .parseOpt  { DatabaseParametriSismici(HashMap(it)) }
+
+        val spettriDiProgettoInfo = select(SpettriDiProgettoInfoTable.NAME)
+                .byReportId(reportID)
+                .parseOpt  { DatabaseParametriSpettri(HashMap(it)) }
+
+        val caratteristicheGeneraliInfo = select(CaratteristicheGeneraliInfoTable.NAME)
+                .byReportId(reportID)
+                .parseOpt  { DatabaseCaratteristicheGenerali(HashMap(it)) }
+
+        //TODO dati strutturali
+        //val datiStrutturaliInfo = select(DatiStrutturaliInfoTable.NAME)
+        //        .byReportId(reportID)
+        //        .parseOpt  { DatabaseDati(HashMap(it)) }
+
+        val caratteristichePilastriInfo = select(CaratteristichePilastriInfoTable.NAME)
+                .byReportId(reportID)
+                .parseOpt  { DatabaseCaratteristichePilastri(HashMap(it)) }
+
         //TODO, add others!
 
         val sectionList = listOf(databaseLocalizationInfo, databaseCatastoInfo)
@@ -93,6 +118,12 @@ class DatabaseInteractor(val reportDatabaseHelper: ReportDatabaseHelper = Report
         clear(ReportMediaTable.NAME)
         clear(LocalizationInfoTable.NAME)
         clear(CatastoInfoTable.NAME)
+        clear(DatiSismogeneticiInfoTable.NAME)
+        clear(ParametriSismiciInfoTable.NAME)
+        clear(SpettriDiProgettoInfoTable.NAME)
+        clear(CaratteristicheGeneraliInfoTable.NAME)
+        clear(DatiStrutturaliInfoTable.NAME)
+        clear(CaratteristichePilastriInfoTable.NAME)
     }
 
     fun save(report : Report) = reportDatabaseHelper.use {
@@ -115,6 +146,12 @@ class DatabaseInteractor(val reportDatabaseHelper: ReportDatabaseHelper = Report
             delete(ReportMediaTable.NAME, "${ReportMediaTable.REPORT_ID} = ?", arrayOf(_id.toString()))
             delete(LocalizationInfoTable.NAME, "${LocalizationInfoTable.REPORT_ID} = ?", arrayOf(_id.toString()))
             delete(CatastoInfoTable.NAME, "${CatastoInfoTable.REPORT_ID} = ?", arrayOf(_id.toString()))
+            delete(DatiSismogeneticiInfoTable.NAME, "${DatiSismogeneticiInfoTable.REPORT_ID} = ?", arrayOf(_id.toString()))
+            delete(ParametriSismiciInfoTable.NAME, "${ParametriSismiciInfoTable.REPORT_ID} = ?", arrayOf(_id.toString()))
+            delete(CaratteristicheGeneraliInfoTable.NAME, "${CaratteristicheGeneraliInfoTable.REPORT_ID} = ?", arrayOf(_id.toString()))
+            delete(SpettriDiProgettoInfoTable.NAME, "${SpettriDiProgettoInfoTable.REPORT_ID} = ?", arrayOf(_id.toString()))
+            delete(DatiStrutturaliInfoTable.NAME, "${DatiStrutturaliInfoTable.REPORT_ID} = ?", arrayOf(_id.toString()))
+            delete(CaratteristichePilastriInfoTable.NAME, "${CaratteristichePilastriInfoTable.REPORT_ID} = ?", arrayOf(_id.toString()))
         }
     }
 
@@ -122,6 +159,7 @@ class DatabaseInteractor(val reportDatabaseHelper: ReportDatabaseHelper = Report
 
         sections.forEach {section ->
             when (section) {
+
                 is DatabaseLocalizationSection ->
                 {
                     insert(LocalizationInfoTable.NAME, *section.map.toVarargArray())
@@ -129,6 +167,22 @@ class DatabaseInteractor(val reportDatabaseHelper: ReportDatabaseHelper = Report
                 is DatabaseCatastoSection ->
                 {
                     insert(CatastoInfoTable.NAME, *section.map.toVarargArray())
+                }
+                is DatabaseParametriSismici ->
+                {
+                    insert(ParametriSismiciInfoTable.NAME, *section.map.toVarargArray())
+                }
+                is DatabaseParametriSpettri ->
+                {
+                    insert(SpettriDiProgettoInfoTable.NAME, *section.map.toVarargArray())
+                }
+                is DatabaseCaratteristicheGenerali ->
+                {
+                    insert(CaratteristicheGeneraliInfoTable.NAME, *section.map.toVarargArray())
+                }
+                is DatabaseCaratteristichePilastri ->
+                {
+                    insert(CaratteristichePilastriInfoTable.NAME, *section.map.toVarargArray())
                 }
             }
         }

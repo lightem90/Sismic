@@ -5,12 +5,12 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
-import com.polito.sismic.Domain.CloseNodeData
+import com.polito.sismic.Domain.NeighboursNodeData
 import com.polito.sismic.Extensions.inflate
 import com.polito.sismic.R
 import kotlinx.android.synthetic.main.close_points_layout.view.*
 
-class NodeListAdapter(val mContext : Context, val mNodeData : List<CloseNodeData>)
+class NodeListAdapter(val mContext : Context, val mNodeData : List<NeighboursNodeData>)
     : RecyclerView.Adapter<NodeListAdapter.ViewHolder>()
 {
 
@@ -31,7 +31,7 @@ class NodeListAdapter(val mContext : Context, val mNodeData : List<CloseNodeData
 
     class ViewHolder(itemView: View, val mContext: Context) : RecyclerView.ViewHolder(itemView){
 
-        fun bindNodeData(closeNodeData: CloseNodeData) = with(closeNodeData){
+        fun bindNodeData(neighboursNodeData: NeighboursNodeData) = with(neighboursNodeData){
             itemView.node_id.text = id
             itemView.node_longitude.text = longitude.toString()
             itemView.node_latitude.text = latitude.toString()

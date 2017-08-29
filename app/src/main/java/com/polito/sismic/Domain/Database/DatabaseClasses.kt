@@ -119,6 +119,203 @@ data class DatabaseCatastoSection(var map: MutableMap<String, Any?>) : DatabaseS
     }
 }
 
+data class DatabaseDatiSismogenetici(var map: MutableMap<String, Any?>) : DatabaseSection {
+
+    var _id: Int by map
+    var ne_id: Int by map
+    var ne_lat: Double by map
+    var ne_lon: Double by map
+    var ne_dist: Double by map
+    var no_id: Int by map
+    var no_lat: Double by map
+    var no_lon: Double by map
+    var no_dist: Double by map
+    var se_id: Int by map
+    var se_lat: Double by map
+    var se_lon: Double by map
+    var se_dist: Double by map
+    var so_id: Int by map
+    var so_lat: Double by map
+    var so_lon: Double by map
+    var so_dist: Double by map
+    var report_id: Int by map
+
+    constructor(ne_id: Int,
+                ne_lat: Double,
+                ne_lon: Double,
+                ne_dist: Double,
+                no_id: Int,
+                no_lat: Double,
+                no_lon: Double,
+                no_dist: Double,
+                se_id: Int,
+                se_lat: Double,
+                se_lon: Double,
+                se_dist: Double,
+                so_id: Int,
+                so_lat: Double,
+                so_lon: Double,
+                so_dist: Double,
+                report_id:Int) : this(HashMap())
+    {
+        this.ne_id = ne_id
+        this.ne_lat = ne_lat
+        this.ne_lon = ne_lon
+        this.ne_dist = ne_dist
+        this.no_id = no_id
+        this.no_lat = no_lat
+        this.no_lon = no_lon
+        this.no_dist = no_dist
+        this.se_id = se_id
+        this.se_lat = se_lat
+        this.se_lon = se_lon
+        this.se_dist = se_dist
+        this.so_id = so_id
+        this.so_lat = so_lat
+        this.so_lon = so_lon
+        this.so_dist = so_dist
+        this.report_id = report_id
+    }
+}
+
+data class DatabaseParametriSismici(var map: MutableMap<String, Any?>) : DatabaseSection {
+
+    var _id: Int by map
+    var vitaNominale: Int by map
+    var classeUso: Double by map
+    var vitaReale: Double by map
+    var ag: Double by map
+    var f0: Double by map
+    var tg: Double by map
+    var slo: Int by map
+    var sld: Int by map
+    var slv: Int by map
+    var slc: Int by map
+    var report_id: Int by map
+
+    constructor(vitaNominale: Int,
+                classeUso: Double,
+                vitaReale: Double,
+                ag: Double,
+                f0: Double,
+                tg: Double,
+                slo: Int,
+                sld: Int,
+                slv: Int,
+                slc: Int,
+                report_id: Int) : this (HashMap())
+    {
+        this.vitaNominale = vitaNominale
+        this.classeUso = classeUso
+        this.vitaReale =  vitaReale
+        this.ag = ag
+        this.f0 =  f0
+        this.tg =  tg
+        this.slo = slo
+        this.sld = sld
+        this.slv = slv
+        this.slc = slc
+        this.report_id = report_id
+    }
+}
+
+data class DatabaseParametriSpettri(var map: MutableMap<String, Any?>) : DatabaseSection {
+
+    var _id: Int by map
+    var categoria_suolo : Int by map
+    var categoria_topografica : Int by map
+    var classe_duttilita : Int by map
+    var ss : Double by map
+    var cc : Double by map
+    var st : Double by map
+    var s : Double by map
+    var report_id : Int by map
+
+    constructor(categoria_suolo : Int,
+            categoria_topografica : Int,
+            classe_duttilita : Int,
+            ss : Double,
+            cc : Double,
+            st : Double,
+            s : Double,
+            report_id : Int) : this(HashMap())
+    {
+        this.categoria_suolo = categoria_suolo
+        this.categoria_topografica = categoria_topografica
+        this.classe_duttilita = classe_duttilita
+        this.ss = ss
+        this.cc = cc
+        this.st = st
+        this.s = s
+        this.report_id = report_id
+    }
+}
+
+
+data class DatabaseCaratteristicheGenerali(var map: MutableMap<String, Any?>) : DatabaseSection {
+
+    var _id: Int by map
+    var anno_costruzione : String by map
+    var tipologia_strutturale : String by map
+    var stato_edificio : String by map
+    var totale_unita : String by map
+    var report_id : Int by map
+
+    constructor(anno_costruzione : String,
+                tipologia_strutturale : String,
+                stato_edificio : String,
+                totale_unita : String,
+                report_id: Int) : this (HashMap())
+    {
+        this.anno_costruzione = anno_costruzione
+        this.tipologia_strutturale = tipologia_strutturale
+        this.stato_edificio = stato_edificio
+        this.totale_unita = totale_unita
+        this.report_id = report_id
+    }
+}
+
+data class DatabaseCaratteristichePilastri(var map: MutableMap<String, Any?>) : DatabaseSection
+{
+    var _id: Int by map
+    var classe_calcestruzzo : String  by map
+    var conoscenza_calcestruzzo : Int by map
+    var classe_acciaio : String by map
+    var conoscenza_acciaio : Int by map
+    var bx : Double by map
+    var hy : Double by map
+    var c : Double by map
+    var longitudine_armatura : Int by map
+    var fi : Int by map
+    var report_id : Int by map
+
+    constructor(classe_calcestruzzo : String,
+            conoscenza_calcestruzzo : Int,
+            classe_acciaio : String,
+            conoscenza_acciaio : Int,
+            bx : Double,
+            hy : Double,
+            c : Double,
+            longitudine_armatura : Int,
+            fi : Int,
+            report_id: Int
+
+    ) : this (HashMap())
+    {
+        this.classe_calcestruzzo = classe_calcestruzzo
+        this.conoscenza_calcestruzzo = conoscenza_calcestruzzo
+        this.classe_acciaio = classe_acciaio
+        this.conoscenza_acciaio = conoscenza_acciaio
+        this.bx = bx
+        this.hy = hy
+        this.c = c
+        this.longitudine_armatura =longitudine_armatura
+        this.fi = fi
+        this.report_id = report_id
+    }
+
+}
+
 data class DatabaseReportMedia(var map: MutableMap<String, Any?>) {
     var _id: Int by map
     var filepath: String by map

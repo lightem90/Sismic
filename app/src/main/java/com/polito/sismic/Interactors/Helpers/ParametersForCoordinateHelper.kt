@@ -1,7 +1,7 @@
 package com.polito.sismic.Interactors.Helpers
 
 import android.content.Context
-import com.polito.sismic.Domain.CloseNodeData
+import com.polito.sismic.Domain.NeighboursNodeData
 import com.polito.sismic.R
 
 //Could work with classes but with indexes is faster
@@ -47,7 +47,7 @@ class ParametersForCoordinateHelper(val mContext : Context) {
         initialized = true
     }
 
-    fun getClosestPointsTo(x : Double, y : Double) : List<CloseNodeData>
+    fun getClosestPointsTo(x : Double, y : Double) : List<NeighboursNodeData>
     {
         if (!initialized) return listOf()
         if (x == -1.0 || y == -1.0) return listOf()
@@ -68,7 +68,7 @@ class ParametersForCoordinateHelper(val mContext : Context) {
         result.sortBy { it.second }
         result = result.subList(0, 4)
         //retuns a list of nodes with id, long, latitude and distance from input coordinate (in km)
-        return result.map { CloseNodeData(it.first,
+        return result.map { NeighboursNodeData(it.first,
                 getDataForNode(it.first, CoordinateDatabaseParameters.LON),
                 getDataForNode(it.first, CoordinateDatabaseParameters.LAT),
                 //Dist in km

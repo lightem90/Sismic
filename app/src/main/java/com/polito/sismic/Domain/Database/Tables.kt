@@ -61,4 +61,106 @@ object CatastoInfoTable
     val REPORT_ID =         "report_id"
 }
 
+object DatiSismogeneticiInfoTable
+{
+    val NAME =              "DatiSismogenetici"
+    val NEId =              "ne_id"
+    val NELat =             "ne_lat"
+    val NELon =             "ne_lon"
+    val NEDist =            "ne_dist"
+    val NOId =              "no_id"
+    val NOLat =             "no_lat"
+    val NOLon =             "no_lon"
+    val NODist =            "no_dist"
+    val SEId =              "se_id"
+    val SELat =             "se_lat"
+    val SELon =             "se_lon"
+    val SEDist =            "se_dist"
+    val SOId =              "so_id"
+    val SOLat =             "so_lat"
+    val SOLon =             "so_lon"
+    val SODist =            "so_dist"
+    val ID =                "_id"
+    val REPORT_ID =         "report_id"
+
+}
+
+object ParametriSismiciInfoTable
+{
+    val NAME = "ParametriSismici"
+    val ID =                "_id"
+    val VITA_NOMINALE =     "vita_nominale"
+    val CLASSE_USO =        "classe_uso"
+    val VITA_REALE =        "vita_reale"
+    val AG =                "ag"
+    val F0 =                "f0"
+    val TG =                "tg"
+    val SLO =               "slo"
+    val SLD =               "sld"
+    val SLV =               "slv"
+    val SLC =               "slc"
+    val REPORT_ID =         "report_id"
+}
+
+object SpettriDiProgettoInfoTable
+{
+    val NAME = "SpettriDiProgetto"
+    val ID                      = "_id"
+    val CATEGORIA_SUOLO         = "categoria_suolo"
+    val CATEGORIA_TOPOGRAFICA   = "categoria_topografica"
+    val CLASSE_DUTTILITA        = "classe_duttilita"
+    val SLO                     = "slo"
+    val SS                      = "ss"
+    val CC                      = "cc"
+    val ST                      = "st"
+    val S                       = "s"
+    val REPORT_ID               = "report_id"
+}
+
+object CaratteristicheGeneraliInfoTable
+{
+    val NAME = "CaratteristicheGenerali"
+    val ID                      = "_id"
+    val ANNO_COSTRUZIONE         = "anno_costruzione"
+    val TIPOLOGIA_STRUTTURALE   = "tipologia_strutturale"
+    val STATO_EDIFICIO          = "stato_edificio"
+    val TOTALE_UNITA_USO        = "totale_unita"
+    val REPORT_ID               = "report_id"
+}
+
+object DatiStrutturaliInfoTable
+{
+    val NAME = "DatiStrutturali"
+    val ID                  = "_id"
+    val TIPO_FONDAZIONI     = "tipo_fondazioni"
+    val ALTEZZA_FONDAZIONI  = "altezza_fondazioni"
+    val TIPO_SOLAIO         = "tipo_solaio"
+    val PESO_SOLAIO         = "peso_solaio"
+    val G1_SOLAIO           = "g1_solaio"
+    val G2_SOLAIO           = "g2_solaio"
+    val QK_SOLAIO           = "qk_solaio"
+    val TIPO_COPERTURA      = "tipo_copertura"
+    val PESO_COPERTURA      = "peso_copertura"
+    val G1_COPERTURA        = "g1_copertura"
+    val G2_COPERTURA        = "g2_copertura"
+    val QK_COPERTURA        = "qk_copertura"
+    val REPORT_ID           = "report_id"
+}
+
+object CaratteristichePilastriInfoTable
+{
+    val NAME = "CaratteristichePilastriInfoTable"
+    val ID                  = "_id"
+    val CLASSE_CALCESTRUZZO         = "classe_calcestruzzo"
+    val CONOSCENZA_CALCESTRUZZO     = "conoscenza_calcestruzzo"
+    val CLASSE_ACCIAIO              = "classe_acciaio"
+    val CONOSCENZA_ACCIAIO          = "conoscenza_acciaio"
+    val BX                          = "b(x)"
+    val HY                          = "h(y)"
+    val C                           = "c"
+    val LONG_ARMATURA               = "longitudine_armatura"
+    val FI                          = "fi"
+    val REPORT_ID           = "report_id"
+}
+
 //TODO

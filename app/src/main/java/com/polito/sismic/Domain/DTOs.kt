@@ -15,7 +15,7 @@ interface ReportSection : Parcelable
 }
 
 
-data class CloseNodeData(val id: String, val longitude: Double, val latitude: Double, val distance: Double) : Parcelable {
+data class NeighboursNodeData(val id: String, val longitude: Double, val latitude: Double, val distance: Double) : Parcelable {
     constructor(source: Parcel) : this(
             source.readString(),
             source.readDouble(),
@@ -33,9 +33,9 @@ data class CloseNodeData(val id: String, val longitude: Double, val latitude: Do
     }
 
     companion object {
-        @JvmField val CREATOR: Parcelable.Creator<CloseNodeData> = object : Parcelable.Creator<CloseNodeData> {
-            override fun createFromParcel(source: Parcel): CloseNodeData = CloseNodeData(source)
-            override fun newArray(size: Int): Array<CloseNodeData?> = arrayOfNulls(size)
+        @JvmField val CREATOR: Parcelable.Creator<NeighboursNodeData> = object : Parcelable.Creator<NeighboursNodeData> {
+            override fun createFromParcel(source: Parcel): NeighboursNodeData = NeighboursNodeData(source)
+            override fun newArray(size: Int): Array<NeighboursNodeData?> = arrayOfNulls(size)
         }
     }
 }
@@ -60,13 +60,13 @@ data class ReportExtraInfo(var locationExtraInfo: LocationExtraInfo) : Parcelabl
     }
 }
 
-data class LocationExtraInfo(val latitude: Double, val longitude: Double, val address: String, val zone: String, val close_points: List<CloseNodeData>?) : Parcelable {
+data class LocationExtraInfo(val latitude: Double, val longitude: Double, val address: String, val zone: String, val neighbours_points: List<NeighboursNodeData>?) : Parcelable {
     constructor(source: Parcel) : this(
             source.readDouble(),
             source.readDouble(),
             source.readString(),
             source.readString(),
-            source.createTypedArrayList(CloseNodeData.CREATOR)
+            source.createTypedArrayList(NeighboursNodeData.CREATOR)
     )
 
     override fun describeContents() = 0
@@ -76,7 +76,7 @@ data class LocationExtraInfo(val latitude: Double, val longitude: Double, val ad
         writeDouble(longitude)
         writeString(address)
         writeString(zone)
-        writeTypedList(close_points)
+        writeTypedList(neighbours_points)
     }
 
     companion object {
@@ -254,6 +254,209 @@ data class CatastoReportSection(val id: Int,
         }
     }
 }
+
+data class DatiSimogeneticiReportSection(val id: Int,
+                                         val closedNodeData: List<NeighboursNodeData>) : ReportSection {
+    constructor(source: Parcel) : this(
+            source.readInt(),
+            source.createTypedArrayList(NeighboursNodeData.CREATOR)
+    )
+
+    override fun describeContents() = 0
+
+    override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
+        writeInt(id)
+        writeTypedList(closedNodeData)
+    }
+
+    companion object {
+        @JvmField
+        val CREATOR: Parcelable.Creator<DatiSimogeneticiReportSection> = object : Parcelable.Creator<DatiSimogeneticiReportSection> {
+            override fun createFromParcel(source: Parcel): DatiSimogeneticiReportSection = DatiSimogeneticiReportSection(source)
+            override fun newArray(size: Int): Array<DatiSimogeneticiReportSection?> = arrayOfNulls(size)
+        }
+    }
+}
+
+data class ParametriSismiciReportSection(val id: Int,
+                                         val vitaNominale: Int,
+                                         val classeUso: Double,
+                                         val vitaReale: Double,
+                                         val ag: Double,
+                                         val f0: Double,
+                                         val tg: Double,
+                                         val slo: Int,
+                                         val sld: Int,
+                                         val slv: Int,
+                                         val slc: Int) : ReportSection, Parcelable {
+    constructor(source: Parcel) : this(
+            source.readInt(),
+            source.readInt(),
+            source.readDouble(),
+            source.readDouble(),
+            source.readDouble(),
+            source.readDouble(),
+            source.readDouble(),
+            source.readInt(),
+            source.readInt(),
+            source.readInt(),
+            source.readInt()
+    )
+
+    override fun describeContents() = 0
+
+    override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
+        writeInt(id)
+        writeInt(vitaNominale)
+        writeDouble(classeUso)
+        writeDouble(vitaReale)
+        writeDouble(ag)
+        writeDouble(f0)
+        writeInt(slo)
+        writeInt(sld)
+        writeInt(slv)
+        writeInt(slc)
+        writeDouble(tg)
+    }
+
+    companion object {
+        @JvmField
+        val CREATOR: Parcelable.Creator<ParametriSismiciReportSection> = object : Parcelable.Creator<ParametriSismiciReportSection> {
+            override fun createFromParcel(source: Parcel): ParametriSismiciReportSection = ParametriSismiciReportSection(source)
+            override fun newArray(size: Int): Array<ParametriSismiciReportSection?> = arrayOfNulls(size)
+        }
+    }
+}
+
+data class SpettriProgettoReportSection(val id: Int,
+                                        val categoria_suolo: Int,
+                                        val categoria_topografica: Int,
+                                        val classe_duttilita: Int,
+                                        val ss: Double,
+                                        val cc: Double,
+                                        val st: Double,
+                                        val s: Double,
+                                        val report_id: Int) : ReportSection {
+    constructor(source: Parcel) : this(
+            source.readInt(),
+            source.readInt(),
+            source.readInt(),
+            source.readInt(),
+            source.readDouble(),
+            source.readDouble(),
+            source.readDouble(),
+            source.readDouble(),
+            source.readInt()
+    )
+
+    override fun describeContents() = 0
+
+    override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
+        writeInt(id)
+        writeInt(categoria_suolo)
+        writeInt(categoria_topografica)
+        writeInt(classe_duttilita)
+        writeDouble(ss)
+        writeDouble(cc)
+        writeDouble(st)
+        writeDouble(s)
+        writeInt(report_id)
+    }
+
+    companion object {
+        @JvmField
+        val CREATOR: Parcelable.Creator<SpettriProgettoReportSection> = object : Parcelable.Creator<SpettriProgettoReportSection> {
+            override fun createFromParcel(source: Parcel): SpettriProgettoReportSection = SpettriProgettoReportSection(source)
+            override fun newArray(size: Int): Array<SpettriProgettoReportSection?> = arrayOfNulls(size)
+        }
+    }
+}
+
+data class CaratteristicheGeneraliReportSection(val id: Int,
+                                        val anno_costruzione: String,
+                                        val tipologia_strutturale: String,
+                                        val stato_edificio: String,
+                                        val totale_unita: String,
+                                        val report_id: Int) : ReportSection {
+    constructor(source: Parcel) : this(
+            source.readInt(),
+            source.readString(),
+            source.readString(),
+            source.readString(),
+            source.readString(),
+            source.readInt()
+    )
+
+    override fun describeContents() = 0
+
+    override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
+        writeInt(id)
+        writeString(anno_costruzione)
+        writeString(tipologia_strutturale)
+        writeString(stato_edificio)
+        writeString(totale_unita)
+        writeInt(report_id)
+    }
+
+    companion object {
+        @JvmField
+        val CREATOR: Parcelable.Creator<SpettriProgettoReportSection> = object : Parcelable.Creator<SpettriProgettoReportSection> {
+            override fun createFromParcel(source: Parcel): SpettriProgettoReportSection = SpettriProgettoReportSection(source)
+            override fun newArray(size: Int): Array<SpettriProgettoReportSection?> = arrayOfNulls(size)
+        }
+    }
+}
+
+data class CaratteristichePilastriReportSection(val id: Int,
+                                                val classe_calcestruzzo: String,
+                                                val conoscenza_calcestruzzo: Int,
+                                                val classe_acciaio: String,
+                                                val conoscenza_acciaio: Int,
+                                                val bx: Double,
+                                                val hy: Double,
+                                                val c: Double,
+                                                val longitudine_armatura: Int,
+                                                val fi: Int,
+                                                val report_id: Int) : ReportSection {
+    constructor(source: Parcel) : this(
+            source.readInt(),
+            source.readString(),
+            source.readInt(),
+            source.readString(),
+            source.readInt(),
+            source.readDouble(),
+            source.readDouble(),
+            source.readDouble(),
+            source.readInt(),
+            source.readInt(),
+            source.readInt()
+    )
+
+    override fun describeContents() = 0
+
+    override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
+        writeInt(id)
+        writeString(classe_calcestruzzo)
+        writeInt(conoscenza_calcestruzzo)
+        writeString(classe_acciaio)
+        writeInt(conoscenza_acciaio)
+        writeDouble(bx)
+        writeDouble(hy)
+        writeDouble(c)
+        writeInt(longitudine_armatura)
+        writeInt(fi)
+        writeInt(report_id)
+    }
+
+    companion object {
+        @JvmField
+        val CREATOR: Parcelable.Creator<CaratteristichePilastriReportSection> = object : Parcelable.Creator<CaratteristichePilastriReportSection> {
+            override fun createFromParcel(source: Parcel): CaratteristichePilastriReportSection = CaratteristichePilastriReportSection(source)
+            override fun newArray(size: Int): Array<CaratteristichePilastriReportSection?> = arrayOfNulls(size)
+        }
+    }
+}
+
 
 data class ErroreSection(val error: String) : ReportSection {
     constructor(source: Parcel) : this(
