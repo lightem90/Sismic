@@ -6,10 +6,14 @@ import android.os.Environment
 import android.provider.OpenableColumns
 import android.support.v4.content.FileProvider
 import com.polito.sismic.Extensions.toFormattedString
+import com.polito.sismic.Extensions.toast
 import com.polito.sismic.Interactors.Helpers.MediaFile
 import com.polito.sismic.Interactors.Helpers.MediaType
+import com.polito.sismic.R
 import java.io.*
 import java.util.*
+
+
 
 //Context needed for file provider
 class ReportMediaInteractor(val mReportManager: ReportManager,
@@ -102,44 +106,38 @@ class ReportMediaInteractor(val mReportManager: ReportManager,
         val currentUri = Uri.parse(lastAddedTmpFile?.url)
         if (currentUri != data && currentUri != null && data != null)
         {
-            saveMp3FromSourceUri(data.toString(), currentUri)
+            saveMp3FromSourceUri(data, currentUri)
         }
         finalizeLastMedia()
     }
 
     //Copy from the source to the dest so we can have the uri available in our positions
-    fun  saveMp3FromSourceUri(source: String, lastAddedTmpFile: Uri) {
+    private fun saveMp3FromSourceUri(source: Uri, dest: Uri) {
 
-        val dest = lastAddedTmpFile.path.toString()
-
-        var bis: BufferedInputStream? = null
-        var bos: BufferedOutputStream? = null
-
+        var iSource: InputStream? = null
+        var oSource: OutputStream? = null
         try {
-            bis = BufferedInputStream(FileInputStream(source))
-            bos = BufferedOutputStream(FileOutputStream(dest, false))
             val buf = ByteArray(1024)
-            bis.read(buf)
+            iSource = mContext.contentResolver.openInputStream(source)
+            oSource = mContext.contentResolver.openOutputStream(dest)
 
-            do
+            while( iSource.read(buf) != -1)
             {
-                bos.write(buf)
-            } while (bis.read(buf) !== -1)
-
-        } catch (e: IOException)
+                oSource.write(buf)
+            }
+        } catch (e : IOException)
         {
+            mContext.toast(R.string.error_media_audio)
             e.printStackTrace()
-        } finally {
-
+        } finally
+        {
             try {
-                if (bis != null) bis.close()
-                if (bos != null) bos.close()
+                iSource?.close()
+                oSource?.close()
 
             } catch (e: IOException) {
                 e.printStackTrace()
             }
-
         }
-
     }
 }

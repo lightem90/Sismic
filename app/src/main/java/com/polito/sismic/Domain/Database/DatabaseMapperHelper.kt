@@ -19,6 +19,7 @@ class DatabaseMapperHelper
             is DatabaseParametriSpettri -> return convertParametriSpettriToDomain(section)
             is DatabaseCaratteristicheGenerali -> return convertCaratteristicheGeneraliToDomain(section)
             //TODO rilievi
+            is DatabaseDatiStrutturali -> return convertDatiStrutturaliToDomain(section)
             is DatabaseCaratteristichePilastri -> return convertCaratteristichePilastriToDomain(section)
         }
 
@@ -36,6 +37,7 @@ class DatabaseMapperHelper
             is SpettriProgettoReportSection -> return convertSpettriProgettoFromDomain(reportId, section)
             is CaratteristicheGeneraliReportSection -> return convertCaratteristicheGeneraliFromDomain(reportId, section)
             //TODO rilievi
+            is DatiStrutturaliReportSection -> return convertDatiStrutturaliFromDomain(reportId, section)
             is CaratteristichePilastriReportSection -> return convertCaratteristichePilastriFromDomain(reportId, section)
 
         }
@@ -43,28 +45,36 @@ class DatabaseMapperHelper
         return null
     }
 
+    private fun convertDatiStrutturaliFromDomain(reportId: Int, datiStrutturaliReportSection: DatiStrutturaliReportSection): DatabaseSection? = with(datiStrutturaliReportSection){
+        return DatabaseDatiStrutturali(tipo_fondazioni, altezza_fondazioni, tipo_solaio, peso_solaio, g1_solaio, g2_solaio, qk_solaio, tipo_copertura, peso_copertura, g1_copertura, g2_copertura, qk_copertura, reportId )
+    }
+
+    private fun convertDatiStrutturaliToDomain(databaseDatiStrutturali: DatabaseDatiStrutturali): ReportSection? = with (databaseDatiStrutturali){
+        return DatiStrutturaliReportSection(_id, tipo_fondazioni, altezza_fondazioni, tipo_solaio, peso_solaio, g1_solaio, g2_solaio, qk_solaio, tipo_copertura, peso_copertura, g1_copertura, g2_copertura, qk_copertura)
+    }
+
     private fun convertCaratteristichePilastriToDomain(databaseCaratteristichePilastri: DatabaseCaratteristichePilastri): CaratteristichePilastriReportSection?  = with(databaseCaratteristichePilastri){
-        return CaratteristichePilastriReportSection(_id, classe_calcestruzzo, conoscenza_calcestruzzo, classe_acciaio, conoscenza_acciaio, bx, hy, c, longitudine_armatura, fi, report_id)
+        return CaratteristichePilastriReportSection(_id, classe_calcestruzzo, conoscenza_calcestruzzo, classe_acciaio, conoscenza_acciaio, bx, hy, c, longitudine_armatura, fi)
     }
 
     private fun convertCaratteristichePilastriFromDomain(reportId: Int, caratteristichePilastriReportSection: CaratteristichePilastriReportSection): DatabaseSection?  = with(caratteristichePilastriReportSection){
-        return DatabaseCaratteristichePilastri(classe_calcestruzzo, conoscenza_calcestruzzo, classe_acciaio, conoscenza_acciaio, bx, hy, c, longitudine_armatura, fi, report_id)
+        return DatabaseCaratteristichePilastri(classe_calcestruzzo, conoscenza_calcestruzzo, classe_acciaio, conoscenza_acciaio, bx, hy, c, longitudine_armatura, fi, reportId)
     }
 
     private fun convertCaratteristicheGeneraliFromDomain(reportId: Int, caratteristicheGeneraliReportSection: CaratteristicheGeneraliReportSection): DatabaseCaratteristicheGenerali? = with(caratteristicheGeneraliReportSection){
-        return DatabaseCaratteristicheGenerali(anno_costruzione, tipologia_strutturale, stato_edificio, totale_unita, report_id)
+        return DatabaseCaratteristicheGenerali(anno_costruzione, tipologia_strutturale, stato_edificio, totale_unita, reportId)
     }
 
     private fun convertCaratteristicheGeneraliToDomain(databaseCaratteristicheGenerali: DatabaseCaratteristicheGenerali): CaratteristicheGeneraliReportSection? = with(databaseCaratteristicheGenerali){
-        return CaratteristicheGeneraliReportSection(_id, anno_costruzione, tipologia_strutturale, stato_edificio, totale_unita, report_id)
+        return CaratteristicheGeneraliReportSection(_id, anno_costruzione, tipologia_strutturale, stato_edificio, totale_unita)
     }
 
     private fun convertParametriSpettriToDomain(databaseParametriSpettri: DatabaseParametriSpettri): ReportSection? = with (databaseParametriSpettri){
-        return SpettriProgettoReportSection(_id, categoria_suolo, categoria_topografica, classe_duttilita, cc, ss, st, s, report_id)
+        return SpettriProgettoReportSection(_id, categoria_suolo, categoria_topografica, classe_duttilita, cc, ss, st, s)
     }
 
     private fun convertSpettriProgettoFromDomain(reportId: Int, spettriProgettoReportSection: SpettriProgettoReportSection): DatabaseSection?  = with (spettriProgettoReportSection){
-        return DatabaseParametriSpettri(categoria_suolo, categoria_topografica, classe_duttilita, ss, cc, st, s, report_id)
+        return DatabaseParametriSpettri(categoria_suolo, categoria_topografica, classe_duttilita, ss, cc, st, s, reportId)
     }
 
     private fun convertCatastDataFromDomain(reportId: Int, section: CatastoReportSection): DatabaseSection? = with (section){

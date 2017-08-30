@@ -335,8 +335,7 @@ data class SpettriProgettoReportSection(val id: Int,
                                         val ss: Double,
                                         val cc: Double,
                                         val st: Double,
-                                        val s: Double,
-                                        val report_id: Int) : ReportSection {
+                                        val s: Double) : ReportSection {
     constructor(source: Parcel) : this(
             source.readInt(),
             source.readInt(),
@@ -345,8 +344,7 @@ data class SpettriProgettoReportSection(val id: Int,
             source.readDouble(),
             source.readDouble(),
             source.readDouble(),
-            source.readDouble(),
-            source.readInt()
+            source.readDouble()
     )
 
     override fun describeContents() = 0
@@ -360,7 +358,6 @@ data class SpettriProgettoReportSection(val id: Int,
         writeDouble(cc)
         writeDouble(st)
         writeDouble(s)
-        writeInt(report_id)
     }
 
     companion object {
@@ -376,15 +373,13 @@ data class CaratteristicheGeneraliReportSection(val id: Int,
                                         val anno_costruzione: String,
                                         val tipologia_strutturale: String,
                                         val stato_edificio: String,
-                                        val totale_unita: String,
-                                        val report_id: Int) : ReportSection {
+                                        val totale_unita: String) : ReportSection {
     constructor(source: Parcel) : this(
             source.readInt(),
             source.readString(),
             source.readString(),
             source.readString(),
-            source.readString(),
-            source.readInt()
+            source.readString()
     )
 
     override fun describeContents() = 0
@@ -395,7 +390,6 @@ data class CaratteristicheGeneraliReportSection(val id: Int,
         writeString(tipologia_strutturale)
         writeString(stato_edificio)
         writeString(totale_unita)
-        writeInt(report_id)
     }
 
     companion object {
@@ -407,6 +401,63 @@ data class CaratteristicheGeneraliReportSection(val id: Int,
     }
 }
 
+data class DatiStrutturaliReportSection(val id: Int,
+                                        val tipo_fondazioni: String,
+                                        val altezza_fondazioni: Double,
+                                        val tipo_solaio: String,
+                                        val peso_solaio: String,
+                                        val g1_solaio: Double,
+                                        val g2_solaio: Double,
+                                        val qk_solaio: Double,
+                                        val tipo_copertura: String,
+                                        val peso_copertura: String,
+                                        val g1_copertura: Double,
+                                        val g2_copertura: Double,
+                                        val qk_copertura: Double) : ReportSection, Parcelable {
+    constructor(source: Parcel) : this(
+            source.readInt(),
+            source.readString(),
+            source.readDouble(),
+            source.readString(),
+            source.readString(),
+            source.readDouble(),
+            source.readDouble(),
+            source.readDouble(),
+            source.readString(),
+            source.readString(),
+            source.readDouble(),
+            source.readDouble(),
+            source.readDouble()
+    )
+
+    override fun describeContents() = 0
+
+    override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
+        writeInt(id)
+        writeString(tipo_fondazioni)
+        writeDouble(altezza_fondazioni)
+        writeString(tipo_solaio)
+        writeString(peso_solaio)
+        writeDouble(g1_solaio)
+        writeDouble(g2_solaio)
+        writeDouble(qk_solaio)
+        writeString(tipo_copertura)
+        writeString(peso_copertura)
+        writeDouble(g1_copertura)
+        writeDouble(g2_copertura)
+        writeDouble(qk_copertura)
+    }
+
+    companion object {
+        @JvmField
+        val CREATOR: Parcelable.Creator<DatiStrutturaliReportSection> = object : Parcelable.Creator<DatiStrutturaliReportSection> {
+            override fun createFromParcel(source: Parcel): DatiStrutturaliReportSection = DatiStrutturaliReportSection(source)
+            override fun newArray(size: Int): Array<DatiStrutturaliReportSection?> = arrayOfNulls(size)
+        }
+    }
+}
+
+
 data class CaratteristichePilastriReportSection(val id: Int,
                                                 val classe_calcestruzzo: String,
                                                 val conoscenza_calcestruzzo: Int,
@@ -416,8 +467,7 @@ data class CaratteristichePilastriReportSection(val id: Int,
                                                 val hy: Double,
                                                 val c: Double,
                                                 val longitudine_armatura: Int,
-                                                val fi: Int,
-                                                val report_id: Int) : ReportSection {
+                                                val fi: Int) : ReportSection {
     constructor(source: Parcel) : this(
             source.readInt(),
             source.readString(),
@@ -427,7 +477,6 @@ data class CaratteristichePilastriReportSection(val id: Int,
             source.readDouble(),
             source.readDouble(),
             source.readDouble(),
-            source.readInt(),
             source.readInt(),
             source.readInt()
     )
@@ -445,7 +494,6 @@ data class CaratteristichePilastriReportSection(val id: Int,
         writeDouble(c)
         writeInt(longitudine_armatura)
         writeInt(fi)
-        writeInt(report_id)
     }
 
     companion object {

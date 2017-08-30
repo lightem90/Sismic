@@ -81,10 +81,9 @@ class DatabaseInteractor(val reportDatabaseHelper: ReportDatabaseHelper = Report
                 .byReportId(reportID)
                 .parseOpt  { DatabaseCaratteristicheGenerali(HashMap(it)) }
 
-        //TODO dati strutturali
-        //val datiStrutturaliInfo = select(DatiStrutturaliInfoTable.NAME)
-        //        .byReportId(reportID)
-        //        .parseOpt  { DatabaseDati(HashMap(it)) }
+        val datiStrutturaliInfo = select(DatiStrutturaliInfoTable.NAME)
+                .byReportId(reportID)
+                .parseOpt  { DatabaseDatiStrutturali(HashMap(it)) }
 
         val caratteristichePilastriInfo = select(CaratteristichePilastriInfoTable.NAME)
                 .byReportId(reportID)
@@ -92,7 +91,15 @@ class DatabaseInteractor(val reportDatabaseHelper: ReportDatabaseHelper = Report
 
         //TODO, add others!
 
-        val sectionList = listOf(databaseLocalizationInfo, databaseCatastoInfo)
+        val sectionList = listOf(databaseLocalizationInfo,
+                databaseCatastoInfo,
+                datiSismoGeneticiInfo,
+                parametriSismiciInfo,
+                spettriDiProgettoInfo,
+                caratteristicheGeneraliInfo,
+                datiStrutturaliInfo,
+                caratteristichePilastriInfo)
+
         databaseReportDetails?.let { dataMapper.convertReportToDomain(DatabaseReport(
                 databaseReportDetails,
                 databaseMediaInfo,

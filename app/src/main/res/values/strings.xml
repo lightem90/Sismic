@@ -268,6 +268,7 @@
     <string name="solaio_type">Latero-cemento</string>
     <string name="copertura_peso">Peso copertura</string>
     <string name="copertura_type_title">Tipo copertura</string>
+    <string name="error_media_audio">Impossibile salvare nota audio</string>
 
 
 </resources>
