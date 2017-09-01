@@ -269,6 +269,7 @@
     <string name="copertura_peso">Peso copertura</string>
     <string name="copertura_type_title">Tipo copertura</string>
     <string name="error_media_audio">Impossibile salvare nota audio</string>
+    <string name="categoria_moltiplicatore_parameter">αu/α1</string>
 
 
 </resources>

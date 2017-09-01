@@ -116,7 +116,7 @@ class UiMapper {
                 infoLocReportFragment.long_parameter.getParameterValue().toDouble(),
                 infoLocReportFragment.address_parameter.getParameterValue(),
                 infoLocReportFragment.zona_sismica_parameter.getParameterValue(),
-                listOf())
+                NeighboursNodeSquare.Invalid)
     }
 }
 

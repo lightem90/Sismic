@@ -142,7 +142,7 @@ class InfoLocReportFragment : BaseReportFragment(){
         fun onLocationAcquired(location: Location)
     }
 
-    fun updateByPlace(place : Place?)
+    private fun updateByPlace(place : Place?)
     {
         if (place != null)
         {

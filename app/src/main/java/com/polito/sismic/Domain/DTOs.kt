@@ -37,6 +37,7 @@ data class NeighboursNodeData(val id: String, val longitude: Double, val latitud
             override fun createFromParcel(source: Parcel): NeighboursNodeData = NeighboursNodeData(source)
             override fun newArray(size: Int): Array<NeighboursNodeData?> = arrayOfNulls(size)
         }
+        val Invalid: NeighboursNodeData = NeighboursNodeData("-1", -1.0, -1.0, -1.0)
     }
 }
 
@@ -60,13 +61,13 @@ data class ReportExtraInfo(var locationExtraInfo: LocationExtraInfo) : Parcelabl
     }
 }
 
-data class LocationExtraInfo(val latitude: Double, val longitude: Double, val address: String, val zone: String, val neighbours_points: List<NeighboursNodeData>?) : Parcelable {
+data class LocationExtraInfo(val latitude: Double, val longitude: Double, val address: String, val zone: String, val neighbours_points: NeighboursNodeSquare) : Parcelable {
     constructor(source: Parcel) : this(
             source.readDouble(),
             source.readDouble(),
             source.readString(),
             source.readString(),
-            source.createTypedArrayList(NeighboursNodeData.CREATOR)
+            source.readParcelable<NeighboursNodeSquare>(NeighboursNodeSquare::class.java.classLoader)
     )
 
     override fun describeContents() = 0
@@ -76,11 +77,12 @@ data class LocationExtraInfo(val latitude: Double, val longitude: Double, val ad
         writeDouble(longitude)
         writeString(address)
         writeString(zone)
-        writeTypedList(neighbours_points)
+        writeParcelable(neighbours_points, 0)
     }
 
     companion object {
-        @JvmField val CREATOR: Parcelable.Creator<LocationExtraInfo> = object : Parcelable.Creator<LocationExtraInfo> {
+        @JvmField
+        val CREATOR: Parcelable.Creator<LocationExtraInfo> = object : Parcelable.Creator<LocationExtraInfo> {
             override fun createFromParcel(source: Parcel): LocationExtraInfo = LocationExtraInfo(source)
             override fun newArray(size: Int): Array<LocationExtraInfo?> = arrayOfNulls(size)
         }
@@ -505,6 +507,44 @@ data class CaratteristichePilastriReportSection(val id: Int,
     }
 }
 
+data class NeighboursNodeSquare(val NE: NeighboursNodeData,
+                                val NO: NeighboursNodeData,
+                                val SO: NeighboursNodeData,
+                                val SE: NeighboursNodeData,
+                                val isValid: Boolean) : Parcelable {
+    constructor(source: Parcel) : this(
+            source.readParcelable<NeighboursNodeData>(NeighboursNodeData::class.java.classLoader),
+            source.readParcelable<NeighboursNodeData>(NeighboursNodeData::class.java.classLoader),
+            source.readParcelable<NeighboursNodeData>(NeighboursNodeData::class.java.classLoader),
+            source.readParcelable<NeighboursNodeData>(NeighboursNodeData::class.java.classLoader),
+            1 == source.readInt()
+    )
+
+    override fun describeContents() = 0
+
+    override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
+        writeParcelable(NE, 0)
+        writeParcelable(NO, 0)
+        writeParcelable(SO, 0)
+        writeParcelable(SE, 0)
+        writeInt((if (isValid) 1 else 0))
+    }
+
+    companion object {
+        @JvmField
+        val CREATOR: Parcelable.Creator<NeighboursNodeSquare> = object : Parcelable.Creator<NeighboursNodeSquare> {
+            override fun createFromParcel(source: Parcel): NeighboursNodeSquare = NeighboursNodeSquare(source)
+            override fun newArray(size: Int): Array<NeighboursNodeSquare?> = arrayOfNulls(size)
+        }
+        val Invalid: NeighboursNodeSquare = NeighboursNodeSquare(
+                NeighboursNodeData("-1", -1.0, -1.0, -1.0),
+                NeighboursNodeData("-1", -1.0, -1.0, -1.0),
+                NeighboursNodeData("-1", -1.0, -1.0, -1.0),
+                NeighboursNodeData("-1", -1.0, -1.0, -1.0),
+                false
+        )
+    }
+}
 
 data class ErroreSection(val error: String) : ReportSection {
     constructor(source: Parcel) : this(

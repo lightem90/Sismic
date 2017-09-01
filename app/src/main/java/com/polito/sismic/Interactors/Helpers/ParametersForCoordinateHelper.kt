@@ -2,6 +2,7 @@ package com.polito.sismic.Interactors.Helpers
 
 import android.content.Context
 import com.polito.sismic.Domain.NeighboursNodeData
+import com.polito.sismic.Domain.NeighboursNodeSquare
 import com.polito.sismic.R
 
 //Could work with classes but with indexes is faster
@@ -47,11 +48,11 @@ class ParametersForCoordinateHelper(val mContext : Context) {
         initialized = true
     }
 
-    fun getClosestPointsTo(x : Double, y : Double) : List<NeighboursNodeData>
+    fun getClosestPointsTo(x : Double, y : Double) : NeighboursNodeSquare
     {
-        if (!initialized) return listOf()
-        if (x == -1.0 || y == -1.0) return listOf()
-        var result = mutableListOf<Pair<String, Double>>()
+        if (!initialized) return NeighboursNodeSquare.Invalid
+        if (x == -1.0 || y == -1.0) return NeighboursNodeSquare.Invalid
+        val result = mutableListOf<Pair<String, Double>>()
         var initIndex = 0
         //get to the closest point in longitude (not safe)
         while (mCoordinateArray[initIndex].second < x) {
@@ -63,19 +64,65 @@ class ParametersForCoordinateHelper(val mContext : Context) {
         val leftValues =  innerGetClosestPoint(x, y, true, initIndex, Double.MAX_VALUE, mutableListOf())
         val rightValues =  innerGetClosestPoint(x, y, false, initIndex, Double.MAX_VALUE, mutableListOf())
 
+
         result.addAll(leftValues)
         result.addAll(rightValues)
         result.sortBy { it.second }
-        result = result.subList(0, 4)
-        //retuns a list of nodes with id, long, latitude and distance from input coordinate (in km)
-        return result.map { NeighboursNodeData(it.first,
-                getDataForNode(it.first, CoordinateDatabaseParameters.LON),
-                getDataForNode(it.first, CoordinateDatabaseParameters.LAT),
-                //Dist in km
-                distFrom(x, y,
-                        getDataForNode(it.first, CoordinateDatabaseParameters.LON),
-                        getDataForNode(it.first, CoordinateDatabaseParameters.LAT)))
+        //retuns an object square of nodes with id, long, latitude and distance from input coordinate (in km)
+        return createSquareFromCandidatesNodes(x, y, result)
+    }
+
+    private fun createSquareFromCandidatesNodes(inputLon : Double, inputLat: Double, candidatesList: List<Pair<String, Double>>): NeighboursNodeSquare {
+        var candidateNE : NeighboursNodeData? = null
+        var candidateNO : NeighboursNodeData? = null
+        var candidateSE : NeighboursNodeData? = null
+        var candidateSO : NeighboursNodeData? = null
+
+        //build a square if possible
+        candidatesList.forEach {
+            val candidateLon = getDataForNode(it.first, CoordinateDatabaseParameters.LON)
+            val candidateLat = getDataForNode(it.first, CoordinateDatabaseParameters.LAT)
+            if (candidateLon <= inputLon && candidateLat <= inputLat && candidateSE == null)
+            {
+                candidateSE = NeighboursNodeData(it.first, candidateLon, candidateLat, distFrom(inputLat, inputLon, candidateLat, candidateLon))
+            }
+            else if (candidateLon <= inputLon && candidateLat > inputLat && candidateNE == null)
+            {
+                candidateNE = NeighboursNodeData(it.first, candidateLon, candidateLat, distFrom(inputLat, inputLon, candidateLat, candidateLon))
+            }
+            else if (candidateLon > inputLon && candidateLat > inputLat && candidateNO == null)
+            {
+                candidateNO = NeighboursNodeData(it.first, candidateLon, candidateLat, distFrom(inputLat, inputLon, candidateLat, candidateLon))
+            }
+            else if (candidateLon > inputLon && candidateLat <= inputLat && candidateSO == null)
+            {
+                candidateSO = NeighboursNodeData(it.first, candidateLon, candidateLat, distFrom(inputLat, inputLon, candidateLat, candidateLon))
+            }
         }
+
+        //can interpolate on 3 points
+        var count = 0
+        if (candidateNE == null)
+        {
+            candidateNE = NeighboursNodeData.Invalid
+            count++
+        }
+        if (candidateSE == null)
+        {
+            candidateSE = NeighboursNodeData.Invalid
+            count++
+        }
+        if (candidateSO == null)
+        {
+            candidateSO = NeighboursNodeData.Invalid
+            count++
+        }
+        if (candidateNO == null)
+        {
+            candidateNO = NeighboursNodeData.Invalid
+            count++
+        }
+        return NeighboursNodeSquare(candidateNE!!, candidateNO!!, candidateSO!!, candidateSE!!, count <=1 )
     }
 
     private fun getDataForNode(nodeId : String, param : CoordinateDatabaseParameters) : Double
@@ -98,12 +145,11 @@ class ParametersForCoordinateHelper(val mContext : Context) {
             return tmpList
         }
 
-        val rangePoints = tmpList
         //Consider all very close (on x) points
         while (Math.abs(x - mCoordinateArray[innerIndex].second) <= SENSIBILITY)
         {
             //add point id with distance from input point
-            rangePoints.add(mCoordinateArray[innerIndex].first to
+            tmpList.add(mCoordinateArray[innerIndex].first to
                 calulateDistance(x to y,
                         mCoordinateArray[innerIndex].second to mCoordinateArray[innerIndex].third))
 
@@ -111,8 +157,8 @@ class ParametersForCoordinateHelper(val mContext : Context) {
         }
 
         //I just want 4 points, the one with the minimum distance
-        rangePoints.sortBy { it.second }
-        val smallerList = rangePoints.subList(0, 4) //inclusive from exclusive to
+        tmpList.sortBy { it.second }
+        val smallerList = tmpList.subList(0, 4) //inclusive from exclusive to
 
         //pass to recursion: input point, new index, new sum, new points
         return innerGetClosestPoint(x, y, left, innerIndex, smallerList.sumByDouble { it.second }, smallerList)

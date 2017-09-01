@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.polito.sismic.Domain.NeighboursNodeData
+import com.polito.sismic.Extensions.toList
 import com.polito.sismic.Presenters.Adapters.NodeListAdapter
 import com.polito.sismic.R
 import kotlinx.android.synthetic.main.dati_sismogenetici_report_layout.*
@@ -36,7 +37,7 @@ class DatiSismoGeneticiReportFragment : BaseReportFragment() {
         if (mExtraInfo?.locationExtraInfo?.neighbours_points != null)
         {
             mNodeList.clear()
-            mNodeList.addAll(mExtraInfo!!.locationExtraInfo.neighbours_points!!)
+            mNodeList.addAll(mExtraInfo!!.locationExtraInfo.neighbours_points.toList())
             list_nodi.adapter.notifyDataSetChanged()
         }
 

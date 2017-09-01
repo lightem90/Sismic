@@ -106,5 +106,19 @@
         <item>25+4</item>
         <item>25+5</item>
     </string-array>
+    <string-array name="cat_tipologia">
+        <item>Strutture a telaio, pareti accoppiate o miste</item>
+        <item>Strutture pareti non accoppiate</item>
+        <item>Strutture deformabili torsionalmente</item>
+        <item>Strutture pendolo inverso</item>
+    </string-array>
+    <string-array name="cat_moltiplicatore">
+        <item>Strutture a telaio di un piano</item>
+        <item>Strutture a telaio con più piani e una campata</item>
+        <item>Strutture a telaio con più piani e più campate</item>
+        <item>Strutture con solo due pareti accoppiate</item>
+        <item>Strutture a pareti non accoppiate</item>
+        <item>Strutture a pareti miste equivalenti a pareti</item>
+    </string-array>
 
 </resources>

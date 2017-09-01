@@ -17,7 +17,6 @@ import com.polito.sismic.Interactors.Helpers.ParametersForCoordinateHelper
 import com.polito.sismic.Interactors.Helpers.UserActionType
 import com.polito.sismic.Presenters.Adapters.ReportFragmentsAdapter
 import com.polito.sismic.Presenters.ReportActivity.Fragments.BaseReportFragment
-import com.polito.sismic.Presenters.ReportActivity.Fragments.DatiSismoGeneticiReportFragment
 import com.polito.sismic.Presenters.ReportActivity.Fragments.InfoLocReportFragment
 import com.polito.sismic.R
 import kotlinx.android.synthetic.main.activity_report.*
@@ -79,7 +78,7 @@ class ReportActivity : AppCompatActivity(),
 
         mCoordinateHelper.initialize()
 
-        val nodeList = mReportManager?.let {
+        val nodeSquare = mReportManager!!.let {
             mCoordinateHelper.getClosestPointsTo(
                     mReportManager!!.getExtraLongitudeCoordinate(),
                     mReportManager!!.getExtraLatitudeCoordinate()
@@ -90,7 +89,7 @@ class ReportActivity : AppCompatActivity(),
                 mReportManager!!.getExtraLongitudeCoordinate(),
                 mReportManager!!.getExtraAddress(),
                 mReportManager!!.getExtraZone(),
-                nodeList)
+                nodeSquare)
         )
     }
 

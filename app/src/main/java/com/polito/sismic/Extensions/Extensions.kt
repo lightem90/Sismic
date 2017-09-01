@@ -9,6 +9,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.polito.sismic.Domain.NeighboursNodeData
+import com.polito.sismic.Domain.NeighboursNodeSquare
 import com.polito.sismic.Domain.ReportExtraInfo
 import com.polito.sismic.Presenters.Adapters.ReportFragmentsAdapter
 import com.polito.sismic.Presenters.ReportActivity.Fragments.FragmentState
@@ -161,4 +163,8 @@ fun Double.getPowerOfTwoForSampleRatio(): Int
 fun StepAdapter.getCustomAdapter() : ReportFragmentsAdapter
 {
     return this as ReportFragmentsAdapter
+}
+
+fun NeighboursNodeSquare.toList(): MutableList<NeighboursNodeData> {
+    return mutableListOf(NE, NO, SE, SO)
 }
