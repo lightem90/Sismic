@@ -119,9 +119,9 @@ class ParametersForCoordinateHelper(val mContext : Context) {
                 }
                 2 ->
                 {
-                    if (candidateSO == null)
+                    if (candidateSE == null)
                     {
-                        candidateSO = NeighboursNodeData(it.first,
+                        candidateSE = NeighboursNodeData(it.first,
                                 candidateLon,
                                 candidateLat,
                                 distFrom(inputLat, inputLon, candidateLat, candidateLon))
@@ -129,9 +129,9 @@ class ParametersForCoordinateHelper(val mContext : Context) {
                 }
                 3 ->
                 {
-                    if (candidateSE == null)
+                    if (candidateSO == null)
                     {
-                        candidateSE = NeighboursNodeData(it.first,
+                        candidateSO = NeighboursNodeData(it.first,
                                 candidateLon,
                                 candidateLat,
                                 distFrom(inputLat, inputLon, candidateLat, candidateLon))

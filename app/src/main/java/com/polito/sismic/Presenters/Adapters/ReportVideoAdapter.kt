@@ -1,34 +1,33 @@
 package com.polito.sismic.Presenters.Adapters
 
 import android.content.Context
-import android.media.ThumbnailUtils
-import android.provider.MediaStore
+import android.net.Uri
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
+import com.bumptech.glide.Glide
 import com.polito.sismic.Domain.ReportMedia
-import com.polito.sismic.Extensions.getMediaPath
 import com.polito.sismic.Extensions.toUri
 
 
 /**
  * Created by Matteo on 20/08/2017.
  */
-class ReportVideoAdapter (private val imageList : List<ReportMedia>,
+class ReportVideoAdapter (private val videoList: List<ReportMedia>,
                           private val mContext: Context) : BaseAdapter()
 {
 
     override fun getCount(): Int {
-        return imageList.size
+        return videoList.size
     }
 
     override fun getItem(position: Int): Any? {
-        return imageList[position]
+        return videoList[position]
     }
 
     override fun getItemId(position: Int): Long {
-        return imageList[position].id.toLong()
+        return videoList[position].id.toLong()
     }
 
     // create a new ImageView for each item referenced by the Adapter
@@ -44,9 +43,13 @@ class ReportVideoAdapter (private val imageList : List<ReportMedia>,
         }
 
         //TODO, non credo funzioni
-        val thumb = ThumbnailUtils.createVideoThumbnail(imageList[position].url.toUri().getMediaPath(mContext),
-                MediaStore.Images.Thumbnails.MINI_KIND)
-        imageView.setImageBitmap(thumb)
+        //val thumb = ThumbnailUtils.createVideoThumbnail(videoList[position].url.toUri().getMediaPath(mContext),\
+        //        MediaStore.Images.Thumbnails.MINI_KIND)\
+        //imageView.setImageBitmap(thumb)\
+
+        Glide.with(mContext)
+                .load(videoList[position].url.toUri())
+                .into(imageView)
 
         return imageView
     }

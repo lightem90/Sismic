@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.polito.sismic.Domain.ReportMedia
-import com.polito.sismic.Interactors.Helpers.MediaFile
 import com.polito.sismic.Interactors.Helpers.MediaType
 import com.polito.sismic.Presenters.Adapters.ReportImageAdapter
 import com.polito.sismic.Presenters.Adapters.ReportStringAdapter
