@@ -4,6 +4,7 @@ import android.content.Context
 import com.polito.sismic.Domain.NeighboursNodeData
 import com.polito.sismic.Domain.NeighboursNodeSquare
 import com.polito.sismic.R
+import java.math.BigDecimal
 
 //Could work with classes but with indexes is faster
 class ParametersForCoordinateHelper(val mContext : Context) {
@@ -147,6 +148,7 @@ class ParametersForCoordinateHelper(val mContext : Context) {
                                 distFrom(inputLat, inputLon, candidateLat, candidateLon))
                     }
                 }
+                else -> throw Exception()
             }
         }
 
@@ -207,7 +209,7 @@ class ParametersForCoordinateHelper(val mContext : Context) {
 
         //I just want 4 points, the one with the minimum distance
         tmpList.sortBy { it.second }
-        val smallerList = tmpList.subList(0, 4) //inclusive from exclusive to
+        val smallerList = tmpList.subList(0, 8) //inclusive from exclusive to
 
         //pass to recursion: input point, new index, new sum, new points
         return innerGetClosestPoint(x, y, left, innerIndex, smallerList.sumByDouble { it.second }, smallerList)
@@ -215,11 +217,21 @@ class ParametersForCoordinateHelper(val mContext : Context) {
 
     private fun calulateDistance(pair1 : Pair<Double, Double>, pair2 : Pair<Double, Double>) : Pair<Double, Int>
     {
-        val xDiff = pair1.first - pair2.first
-        val yDiff = pair1.second - pair2.second
-        val distX = Math.abs(xDiff)
-        val distY = Math.abs(yDiff)
+        val xDiff = BigDecimal(pair1.first - pair2.first).setScale(6, BigDecimal.ROUND_DOWN);
+        val yDiff = BigDecimal(pair1.second - pair2.second).setScale(6, BigDecimal.ROUND_DOWN);
+        val zero = BigDecimal(0).setScale(6, BigDecimal.ROUND_DOWN);
+        val distX = Math.abs(xDiff.toDouble())
+        val distY = Math.abs(yDiff.toDouble())
         //distance and quadrant
-        return Math.sqrt(distX*distX + distY*distY) to QUAD_LUT[(xDiff).toInt() shr 31 or (((yDiff).toInt() shr 30) and 0x2)]
+        var quad = -1
+        if (xDiff >= zero && yDiff >= zero) quad = 1
+        else if (xDiff > zero && yDiff < zero) quad = 2
+        else if (xDiff <= zero && yDiff <= zero) quad = 3
+        else if (xDiff < zero && yDiff > zero) quad = 4
+        //(xDiff) shr 31 or (((yDiff) shr 30) and 0x2)
+        //works for int..
+        //y = y>>31;
+        //return ((x>>31) ^ y) + y + y + 1;
+        return Math.sqrt(distX*distX + distY*distY) to quad
     }
 }
