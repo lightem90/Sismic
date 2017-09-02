@@ -41,10 +41,10 @@ class ReportImageAdapter (private val imageList : List<ReportMedia>,
         {
             imageView = convertView as ImageView
         }
-        val uri = Uri.parse(imageList[position].url)
+
         Picasso.with(mContext)
-                .load(uri)
-                .resize(750, 750)
+                .load(Uri.parse(imageList[position].url))
+                //.resize(750, 750)
                 .centerCrop()
                 .into(imageView)
 

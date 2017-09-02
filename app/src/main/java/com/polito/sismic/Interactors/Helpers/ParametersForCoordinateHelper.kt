@@ -25,6 +25,8 @@ class ParametersForCoordinateHelper(val mContext : Context) {
 
             return dist / 1000 //(KM)
         }
+
+        var QUAD_LUT = intArrayOf(1, 2, 4, 3)
     }
     private val mCsvHelper : CsvHelper = CsvHelper(mContext)
     //just lat/lon
@@ -52,7 +54,7 @@ class ParametersForCoordinateHelper(val mContext : Context) {
     {
         if (!initialized) return NeighboursNodeSquare.Invalid
         if (x == -1.0 || y == -1.0) return NeighboursNodeSquare.Invalid
-        val result = mutableListOf<Pair<String, Double>>()
+        val result = mutableListOf<Triple<String, Double, Int>>()
         var initIndex = 0
         //get to the closest point in longitude (not safe)
         while (mCoordinateArray[initIndex].second < x) {
@@ -64,39 +66,87 @@ class ParametersForCoordinateHelper(val mContext : Context) {
         val leftValues =  innerGetClosestPoint(x, y, true, initIndex, Double.MAX_VALUE, mutableListOf())
         val rightValues =  innerGetClosestPoint(x, y, false, initIndex, Double.MAX_VALUE, mutableListOf())
 
-
         result.addAll(leftValues)
         result.addAll(rightValues)
+        //order by distance
         result.sortBy { it.second }
         //retuns an object square of nodes with id, long, latitude and distance from input coordinate (in km)
         return createSquareFromCandidatesNodes(x, y, result)
     }
 
-    private fun createSquareFromCandidatesNodes(inputLon : Double, inputLat: Double, candidatesList: List<Pair<String, Double>>): NeighboursNodeSquare {
+    private fun createSquareFromCandidatesNodes(inputLon : Double, inputLat: Double, candidatesList: List<Triple<String, Double, Int>>): NeighboursNodeSquare {
         var candidateNE : NeighboursNodeData? = null
         var candidateNO : NeighboursNodeData? = null
         var candidateSE : NeighboursNodeData? = null
         var candidateSO : NeighboursNodeData? = null
 
+        //candidatesList.forEachIndexed { index, _ ->
+        //    val candidateLon = getDataForNode(candidatesList[index].first, CoordinateDatabaseParameters.LON)
+        //    val candidateLat = getDataForNode(candidatesList[index].first, CoordinateDatabaseParameters.LAT)
+        //    if (candidateLon <= inputLon && candidateLat <= inputLat && candidateSE == null)
+        //    {
+        //        candidateSE = NeighboursNodeData(candidatesList[index].first, candidateLon, candidateLat, distFrom(inputLat, inputLon, candidateLat, candidateLon))
+        //    }
+        //    else if (candidateLon <= inputLon && candidateLat > inputLat && candidateNE == null)
+        //    {
+        //        candidateNE = NeighboursNodeData(candidatesList[index].first, candidateLon, candidateLat, distFrom(inputLat, inputLon, candidateLat, candidateLon))
+        //    }
+        //    else if (candidateLon > inputLon && candidateLat > inputLat && candidateNO == null)
+        //    {
+        //        candidateNO = NeighboursNodeData(candidatesList[index].first, candidateLon, candidateLat, distFrom(inputLat, inputLon, candidateLat, candidateLon))
+        //    }
+        //    else if (candidateLon > inputLon && candidateLat <= inputLat && candidateSO == null)
+        //    {
+        //        candidateSO = NeighboursNodeData(candidatesList[index].first, candidateLon, candidateLat, distFrom(inputLat, inputLon, candidateLat, candidateLon))
+        //    }
+        //}
+
         //build a square if possible
         candidatesList.forEach {
             val candidateLon = getDataForNode(it.first, CoordinateDatabaseParameters.LON)
             val candidateLat = getDataForNode(it.first, CoordinateDatabaseParameters.LAT)
-            if (candidateLon <= inputLon && candidateLat <= inputLat && candidateSE == null)
+            when(it.third)
             {
-                candidateSE = NeighboursNodeData(it.first, candidateLon, candidateLat, distFrom(inputLat, inputLon, candidateLat, candidateLon))
-            }
-            else if (candidateLon <= inputLon && candidateLat > inputLat && candidateNE == null)
-            {
-                candidateNE = NeighboursNodeData(it.first, candidateLon, candidateLat, distFrom(inputLat, inputLon, candidateLat, candidateLon))
-            }
-            else if (candidateLon > inputLon && candidateLat > inputLat && candidateNO == null)
-            {
-                candidateNO = NeighboursNodeData(it.first, candidateLon, candidateLat, distFrom(inputLat, inputLon, candidateLat, candidateLon))
-            }
-            else if (candidateLon > inputLon && candidateLat <= inputLat && candidateSO == null)
-            {
-                candidateSO = NeighboursNodeData(it.first, candidateLon, candidateLat, distFrom(inputLat, inputLon, candidateLat, candidateLon))
+                1 ->
+                {
+                    if (candidateNE == null)
+                    {
+                        candidateNE = NeighboursNodeData(it.first,
+                                candidateLon,
+                                candidateLat,
+                                distFrom(inputLat, inputLon, candidateLat, candidateLon))
+                    }
+                }
+                2 ->
+                {
+                    if (candidateSO == null)
+                    {
+                        candidateSO = NeighboursNodeData(it.first,
+                                candidateLon,
+                                candidateLat,
+                                distFrom(inputLat, inputLon, candidateLat, candidateLon))
+                    }
+                }
+                3 ->
+                {
+                    if (candidateSE == null)
+                    {
+                        candidateSE = NeighboursNodeData(it.first,
+                                candidateLon,
+                                candidateLat,
+                                distFrom(inputLat, inputLon, candidateLat, candidateLon))
+                    }
+                }
+                4 ->
+                {
+                    if (candidateNO == null)
+                    {
+                        candidateNO = NeighboursNodeData(it.first,
+                                candidateLon,
+                                candidateLat,
+                                distFrom(inputLat, inputLon, candidateLat, candidateLon))
+                    }
+                }
             }
         }
 
@@ -134,13 +184,14 @@ class ParametersForCoordinateHelper(val mContext : Context) {
                                      left: Boolean,    //direction
                                      index: Int,
                                      limitDistance: Double,
-                                     tmpList: MutableList<Pair<String, Double>>) : List<Pair<String, Double>>
+                                     tmpList: MutableList<Triple<String, Double, Int>>) : List<Triple<String, Double, Int>>
     {
         var innerIndex = if (left) index -1 else index +1
         if (innerIndex < 0 || innerIndex >= mCoordinateArray.size) return tmpList
 
+        val dist_quadrant_pair = calulateDistance(x to y, mCoordinateArray[innerIndex].second to mCoordinateArray[innerIndex].third)
         //Stopping condition, the distance of the next point from input point is greater than sum of distances of 4 closest points
-        if (calulateDistance(x to y, mCoordinateArray[innerIndex].second to mCoordinateArray[innerIndex].third) >= limitDistance)
+        if (dist_quadrant_pair.first >= limitDistance)
         {
             return tmpList
         }
@@ -149,9 +200,7 @@ class ParametersForCoordinateHelper(val mContext : Context) {
         while (Math.abs(x - mCoordinateArray[innerIndex].second) <= SENSIBILITY)
         {
             //add point id with distance from input point
-            tmpList.add(mCoordinateArray[innerIndex].first to
-                calulateDistance(x to y,
-                        mCoordinateArray[innerIndex].second to mCoordinateArray[innerIndex].third))
+            tmpList.add(Triple(mCoordinateArray[innerIndex].first, dist_quadrant_pair.first, dist_quadrant_pair.second))
 
             if (left) innerIndex-- else innerIndex++
         }
@@ -164,10 +213,13 @@ class ParametersForCoordinateHelper(val mContext : Context) {
         return innerGetClosestPoint(x, y, left, innerIndex, smallerList.sumByDouble { it.second }, smallerList)
     }
 
-    fun calulateDistance(pair1 : Pair<Double, Double>, pair2 : Pair<Double, Double>) : Double
+    private fun calulateDistance(pair1 : Pair<Double, Double>, pair2 : Pair<Double, Double>) : Pair<Double, Int>
     {
-        val distX = Math.abs(pair1.first - pair2.first)
-        val distY = Math.abs(pair1.second - pair2.second)
-        return Math.sqrt(distX*distX + distY*distY)
+        val xDiff = pair1.first - pair2.first
+        val yDiff = pair1.second - pair2.second
+        val distX = Math.abs(xDiff)
+        val distY = Math.abs(yDiff)
+        //distance and quadrant
+        return Math.sqrt(distX*distX + distY*distY) to QUAD_LUT[(xDiff).toInt() shr 31 or (((yDiff).toInt() shr 30) and 0x2)]
     }
 }

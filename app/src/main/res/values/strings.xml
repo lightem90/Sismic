@@ -93,8 +93,8 @@
     <string name="report_edificio_parameter">Edificio</string>
     <string name="report_foglio_cart_parameter_hint">Foglio di riferimento cartografico</string>
     <string name="report_edificio_parameter_hint">Edificio</string>
-    <string name="report_aggr_str_parameter">TODO</string>
-    <string name="report_aggr_str_parameter_hint">TODO</string>
+    <string name="report_aggr_str_parameter">Aggregato strutturale</string>
+    <string name="report_aggr_str_parameter_hint">Inserire aggregato strutturale</string>
     <string name="report_urbanistic_section_title">URBANISTICA</string>
     <string name="report_zona_urb_parameter">Zona di piano</string>
     <string name="report_zona_urb_parameter_hint">Inserire zona di piano</string>
@@ -276,6 +276,9 @@
     <string name="armatura_fi_hint">Inserire phi</string>
     <string name="armatura_longitudine">Longitudine armatura</string>
     <string name="armatura_longitudine_hint">Inserire longitudine</string>
+    <string name="report_filename_dialog">Nome file</string>
+    <string name="confirm_filename">Conferma</string>
+    <string name="discard_filename">Cancella</string>
 
 
 </resources>

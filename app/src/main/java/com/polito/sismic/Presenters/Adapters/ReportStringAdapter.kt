@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
 import com.polito.sismic.Domain.ReportMedia
+import com.polito.sismic.Extensions.getFileName
 import com.polito.sismic.Interactors.Helpers.MediaType
 
 
@@ -43,7 +44,7 @@ class ReportStringAdapter (private val imageList : List<ReportMedia>,
 
         textView.text =
         if (imageList[position].type == MediaType.Audio.toString())
-            Uri.parse(imageList[position].url).path.toString()
+            Uri.parse(imageList[position].url).getFileName(mContext)
         else
             imageList[position].note
 

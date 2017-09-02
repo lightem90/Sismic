@@ -4,7 +4,9 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.database.sqlite.SQLiteDatabase
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,13 +16,15 @@ import com.polito.sismic.Domain.NeighboursNodeSquare
 import com.polito.sismic.Domain.ReportExtraInfo
 import com.polito.sismic.Presenters.Adapters.ReportFragmentsAdapter
 import com.polito.sismic.Presenters.ReportActivity.Fragments.FragmentState
-import com.stepstone.stepper.adapter.AbstractFragmentStepAdapter
 import com.stepstone.stepper.adapter.StepAdapter
 import org.jetbrains.anko.db.MapRowParser
 import org.jetbrains.anko.db.SelectQueryBuilder
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.reflect.KProperty
+import android.provider.OpenableColumns
+
+
 
 
 /**
@@ -166,5 +170,39 @@ fun StepAdapter.getCustomAdapter() : ReportFragmentsAdapter
 }
 
 fun NeighboursNodeSquare.toList(): MutableList<NeighboursNodeData> {
-    return mutableListOf(NE, NO, SE, SO)
+    return mutableListOf(NO, NE, SE, SO)
 }
+
+fun Uri.getFileName(mContext: Context): String? {
+    val returnCursor = mContext.contentResolver.query(this, null, null, null, null)
+    val nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+    returnCursor.moveToFirst()
+    val filename = returnCursor.getString(nameIndex)
+    returnCursor.close()
+    return filename
+}
+
+fun Uri.getSizeInMb(mContext: Context): Double {
+    val returnCursor = mContext.contentResolver.query(this, null, null, null, null)
+    returnCursor.moveToFirst()
+    val sizeIndex = returnCursor.getLong(returnCursor.getColumnIndex(OpenableColumns.SIZE))
+    returnCursor.close()
+    val doubleSizeIndex = sizeIndex.toDouble()
+    return doubleSizeIndex / 1024 / 1024
+}
+
+fun Uri.getMediaPath(mContext: Context): String {
+    val projection = arrayOf(MediaStore.Images.Media.DATA)
+    val cursor = mContext.contentResolver.query(this, projection, null, null, null)
+    val column_index = cursor
+            .getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+    cursor.moveToFirst()
+    val toReturn = cursor.getString(column_index)
+    cursor.close()
+    return toReturn
+}
+
+fun String.toUri() : Uri {
+    return Uri.parse(this)
+}
+

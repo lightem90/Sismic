@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Environment
 import android.provider.OpenableColumns
 import android.support.v4.content.FileProvider
+import com.polito.sismic.Extensions.getSizeInMb
 import com.polito.sismic.Extensions.toFormattedString
 import com.polito.sismic.Extensions.toast
 import com.polito.sismic.Interactors.Helpers.MediaFile
@@ -22,7 +23,7 @@ class ReportMediaInteractor(val mReportManager: ReportManager,
     //The user can add media only sequentially, so in case of failure while adding we delete the tmp file
     var lastAddedTmpFile : MediaFile? = null
 
-    fun createFileForMedia(type : MediaType) : MediaFile?
+    fun createFileForMedia(type : MediaType, userFilename : String) : MediaFile
     {
         var prefix = ""
         var suffix = ""
@@ -57,16 +58,18 @@ class ReportMediaInteractor(val mReportManager: ReportManager,
             {
                 //Special case
                 lastAddedTmpFile = MediaFile(type, "")
-                return lastAddedTmpFile
+                return lastAddedTmpFile!!
             }
         }
 
         // Create an image file name (REPORT#_TYPE_Date.ext)
         val timeStamp = Date().toFormattedString()
-        val filename = prefix + timeStamp
+
+        var filenameToUse = userFilename
+        if (filenameToUse.isEmpty()) filenameToUse = prefix + timeStamp
 
         val file = File.createTempFile(
-                filename,
+                filenameToUse,
                 suffix,
                 storageDir
         )
@@ -75,24 +78,14 @@ class ReportMediaInteractor(val mReportManager: ReportManager,
                 file)
 
         lastAddedTmpFile = MediaFile(type, fileUri!!.toString())
-        return lastAddedTmpFile
+        return lastAddedTmpFile!!
     }
 
     fun finalizeLastMedia(stringExtra: String? = null) = with(lastAddedTmpFile) {
 
         this!!.note = if (stringExtra  == null) "" else stringExtra
-        this.size = if (lastAddedTmpFile!!.type == MediaType.Note) 0.0 else getSizeFromUri(Uri.parse(lastAddedTmpFile!!.url))
+        this.size = if (lastAddedTmpFile!!.type == MediaType.Note) 0.0 else Uri.parse(lastAddedTmpFile!!.url).getSizeInMb(mContext)
         mReportManager.addMediaFile(this)
-    }
-
-    private fun getSizeFromUri(path: Uri): Double {
-
-        val returnCursor = mContext.contentResolver.query(path, null, null, null, null)
-        returnCursor.moveToFirst()
-        val sizeIndex = returnCursor.getLong(returnCursor.getColumnIndex(OpenableColumns.SIZE))
-        returnCursor.close()
-        val doubleSizeIndex = sizeIndex.toDouble()
-        return doubleSizeIndex / 1024 / 1024
     }
 
     fun deleteLastMedia() {
@@ -101,7 +94,7 @@ class ReportMediaInteractor(val mReportManager: ReportManager,
             mContext.contentResolver.delete(Uri.parse(lastAddedTmpFile?.url), null, null)
     }
 
-    fun  fixUriForAudio(data: Uri?) {
+    fun fixUriForAudio(data: Uri?) {
 
         val currentUri = Uri.parse(lastAddedTmpFile?.url)
         if (currentUri != data && currentUri != null && data != null)

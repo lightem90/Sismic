@@ -6,18 +6,20 @@ import android.net.Uri
 import android.provider.MediaStore
 import android.support.v7.app.AlertDialog
 import com.polito.sismic.Extensions.toast
+import com.polito.sismic.Interactors.Helpers.MediaFile
 import com.polito.sismic.Interactors.Helpers.MediaType
 import com.polito.sismic.Interactors.Helpers.UserActionType
 import com.polito.sismic.Presenters.ReportActivity.NoteActivity
 import com.polito.sismic.Presenters.ReportActivity.SketchActivity
 import com.polito.sismic.R
+import kotlinx.android.synthetic.main.filename_dialog.view.*
 
 /**
  * Created by Matteo on 08/08/2017.
  */
-class UserActionInteractor(val mReportManager: ReportManager,
-                           val mCaller : Activity,
-                           val reportMediaInteractor: ReportMediaInteractor = ReportMediaInteractor(mReportManager, mCaller)) {
+class UserActionInteractor(private val mReportManager: ReportManager,
+                           private val mCaller : Activity,
+                           private val reportMediaInteractor: ReportMediaInteractor = ReportMediaInteractor(mReportManager, mCaller)) {
 
     val USER_ACTION_PIC         = 40
     val USER_ACTION_VIDEO       = 41
@@ -30,12 +32,40 @@ class UserActionInteractor(val mReportManager: ReportManager,
     {
         when (requestType)
         {
-            UserActionType.PicRequest ->        startPictureIntent(this)
-            UserActionType.VideoRequest ->      startVideoIntent(this)
-            UserActionType.AudioRequest ->      startAudioIntent(this)
-            UserActionType.SketchRequest->      startSketchIntent(this)
+            UserActionType.PicRequest ->        askForFileAndLaunchIntent(MediaType.Picture)
+            UserActionType.VideoRequest ->      askForFileAndLaunchIntent(MediaType.Video)
+            UserActionType.AudioRequest ->      askForFileAndLaunchIntent(MediaType.Audio)
+            UserActionType.SketchRequest->      askForFileAndLaunchIntent(MediaType.Sketch)
             UserActionType.NoteRequest->        startNoteIntent(this)
             UserActionType.BackRequest->        goBack(this)
+        }
+    }
+
+    private fun askForFileAndLaunchIntent(type : MediaType) = with(mCaller)
+    {
+        with(layoutInflater.inflate(R.layout.filename_dialog, null))
+        {
+            android.support.v7.app.AlertDialog.Builder(mCaller)
+                    .setTitle(com.polito.sismic.R.string.report_filename_dialog)
+                    .setView(this)
+                    .setPositiveButton(com.polito.sismic.R.string.confirm_filename,
+                            {_, _ ->
+                                startIntent(reportMediaInteractor.createFileForMedia(type, this.filename.getParameterValue()), type)
+                            })
+                    .setNegativeButton(com.polito.sismic.R.string.discard_filename, { _, _ -> })
+                    .show()
+        }
+    }
+
+    private fun startIntent(mediaFile: MediaFile, type: MediaType)
+    {
+        when (type)
+        {
+            MediaType.Picture -> startPictureIntent(mediaFile)
+            MediaType.Video -> startVideoIntent(mediaFile)
+            MediaType.Audio -> startAudioIntent(mediaFile)
+            MediaType.Sketch -> startSketchIntent(mediaFile)
+            else -> {}
         }
     }
 
@@ -55,52 +85,49 @@ class UserActionInteractor(val mReportManager: ReportManager,
     private fun startNoteIntent(caller: Activity) {
         val intent = Intent(caller, NoteActivity::class.java)
         intent.putExtra("username", mReportManager.getUserName())
-        reportMediaInteractor.createFileForMedia(MediaType.Note)
+        reportMediaInteractor.createFileForMedia(MediaType.Note, "")
         caller.startActivityForResult(intent, USER_ACTION_NOTE)
     }
 
-    private fun startSketchIntent(caller: Activity) {
+    private fun startSketchIntent(file: MediaFile) = with(mCaller){
 
-        val drawBitmap = Intent(caller, SketchActivity::class.java)
-        if (drawBitmap.resolveActivity(caller.packageManager) != null)
+        val drawBitmap = Intent(this, SketchActivity::class.java)
+        if (drawBitmap.resolveActivity(packageManager) != null)
         {
-            val bitmap = reportMediaInteractor.createFileForMedia(MediaType.Sketch)
-            drawBitmap.putExtra(MediaStore.EXTRA_OUTPUT, Uri.parse(bitmap?.url))
+            drawBitmap.putExtra(MediaStore.EXTRA_OUTPUT, Uri.parse(file.url))
             drawBitmap.putExtra("username", mReportManager.getUserName())
-            caller.startActivityForResult(drawBitmap, USER_ACTION_SKETCH)
+            startActivityForResult(drawBitmap, USER_ACTION_SKETCH)
         }
     }
 
-    private fun startAudioIntent(caller: Activity) {
+    private fun startAudioIntent(file: MediaFile) = with(mCaller){
 
         val audioRecordIntent = Intent(MediaStore.Audio.Media.RECORD_SOUND_ACTION)
-        if (audioRecordIntent.resolveActivity(caller.packageManager) != null) {
+        if (audioRecordIntent.resolveActivity(packageManager) != null) {
 
-            val audio = reportMediaInteractor.createFileForMedia(MediaType.Audio)
-            audioRecordIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.parse(audio?.url))
-            caller.startActivityForResult(audioRecordIntent, USER_ACTION_AUDIO)
+            audioRecordIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.parse(file.url))
+            startActivityForResult(audioRecordIntent, USER_ACTION_AUDIO)
         }
     }
 
-    private fun startVideoIntent(caller: Activity) {
+    private fun startVideoIntent(file: MediaFile) = with(mCaller){
         val takeVideoIntent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
-        if (takeVideoIntent.resolveActivity(caller.packageManager) != null) {
+        if (takeVideoIntent.resolveActivity(packageManager) != null) {
 
-            val video = reportMediaInteractor.createFileForMedia(MediaType.Video)
-            takeVideoIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.parse(video?.url))
-            caller.startActivityForResult(takeVideoIntent, USER_ACTION_VIDEO)
+            takeVideoIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.parse(file.url))
+            startActivityForResult(takeVideoIntent, USER_ACTION_VIDEO)
+
         }
     }
 
-    private fun startPictureIntent(caller: Activity) {
+    private fun startPictureIntent(file: MediaFile) = with(mCaller){
 
         val takePictureIntent : Intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         // Ensure that there's a camera activity to handle the intent
-        if (takePictureIntent.resolveActivity(caller.packageManager) != null)
+        if (takePictureIntent.resolveActivity(packageManager) != null)
         {
-            val photo = reportMediaInteractor.createFileForMedia(MediaType.Picture)
-            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.parse(photo?.url))
-            caller.startActivityForResult(takePictureIntent, USER_ACTION_PIC)
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.parse(file.url))
+            startActivityForResult(takePictureIntent, USER_ACTION_PIC)
         }
     }
 
