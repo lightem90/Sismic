@@ -43,6 +43,7 @@
         android:id="@+id/lat_parameter"
         app:report_parameter_title="@string/report_latitute_parameter"
         app:report_parameter_hint="@string/report_latitute_parameter_hint"
+        app:report_parameter_isNumber="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
@@ -50,6 +51,7 @@
         android:id="@+id/long_parameter"
         app:report_parameter_title="@string/report_longitude_parameter"
         app:report_parameter_hint="@string/report_longitude_parameter_hint"
+        app:report_parameter_isNumber="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
@@ -108,6 +110,7 @@
         android:id="@+id/codice_istat_parameter"
         app:report_parameter_title="@string/report_istat_parameter"
         app:report_parameter_hint="@string/report_istat_parameter_hint"
+        app:report_parameter_isNumber="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

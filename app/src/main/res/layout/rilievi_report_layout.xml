@@ -7,17 +7,33 @@
         style="@style/sectionTitle"
         android:text="@string/report_rilievo_esterno_title"/>
 
+
+    <LinearLayout
+        style="@style/spinnerContainer">
+
+        <TextView
+            style="@style/sectionSpinnerTitle"
+            android:text="@string/piani_numero_parameter" />
+
+        <Spinner
+            android:id="@+id/piani_numero_parameter"
+            style="@style/spinnerStyle"
+            android:entries="@array/piani_numero"/>
+    </LinearLayout>
+
     <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
-        android:id="@+id/piani_numero_parameter"
-        app:report_parameter_title="@string/piani_numero_parameter"
-        app:report_parameter_hint="@string/piani_numero_parameter_hint"
+        android:id="@+id/altezza_piano_tr_parameter"
+        app:report_parameter_title="@string/altezza_piano_tr_parameter"
+        app:report_parameter_hint="@string/altezza_piano_tr_parameter_hint"
+        app:report_parameter_isNumber="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
     <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
-        android:id="@+id/altezza_piano_parameter"
-        app:report_parameter_title="@string/altezza_piano_parameter"
-        app:report_parameter_hint="@string/altezza_piano_parameter_hint"
+        android:id="@+id/altezza_piani_sup_parameter"
+        app:report_parameter_title="@string/altezza_piani_sup_parameter"
+        app:report_parameter_hint="@string/altezza_piani_sup_parameter_hint"
+        app:report_parameter_isNumber="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
@@ -36,6 +52,7 @@
         android:id="@+id/lunghezza_piano_parameter"
         app:report_parameter_title="@string/lunghezza_piano_parameter"
         app:report_parameter_hint="@string/lunghezza_piano_parameter_hint"
+        app:report_parameter_isNumber="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
@@ -43,6 +60,7 @@
         android:id="@+id/larghezza_piano_parameter"
         app:report_parameter_title="@string/larghezza_piano_parameter"
         app:report_parameter_hint="@string/larghezza_piano_parameter_hint"
+        app:report_parameter_isNumber="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

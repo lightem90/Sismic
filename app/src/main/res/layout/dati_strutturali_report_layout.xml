@@ -44,6 +44,7 @@
         android:id="@+id/fondazioni_h"
         app:report_parameter_title="@string/fondazioni_h"
         app:report_parameter_hint="@string/fondazioni_h_hint"
+        app:report_parameter_isNumber="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
@@ -67,6 +68,7 @@
             android:checked="true"
             android:textOff="@string/solaio_type"
             android:textOn="@string/solaio_type" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -95,6 +97,7 @@
         android:id="@+id/solaio_g2"
         app:report_parameter_title="@string/solaio_g2"
         app:report_parameter_hint="@string/solaio_g2_hint"
+        app:report_parameter_isNumber="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
@@ -102,6 +105,7 @@
         android:id="@+id/solaio_qk"
         app:report_parameter_title="@string/solaio_qk"
         app:report_parameter_hint="@string/solaio_qk_hint"
+        app:report_parameter_isNumber="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
@@ -165,6 +169,7 @@
         android:id="@+id/copertura_g2"
         app:report_parameter_title="@string/copertura_g2"
         app:report_parameter_hint="@string/copertura_g2_hint"
+        app:report_parameter_isNumber="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
@@ -172,6 +177,7 @@
         android:id="@+id/copertura_qk"
         app:report_parameter_title="@string/copertura_qk"
         app:report_parameter_hint="@string/copertura_qk_hint"
+        app:report_parameter_isNumber="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

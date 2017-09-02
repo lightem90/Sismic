@@ -11,6 +11,7 @@
         android:id="@+id/anno_costruzione_parameter"
         app:report_parameter_title="@string/anno_costruzione_parameter"
         app:report_parameter_hint="@string/anno_costruzione_parameter_hint"
+        app:report_parameter_isNumber="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
@@ -32,6 +33,7 @@
         android:id="@+id/totale_unità_parameter"
         app:report_parameter_title="@string/totale_unita_parameter"
         app:report_parameter_hint="@string/totale_unita_parameter_hint"
+        app:report_parameter_isNumber="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

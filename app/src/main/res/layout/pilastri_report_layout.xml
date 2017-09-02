@@ -121,6 +121,7 @@
         android:id="@+id/sezione_bx_parameter"
         app:report_parameter_title="@string/sezione_bx_parameter"
         app:report_parameter_hint="@string/sezione_bx_parameter_hint"
+        app:report_parameter_isNumber="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
@@ -128,6 +129,7 @@
         android:id="@+id/sezione_hy_parameter"
         app:report_parameter_title="@string/sezione_hy_parameter"
         app:report_parameter_hint="@string/sezione_hy_parameter_hint"
+        app:report_parameter_isNumber="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
@@ -135,20 +137,23 @@
         android:id="@+id/sezione_c_parameter"
         app:report_parameter_title="@string/sezione_c_parameter"
         app:report_parameter_hint="@string/sezione_c_parameter_hint"
+        app:report_parameter_isNumber="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
     <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
-        android:id="@+id/armatura_1"
-        app:report_parameter_title="@string/armatura_1"
-        app:report_parameter_hint="@string/armatura_1_hint"
+        android:id="@+id/armatura_longitudine"
+        app:report_parameter_title="@string/armatura_longitudine"
+        app:report_parameter_hint="@string/armatura_longitudine_hint"
+        app:report_parameter_isNumber="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
     <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
-        android:id="@+id/armatura_2"
-        app:report_parameter_title="@string/armatura_2"
-        app:report_parameter_hint="@string/armatura_2_hint"
+        android:id="@+id/armatura_fi"
+        app:report_parameter_title="@string/armatura_fi"
+        app:report_parameter_hint="@string/armatura_fi_hint"
+        app:report_parameter_isNumber="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

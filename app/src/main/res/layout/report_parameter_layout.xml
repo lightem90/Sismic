@@ -32,6 +32,7 @@
     <AutoCompleteTextView
         android:id="@+id/section_parameter_value"
         android:saveEnabled="false"
+        android:maxLines="1"
         style="@style/sectionParameterValue"/>
 
     <View style="@style/Divider"/>

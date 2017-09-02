@@ -5,6 +5,8 @@ import android.support.annotation.Nullable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Adapter
+import android.widget.AdapterView
 import com.polito.sismic.Extensions.toast
 import com.polito.sismic.R
 import kotlinx.android.synthetic.main.rilievi_report_layout.*
@@ -24,5 +26,17 @@ class RilieviReportFragment : BaseReportFragment() {
             context.toast(R.string.error_not_supported)
             regolare_in_altezza.isChecked = true
         }
+
+        piani_numero_parameter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+
+            override fun onItemSelected(parent: AdapterView<*>, mView: View?, pos: Int, id: Long) {
+                if (pos > 0)
+                    altezza_piani_sup_parameter.visibility = View.VISIBLE
+                else
+                    altezza_piani_sup_parameter.visibility = View.GONE
+            }
+            override fun onNothingSelected(parent: AdapterView<out Adapter>?) {  }
+        }
+
     }
 }

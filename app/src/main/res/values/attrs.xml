@@ -11,6 +11,7 @@
         <attr name="report_parameter_title" format="reference" />
         <attr name="report_parameter_hint" format="reference" />
         <attr name="report_parameter_text" format="reference" />
+        <attr name="report_parameter_isNumber" format="boolean" />
         <attr name="android:entries" />
     </declare-styleable>
 

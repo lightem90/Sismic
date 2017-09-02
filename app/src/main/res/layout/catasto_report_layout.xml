@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<!--
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -13,8 +14,12 @@
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         android:visibility="gone"/>
+        -->
 
-    <LinearLayout style="@style/scrollableLayout"
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        style="@style/scrollableLayout"
         android:id="@+id/catasto_container">
 
         <TextView
@@ -91,9 +96,10 @@
             app:report_parameter_hint="@string/report_vincoli_urb_parameter_hint"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-
-
-
     </LinearLayout>
 
+
+<!--
+
 </LinearLayout>
+    -->

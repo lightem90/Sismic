@@ -14,6 +14,7 @@ import kotlinx.android.synthetic.main.report_parameter_layout.view.*
 import android.widget.ArrayAdapter
 import android.os.Bundle
 import android.os.Parcelable
+import android.text.InputType
 
 
 /**
@@ -69,6 +70,9 @@ class ParameterReportLayout : LinearLayout{
                     .getResourceId(R.styleable.report_parameter_components_android_entries,
                             R.string.not_defined))
 
+            val isNumber = typedArray.getBoolean(R.styleable.report_parameter_components_report_parameter_isNumber, false)
+
+            section_parameter_value.inputType = if (isNumber) InputType.TYPE_NUMBER_FLAG_DECIMAL else InputType.TYPE_CLASS_TEXT
             section_parameter_title.text = title
             section_parameter_help.visibility = View.INVISIBLE
 

@@ -18,22 +18,23 @@ class CatastoReportFragment : BaseReportFragment() {
         return inflateFragment(R.layout.catasto_report_layout, inflater, container)
     }
 
-    private fun showProgress()
-    {
-        progress.visibility = View.VISIBLE
-        catasto_container.visibility = View.GONE
-    }
+    //private fun showProgress()
+    //{
+    //    progress.visibility = View.VISIBLE
+    //    catasto_container.visibility = View.GONE
+    //}
+//
+    //private fun hideProgress()
+    //{
+    //    progress.visibility = View.GONE
+    //    catasto_container.visibility = View.VISIBLE
+    //}
 
-    private fun hideProgress()
-    {
-        progress.visibility = View.GONE
-        catasto_container.visibility = View.VISIBLE
-    }
-
+    //TODO show progress
     override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback?) {
-        showProgress()
+        //showProgress()
         mNodeRequestCallback?.onClosedNodesCalculationRequested()
-        hideProgress()
+        //hideProgress()
         super.onNextClicked(callback)
     }
 }

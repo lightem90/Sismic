@@ -97,11 +97,11 @@
     <string name="report_aggr_str_parameter_hint">TODO</string>
     <string name="report_urbanistic_section_title">URBANISTICA</string>
     <string name="report_zona_urb_parameter">Zona di piano</string>
-    <string name="report_zona_urb_parameter_hint">TODO</string>
+    <string name="report_zona_urb_parameter_hint">Inserire zona di piano</string>
     <string name="report_piano_urb_parameter">Piano attuativo</string>
-    <string name="report_piano_urb_parameter_hint">TODO</string>
+    <string name="report_piano_urb_parameter_hint">Inserire piano attuativo</string>
     <string name="report_vincoli_urb_parameter">Vincoli</string>
-    <string name="report_vincoli_urb_parameter_hint">TODO</string>
+    <string name="report_vincoli_urb_parameter_hint">Inserire vincoli urbani</string>
     <string name="permission_denied">Permesso alla localizzazione negato</string>
     <string name="report_datisismogenetici_title">DATI SISMOGENETICI</string>
     <string name="report_datisimogenetici_coordinate_label">Coordinate</string>
@@ -151,8 +151,10 @@
     <string name="report_rilievo_interno_title">RILIEVO PLANIMETRICO ESTERNO</string>
     <string name="piani_numero_parameter">Numero piani</string>
     <string name="piani_numero_parameter_hint">Inserire numero piani</string>
-    <string name="altezza_piano_parameter_hint">Inserisci l\'altezza di un singolo piano</string>
-    <string name="altezza_piano_parameter">Altezza piano</string>
+    <string name="altezza_piano_tr_parameter_hint">Inserisci l\'altezza del piano terra</string>
+    <string name="altezza_piano_tr_parameter">Altezza piano terra</string>
+    <string name="altezza_piani_sup_parameter_hint">Inserisci l\'altezza dei piani superiori</string>
+    <string name="altezza_piani_sup_parameter">Altezza piani superiori</string>
     <string name="lunghezza_piano_parameter">Lunghezza</string>
     <string name="lunghezza_piano_parameter_hint">L(x) [m]</string>
     <string name="larghezza_piano_parameter_hint">L(y) [m]</string>
@@ -270,6 +272,10 @@
     <string name="copertura_type_title">Tipo copertura</string>
     <string name="error_media_audio">Impossibile salvare nota audio</string>
     <string name="categoria_moltiplicatore_parameter">αu/α1</string>
+    <string name="armatura_fi">ϕ</string>
+    <string name="armatura_fi_hint">Inserire phi</string>
+    <string name="armatura_longitudine">Longitudine armatura</string>
+    <string name="armatura_longitudine_hint">Inserire longitudine</string>
 
 
 </resources>
