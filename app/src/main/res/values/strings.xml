@@ -279,6 +279,7 @@
     <string name="report_filename_dialog">Nome file</string>
     <string name="confirm_filename">Conferma</string>
     <string name="discard_filename">Cancella</string>
+    <string name="calculating_neighbours_node">Calcolando nodi vicini...</string>
 
 
 </resources>

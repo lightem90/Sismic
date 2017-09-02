@@ -155,8 +155,8 @@ class InfoLocReportFragment : BaseReportFragment(){
 
     fun updateByLocation(location: Location)
     {
-        lat_parameter.setParameterValue("%.4f".format(location.latitude))
-        long_parameter.setParameterValue("%.4f".format(location.longitude))
+        lat_parameter.setParameterValue("%.3f".format(location.latitude))
+        long_parameter.setParameterValue("%.3f".format(location.longitude))
         country_parameter.setParameterValue("italia")
         region_parameter.setParameterValue("marche")
         province_parameter.setParameterValue("pesaro")

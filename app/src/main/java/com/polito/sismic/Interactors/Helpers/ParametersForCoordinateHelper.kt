@@ -9,9 +9,11 @@ import java.math.BigDecimal
 //Could work with classes but with indexes is faster
 class ParametersForCoordinateHelper(val mContext : Context) {
 
+    //DB precision for lat and long is 3 decimal
     companion object {
 
-        val SENSIBILITY = 0.025
+        //elements are very far in the database
+        val SENSIBILITY = 0.25
         fun distFrom(lat1: Double, lng1: Double, lat2: Double, lng2: Double): Double {
             val earthRadius = 6371000.0 //meters
             val dLat = Math.toRadians((lat2 - lat1))
@@ -217,9 +219,10 @@ class ParametersForCoordinateHelper(val mContext : Context) {
 
     private fun calulateDistance(pair1 : Pair<Double, Double>, pair2 : Pair<Double, Double>) : Pair<Double, Int>
     {
-        val xDiff = BigDecimal(pair1.first - pair2.first).setScale(6, BigDecimal.ROUND_DOWN);
-        val yDiff = BigDecimal(pair1.second - pair2.second).setScale(6, BigDecimal.ROUND_DOWN);
-        val zero = BigDecimal(0).setScale(6, BigDecimal.ROUND_DOWN);
+        //db precision is 3 decimal, we check 4
+        val xDiff = BigDecimal(pair1.first - pair2.first).setScale(4, BigDecimal.ROUND_DOWN);
+        val yDiff = BigDecimal(pair1.second - pair2.second).setScale(4, BigDecimal.ROUND_DOWN);
+        val zero = BigDecimal(0).setScale(4, BigDecimal.ROUND_DOWN);
         val distX = Math.abs(xDiff.toDouble())
         val distY = Math.abs(yDiff.toDouble())
         //distance and quadrant

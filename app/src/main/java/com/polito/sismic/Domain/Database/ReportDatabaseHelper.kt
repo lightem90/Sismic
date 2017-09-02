@@ -2,7 +2,7 @@ package com.polito.sismic.Domain.Database
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
-import com.polito.sismic.Presenters.App
+import com.polito.sismic.App
 import org.jetbrains.anko.db.*
 
 /**

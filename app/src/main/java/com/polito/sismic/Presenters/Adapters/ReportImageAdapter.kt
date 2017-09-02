@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
-import com.bumptech.glide.Glide
 import com.polito.sismic.Domain.ReportMedia
+import com.polito.sismic.GlideApp
 
 
 /**
@@ -42,10 +42,11 @@ class ReportImageAdapter (private val imageList : List<ReportMedia>,
             imageView = convertView as ImageView
         }
 
-        Glide.with(mContext)
+        GlideApp.with(mContext)
+                .asBitmap()
                 .load(Uri.parse(imageList[position].url))
-                //.resize(750, 750)
-                //.centerCrop()
+                .override(750, 750)
+                .centerCrop()
                 .into(imageView)
 
         //TODO: girarle!

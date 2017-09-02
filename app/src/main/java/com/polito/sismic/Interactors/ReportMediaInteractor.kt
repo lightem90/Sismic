@@ -33,25 +33,25 @@ class ReportMediaInteractor(val mReportManager: ReportManager,
             MediaType.Picture ->
             {
                 prefix += "JPEG_"
-                suffix = "\".jpg\""
+                suffix = ".jpg"
                 storageDir = mContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
             }
             MediaType.Video ->
             {
                 prefix += "MP4_"
-                suffix = "\".mp4\""
+                suffix = ".mp4"
                 storageDir = mContext.getExternalFilesDir(Environment.DIRECTORY_MOVIES)
             }
             MediaType.Audio ->
             {
                 prefix += "MP3_"
-                suffix = "\".mp3\""
+                suffix = ".mp3"
                 storageDir = mContext.getExternalFilesDir(Environment.DIRECTORY_MUSIC)
             }
             MediaType.Sketch ->
             {
                 prefix += "PNG_"
-                suffix = "\".png\""
+                suffix = ".png"
                 storageDir = mContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
             }
             MediaType.Note ->

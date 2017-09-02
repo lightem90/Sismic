@@ -1,4 +1,4 @@
-package com.polito.sismic.Presenters
+package com.polito.sismic
 
 import android.app.Application
 import com.polito.sismic.Extensions.DelegatesExt

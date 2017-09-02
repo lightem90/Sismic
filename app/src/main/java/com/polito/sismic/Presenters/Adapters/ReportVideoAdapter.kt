@@ -9,6 +9,7 @@ import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.polito.sismic.Domain.ReportMedia
 import com.polito.sismic.Extensions.toUri
+import com.polito.sismic.GlideApp
 
 
 /**
@@ -47,8 +48,10 @@ class ReportVideoAdapter (private val videoList: List<ReportMedia>,
         //        MediaStore.Images.Thumbnails.MINI_KIND)\
         //imageView.setImageBitmap(thumb)\
 
-        Glide.with(mContext)
+        GlideApp.with(mContext)
+                .asBitmap()
                 .load(videoList[position].url.toUri())
+                .override(750, 750)
                 .into(imageView)
 
         return imageView
