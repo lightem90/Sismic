@@ -18,9 +18,10 @@ class DatabaseMapperHelper
             is DatabaseParametriSismici -> return convertParametriSismiciToDomain(section)
             is DatabaseParametriSpettri -> return convertParametriSpettriToDomain(section)
             is DatabaseCaratteristicheGenerali -> return convertCaratteristicheGeneraliToDomain(section)
-            //TODO rilievi
+            is DatabaseRilievi -> return convertRilieviToDomain(section)
             is DatabaseDatiStrutturali -> return convertDatiStrutturaliToDomain(section)
             is DatabaseCaratteristichePilastri -> return convertCaratteristichePilastriToDomain(section)
+            //TODO maglia strutturale
         }
 
         return null
@@ -36,13 +37,22 @@ class DatabaseMapperHelper
             is ParametriSismiciReportSection -> return convertParametriSismiciFromDomain(reportId, section)
             is SpettriProgettoReportSection -> return convertSpettriProgettoFromDomain(reportId, section)
             is CaratteristicheGeneraliReportSection -> return convertCaratteristicheGeneraliFromDomain(reportId, section)
-            //TODO rilievi
+            is RilieviReportSection -> return convertRilieviReportSectionFromDomain(reportId, section)
             is DatiStrutturaliReportSection -> return convertDatiStrutturaliFromDomain(reportId, section)
             is CaratteristichePilastriReportSection -> return convertCaratteristichePilastriFromDomain(reportId, section)
+        //TODO maglia strutturale
 
         }
 
         return null
+    }
+
+    private fun convertRilieviReportSectionFromDomain(reportId: Int, rilieviReportSection: RilieviReportSection): DatabaseSection? = with(rilieviReportSection) {
+        return DatabaseRilievi(numero_piani, altezza_piano_terra, altezza_piani_superiori, altezza_totale, lunghezza_esterna, larghezza_esterna, reportId)
+    }
+
+    private fun convertRilieviToDomain(databaseRilievi: DatabaseRilievi): ReportSection? = with (databaseRilievi){
+        return RilieviReportSection(_id, numero_piani, altezza_piano_terra, altezza_piani_superiori, altezza_totale, lunghezza_esterna,larghezza_esterna)
     }
 
     private fun convertDatiStrutturaliFromDomain(reportId: Int, datiStrutturaliReportSection: DatiStrutturaliReportSection): DatabaseSection? = with(datiStrutturaliReportSection){
@@ -113,7 +123,8 @@ class DatabaseMapperHelper
     }
 
     private fun convertDatiSismogeneticiFromDomain(reportId : Int, datiSismogeneticiSection: DatiSimogeneticiReportSection): DatabaseSection? = with(datiSismogeneticiSection){
-        return DatabaseDatiSismogenetici(datiSismogeneticiSection.closedNodeData[0].id.toInt(),
+        return DatabaseDatiSismogenetici(
+                datiSismogeneticiSection.closedNodeData[0].id.toInt(),
                 datiSismogeneticiSection.closedNodeData[0].latitude,
                 datiSismogeneticiSection.closedNodeData[0].longitude,
                 datiSismogeneticiSection.closedNodeData[0].distance,

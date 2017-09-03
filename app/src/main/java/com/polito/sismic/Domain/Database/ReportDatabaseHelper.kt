@@ -129,6 +129,16 @@ class ReportDatabaseHelper(ctx: Context = App.instance) : ManagedSQLiteOpenHelpe
                         CaratteristicheGeneraliInfoTable.REPORT_ID to INTEGER)
         )
 
+        db.createTable(RilieviInfoTable.NAME, ifNotExists = true,
+                columns = *arrayOf(RilieviInfoTable.ID to SqlType.create("INTEGER PRIMARY KEY AUTOINCREMENT"),
+                        RilieviInfoTable.NUMERO_PIANI to INTEGER,
+                        RilieviInfoTable.ALTEZZA_PIANO_TERRA to REAL,
+                        RilieviInfoTable.ALTEZZA_PIANI_SUPERIORI to REAL,
+                        RilieviInfoTable.ALTEZZA_TOT to REAL,
+                        RilieviInfoTable.LUNGHEZZA_EST to REAL,
+                        RilieviInfoTable.LARGHEZZA_EST to REAL,
+                        RilieviInfoTable.REPORT_ID to INTEGER)
+        )
 
         db.createTable(DatiStrutturaliInfoTable.NAME, ifNotExists = true,
                 columns = *arrayOf(DatiStrutturaliInfoTable.ID to SqlType.create("INTEGER PRIMARY KEY AUTOINCREMENT"),
@@ -172,6 +182,7 @@ class ReportDatabaseHelper(ctx: Context = App.instance) : ManagedSQLiteOpenHelpe
         db.dropTable(ParametriSismiciInfoTable.NAME, true)
         db.dropTable(SpettriDiProgettoInfoTable.NAME, true)
         db.dropTable(CaratteristicheGeneraliInfoTable.NAME, true)
+        db.dropTable(RilieviInfoTable.NAME, true)
         db.dropTable(DatiStrutturaliInfoTable.NAME, true)
         db.dropTable(CaratteristichePilastriInfoTable.NAME, true)
         db.dropTable(ReportMediaTable.NAME, true)

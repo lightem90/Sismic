@@ -89,6 +89,10 @@ class DatabaseInteractor(val reportDatabaseHelper: ReportDatabaseHelper = Report
                 .byReportId(reportID)
                 .parseOpt  { DatabaseCaratteristichePilastri(HashMap(it)) }
 
+        val rilieviInfo = select(RilieviInfoTable.NAME)
+                .byReportId(reportID)
+                .parseOpt {DatabaseRilievi(HashMap(it))}
+
         //TODO, add others!
 
         val sectionList = listOf(databaseLocalizationInfo,
@@ -98,7 +102,8 @@ class DatabaseInteractor(val reportDatabaseHelper: ReportDatabaseHelper = Report
                 spettriDiProgettoInfo,
                 caratteristicheGeneraliInfo,
                 datiStrutturaliInfo,
-                caratteristichePilastriInfo)
+                caratteristichePilastriInfo,
+                rilieviInfo)
 
         databaseReportDetails?.let { dataMapper.convertReportToDomain(DatabaseReport(
                 databaseReportDetails,
@@ -129,6 +134,7 @@ class DatabaseInteractor(val reportDatabaseHelper: ReportDatabaseHelper = Report
         clear(ParametriSismiciInfoTable.NAME)
         clear(SpettriDiProgettoInfoTable.NAME)
         clear(CaratteristicheGeneraliInfoTable.NAME)
+        clear(RilieviInfoTable.NAME)
         clear(DatiStrutturaliInfoTable.NAME)
         clear(CaratteristichePilastriInfoTable.NAME)
     }
@@ -158,6 +164,7 @@ class DatabaseInteractor(val reportDatabaseHelper: ReportDatabaseHelper = Report
             delete(CaratteristicheGeneraliInfoTable.NAME, "${CaratteristicheGeneraliInfoTable.REPORT_ID} = ?", arrayOf(_id.toString()))
             delete(SpettriDiProgettoInfoTable.NAME, "${SpettriDiProgettoInfoTable.REPORT_ID} = ?", arrayOf(_id.toString()))
             delete(DatiStrutturaliInfoTable.NAME, "${DatiStrutturaliInfoTable.REPORT_ID} = ?", arrayOf(_id.toString()))
+            delete(RilieviInfoTable.NAME, "${DatiStrutturaliInfoTable.REPORT_ID} = ?", arrayOf(_id.toString()))
             delete(CaratteristichePilastriInfoTable.NAME, "${CaratteristichePilastriInfoTable.REPORT_ID} = ?", arrayOf(_id.toString()))
         }
     }
@@ -190,6 +197,10 @@ class DatabaseInteractor(val reportDatabaseHelper: ReportDatabaseHelper = Report
                 is DatabaseCaratteristichePilastri ->
                 {
                     insert(CaratteristichePilastriInfoTable.NAME, *section.map.toVarargArray())
+                }
+                is DatabaseRilievi->
+                {
+                    insert(RilieviInfoTable.NAME, *section.map.toVarargArray())
                 }
             }
         }

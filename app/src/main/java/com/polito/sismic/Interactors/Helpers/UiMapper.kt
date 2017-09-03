@@ -44,6 +44,7 @@ class UiMapper {
                         zona_urb_parameter.getParameterValue(),
                         vincoli_urb_parameter.getParameterValue())
             }
+            //TODO gli altri
         }
 
         return ErroreSection("error")
@@ -55,6 +56,11 @@ class UiMapper {
         {
             is InfoLocReportFragment -> return sectionList.filterIsInstance<LocalizationInfoSection>().firstOrNull()
             is CatastoReportFragment -> return sectionList.filterIsInstance<CatastoReportSection>().firstOrNull()
+            is DatiSismoGeneticiReportFragment -> return sectionList.filterIsInstance<DatiSimogeneticiReportSection>().firstOrNull()
+            is ParametriSismiciReportFragment -> return sectionList.filterIsInstance<ParametriSismiciReportSection>().firstOrNull()
+            is SpettriDiProgettoReportFragment-> return sectionList.filterIsInstance<SpettriProgettoReportSection>().firstOrNull()
+            is DatiGeneraliReportFragment -> return sectionList.filterIsInstance<CaratteristicheGeneraliReportSection>().firstOrNull()
+            is RilieviReportFragment -> return sectionList.filterIsInstance<RilieviReportSection>().firstOrNull()
         }
 
         return null
@@ -95,7 +101,7 @@ class UiMapper {
                     vincoli_urb_parameter.setParameterValue(catastoSection.vincoli_urb)
                 }
             }
-
+            //TODO
             else -> {
             }
         }

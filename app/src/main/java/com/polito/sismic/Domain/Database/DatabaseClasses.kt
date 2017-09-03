@@ -275,6 +275,36 @@ data class DatabaseCaratteristicheGenerali(var map: MutableMap<String, Any?>) : 
     }
 }
 
+data class DatabaseRilievi(var map: MutableMap<String, Any?>) : DatabaseSection
+{
+    var _id : Int by map
+    var numero_piani : Int by map
+    var altezza_piano_terra : Double by map
+    var altezza_piani_superiori : Double by map
+    var altezza_totale  : Double by map
+    var lunghezza_esterna : Double by map
+    var larghezza_esterna : Double by map
+    var report_id : Int by map
+
+    constructor(numero_piani : Int,
+                altezza_piano_terra : Double,
+                altezza_piani_superiori : Double,
+                altezza_totale : Double,
+                lunghezza_esterna : Double,
+                larghezza_esterna : Double,
+                report_id : Int)
+            : this (HashMap())
+    {
+        this.numero_piani = numero_piani
+        this.altezza_piano_terra = altezza_piano_terra
+        this.altezza_piani_superiori = altezza_piani_superiori
+        this.altezza_totale = altezza_totale
+        this.lunghezza_esterna = lunghezza_esterna
+        this.larghezza_esterna = larghezza_esterna
+        this.report_id = report_id
+    }
+}
+
 data class DatabaseDatiStrutturali(var map: MutableMap<String, Any?>) : DatabaseSection
 {
     var _id: Int by map

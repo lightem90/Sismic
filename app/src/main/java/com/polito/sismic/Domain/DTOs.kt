@@ -403,6 +403,44 @@ data class CaratteristicheGeneraliReportSection(val id: Int,
     }
 }
 
+data class RilieviReportSection(val id: Int,
+                                val numero_piani: Int,
+                                val altezza_piano_terra: Double,
+                                val altezza_piani_superiori: Double,
+                                val altezza_totale: Double,
+                                val lunghezza_esterna: Double,
+                                val larghezza_esterna: Double) : ReportSection, Parcelable {
+    constructor(source: Parcel) : this(
+            source.readInt(),
+            source.readInt(),
+            source.readDouble(),
+            source.readDouble(),
+            source.readDouble(),
+            source.readDouble(),
+            source.readDouble()
+    )
+
+    override fun describeContents() = 0
+
+    override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
+        writeInt(id)
+        writeInt(numero_piani)
+        writeDouble(altezza_piano_terra)
+        writeDouble(altezza_piani_superiori)
+        writeDouble(altezza_totale)
+        writeDouble(lunghezza_esterna)
+        writeDouble(larghezza_esterna)
+    }
+
+    companion object {
+        @JvmField
+        val CREATOR: Parcelable.Creator<RilieviReportSection> = object : Parcelable.Creator<RilieviReportSection> {
+            override fun createFromParcel(source: Parcel): RilieviReportSection = RilieviReportSection(source)
+            override fun newArray(size: Int): Array<RilieviReportSection?> = arrayOfNulls(size)
+        }
+    }
+}
+
 data class DatiStrutturaliReportSection(val id: Int,
                                         val tipo_fondazioni: String,
                                         val altezza_fondazioni: Double,
@@ -415,7 +453,7 @@ data class DatiStrutturaliReportSection(val id: Int,
                                         val peso_copertura: String,
                                         val g1_copertura: Double,
                                         val g2_copertura: Double,
-                                        val qk_copertura: Double) : ReportSection, Parcelable {
+                                        val qk_copertura: Double) : ReportSection {
     constructor(source: Parcel) : this(
             source.readInt(),
             source.readString(),

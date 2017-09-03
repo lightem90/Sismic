@@ -128,6 +128,19 @@ object CaratteristicheGeneraliInfoTable
     val REPORT_ID               = "report_id"
 }
 
+object RilieviInfoTable
+{
+    val NAME = "DatiStrutturali"
+    val ID                        = "_id"
+    val NUMERO_PIANI              = "numero_piani"
+    val ALTEZZA_PIANO_TERRA       = "altezza_piano_terra"
+    val ALTEZZA_PIANI_SUPERIORI   = "altezza_piani_superiori"
+    val ALTEZZA_TOT               = "altezza_totale"
+    val LUNGHEZZA_EST             = "lunghezza_esterna"
+    val LARGHEZZA_EST             = "larghezza_esterna"
+    val REPORT_ID                 = "report_id"
+}
+
 object DatiStrutturaliInfoTable
 {
     val NAME = "DatiStrutturali"

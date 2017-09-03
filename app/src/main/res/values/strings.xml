@@ -280,6 +280,7 @@
     <string name="confirm_filename">Conferma</string>
     <string name="discard_filename">Cancella</string>
     <string name="calculating_neighbours_node">Calcolo nodi vicini...</string>
+    <string name="altezza_tot">Altezza totale:</string>
 
 
 </resources>

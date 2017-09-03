@@ -34,9 +34,21 @@ class RilieviReportFragment : BaseReportFragment() {
                     altezza_piani_sup_parameter.visibility = View.VISIBLE
                 else
                     altezza_piani_sup_parameter.visibility = View.GONE
+
+                updateAltezzaTotale()
             }
             override fun onNothingSelected(parent: AdapterView<out Adapter>?) {  }
         }
 
+        altezza_piano_tr_parameter.attachDataConfirmedCallback { updateAltezzaTotale() }
+        altezza_piani_sup_parameter.attachDataConfirmedCallback { updateAltezzaTotale() }
+
+    }
+
+    private fun updateAltezzaTotale()
+    {
+        altezza_tot.text  = if (piani_numero_parameter.selectedItemPosition > 0)
+            (altezza_piano_tr_parameter.getParameterValue().toDouble() + piani_numero_parameter.selectedItemPosition * altezza_piani_sup_parameter.getParameterValue().toDouble()).toString()
+            else altezza_piano_tr_parameter.getParameterValue()
     }
 }
