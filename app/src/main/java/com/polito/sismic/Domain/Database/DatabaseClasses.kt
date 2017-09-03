@@ -222,18 +222,22 @@ data class DatabaseParametriSismici(var map: MutableMap<String, Any?>) : Databas
 data class DatabaseParametriSpettri(var map: MutableMap<String, Any?>) : DatabaseSection {
 
     var _id: Int by map
-    var categoria_suolo : Int by map
-    var categoria_topografica : Int by map
-    var classe_duttilita : Int by map
+    var categoria_suolo : String by map
+    var categoria_topografica : String by map
+    var classe_duttilita : String by map
+    var q0 : Double by map
+    var alfa : Double by map
     var ss : Double by map
     var cc : Double by map
     var st : Double by map
     var s : Double by map
     var report_id : Int by map
 
-    constructor(categoria_suolo : Int,
-            categoria_topografica : Int,
-            classe_duttilita : Int,
+    constructor(categoria_suolo : String,
+            categoria_topografica : String,
+            classe_duttilita : String,
+            q0 : Double,
+            alfa : Double,
             ss : Double,
             cc : Double,
             st : Double,
@@ -243,6 +247,8 @@ data class DatabaseParametriSpettri(var map: MutableMap<String, Any?>) : Databas
         this.categoria_suolo = categoria_suolo
         this.categoria_topografica = categoria_topografica
         this.classe_duttilita = classe_duttilita
+        this.q0 = q0
+        this.alfa = alfa
         this.ss = ss
         this.cc = cc
         this.st = st
@@ -308,7 +314,7 @@ data class DatabaseRilievi(var map: MutableMap<String, Any?>) : DatabaseSection
 data class DatabaseDatiStrutturali(var map: MutableMap<String, Any?>) : DatabaseSection
 {
     var _id: Int by map
-    var tipo_fondazioni : String by map
+    var tipo_fondazioni : Int by map
     var altezza_fondazioni : Double by map
     var tipo_solaio : String by map
     var peso_solaio : String by map
@@ -322,7 +328,7 @@ data class DatabaseDatiStrutturali(var map: MutableMap<String, Any?>) : Database
     var qk_copertura : Double by map
     var report_id : Int by map
 
-    constructor(tipo_fondazioni : String,
+    constructor(tipo_fondazioni : Int,
             altezza_fondazioni : Double,
             tipo_solaio : String,
             peso_solaio : String,

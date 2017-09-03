@@ -80,11 +80,11 @@ class DatabaseMapperHelper
     }
 
     private fun convertParametriSpettriToDomain(databaseParametriSpettri: DatabaseParametriSpettri): ReportSection? = with (databaseParametriSpettri){
-        return SpettriProgettoReportSection(_id, categoria_suolo, categoria_topografica, classe_duttilita, cc, ss, st, s)
+        return SpettriProgettoReportSection(_id, categoria_suolo, categoria_topografica, classe_duttilita, q0, alfa, cc, ss, st, s)
     }
 
     private fun convertSpettriProgettoFromDomain(reportId: Int, spettriProgettoReportSection: SpettriProgettoReportSection): DatabaseSection?  = with (spettriProgettoReportSection){
-        return DatabaseParametriSpettri(categoria_suolo, categoria_topografica, classe_duttilita, ss, cc, st, s, reportId)
+        return DatabaseParametriSpettri(categoria_suolo, categoria_topografica, classe_duttilita, q0, alfa, ss, cc, st, s, reportId)
     }
 
     private fun convertCatastDataFromDomain(reportId: Int, section: CatastoReportSection): DatabaseSection? = with (section){

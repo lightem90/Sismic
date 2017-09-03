@@ -13,6 +13,8 @@ import kotlinx.android.synthetic.main.spettri_progetto_report_layout.*
 
 class SpettriDiProgettoReportFragment : BaseReportFragment() {
 
+    var q0 : Double = 1.0
+    var alfa : Double = 1.0
     override fun onCreateView(inflater: LayoutInflater?, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View? {
         return inflateFragment(R.layout.spettri_progetto_report_layout, inflater, container)
     }
@@ -75,5 +77,20 @@ class SpettriDiProgettoReportFragment : BaseReportFragment() {
                 categoria_moltiplicatore_parameter_container.visibility = View.GONE
             }
         }
+    }
+
+    fun selectCategoriaSuolo(categoria_suolo: String) {
+        //iterates all spinners element looking for the category requested
+        (0..categoria_suolo_parameter.count)
+                .firstOrNull { categoria_suolo_parameter.getItemAtPosition(it).equals(categoria_suolo) }
+                ?.let { return categoria_suolo_parameter.setSelection(it)}
+    }
+
+    fun selectCategoriaTopografica(categoria_topografica: String)
+    {
+        //iterates all spinners element looking for the category requested
+        (0..categoria_suolo_parameter.count)
+                .firstOrNull { categoria_topografica_parameter.getItemAtPosition(it) == categoria_topografica }
+                ?.let { return categoria_suolo_parameter.setSelection(it)}
     }
 }

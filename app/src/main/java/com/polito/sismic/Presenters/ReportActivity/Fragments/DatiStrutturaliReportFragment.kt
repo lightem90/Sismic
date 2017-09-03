@@ -63,4 +63,46 @@ class DatiStrutturaliReportFragment : BaseReportFragment() {
         copertura_type.setOnClickListener { context.toast(R.string.error_not_supported) }
         solaio_type.setOnClickListener { context.toast(R.string.error_not_supported) }
     }
+
+    fun getTipoFondazioni(): Int {
+
+        return when
+        {
+            fondazioni_type_platea.isChecked -> 0
+            fondazioni_type_trave.isChecked -> 1
+            fondazioni_type_plinti.isChecked -> 2
+            else -> 0
+        }
+    }
+
+    fun setTipoFondazioni(tipo : Int)
+    {
+        fondazioni_type_platea.isChecked = false
+        fondazioni_type_trave.isChecked  = false
+        fondazioni_type_plinti.isChecked  = false
+
+        when (tipo)
+        {
+            0 -> fondazioni_type_platea.isChecked = true
+            1 -> fondazioni_type_trave.isChecked = true
+            2 -> fondazioni_type_plinti.isChecked = true
+            else -> fondazioni_type_platea.isChecked = true
+        }
+    }
+
+    fun setPesoSolaioByValue(peso_solaio: String) {
+
+        //iterates all spinners element looking for the category requested
+        (0..solaio_peso.count)
+                .firstOrNull { solaio_peso.getItemAtPosition(it) == peso_solaio }
+                ?.let { return solaio_peso.setSelection(it)}
+    }
+
+    fun setPesoCoperturaByValue(peso_copertura: String) {
+
+        //iterates all spinners element looking for the category requested
+        (0..copertura_peso.count)
+                .firstOrNull { copertura_peso.getItemAtPosition(it) == peso_copertura }
+                ?.let { return copertura_peso.setSelection(it)}
+    }
 }

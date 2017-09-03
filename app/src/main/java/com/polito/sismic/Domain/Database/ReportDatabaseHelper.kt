@@ -111,6 +111,8 @@ class ReportDatabaseHelper(ctx: Context = App.instance) : ManagedSQLiteOpenHelpe
                         SpettriDiProgettoInfoTable.CATEGORIA_SUOLO to TEXT,
                         SpettriDiProgettoInfoTable.CATEGORIA_TOPOGRAFICA to TEXT,
                         SpettriDiProgettoInfoTable.CLASSE_DUTTILITA to TEXT,
+                        SpettriDiProgettoInfoTable.Q0 to REAL,
+                        SpettriDiProgettoInfoTable.ALFA to REAL,
                         SpettriDiProgettoInfoTable.SLO to REAL,
                         SpettriDiProgettoInfoTable.SS to REAL,
                         SpettriDiProgettoInfoTable.CC to REAL,
@@ -142,7 +144,7 @@ class ReportDatabaseHelper(ctx: Context = App.instance) : ManagedSQLiteOpenHelpe
 
         db.createTable(DatiStrutturaliInfoTable.NAME, ifNotExists = true,
                 columns = *arrayOf(DatiStrutturaliInfoTable.ID to SqlType.create("INTEGER PRIMARY KEY AUTOINCREMENT"),
-                        DatiStrutturaliInfoTable.TIPO_FONDAZIONI to TEXT,
+                        DatiStrutturaliInfoTable.TIPO_FONDAZIONI to INTEGER,
                         DatiStrutturaliInfoTable.ALTEZZA_FONDAZIONI to REAL,
                         DatiStrutturaliInfoTable.TIPO_SOLAIO to TEXT,
                         DatiStrutturaliInfoTable.PESO_SOLAIO to TEXT,

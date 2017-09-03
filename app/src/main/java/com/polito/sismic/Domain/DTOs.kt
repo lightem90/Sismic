@@ -331,18 +331,22 @@ data class ParametriSismiciReportSection(val id: Int,
 }
 
 data class SpettriProgettoReportSection(val id: Int,
-                                        val categoria_suolo: Int,
-                                        val categoria_topografica: Int,
-                                        val classe_duttilita: Int,
+                                        val categoria_suolo: String,
+                                        val categoria_topografica: String,
+                                        val classe_duttilita: String,
+                                        val q0 : Double,
+                                        val alfa: Double,
                                         val ss: Double,
                                         val cc: Double,
                                         val st: Double,
                                         val s: Double) : ReportSection {
     constructor(source: Parcel) : this(
             source.readInt(),
-            source.readInt(),
-            source.readInt(),
-            source.readInt(),
+            source.readString(),
+            source.readString(),
+            source.readString(),
+            source.readDouble(),
+            source.readDouble(),
             source.readDouble(),
             source.readDouble(),
             source.readDouble(),
@@ -353,9 +357,11 @@ data class SpettriProgettoReportSection(val id: Int,
 
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
         writeInt(id)
-        writeInt(categoria_suolo)
-        writeInt(categoria_topografica)
-        writeInt(classe_duttilita)
+        writeString(categoria_suolo)
+        writeString(categoria_topografica)
+        writeString(classe_duttilita)
+        writeDouble(q0)
+        writeDouble(alfa)
         writeDouble(ss)
         writeDouble(cc)
         writeDouble(st)
@@ -442,7 +448,7 @@ data class RilieviReportSection(val id: Int,
 }
 
 data class DatiStrutturaliReportSection(val id: Int,
-                                        val tipo_fondazioni: String,
+                                        val tipo_fondazioni: Int,
                                         val altezza_fondazioni: Double,
                                         val tipo_solaio: String,
                                         val peso_solaio: String,
@@ -456,7 +462,7 @@ data class DatiStrutturaliReportSection(val id: Int,
                                         val qk_copertura: Double) : ReportSection {
     constructor(source: Parcel) : this(
             source.readInt(),
-            source.readString(),
+            source.readInt(),
             source.readDouble(),
             source.readString(),
             source.readString(),
@@ -474,7 +480,7 @@ data class DatiStrutturaliReportSection(val id: Int,
 
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
         writeInt(id)
-        writeString(tipo_fondazioni)
+        writeInt(tipo_fondazioni)
         writeDouble(altezza_fondazioni)
         writeString(tipo_solaio)
         writeString(peso_solaio)

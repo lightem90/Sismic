@@ -78,7 +78,7 @@ class ParametriSismiciReportFragment : BaseReportFragment() {
         vita_reale.setValue((getClasseUsoForIndex(classeUso) * getVitaNominale()).toString())
     }
 
-    private fun getClasseUsoForIndex(index : Int) : Double
+    fun getClasseUsoForIndex(index : Int) : Double
     {
         when(index)
         {
@@ -91,12 +91,38 @@ class ParametriSismiciReportFragment : BaseReportFragment() {
         return -1.0
     }
 
-    private fun getVitaNominale() : Int
+    fun getClasseUsoIndexByValue(classeValue : Double) : Int
+    {
+        return when (classeValue)
+        {
+            0.7 -> 0
+            1.0 -> 1
+            1.5 -> 2
+            2.0 -> 3
+            else -> 0
+        }
+    }
+
+    fun getVitaNominale() : Int
     {
         if (vita_nominale_30.isChecked) return 30
         if (vita_nominale_50.isChecked) return 50
         if (vita_nominale_100.isChecked) return 100
-        return -1
+        return 30
+    }
+
+    fun setVitaNominale(vita : Int)
+    {
+        vita_nominale_30.isChecked = false
+        vita_nominale_50.isChecked = false
+        vita_nominale_100.isChecked = false
+
+        when (vita) {
+            30 ->  vita_nominale_30.isChecked = true
+            50 ->  vita_nominale_50.isChecked = true
+            100 -> vita_nominale_100.isChecked = true
+            else -> vita_nominale_30.isChecked = true
+        }
     }
 }
 

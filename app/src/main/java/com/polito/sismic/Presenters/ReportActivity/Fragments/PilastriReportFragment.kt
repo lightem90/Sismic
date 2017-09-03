@@ -114,7 +114,57 @@ class PilastriReportFragment : BaseReportFragment() {
                 acc_classe_parameter_C.isClickable = true
             }
         }
+    }
 
+    fun getConoscenzaCalcestruzzo() : Int
+    {
+        return when
+        {
+            calc_classe_res_parameter_lc1.isChecked -> 0
+            calc_classe_res_parameter_lc2.isChecked -> 1
+            calc_classe_res_parameter_lc3.isChecked -> 2
+            else -> 0
+        }
+    }
 
+    fun getConoscenzaAcciaio() : Int
+    {
+        return when
+        {
+            acc_classe_res_parameter_lc1.isChecked -> 0
+            acc_classe_res_parameter_lc2.isChecked -> 1
+            acc_classe_res_parameter_lc3.isChecked -> 2
+            else -> 0
+        }
+    }
+
+    fun setConoscenzaCalcestruzzo(con : Int)
+    {
+        when (con)
+        {
+            0 -> calc_classe_res_parameter_lc1.isChecked = true
+            1 -> calc_classe_res_parameter_lc2.isChecked = true
+            2 -> calc_classe_res_parameter_lc3.isChecked = true
+            else -> acc_classe_res_parameter_lc1.isChecked = true
+        }
+    }
+
+    fun setConoscenzaAcciaio(con : Int)
+    {
+        when (con)
+        {
+            0 -> acc_classe_res_parameter_lc1.isChecked = true
+            1 -> acc_classe_res_parameter_lc2.isChecked = true
+            2 -> acc_classe_res_parameter_lc3.isChecked = true
+            else -> acc_classe_res_parameter_lc1.isChecked = true
+        }
+    }
+
+    fun setCalcestruzzoClasseByValue(classe_calcestruzzo: String) {
+
+        //iterates all spinners element looking for the category requested
+        (0..calc_classe_parameter.count)
+                .firstOrNull { calc_classe_parameter.getItemAtPosition(it) == classe_calcestruzzo }
+                ?.let { return calc_classe_parameter.setSelection(it)}
     }
 }

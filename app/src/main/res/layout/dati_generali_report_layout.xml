@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"/>
 
     <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
-        android:id="@+id/totale_unità_parameter"
+        android:id="@+id/totale_unita_parameter"
         app:report_parameter_title="@string/totale_unita_parameter"
         app:report_parameter_hint="@string/totale_unita_parameter_hint"
         app:report_parameter_isNumber="true"
