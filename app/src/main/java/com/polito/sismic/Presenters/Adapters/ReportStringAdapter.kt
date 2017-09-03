@@ -14,20 +14,20 @@ import com.polito.sismic.Interactors.Helpers.MediaType
 /**
  * Created by Matteo on 20/08/2017.
  */
-class ReportStringAdapter (private val imageList : List<ReportMedia>,
+class ReportStringAdapter (private val fileList: List<ReportMedia>,
                            private val mContext: Context) : BaseAdapter()
 {
 
     override fun getCount(): Int {
-        return imageList.size
+        return fileList.size
     }
 
     override fun getItem(position: Int): Any? {
-        return imageList[position]
+        return fileList[position]
     }
 
     override fun getItemId(position: Int): Long {
-        return imageList[position].id.toLong()
+        return fileList[position].id.toLong()
     }
 
     // create a new ImageView for each item referenced by the Adapter
@@ -43,10 +43,10 @@ class ReportStringAdapter (private val imageList : List<ReportMedia>,
         }
 
         textView.text =
-        if (imageList[position].type == MediaType.Audio.toString())
-            Uri.parse(imageList[position].url).getFileName(mContext)
+        if (fileList[position].type == MediaType.Audio.toString())
+            Uri.parse(fileList[position].uri).getFileName(mContext)
         else
-            imageList[position].note
+            fileList[position].note
 
         return textView
     }

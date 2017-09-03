@@ -1,7 +1,9 @@
 package com.polito.sismic.Interactors.Helpers
 
+import android.net.Uri
+
 class MediaFile(var type : MediaType,
-                var url : String,
+                var uri: Uri,
                 var note : String = "",
                 var size : Double = 0.0)
 {

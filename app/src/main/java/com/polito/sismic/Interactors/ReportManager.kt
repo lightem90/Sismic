@@ -36,7 +36,7 @@ class ReportManager (private val report: Report, val database: DatabaseInteracto
         {
             database.delete(report.reportDetails)
             report.mediaList.forEach {
-                val uri = Uri.parse(it.url)
+                val uri = Uri.parse(it.uri)
                 if (uri != null) {
                     File(uri.path).delete()
                 }
@@ -68,7 +68,7 @@ class ReportManager (private val report: Report, val database: DatabaseInteracto
         tmpMediaList.add(lastAddedTmpFile)
     }
 
-    fun getSectionParameterFor(fragment: BaseReportFragment): Parcelable? {
+    private fun getSectionParameterFor(fragment: BaseReportFragment): Parcelable? {
         return mUiMapper.mapDomainSectionToFragment(tmpSectionList.values.toList(), fragment)
     }
 

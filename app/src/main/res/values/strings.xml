@@ -221,16 +221,16 @@
     <string name="fondazioni_type">Tipologia</string>
     <string name="fondazioni_type_hint">Inserire tipologia fondazioni</string>
     <string name="fondazioni_h">Altezza</string>
-    <string name="fondazioni_h_hint">H(cm)</string>
+    <string name="fondazioni_h_hint">H[cm]</string>
     <string name="g1_default">G1: -</string>
     <string name="solaio_type_1">Tipo</string>
     <string name="solaio_type_1_hint">Inserire tipo</string>
     <string name="solaio_type_2">Tipo (2)</string>
     <string name="solaio_type_2_hint">Tipo 2 (Es.: 16 +4)</string>
     <string name="solaio_g2">G2:</string>
-    <string name="solaio_g2_hint">kN/mq</string>
+    <string name="solaio_g2_hint">[kN/mq]</string>
     <string name="solaio_qk">QK:</string>
-    <string name="solaio_qk_hint">kN/mq</string>
+    <string name="solaio_qk_hint">[kN/mq]</string>
     <string name="calcola_q">Calcola Q</string>
     <string name="copertura_type_1">Tipo</string>
     <string name="copertura_type_1_hint">Inserire tipo</string>
@@ -239,7 +239,7 @@
     <string name="copertura_g2">G2:</string>
     <string name="copertura_g2_hint">kN/mq</string>
     <string name="copertura_qk">QK:</string>
-    <string name="copertura_qk_hint">kN/mq</string>
+    <string name="copertura_qk_hint">[kN/mq]</string>
     <string name="error_not_supported">Funzionalità non supportata</string>
     <string name="report_vita_parameter_30">30</string>
     <string name="report_vita_parameter_50">50</string>
@@ -279,7 +279,7 @@
     <string name="report_filename_dialog">Nome file</string>
     <string name="confirm_filename">Conferma</string>
     <string name="discard_filename">Cancella</string>
-    <string name="calculating_neighbours_node">Calcolando nodi vicini...</string>
+    <string name="calculating_neighbours_node">Calcolo nodi vicini...</string>
 
 
 </resources>

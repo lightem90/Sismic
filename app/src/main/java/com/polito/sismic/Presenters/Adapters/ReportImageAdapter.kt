@@ -44,7 +44,7 @@ class ReportImageAdapter (private val imageList : List<ReportMedia>,
 
         GlideApp.with(mContext)
                 .asBitmap()
-                .load(Uri.parse(imageList[position].url))
+                .load(Uri.parse(imageList[position].uri))
                 .override(750, 750)
                 .centerCrop()
                 .into(imageView)

@@ -132,7 +132,7 @@ data class ReportDetails(val id: Int,
 }
 
 data class ReportMedia(val id: Int,
-                       val url: String,
+                       val uri: String,
                        val type: String,
                        val note: String,
                        val size: Double) : Parcelable {
@@ -148,7 +148,7 @@ data class ReportMedia(val id: Int,
 
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
         writeInt(id)
-        writeString(url)
+        writeString(uri)
         writeString(type)
         writeString(note)
         writeDouble(size)

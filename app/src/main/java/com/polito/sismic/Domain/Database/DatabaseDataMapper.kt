@@ -26,7 +26,7 @@ class DatabaseDataMapper {
 
     fun convertMediaFromDomain(reportId : Int, reportMedia : ReportMedia) : DatabaseReportMedia = with (reportMedia)
     {
-        return DatabaseReportMedia(url, type, note, size, reportId)
+        return DatabaseReportMedia(uri, type, note, size, reportId)
     }
 
     fun  convertReportFromDomain(report: Report): DatabaseReport = with(report){

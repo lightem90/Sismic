@@ -21,11 +21,11 @@ class UserActionInteractor(private val mReportManager: ReportManager,
                            private val mCaller : Activity,
                            private val reportMediaInteractor: ReportMediaInteractor = ReportMediaInteractor(mReportManager, mCaller)) {
 
-    val USER_ACTION_PIC         = 40
-    val USER_ACTION_VIDEO       = 41
-    val USER_ACTION_AUDIO       = 42
-    val USER_ACTION_SKETCH      = 43
-    val USER_ACTION_NOTE        = 44
+    private val USER_ACTION_PIC         = 40
+    private val USER_ACTION_VIDEO       = 41
+    private val USER_ACTION_AUDIO       = 42
+    private val USER_ACTION_SKETCH      = 43
+    private val USER_ACTION_NOTE        = 44
 
 
     fun onActionRequested(requestType : UserActionType) = with(mCaller)
@@ -94,7 +94,7 @@ class UserActionInteractor(private val mReportManager: ReportManager,
         val drawBitmap = Intent(this, SketchActivity::class.java)
         if (drawBitmap.resolveActivity(packageManager) != null)
         {
-            drawBitmap.putExtra(MediaStore.EXTRA_OUTPUT, Uri.parse(file.url))
+            drawBitmap.putExtra(MediaStore.EXTRA_OUTPUT, file.uri)
             drawBitmap.putExtra("username", mReportManager.getUserName())
             startActivityForResult(drawBitmap, USER_ACTION_SKETCH)
         }
@@ -105,7 +105,7 @@ class UserActionInteractor(private val mReportManager: ReportManager,
         val audioRecordIntent = Intent(MediaStore.Audio.Media.RECORD_SOUND_ACTION)
         if (audioRecordIntent.resolveActivity(packageManager) != null) {
 
-            audioRecordIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.parse(file.url))
+            audioRecordIntent.putExtra(MediaStore.EXTRA_OUTPUT, file.uri)
             startActivityForResult(audioRecordIntent, USER_ACTION_AUDIO)
         }
     }
@@ -114,7 +114,7 @@ class UserActionInteractor(private val mReportManager: ReportManager,
         val takeVideoIntent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
         if (takeVideoIntent.resolveActivity(packageManager) != null) {
 
-            takeVideoIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.parse(file.url))
+            takeVideoIntent.putExtra(MediaStore.EXTRA_OUTPUT, file.uri)
             startActivityForResult(takeVideoIntent, USER_ACTION_VIDEO)
 
         }
@@ -126,7 +126,7 @@ class UserActionInteractor(private val mReportManager: ReportManager,
         // Ensure that there's a camera activity to handle the intent
         if (takePictureIntent.resolveActivity(packageManager) != null)
         {
-            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.parse(file.url))
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, file.uri)
             startActivityForResult(takePictureIntent, USER_ACTION_PIC)
         }
     }

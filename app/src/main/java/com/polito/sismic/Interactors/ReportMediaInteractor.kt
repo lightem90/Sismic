@@ -3,7 +3,6 @@ package com.polito.sismic.Interactors
 import android.content.Context
 import android.net.Uri
 import android.os.Environment
-import android.provider.OpenableColumns
 import android.support.v4.content.FileProvider
 import com.polito.sismic.Extensions.getSizeInMb
 import com.polito.sismic.Extensions.toFormattedString
@@ -21,7 +20,7 @@ class ReportMediaInteractor(val mReportManager: ReportManager,
                             val mContext: Context) {
 
     //The user can add media only sequentially, so in case of failure while adding we delete the tmp file
-    var lastAddedTmpFile : MediaFile? = null
+    private var lastAddedTmpFile : MediaFile? = null
 
     fun createFileForMedia(type : MediaType, userFilename : String) : MediaFile
     {
@@ -57,7 +56,7 @@ class ReportMediaInteractor(val mReportManager: ReportManager,
             MediaType.Note ->
             {
                 //Special case
-                lastAddedTmpFile = MediaFile(type, "")
+                lastAddedTmpFile = MediaFile(type, Uri.EMPTY)
                 return lastAddedTmpFile!!
             }
         }
@@ -77,26 +76,26 @@ class ReportMediaInteractor(val mReportManager: ReportManager,
                 "com.polito.sismic",
                 file)
 
-        lastAddedTmpFile = MediaFile(type, fileUri!!.toString())
+        lastAddedTmpFile = MediaFile(type, fileUri)
         return lastAddedTmpFile!!
     }
 
     fun finalizeLastMedia(stringExtra: String? = null) = with(lastAddedTmpFile) {
 
         this!!.note = if (stringExtra  == null) "" else stringExtra
-        this.size = if (lastAddedTmpFile!!.type == MediaType.Note) 0.0 else Uri.parse(lastAddedTmpFile!!.url).getSizeInMb(mContext)
+        this.size = if (lastAddedTmpFile!!.type == MediaType.Note) 0.0 else lastAddedTmpFile!!.uri.getSizeInMb(mContext)
         mReportManager.addMediaFile(this)
     }
 
     fun deleteLastMedia() {
 
         if (lastAddedTmpFile?.type != MediaType.Note)
-            mContext.contentResolver.delete(Uri.parse(lastAddedTmpFile?.url), null, null)
+            mContext.contentResolver.delete(lastAddedTmpFile?.uri, null, null)
     }
 
     fun fixUriForAudio(data: Uri?) {
 
-        val currentUri = Uri.parse(lastAddedTmpFile?.url)
+        val currentUri = lastAddedTmpFile?.uri
         if (currentUri != data && currentUri != null && data != null)
         {
             saveMp3FromSourceUri(data, currentUri)

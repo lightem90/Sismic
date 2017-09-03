@@ -1,5 +1,6 @@
 package com.polito.sismic.Interactors.Helpers
 
+import android.net.Uri
 import com.polito.sismic.Domain.*
 import com.polito.sismic.Presenters.ReportActivity.Fragments.*
 import kotlinx.android.synthetic.main.catasto_report_layout.*
@@ -102,12 +103,12 @@ class UiMapper {
 
     fun convertMediaForDomain(mediaFile: MediaFile) : ReportMedia = with(mediaFile)
     {
-        return ReportMedia(-1, mediaFile.url, mediaFile.type.toString(), mediaFile.note, mediaFile.size)
+        return ReportMedia(-1, mediaFile.uri.toString(), mediaFile.type.toString(), mediaFile.note, mediaFile.size)
     }
 
     fun convertReportMediaFromDomain(reportMedia: ReportMedia) : MediaFile = with(reportMedia)
     {
-        return MediaFile(MediaType.values().first { it.toString() == type }, url, note, size)
+        return MediaFile(MediaType.values().first { it.toString() == type }, Uri.parse(uri), note, size)
     }
 
     fun createLocationExtraInfoFromFragment(infoLocReportFragment: InfoLocReportFragment) : LocationExtraInfo
