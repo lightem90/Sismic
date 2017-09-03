@@ -1,6 +1,7 @@
 package com.polito.sismic.Interactors.Helpers
 
 import android.content.Context
+import android.util.Log
 import com.polito.sismic.Domain.NeighboursNodeData
 import com.polito.sismic.Domain.NeighboursNodeSquare
 import com.polito.sismic.R
@@ -69,10 +70,12 @@ class ParametersForCoordinateHelper(val mContext : Context) {
         val leftValues =  innerGetClosestPoint(x, y, true, initIndex, Double.MAX_VALUE, mutableListOf())
         val rightValues =  innerGetClosestPoint(x, y, false, initIndex, Double.MAX_VALUE, mutableListOf())
 
+        Log.d("End of recursion", "Left list:" + leftValues.toString() + " Right list: " + rightValues.toString())
         result.addAll(leftValues)
         result.addAll(rightValues)
         //order by distance
         result.sortBy { it.second }
+        Log.d("End of recursion", "Sorted list:" + result.toString())
         //retuns an object square of nodes with id, long, latitude and distance from input coordinate (in km)
         return createSquareFromCandidatesNodes(x, y, result)
     }
@@ -105,6 +108,7 @@ class ParametersForCoordinateHelper(val mContext : Context) {
         //}
 
         //build a square if possible
+        Log.d("Input points", "Input longitude is: "+ inputLon + " Input latitude is:" + inputLat)
         candidatesList.forEach {
             val candidateLon = getDataForNode(it.first, CoordinateDatabaseParameters.LON)
             val candidateLat = getDataForNode(it.first, CoordinateDatabaseParameters.LAT)
@@ -118,6 +122,7 @@ class ParametersForCoordinateHelper(val mContext : Context) {
                                 candidateLon,
                                 candidateLat,
                                 distFrom(inputLat, inputLon, candidateLat, candidateLon))
+                        Log.d("NENode", candidateNE.toString())
                     }
                 }
                 2 ->
@@ -128,6 +133,7 @@ class ParametersForCoordinateHelper(val mContext : Context) {
                                 candidateLon,
                                 candidateLat,
                                 distFrom(inputLat, inputLon, candidateLat, candidateLon))
+                        Log.d("SENode", candidateSE.toString())
                     }
                 }
                 3 ->
@@ -138,6 +144,7 @@ class ParametersForCoordinateHelper(val mContext : Context) {
                                 candidateLon,
                                 candidateLat,
                                 distFrom(inputLat, inputLon, candidateLat, candidateLon))
+                        Log.d("SONode", candidateSO.toString())
                     }
                 }
                 4 ->
@@ -148,6 +155,7 @@ class ParametersForCoordinateHelper(val mContext : Context) {
                                 candidateLon,
                                 candidateLat,
                                 distFrom(inputLat, inputLon, candidateLat, candidateLon))
+                        Log.d("NNode", candidateNO.toString())
                     }
                 }
                 else -> throw Exception()
@@ -176,6 +184,7 @@ class ParametersForCoordinateHelper(val mContext : Context) {
             candidateNO = NeighboursNodeData.Invalid
             count++
         }
+
         return NeighboursNodeSquare(candidateNE!!, candidateNO!!, candidateSO!!, candidateSE!!, count <=1 )
     }
 
@@ -190,11 +199,14 @@ class ParametersForCoordinateHelper(val mContext : Context) {
                                      limitDistance: Double,
                                      tmpList: MutableList<Triple<String, Double, Int>>) : List<Triple<String, Double, Int>>
     {
-        var innerIndex = if (left) index -1 else index +1
+        var innerIndex = index
         if (innerIndex < 0 || innerIndex >= mCoordinateArray.size) return tmpList
 
-        val dist_quadrant_pair = calulateDistance(x to y, mCoordinateArray[innerIndex].second to mCoordinateArray[innerIndex].third)
+        Log.d("Distance", "Limit distance is: " + limitDistance)
+
         //Stopping condition, the distance of the next point from input point is greater than sum of distances of 4 closest points
+        val dist_quadrant_pair = calulateDistance(x to y, mCoordinateArray[innerIndex].second to mCoordinateArray[innerIndex].third)
+        Log.d("Distance", "Distance is " + dist_quadrant_pair.first + " and quadrant is " + dist_quadrant_pair.second)
         if (dist_quadrant_pair.first >= limitDistance)
         {
             return tmpList
@@ -203,15 +215,20 @@ class ParametersForCoordinateHelper(val mContext : Context) {
         //Consider all very close (on x) points
         while (Math.abs(x - mCoordinateArray[innerIndex].second) <= SENSIBILITY)
         {
-            //add point id with distance from input point
-            tmpList.add(Triple(mCoordinateArray[innerIndex].first, dist_quadrant_pair.first, dist_quadrant_pair.second))
+            //add point id with close distance from input point
+            val tripleForPoint = calulateDistance(x to y, mCoordinateArray[innerIndex].second to mCoordinateArray[innerIndex].third)
+            val point = Triple(mCoordinateArray[innerIndex].first, tripleForPoint.first, tripleForPoint.second)
+            tmpList.add(point)
+            Log.d("InnerList", "Adding " + point.toString() + " left is: " + left)
 
             if (left) innerIndex-- else innerIndex++
+            if (innerIndex < 0 || innerIndex >= mCoordinateArray.size) return tmpList
         }
 
         //I just want 4 points, the one with the minimum distance
         tmpList.sortBy { it.second }
-        val smallerList = tmpList.subList(0, 8) //inclusive from exclusive to
+        val smallerList = tmpList.subList(0, 4) //inclusive from exclusive to
+        Log.d("SmallerList", "Reduced list is: " + smallerList.toString())
 
         //pass to recursion: input point, new index, new sum, new points
         return innerGetClosestPoint(x, y, left, innerIndex, smallerList.sumByDouble { it.second }, smallerList)
@@ -220,6 +237,7 @@ class ParametersForCoordinateHelper(val mContext : Context) {
     private fun calulateDistance(pair1 : Pair<Double, Double>, pair2 : Pair<Double, Double>) : Pair<Double, Int>
     {
         //db precision is 3 decimal, we check 4
+        Log.d("Distance", "Distance of " + pair1.first + " from " + pair2.first + " and " + pair1.second + " from " + pair2.second)
         val xDiff = BigDecimal(pair1.first - pair2.first).setScale(4, BigDecimal.ROUND_DOWN);
         val yDiff = BigDecimal(pair1.second - pair2.second).setScale(4, BigDecimal.ROUND_DOWN);
         val zero = BigDecimal(0).setScale(4, BigDecimal.ROUND_DOWN);
@@ -227,10 +245,11 @@ class ParametersForCoordinateHelper(val mContext : Context) {
         val distY = Math.abs(yDiff.toDouble())
         //distance and quadrant
         var quad = -1
+        //TODO: handle limit points
         if (xDiff >= zero && yDiff >= zero) quad = 1
-        else if (xDiff > zero && yDiff < zero) quad = 2
+        else if (xDiff <= zero && yDiff >= zero) quad = 2
         else if (xDiff <= zero && yDiff <= zero) quad = 3
-        else if (xDiff < zero && yDiff > zero) quad = 4
+        else if (xDiff >= zero && yDiff <= zero) quad = 4
         //(xDiff) shr 31 or (((yDiff) shr 30) and 0x2)
         //works for int..
         //y = y>>31;

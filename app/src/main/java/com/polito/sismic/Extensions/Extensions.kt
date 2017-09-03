@@ -170,7 +170,7 @@ fun StepAdapter.getCustomAdapter() : ReportFragmentsAdapter
 }
 
 fun NeighboursNodeSquare.toList(): MutableList<NeighboursNodeData> {
-    return mutableListOf(NO, NE, SE, SO)
+    return mutableListOf(NE, NO, SO, SE)
 }
 
 fun Uri.getFileName(mContext: Context): String? {
