@@ -14,7 +14,7 @@ class ParametersForCoordinateHelper(val mContext : Context) {
     companion object {
 
         //elements are very far in the database
-        val SENSIBILITY = 0.25
+        val SENSIBILITY = 0.10
         fun distFrom(lat1: Double, lng1: Double, lat2: Double, lng2: Double): Double {
             val earthRadius = 6371000.0 //meters
             val dLat = Math.toRadians((lat2 - lat1))
@@ -238,14 +238,19 @@ class ParametersForCoordinateHelper(val mContext : Context) {
     {
         //db precision is 3 decimal, we check 4
         Log.d("Distance", "Distance of " + pair1.first + " from " + pair2.first + " and " + pair1.second + " from " + pair2.second)
-        val xDiff = BigDecimal(pair1.first - pair2.first).setScale(4, BigDecimal.ROUND_DOWN);
-        val yDiff = BigDecimal(pair1.second - pair2.second).setScale(4, BigDecimal.ROUND_DOWN);
-        val zero = BigDecimal(0).setScale(4, BigDecimal.ROUND_DOWN);
-        val distX = Math.abs(xDiff.toDouble())
-        val distY = Math.abs(yDiff.toDouble())
+        //val xDiff = BigDecimal(pair1.first - pair2.first).setScale(4, BigDecimal.ROUND_DOWN);
+        //val yDiff = BigDecimal(pair1.second - pair2.second).setScale(4, BigDecimal.ROUND_DOWN);
+        //val zero = BigDecimal(0).setScale(4, BigDecimal.ROUND_DOWN);
+        //val distX = Math.abs(xDiff.toDouble())
+        //val distY = Math.abs(yDiff.toDouble())
+        val xDiff = pair1.first - pair2.first
+        val yDiff = pair1.second - pair2.second
+        val zero = 0.0
+        val distX = Math.abs(xDiff)
+        val distY = Math.abs(yDiff)
         //distance and quadrant
         var quad = -1
-        //TODO: handle limit points
+        //TODO: handle limit points!
         if (xDiff >= zero && yDiff >= zero) quad = 1
         else if (xDiff <= zero && yDiff >= zero) quad = 2
         else if (xDiff <= zero && yDiff <= zero) quad = 3
