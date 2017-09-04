@@ -109,6 +109,7 @@ object SpettriDiProgettoInfoTable
     val CATEGORIA_SUOLO         = "categoria_suolo"
     val CATEGORIA_TOPOGRAFICA   = "categoria_topografica"
     val CLASSE_DUTTILITA        = "classe_duttilita"
+    val TIPOLOGIA               = "tipologia"
     val Q0                      = "q0"
     val ALFA                    = "alfa"
     val SLO                     = "slo"

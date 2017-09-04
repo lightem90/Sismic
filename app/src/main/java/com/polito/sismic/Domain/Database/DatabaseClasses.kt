@@ -225,6 +225,7 @@ data class DatabaseParametriSpettri(var map: MutableMap<String, Any?>) : Databas
     var categoria_suolo : String by map
     var categoria_topografica : String by map
     var classe_duttilita : String by map
+    var tipologia : Int by map
     var q0 : Double by map
     var alfa : Double by map
     var ss : Double by map
@@ -236,6 +237,7 @@ data class DatabaseParametriSpettri(var map: MutableMap<String, Any?>) : Databas
     constructor(categoria_suolo : String,
             categoria_topografica : String,
             classe_duttilita : String,
+            tipologia : Int,
             q0 : Double,
             alfa : Double,
             ss : Double,
@@ -247,6 +249,7 @@ data class DatabaseParametriSpettri(var map: MutableMap<String, Any?>) : Databas
         this.categoria_suolo = categoria_suolo
         this.categoria_topografica = categoria_topografica
         this.classe_duttilita = classe_duttilita
+        this.tipologia = tipologia
         this.q0 = q0
         this.alfa = alfa
         this.ss = ss

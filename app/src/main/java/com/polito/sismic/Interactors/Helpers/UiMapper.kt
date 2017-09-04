@@ -65,10 +65,10 @@ class UiMapper {
                         -1.0,
                         -1.0,
                         -1.0,
-                        -1,
-                        -1,
-                        -1,
-                        -1)
+                        SismicActionCalculatorHelper.calculateTrFor(vita_reale.getValue().toDouble(), StatiLimite.SLO),
+                        SismicActionCalculatorHelper.calculateTrFor(vita_reale.getValue().toDouble(), StatiLimite.SLD),
+                        SismicActionCalculatorHelper.calculateTrFor(vita_reale.getValue().toDouble(), StatiLimite.SLV),
+                        SismicActionCalculatorHelper.calculateTrFor(vita_reale.getValue().toDouble(), StatiLimite.SLC))
             }
 
             is SpettriDiProgettoReportFragment ->
@@ -77,7 +77,8 @@ class UiMapper {
                         categoria_suolo_parameter.selectedItem.toString(),
                         categoria_topografica_parameter.selectedItem.toString(),
                         if (categoria_classe_duttilita_parameter_cda.isChecked) categoria_classe_duttilita_parameter_cda.textOn.toString() else categoria_classe_duttilita_parameter_cdb.textOn.toString(),
-                        q0,
+                        categoria_tipologia_parameter.selectedItemPosition,
+                        SismicActionCalculatorHelper.calculateQ0(categoria_tipologia_parameter.selectedItemPosition, alfa, categoria_classe_duttilita_parameter_cda.isChecked),
                         alfa,
                         //TODO
                         -1.0,
@@ -217,7 +218,6 @@ class UiMapper {
                     selectCategoriaSuolo(it.categoria_suolo)
                     selectCategoriaTopografica(it.categoria_topografica)
                     if (categoria_classe_duttilita_parameter_cdb.textOn == it.classe_duttilita) categoria_classe_duttilita_parameter_cdb.isChecked = true else categoria_classe_duttilita_parameter_cda.isChecked = true
-                    q0 = it.q0
                     alfa = it.alfa
                     //TODO
                 }

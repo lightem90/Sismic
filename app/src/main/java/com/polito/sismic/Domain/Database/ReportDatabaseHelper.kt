@@ -111,6 +111,7 @@ class ReportDatabaseHelper(ctx: Context = App.instance) : ManagedSQLiteOpenHelpe
                         SpettriDiProgettoInfoTable.CATEGORIA_SUOLO to TEXT,
                         SpettriDiProgettoInfoTable.CATEGORIA_TOPOGRAFICA to TEXT,
                         SpettriDiProgettoInfoTable.CLASSE_DUTTILITA to TEXT,
+                        SpettriDiProgettoInfoTable.TIPOLOGIA to INTEGER,
                         SpettriDiProgettoInfoTable.Q0 to REAL,
                         SpettriDiProgettoInfoTable.ALFA to REAL,
                         SpettriDiProgettoInfoTable.SLO to REAL,

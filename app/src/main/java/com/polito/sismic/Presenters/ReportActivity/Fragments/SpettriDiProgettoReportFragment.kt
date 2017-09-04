@@ -13,7 +13,6 @@ import kotlinx.android.synthetic.main.spettri_progetto_report_layout.*
 
 class SpettriDiProgettoReportFragment : BaseReportFragment() {
 
-    var q0 : Double = 1.0
     var alfa : Double = 1.0
     override fun onCreateView(inflater: LayoutInflater?, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View? {
         return inflateFragment(R.layout.spettri_progetto_report_layout, inflater, container)
@@ -51,11 +50,24 @@ class SpettriDiProgettoReportFragment : BaseReportFragment() {
             updateMoltiplicatoreVisibility(categoria_tipologia_parameter.selectedItemPosition)
         }
 
-
         categoria_tipologia_parameter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 
             override fun onItemSelected(parent: AdapterView<*>, mView: View?, pos: Int, id: Long) {
                 updateMoltiplicatoreVisibility(pos)
+            }
+            override fun onNothingSelected(parent: AdapterView<out Adapter>?) {  }
+        }
+
+        categoria_moltiplicatore_parameter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+
+            override fun onItemSelected(parent: AdapterView<*>, mView: View?, pos: Int, id: Long) {
+                alfa = when (pos) {
+                    0,4 -> 1.1
+                    1,5 -> 1.2
+                    2 -> 1.3
+                    3 -> 1.0
+                    else -> 1.0
+                }
             }
             override fun onNothingSelected(parent: AdapterView<out Adapter>?) {  }
         }
