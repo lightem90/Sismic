@@ -72,7 +72,8 @@ class ParameterReportLayout : LinearLayout{
 
             val isNumber = typedArray.getBoolean(R.styleable.report_parameter_components_report_parameter_isNumber, false)
 
-            section_parameter_value.inputType = if (isNumber) InputType.TYPE_NUMBER_FLAG_DECIMAL else InputType.TYPE_CLASS_TEXT
+            section_parameter_value.inputType = if (isNumber) InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_CLASS_NUMBER  
+                                                else InputType.TYPE_CLASS_TEXT
             section_parameter_title.text = title
             section_parameter_help.visibility = View.INVISIBLE
 
