@@ -97,7 +97,7 @@ class ReportDatabaseHelper(ctx: Context = App.instance) : ManagedSQLiteOpenHelpe
                         ParametriSismiciInfoTable.VITA_REALE to REAL,
                         ParametriSismiciInfoTable.AG to REAL,
                         ParametriSismiciInfoTable.F0 to REAL,
-                        ParametriSismiciInfoTable.TG to REAL,
+                        ParametriSismiciInfoTable.TC to REAL,
                         ParametriSismiciInfoTable.SLO to INTEGER,
                         ParametriSismiciInfoTable.SLC to INTEGER,
                         ParametriSismiciInfoTable.SLV to INTEGER,

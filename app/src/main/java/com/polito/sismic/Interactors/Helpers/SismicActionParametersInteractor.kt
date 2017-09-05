@@ -25,7 +25,7 @@ class SismicActionParametersInteractor(val mReportManager: ReportManager,
             val long = mReportManager.getExtraLongitudeCoordinate()
             val nodeSquare = mCoordinateHelper.getClosestPointsTo(long, lat)
 
-            //calculates ag, tg and tc* for point
+            //calculates ag, f0 and tc* for point
             val periodList = SismicActionCalculatorHelper.calculatePeriodsForSquare(nodeSquare, mCoordinateHelper)
 
             mReportManager.addLocationExtraInfo(

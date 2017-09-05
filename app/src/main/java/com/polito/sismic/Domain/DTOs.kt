@@ -41,7 +41,7 @@ data class NeighboursNodeData(val id: String, val longitude: Double, val latitud
     }
 }
 
-data class PeriodData(val years: Int, val ag: Double, val tg: Double, val tcstar: Double) : Parcelable {
+data class PeriodData(val years: Int, val ag: Double, val f0: Double, val tcstar: Double) : Parcelable {
     constructor(source: Parcel) : this(
             source.readInt(),
             source.readDouble(),
@@ -54,7 +54,7 @@ data class PeriodData(val years: Int, val ag: Double, val tg: Double, val tcstar
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
         writeInt(years)
         writeDouble(ag)
-        writeDouble(tg)
+        writeDouble(f0)
         writeDouble(tcstar)
     }
 

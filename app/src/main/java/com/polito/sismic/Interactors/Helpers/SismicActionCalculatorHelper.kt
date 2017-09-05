@@ -45,24 +45,37 @@ class SismicActionCalculatorHelper {
             val soData = mCoordinateHelper.getRowDataForNode(nodeSquare.SO.id)
             val noData = mCoordinateHelper.getRowDataForNode(nodeSquare.NO.id)
 
-            val ag30Data = createPeriodData(listOf(neData[CoordinateDatabaseParameters.ag30.ordinal].toDouble() to nodeSquare.NE.distance,
-                    seData[CoordinateDatabaseParameters.ag30.ordinal].toDouble() to nodeSquare.SE.distance,
-                    soData[CoordinateDatabaseParameters.ag30.ordinal].toDouble() to nodeSquare.SO.distance,
-                    noData[CoordinateDatabaseParameters.ag30.ordinal].toDouble() to nodeSquare.NO.distance))
+            //Foreache TR (reference year, it gets the relatives index of sismic data in the db and calculates the data, using distance)
+            return TempiRitorno.values().map {
+                val triple = createTripleParameterFor(it, nodeSquare.NE.distance to neData,
+                        nodeSquare.SE.distance to seData,
+                        nodeSquare.SO.distance to soData,
+                        nodeSquare.NO.distance to noData)
 
-            val f030Data = createPeriodData(listOf(neData[CoordinateDatabaseParameters.F030.ordinal].toDouble() to nodeSquare.NE.distance,
-                    seData[CoordinateDatabaseParameters.F030.ordinal].toDouble() to nodeSquare.SE.distance,
-                    soData[CoordinateDatabaseParameters.F030.ordinal].toDouble() to nodeSquare.SO.distance,
-                    noData[CoordinateDatabaseParameters.F030.ordinal].toDouble() to nodeSquare.NO.distance))
+                PeriodData(it.years, triple.first, triple.second, triple.third)
+            }
+        }
 
-            val tcstar30Data = createPeriodData(listOf(neData[CoordinateDatabaseParameters.Tc30.ordinal].toDouble() to nodeSquare.NE.distance,
-                    seData[CoordinateDatabaseParameters.Tc30.ordinal].toDouble() to nodeSquare.SE.distance,
-                    soData[CoordinateDatabaseParameters.Tc30.ordinal].toDouble() to nodeSquare.SO.distance,
-                    noData[CoordinateDatabaseParameters.Tc30.ordinal].toDouble() to nodeSquare.NO.distance))
+        private fun createTripleParameterFor(tr: TempiRitorno,
+                                             neData: Pair<Double,Array<String>>,
+                                             seData: Pair<Double,Array<String>>,
+                                             soData: Pair<Double,Array<String>>,
+                                             noData: Pair<Double,Array<String>>)
+                : Triple<Double, Double, Double>
+        {
+            //foreach year it return the 3 index in the db where to read
+            val sismicTripleForYear = YearToDatabaseParameterMapper.mapYearToSismicTriple(tr)
 
-            val periodData30 = PeriodData(30, ag30Data, f030Data, tcstar30Data)
+            val sismicDataTriple = sismicTripleForYear.toList().map {
+                //ag/f0/tc* datas, neData.second is the array, it.ordinal is the index in the db for ag/f0/tc with year param, neData.first is the distance
+                createPeriodData(listOf(neData.second[it.ordinal].toDouble() to neData.first,
+                        seData.second[it.ordinal].toDouble() to seData.first,
+                        soData.second[it.ordinal].toDouble() to soData.first,
+                        noData.second[it.ordinal].toDouble() to noData.first))
+            }
 
-            return listOf(periodData30)
+            //0 -> ag 1 -> F0 2 -> Tc*
+            return Triple(sismicDataTriple[0], sismicDataTriple[1], sismicDataTriple[2])
         }
 
         //sum of each distance - weighted parameter divided by sum of inverse of distance
@@ -74,8 +87,13 @@ class SismicActionCalculatorHelper {
     }
 
 
-    inner class YearToDatabaseParameterMapper
-    {
+
+
+}
+
+class YearToDatabaseParameterMapper
+{
+    companion object {
         fun mapYearToSismicTriple(trReference : TempiRitorno) : Triple<CoordinateDatabaseParameters, CoordinateDatabaseParameters, CoordinateDatabaseParameters>
         {
             return when(trReference) {
@@ -88,8 +106,7 @@ class SismicActionCalculatorHelper {
                 TempiRitorno.Y475 -> Triple(CoordinateDatabaseParameters.ag475, CoordinateDatabaseParameters.F0475, CoordinateDatabaseParameters.Tc475)
                 TempiRitorno.Y975 -> Triple(CoordinateDatabaseParameters.ag975, CoordinateDatabaseParameters.F0975, CoordinateDatabaseParameters.Tc975)
                 TempiRitorno.Y2475 -> Triple(CoordinateDatabaseParameters.ag2475, CoordinateDatabaseParameters.F02475, CoordinateDatabaseParameters.Tc2475)
-            }            
+            }
         }
     }
-
 }

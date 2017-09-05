@@ -61,7 +61,7 @@ class PeriodListAdapter(val mContext : Context, val mPeriodDataList : List<Perio
 
     override fun onBindViewHolder(holder: PeriodListAdapter.ViewHolder, position: Int) {
         if (position == 0) holder.bindHeader()
-        else holder.bindNodeData(mPeriodDataList[position-1])
+        else holder.bindPeriodData(mPeriodDataList[position-1])
     }
 
     override fun getItemCount(): Int {
@@ -70,19 +70,19 @@ class PeriodListAdapter(val mContext : Context, val mPeriodDataList : List<Perio
 
     class ViewHolder(itemView: View, val mContext: Context) : RecyclerView.ViewHolder(itemView){
 
-        fun bindNodeData(periodData: PeriodData) = with(periodData){
+        fun bindPeriodData(periodData: PeriodData) = with(periodData){
             itemView.year.text = periodData.years.toString()
             itemView.ag.text = periodData.ag.toString()
-            itemView.tg.text = periodData.tg.toString()
+            itemView.f0.text = periodData.f0.toString()
             itemView.tcstar.text = periodData.tcstar.toString()
         }
 
         fun bindHeader()
         {
-            itemView.node_id.text =             mContext.resources.getText(R.string.year_header)
-            itemView.node_longitude.text =      mContext.resources.getText(R.string.ag_header)
-            itemView.node_latitude.text =       mContext.resources.getText(R.string.f0_header)
-            itemView.node_distance.text =       mContext.resources.getText(R.string.tcstar_header)
+            itemView.year.text =             mContext.resources.getText(R.string.year_header)
+            itemView.ag.text =      mContext.resources.getText(R.string.ag_header)
+            itemView.f0.text =       mContext.resources.getText(R.string.f0_header)
+            itemView.tcstar.text =       mContext.resources.getText(R.string.tcstar_header)
             itemView.setBackgroundColor(ContextCompat.getColor(mContext, R.color.light_grey))
         }
 

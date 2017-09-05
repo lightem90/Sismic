@@ -94,7 +94,7 @@ object ParametriSismiciInfoTable
     val VITA_REALE =        "vita_reale"
     val AG =                "ag"
     val F0 =                "f0"
-    val TG =                "tg"
+    val TC =                "tcstar"
     val SLO =               "slo"
     val SLD =               "sld"
     val SLV =               "slv"
