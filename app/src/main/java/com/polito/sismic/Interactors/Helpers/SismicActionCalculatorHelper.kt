@@ -1,19 +1,13 @@
 package com.polito.sismic.Interactors.Helpers
 
+import com.polito.sismic.Domain.NeighboursNodeSquare
+import com.polito.sismic.Domain.PeriodData
+
 /**
  * Created by Matteo on 04/09/2017.
  */
 
-enum class StatiLimite(val multiplier : Double)
-{
-    SLO(0.81),
-    SLD(0.63),
-    SLV(0.10),
-    SLC(0.05)
-}
-
-
-//"Static" class, no memory
+//"Static" class, no memory, no states
 class SismicActionCalculatorHelper {
 
     companion object {
@@ -39,7 +33,62 @@ class SismicActionCalculatorHelper {
 
         fun calculateQ(q0 : Double, kr : Double = 1.0) : Double
         {
-            return q0 * kr;
+            return q0 * kr
+        }
+
+        //TODO make this without writing much code
+        fun calculatePeriodsForSquare(nodeSquare: NeighboursNodeSquare,
+                                      mCoordinateHelper: ParametersForCoordinateHelper): List<PeriodData> {
+
+            val neData = mCoordinateHelper.getRowDataForNode(nodeSquare.NE.id)
+            val seData = mCoordinateHelper.getRowDataForNode(nodeSquare.SE.id)
+            val soData = mCoordinateHelper.getRowDataForNode(nodeSquare.SO.id)
+            val noData = mCoordinateHelper.getRowDataForNode(nodeSquare.NO.id)
+
+            val ag30Data = createPeriodData(listOf(neData[CoordinateDatabaseParameters.ag30.ordinal].toDouble() to nodeSquare.NE.distance,
+                    seData[CoordinateDatabaseParameters.ag30.ordinal].toDouble() to nodeSquare.SE.distance,
+                    soData[CoordinateDatabaseParameters.ag30.ordinal].toDouble() to nodeSquare.SO.distance,
+                    noData[CoordinateDatabaseParameters.ag30.ordinal].toDouble() to nodeSquare.NO.distance))
+
+            val f030Data = createPeriodData(listOf(neData[CoordinateDatabaseParameters.F030.ordinal].toDouble() to nodeSquare.NE.distance,
+                    seData[CoordinateDatabaseParameters.F030.ordinal].toDouble() to nodeSquare.SE.distance,
+                    soData[CoordinateDatabaseParameters.F030.ordinal].toDouble() to nodeSquare.SO.distance,
+                    noData[CoordinateDatabaseParameters.F030.ordinal].toDouble() to nodeSquare.NO.distance))
+
+            val tcstar30Data = createPeriodData(listOf(neData[CoordinateDatabaseParameters.Tc30.ordinal].toDouble() to nodeSquare.NE.distance,
+                    seData[CoordinateDatabaseParameters.Tc30.ordinal].toDouble() to nodeSquare.SE.distance,
+                    soData[CoordinateDatabaseParameters.Tc30.ordinal].toDouble() to nodeSquare.SO.distance,
+                    noData[CoordinateDatabaseParameters.Tc30.ordinal].toDouble() to nodeSquare.NO.distance))
+
+            val periodData30 = PeriodData(30, ag30Data, f030Data, tcstar30Data)
+
+            return listOf(periodData30)
+        }
+
+        //sum of each distance - weighted parameter divided by sum of inverse of distance
+        private fun createPeriodData(paramAndDistancePairList : List<Pair<Double, Double>>): Double {
+            val numerator = paramAndDistancePairList.sumByDouble { it.first / it.second }
+            val denominator = paramAndDistancePairList.sumByDouble { 1 / it.second}
+            return numerator / denominator
+        }
+    }
+
+
+    inner class YearToDatabaseParameterMapper
+    {
+        fun mapYearToSismicTriple(trReference : TempiRitorno) : Triple<CoordinateDatabaseParameters, CoordinateDatabaseParameters, CoordinateDatabaseParameters>
+        {
+            return when(trReference) {
+                TempiRitorno.Y30 -> Triple(CoordinateDatabaseParameters.ag30, CoordinateDatabaseParameters.F030, CoordinateDatabaseParameters.Tc30)
+                TempiRitorno.Y50 -> Triple(CoordinateDatabaseParameters.ag50, CoordinateDatabaseParameters.F050, CoordinateDatabaseParameters.Tc50)
+                TempiRitorno.Y72 -> Triple(CoordinateDatabaseParameters.ag72, CoordinateDatabaseParameters.F072, CoordinateDatabaseParameters.Tc72)
+                TempiRitorno.Y101 -> Triple(CoordinateDatabaseParameters.ag101, CoordinateDatabaseParameters.F0101, CoordinateDatabaseParameters.Tc101)
+                TempiRitorno.Y140 -> Triple(CoordinateDatabaseParameters.ag140, CoordinateDatabaseParameters.F0140, CoordinateDatabaseParameters.Tc140)
+                TempiRitorno.Y201 -> Triple(CoordinateDatabaseParameters.ag201, CoordinateDatabaseParameters.F0201, CoordinateDatabaseParameters.Tc201)
+                TempiRitorno.Y475 -> Triple(CoordinateDatabaseParameters.ag475, CoordinateDatabaseParameters.F0475, CoordinateDatabaseParameters.Tc475)
+                TempiRitorno.Y975 -> Triple(CoordinateDatabaseParameters.ag975, CoordinateDatabaseParameters.F0975, CoordinateDatabaseParameters.Tc975)
+                TempiRitorno.Y2475 -> Triple(CoordinateDatabaseParameters.ag2475, CoordinateDatabaseParameters.F02475, CoordinateDatabaseParameters.Tc2475)
+            }            
         }
     }
 

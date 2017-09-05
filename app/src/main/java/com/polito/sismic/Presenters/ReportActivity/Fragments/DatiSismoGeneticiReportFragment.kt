@@ -7,8 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.polito.sismic.Domain.NeighboursNodeData
+import com.polito.sismic.Domain.PeriodData
 import com.polito.sismic.Extensions.toList
 import com.polito.sismic.Presenters.Adapters.NodeListAdapter
+import com.polito.sismic.Presenters.Adapters.PeriodListAdapter
 import com.polito.sismic.R
 import kotlinx.android.synthetic.main.dati_sismogenetici_report_layout.*
 
@@ -18,6 +20,7 @@ import kotlinx.android.synthetic.main.dati_sismogenetici_report_layout.*
 class DatiSismoGeneticiReportFragment : BaseReportFragment() {
 
     var mNodeList : MutableList<NeighboursNodeData> = mutableListOf()
+    var mPeriodList : MutableList<PeriodData> = mutableListOf()
 
     override fun onCreateView(inflater: LayoutInflater?, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View? {
         return inflateFragment(R.layout.dati_sismogenetici_report_layout, inflater, container)
@@ -29,6 +32,9 @@ class DatiSismoGeneticiReportFragment : BaseReportFragment() {
         list_nodi.layoutManager = LinearLayoutManager(context)
         list_nodi.adapter = NodeListAdapter(context, mNodeList)
 
+        list_periodi.layoutManager = LinearLayoutManager(context)
+        list_periodi.adapter = PeriodListAdapter(context, mPeriodList)
+
         reloadFragment()
     }
 
@@ -39,6 +45,13 @@ class DatiSismoGeneticiReportFragment : BaseReportFragment() {
             mNodeList.clear()
             mNodeList.addAll(mExtraInfo!!.locationExtraInfo.neighbours_points.toList())
             list_nodi.adapter.notifyDataSetChanged()
+        }
+
+        if (mExtraInfo?.locationExtraInfo?.periodData_list != null)
+        {
+            mPeriodList.clear()
+            mPeriodList.addAll(mExtraInfo?.locationExtraInfo?.periodData_list!!)
+            list_periodi.adapter.notifyDataSetChanged()
         }
 
         //Must never fail!

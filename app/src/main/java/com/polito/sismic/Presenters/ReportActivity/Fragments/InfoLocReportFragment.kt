@@ -53,6 +53,10 @@ class InfoLocReportFragment : BaseReportFragment(){
         region_parameter.attachDataConfirmedCallback{ newRegion ->
             mLocaliationInfoHelper.setProvinceSuggestionForRegion(province_parameter, newRegion)
         }
+
+        //Signal to the activity that latitude and longitude changed, so certain data should be recalculated
+        lat_parameter.attachDataConfirmedCallback { mLocationCallback?.onCoordinatesUpdated() }
+        long_parameter.attachDataConfirmedCallback { mLocationCallback?.onCoordinatesUpdated() }
     }
 
     override fun onAttach(context: Context?) {
@@ -140,6 +144,7 @@ class InfoLocReportFragment : BaseReportFragment(){
     // Container Activity must implement this interface
     interface CurrentLocationProvided {
         fun onLocationAcquired(location: Location)
+        fun onCoordinatesUpdated()
     }
 
     private fun updateByPlace(place : Place?)

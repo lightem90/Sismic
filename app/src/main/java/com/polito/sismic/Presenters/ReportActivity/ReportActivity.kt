@@ -13,7 +13,7 @@ import com.polito.sismic.Domain.ReportSection
 import com.polito.sismic.Extensions.getCustomAdapter
 import com.polito.sismic.Extensions.toast
 import com.polito.sismic.Interactors.*
-import com.polito.sismic.Interactors.Helpers.ParametersForCoordinateHelper
+import com.polito.sismic.Interactors.Helpers.SismicActionParametersInteractor
 import com.polito.sismic.Interactors.Helpers.UserActionType
 import com.polito.sismic.Presenters.Adapters.ReportFragmentsAdapter
 import com.polito.sismic.Presenters.ReportActivity.Fragments.BaseReportFragment
@@ -29,11 +29,12 @@ class ReportActivity : AppCompatActivity(),
         BaseReportFragment.LocalizationInfoUser,
         BaseReportFragment.NodeCaluclationRequest{
 
+
     private lateinit var  mGoogleApiClient: GoogleApiClient
     private lateinit var  mUserActionInteractor: UserActionInteractor
     private lateinit var  mDomainInteractor : DomainInteractor
+    private lateinit var  mSismicParameterInteractor : SismicActionParametersInteractor
     private var  mReportManager : ReportManager? = null
-    private var mCoordinateHelper : ParametersForCoordinateHelper = ParametersForCoordinateHelper(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,23 +75,14 @@ class ReportActivity : AppCompatActivity(),
         mReportManager!!.addLocationExtraInfo(locationExtraInfo)
     }
 
+    //requested sismic data
     override fun onClosedNodesCalculationRequested() {
+        mSismicParameterInteractor.calculate()
+    }
 
-        mCoordinateHelper.initialize()
-
-        val nodeSquare = mReportManager!!.let {
-            mCoordinateHelper.getClosestPointsTo(
-                    mReportManager!!.getExtraLongitudeCoordinate(),
-                    mReportManager!!.getExtraLatitudeCoordinate()
-            )
-        }
-
-        mReportManager!!.addLocationExtraInfo(LocationExtraInfo(mReportManager!!.getExtraLatitudeCoordinate(),
-                mReportManager!!.getExtraLongitudeCoordinate(),
-                mReportManager!!.getExtraAddress(),
-                mReportManager!!.getExtraZone(),
-                nodeSquare)
-        )
+    //in this way sismic data are not recalculated if latitude or longitude doesn't change
+    override fun onCoordinatesUpdated() {
+        mSismicParameterInteractor.mustRecalc()
     }
 
     //creates a new fragment state foreach active fragment, so everyone is updated
@@ -146,6 +138,7 @@ class ReportActivity : AppCompatActivity(),
         if (mReportManager == null) mReportManager = reportManager
         mUserActionInteractor = UserActionInteractor(reportManager, this)
         mDomainInteractor = DomainInteractor(reportManager)
+        mSismicParameterInteractor = SismicActionParametersInteractor(reportManager, this)
         stepperLayout.adapter = ReportFragmentsAdapter(supportFragmentManager, this, reportManager)
         fabtoolbar_fab.setOnClickListener { fabtoolbar.show() }
         pic.setOnClickListener{ mUserActionInteractor.onActionRequested(UserActionType.PicRequest)}

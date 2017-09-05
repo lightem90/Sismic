@@ -41,6 +41,32 @@ data class NeighboursNodeData(val id: String, val longitude: Double, val latitud
     }
 }
 
+data class PeriodData(val years: Int, val ag: Double, val tg: Double, val tcstar: Double) : Parcelable {
+    constructor(source: Parcel) : this(
+            source.readInt(),
+            source.readDouble(),
+            source.readDouble(),
+            source.readDouble()
+    )
+
+    override fun describeContents() = 0
+
+    override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
+        writeInt(years)
+        writeDouble(ag)
+        writeDouble(tg)
+        writeDouble(tcstar)
+    }
+
+    companion object {
+        @JvmField
+        val CREATOR: Parcelable.Creator<PeriodData> = object : Parcelable.Creator<PeriodData> {
+            override fun createFromParcel(source: Parcel): PeriodData = PeriodData(source)
+            override fun newArray(size: Int): Array<PeriodData?> = arrayOfNulls(size)
+        }
+    }
+}
+
 //to send data when creating fragments, since they are not created all at start but they switch state in supportfragmentmanager
 data class ReportExtraInfo(var locationExtraInfo: LocationExtraInfo) : Parcelable {
     constructor(source: Parcel) : this(
@@ -61,13 +87,19 @@ data class ReportExtraInfo(var locationExtraInfo: LocationExtraInfo) : Parcelabl
     }
 }
 
-data class LocationExtraInfo(val latitude: Double, val longitude: Double, val address: String, val zone: String, val neighbours_points: NeighboursNodeSquare) : Parcelable {
+data class LocationExtraInfo(val latitude: Double,
+                             val longitude: Double,
+                             val address: String,
+                             val zone: String,
+                             val neighbours_points: NeighboursNodeSquare,
+                             val periodData_list: List<PeriodData>) : Parcelable {
     constructor(source: Parcel) : this(
             source.readDouble(),
             source.readDouble(),
             source.readString(),
             source.readString(),
-            source.readParcelable<NeighboursNodeSquare>(NeighboursNodeSquare::class.java.classLoader)
+            source.readParcelable<NeighboursNodeSquare>(NeighboursNodeSquare::class.java.classLoader),
+            source.createTypedArrayList(PeriodData.CREATOR)
     )
 
     override fun describeContents() = 0
@@ -78,6 +110,7 @@ data class LocationExtraInfo(val latitude: Double, val longitude: Double, val ad
         writeString(address)
         writeString(zone)
         writeParcelable(neighbours_points, 0)
+        writeTypedList(periodData_list)
     }
 
     companion object {

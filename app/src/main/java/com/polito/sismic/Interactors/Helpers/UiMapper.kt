@@ -296,13 +296,15 @@ class UiMapper {
         return MediaFile(MediaType.values().first { it.toString() == type }, Uri.parse(uri), note, size)
     }
 
+    //TODO! Errore! sbagliata la classe di dominio!
     fun createLocationExtraInfoFromFragment(infoLocReportFragment: InfoLocReportFragment) : LocationExtraInfo
     {
         return LocationExtraInfo(infoLocReportFragment.lat_parameter.getParameterValue().toDouble(),
                 infoLocReportFragment.long_parameter.getParameterValue().toDouble(),
                 infoLocReportFragment.address_parameter.getParameterValue(),
                 infoLocReportFragment.zona_sismica_parameter.getParameterValue(),
-                NeighboursNodeSquare.Invalid)
+                NeighboursNodeSquare.Invalid,
+                listOf())
     }
 }
 

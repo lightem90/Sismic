@@ -80,6 +80,15 @@ class ParametersForCoordinateHelper(val mContext : Context) {
         return createSquareFromCandidatesNodes(x, y, result)
     }
 
+    fun getRowDataForNode(requestedNodeId : String) : Array<String>
+    {
+        if (!initialized)
+            initialize()
+
+        if (!mMap.containsKey(requestedNodeId)) return emptyArray()
+        return mMap[requestedNodeId]!!
+    }
+
     private fun createSquareFromCandidatesNodes(inputLon : Double, inputLat: Double, candidatesList: List<Triple<String, Double, Int>>): NeighboursNodeSquare {
         var candidateNE : NeighboursNodeData? = null
         var candidateNO : NeighboursNodeData? = null

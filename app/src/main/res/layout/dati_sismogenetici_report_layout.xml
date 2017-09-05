@@ -36,6 +36,17 @@
 
     </android.support.v7.widget.RecyclerView>
 
+    <TextView
+        android:text="@string/report_periodi_ritorno_title"
+        style="@style/sectionTitle"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/list_periodi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </android.support.v7.widget.RecyclerView>
+
 
     <Button
         android:id="@+id/nodi_request_button"

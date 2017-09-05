@@ -6,9 +6,11 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import com.polito.sismic.Domain.NeighboursNodeData
+import com.polito.sismic.Domain.PeriodData
 import com.polito.sismic.Extensions.inflate
 import com.polito.sismic.R
 import kotlinx.android.synthetic.main.close_points_layout.view.*
+import kotlinx.android.synthetic.main.period_data_layout.view.*
 
 class NodeListAdapter(val mContext : Context, val mNodeData : List<NeighboursNodeData>)
     : RecyclerView.Adapter<NodeListAdapter.ViewHolder>()
@@ -28,7 +30,6 @@ class NodeListAdapter(val mContext : Context, val mNodeData : List<NeighboursNod
         return mNodeData.size+1
     }
 
-
     class ViewHolder(itemView: View, val mContext: Context) : RecyclerView.ViewHolder(itemView){
 
         fun bindNodeData(neighboursNodeData: NeighboursNodeData) = with(neighboursNodeData){
@@ -44,6 +45,44 @@ class NodeListAdapter(val mContext : Context, val mNodeData : List<NeighboursNod
             itemView.node_longitude.text = mContext.resources.getText(R.string.nodelist_longitude_header)
             itemView.node_latitude.text = mContext.resources.getText(R.string.nodelist_latitude_header)
             itemView.node_distance.text = mContext.resources.getText(R.string.nodelist_distance_header)
+            itemView.setBackgroundColor(ContextCompat.getColor(mContext, R.color.light_grey))
+        }
+    }
+}
+
+class PeriodListAdapter(val mContext : Context, val mPeriodDataList : List<PeriodData>)
+    : RecyclerView.Adapter<PeriodListAdapter.ViewHolder>()
+{
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PeriodListAdapter.ViewHolder? {
+        val v = parent.inflate(R.layout.period_data_layout)
+        return PeriodListAdapter.ViewHolder(v, mContext)
+    }
+
+    override fun onBindViewHolder(holder: PeriodListAdapter.ViewHolder, position: Int) {
+        if (position == 0) holder.bindHeader()
+        else holder.bindNodeData(mPeriodDataList[position-1])
+    }
+
+    override fun getItemCount(): Int {
+        return mPeriodDataList.size+1
+    }
+
+    class ViewHolder(itemView: View, val mContext: Context) : RecyclerView.ViewHolder(itemView){
+
+        fun bindNodeData(periodData: PeriodData) = with(periodData){
+            itemView.year.text = periodData.years.toString()
+            itemView.ag.text = periodData.ag.toString()
+            itemView.tg.text = periodData.tg.toString()
+            itemView.tcstar.text = periodData.tcstar.toString()
+        }
+
+        fun bindHeader()
+        {
+            itemView.node_id.text =             mContext.resources.getText(R.string.year_header)
+            itemView.node_longitude.text =      mContext.resources.getText(R.string.ag_header)
+            itemView.node_latitude.text =       mContext.resources.getText(R.string.f0_header)
+            itemView.node_distance.text =       mContext.resources.getText(R.string.tcstar_header)
             itemView.setBackgroundColor(ContextCompat.getColor(mContext, R.color.light_grey))
         }
 

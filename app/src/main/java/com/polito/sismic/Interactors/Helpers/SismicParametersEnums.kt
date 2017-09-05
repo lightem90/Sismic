@@ -37,3 +37,24 @@ enum class CoordinateDatabaseParameters
     F02475,
     Tc2475
 }
+
+enum class TempiRitorno(val years : Int)
+{
+    Y30(30),
+    Y50(50),
+    Y72(72),
+    Y101(101),
+    Y140(140),
+    Y201(201),
+    Y475(475),
+    Y975(975),
+    Y2475(2475)
+}
+
+enum class StatiLimite(val multiplier : Double)
+{
+    SLO(0.81),
+    SLD(0.63),
+    SLV(0.10),
+    SLC(0.05)
+}
