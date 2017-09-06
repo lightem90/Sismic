@@ -8,8 +8,7 @@ import android.view.MenuItem
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.places.Places
-import com.polito.sismic.Domain.LocationExtraInfo
-import com.polito.sismic.Domain.ReportSection
+import com.polito.sismic.Domain.ReportState
 import com.polito.sismic.Extensions.getCustomAdapter
 import com.polito.sismic.Extensions.toast
 import com.polito.sismic.Interactors.*
@@ -26,15 +25,13 @@ class ReportActivity : AppCompatActivity(),
         InfoLocReportFragment.CurrentLocationProvided,
         BaseReportFragment.ParametersManager,
         GoogleApiClient.OnConnectionFailedListener,
-        BaseReportFragment.LocalizationInfoUser,
-        BaseReportFragment.NodeCaluclationRequest{
+        BaseReportFragment.NodeCaluclationRequest {
 
-
-    private lateinit var  mGoogleApiClient: GoogleApiClient
-    private lateinit var  mUserActionInteractor: UserActionInteractor
-    private lateinit var  mDomainInteractor : DomainInteractor
-    private lateinit var  mSismicParameterInteractor : SismicActionParametersInteractor
-    private var  mReportManager : ReportManager? = null
+    private lateinit var mGoogleApiClient: GoogleApiClient
+    private lateinit var mUserActionInteractor: UserActionInteractor
+    private lateinit var mDomainInteractor: DomainInteractor
+    private lateinit var mSismicParameterInteractor: SismicActionParametersInteractor
+    private var mReportManager: ReportManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,35 +41,26 @@ class ReportActivity : AppCompatActivity(),
         mReportManager = ReportProvider(this).getOrCreateReportManager(checkLogin(), intent)
         mReportManager?.let {
             //means i'm editing
-            initializeFromManager(mReportManager!!)
+            initializeFromManager(it)
         }
     }
 
-    private fun checkLogin() : String {
+    private fun checkLogin(): String {
         val userName = intent.getStringExtra("username")
-        if (userName == null || userName.isEmpty())
-        {
+        if (userName == null || userName.isEmpty()) {
             toast(R.string.no_login)
             finish()
         }
         return userName
     }
 
+    //User requested help to input coordinates
     override fun onLocationAcquired(location: Location) {
         //Can do this, called into this very same fragment, so I'm sure it lives
         supportFragmentManager.fragments
                 .filterIsInstance<InfoLocReportFragment>()
                 .firstOrNull()
                 ?.updateByLocation(location)
-    }
-
-    override fun onLocalizationDataConfirmed(locationExtraInfo: LocationExtraInfo) {
-        //cant do this, since this fragment is not created yet
-        //supportFragmentManager.fragments
-        //        .filterIsInstance<DatiSismoGeneticiReportFragment>()
-        //        .firstOrNull()
-        //        ?.updateLabelsByCoordinate(latitude, longitude, address, address)
-        mReportManager!!.addLocationExtraInfo(locationExtraInfo)
     }
 
     //requested sismic data
@@ -85,11 +73,16 @@ class ReportActivity : AppCompatActivity(),
         mSismicParameterInteractor.mustRecalc()
     }
 
+    //Updates the state for all fragments
+    override fun onParametersConfirmed(sectionParameters: ReportState?) {
+        updateStateForFragments()
+    }
+
     //creates a new fragment state foreach active fragment, so everyone is updated
     //the fragment not created will have the right arguments on creation
-    private fun updateStateForFragments()
-    {
-        stepperLayout.adapter.getCustomAdapter().updateFragmentsData()
+    private fun updateStateForFragments() {
+
+        stepperLayout.adapter.getCustomAdapter().updateStateForExistingFragments()
 
         //updates the fragment that has already called "createview"
         supportFragmentManager.fragments
@@ -110,7 +103,7 @@ class ReportActivity : AppCompatActivity(),
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        if(item?.itemId == android.R.id.home) {
+        if (item?.itemId == android.R.id.home) {
             mUserActionInteractor.onActionRequested(UserActionType.BackRequest)
             return true
         }
@@ -122,18 +115,12 @@ class ReportActivity : AppCompatActivity(),
         finish()
     }
 
-    override fun onParametersConfirmed(sectionParameters: ReportSection?) {
-        sectionParameters?.let { mDomainInteractor.addDomainReportSection(sectionParameters) }
-        updateStateForFragments()
-    }
-
     fun onNewReportConfirmed(createFromNew: ReportManager): ReportManager? {
         initializeFromManager(createFromNew)
         return createFromNew
     }
 
-    private fun initializeFromManager(reportManager: ReportManager)
-    {
+    private fun initializeFromManager(reportManager: ReportManager) {
         //To handle user action, it uses other interactor to pilot the ui changes to the domain
         if (mReportManager == null) mReportManager = reportManager
         mUserActionInteractor = UserActionInteractor(reportManager, this)
@@ -141,11 +128,11 @@ class ReportActivity : AppCompatActivity(),
         mSismicParameterInteractor = SismicActionParametersInteractor(reportManager, this)
         stepperLayout.adapter = ReportFragmentsAdapter(supportFragmentManager, this, reportManager)
         fabtoolbar_fab.setOnClickListener { fabtoolbar.show() }
-        pic.setOnClickListener{ mUserActionInteractor.onActionRequested(UserActionType.PicRequest)}
-        video.setOnClickListener{ mUserActionInteractor.onActionRequested(UserActionType.VideoRequest)}
-        audio.setOnClickListener{ mUserActionInteractor.onActionRequested(UserActionType.AudioRequest)}
-        draw.setOnClickListener{ mUserActionInteractor.onActionRequested(UserActionType.SketchRequest)}
-        note.setOnClickListener{ mUserActionInteractor.onActionRequested(UserActionType.NoteRequest)}
+        pic.setOnClickListener { mUserActionInteractor.onActionRequested(UserActionType.PicRequest) }
+        video.setOnClickListener { mUserActionInteractor.onActionRequested(UserActionType.VideoRequest) }
+        audio.setOnClickListener { mUserActionInteractor.onActionRequested(UserActionType.AudioRequest) }
+        draw.setOnClickListener { mUserActionInteractor.onActionRequested(UserActionType.SketchRequest) }
+        note.setOnClickListener { mUserActionInteractor.onActionRequested(UserActionType.NoteRequest) }
 
         mGoogleApiClient = GoogleApiClient.Builder(this)
                 .addApi(Places.GEO_DATA_API)

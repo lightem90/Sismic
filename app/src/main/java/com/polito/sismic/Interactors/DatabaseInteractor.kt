@@ -7,6 +7,7 @@ import com.polito.sismic.Extensions.*
 import org.jetbrains.anko.db.SqlOrderDirection
 import org.jetbrains.anko.db.insert
 import org.jetbrains.anko.db.select
+import org.jetbrains.anko.db.update
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -15,15 +16,14 @@ import kotlin.collections.HashMap
  */
 
 class DatabaseInteractor(val reportDatabaseHelper: ReportDatabaseHelper = ReportDatabaseHelper.instance,
-                         val dataMapper: DatabaseDataMapper = DatabaseDataMapper())
-{
+                         val dataMapper: DatabaseDataMapper = DatabaseDataMapper()) {
     //Creates the entry in the db for the current (new) report
     fun createReportDetailsForUser(userID: String,
-                                   title : String = "",
-                                   description : String = "",
-                                   value : Int = 0,
-                                   size : Double = 0.0,
-                                   date : Date = Date()) : ReportDetails = reportDatabaseHelper.use {
+                                   title: String = "",
+                                   description: String = "",
+                                   value: Int = 0,
+                                   size: Double = 0.0,
+                                   date: Date = Date()): ReportDetails = reportDatabaseHelper.use {
 
         insert(ReportTable.NAME,
                 ReportTable.USERID to userID,
@@ -38,60 +38,60 @@ class DatabaseInteractor(val reportDatabaseHelper: ReportDatabaseHelper = Report
                 .whereSimple(reportRequest, userID)
                 .orderBy(ReportTable.USERID, SqlOrderDirection.DESC)
                 .limit(1)
-                .parseOpt  { DatabaseReportDetails(HashMap(it)) }
+                .parseOpt { DatabaseReportDetails(HashMap(it)) }
 
         //returns new entry
         databaseReportDetails!!.let { dataMapper.convertReportDetailsToDomain(databaseReportDetails) }
     }
 
-    fun getReportForId(reportID : String, userID: String) : Report? = reportDatabaseHelper.use {
+    fun getReportForId(reportID: String, userID: String): Report? = reportDatabaseHelper.use {
 
         val reportDetailRequest = "${ReportTable.USERID} = ? AND ${ReportTable.ID} = ?"
         val databaseReportDetails = select(ReportTable.NAME)
                 .whereSimple(reportDetailRequest, userID, reportID)
-                .parseOpt  { DatabaseReportDetails(HashMap(it)) }
+                .parseOpt { DatabaseReportDetails(HashMap(it)) }
 
         //They have just a unique reference to the report ID
         val mediaSectionRequest = "${ReportMediaTable.REPORT_ID} = ?"
         val databaseMediaInfo = select(ReportMediaTable.NAME)
                 .whereSimple(mediaSectionRequest, reportID)
-                .parseList  { DatabaseReportMedia(HashMap(it)) }
+                .parseList { DatabaseReportMedia(HashMap(it)) }
 
         val databaseLocalizationInfo = select(LocalizationInfoTable.NAME)
                 .byReportId(reportID)
-                .parseOpt  { DatabaseLocalizationSection(HashMap(it)) }
+                .parseOpt { DatabaseLocalizationSection(HashMap(it)) }
 
         val databaseCatastoInfo = select(CatastoInfoTable.NAME)
                 .byReportId(reportID)
-                .parseOpt  { DatabaseCatastoSection(HashMap(it)) }
+                .parseOpt { DatabaseCatastoSection(HashMap(it)) }
 
         val datiSismoGeneticiInfo = select(DatiSismogeneticiInfoTable.NAME)
                 .byReportId(reportID)
-                .parseOpt  { DatabaseDatiSismogenetici(HashMap(it)) }
+                .parseOpt { DatabaseDatiSismogenetici(HashMap(it)) }
 
         val parametriSismiciInfo = select(ParametriSismiciInfoTable.NAME)
                 .byReportId(reportID)
-                .parseOpt  { DatabaseParametriSismici(HashMap(it)) }
+                .parseOpt { DatabaseParametriSismici(HashMap(it)) }
 
         val spettriDiProgettoInfo = select(SpettriDiProgettoInfoTable.NAME)
                 .byReportId(reportID)
-                .parseOpt  { DatabaseParametriSpettri(HashMap(it)) }
+                .parseOpt { DatabaseParametriSpettri(HashMap(it)) }
 
         val caratteristicheGeneraliInfo = select(CaratteristicheGeneraliInfoTable.NAME)
                 .byReportId(reportID)
-                .parseOpt  { DatabaseCaratteristicheGenerali(HashMap(it)) }
+                .parseOpt { DatabaseCaratteristicheGenerali(HashMap(it)) }
 
         val datiStrutturaliInfo = select(DatiStrutturaliInfoTable.NAME)
                 .byReportId(reportID)
-                .parseOpt  { DatabaseDatiStrutturali(HashMap(it)) }
+                .parseOpt { DatabaseDatiStrutturali(HashMap(it)) }
 
         val caratteristichePilastriInfo = select(CaratteristichePilastriInfoTable.NAME)
                 .byReportId(reportID)
-                .parseOpt  { DatabaseCaratteristichePilastri(HashMap(it)) }
+                .parseOpt { DatabaseCaratteristichePilastri(HashMap(it)) }
 
         val rilieviInfo = select(RilieviInfoTable.NAME)
                 .byReportId(reportID)
-                .parseOpt {DatabaseRilievi(HashMap(it))}
+                .parseOpt { DatabaseRilievi(HashMap(it)) }
 
         //TODO, add others!
 
@@ -105,10 +105,12 @@ class DatabaseInteractor(val reportDatabaseHelper: ReportDatabaseHelper = Report
                 caratteristichePilastriInfo,
                 rilieviInfo)
 
-        databaseReportDetails?.let { dataMapper.convertReportToDomain(DatabaseReport(
-                databaseReportDetails,
-                databaseMediaInfo,
-                sectionList.filterNotNull()))
+        databaseReportDetails?.let {
+            dataMapper.convertReportToDomain(DatabaseReport
+            (it,
+                    databaseMediaInfo,
+                    sectionList.filterNotNull())
+            )
         }
     }
 
@@ -120,7 +122,7 @@ class DatabaseInteractor(val reportDatabaseHelper: ReportDatabaseHelper = Report
 
         //there's a smarter way to do this
         val listToReturn = mutableListOf<ReportDetails>()
-        reports.forEach {listToReturn.add(dataMapper.convertReportDetailsToDomain(it)) }
+        reports.forEach { listToReturn.add(dataMapper.convertReportDetailsToDomain(it)) }
         listToReturn.toList()
     }
 
@@ -139,17 +141,27 @@ class DatabaseInteractor(val reportDatabaseHelper: ReportDatabaseHelper = Report
         clear(CaratteristichePilastriInfoTable.NAME)
     }
 
-    fun save(report : Report) = reportDatabaseHelper.use {
+    fun save(report: Report, editing: Boolean) = reportDatabaseHelper.use {
 
         //delete if exists (in the case I'm editing I delete the old one)
         delete(report.reportDetails)
-        with (dataMapper.convertReportFromDomain(report))
-        {
-            insert(ReportTable.NAME, *reportDetails.map.toVarargArray())
-            insertEachSectionIntoCorrectTable(sections)
-            mediaList.forEach{ (map) -> insert(ReportMediaTable.NAME, *map.toVarargArray())}
+        if (!editing) {
+            with(dataMapper.convertReportFromDomain(report))
+            {
+                insert(ReportTable.NAME, *reportDetails.map.toVarargArray())
+                insertEachSectionIntoCorrectTable(sections)
+                mediaList.forEach { (map) -> insert(ReportMediaTable.NAME, *map.toVarargArray()) }
+            }
+        } else {
+            with(dataMapper.convertReportFromDomain(report))
+            {
+                update(ReportTable.NAME, *reportDetails.map.toVarargArray())
+                updateEachSectionIntoCorrectTable(sections)
+                mediaList.forEach { (map) -> update(ReportMediaTable.NAME, *map.toVarargArray()) }
+            }
         }
     }
+
 
     //TODO: delete all sections with report_id as well
     fun delete(reportDetails: ReportDetails) = reportDatabaseHelper.use {
@@ -171,37 +183,61 @@ class DatabaseInteractor(val reportDatabaseHelper: ReportDatabaseHelper = Report
 
     private fun insertEachSectionIntoCorrectTable(sections: List<DatabaseSection>) = reportDatabaseHelper.use {
 
-        sections.forEach {section ->
+        sections.forEach { section ->
             when (section) {
 
-                is DatabaseLocalizationSection ->
-                {
+                is DatabaseLocalizationSection -> {
                     insert(LocalizationInfoTable.NAME, *section.map.toVarargArray())
                 }
-                is DatabaseCatastoSection ->
-                {
+                is DatabaseCatastoSection -> {
                     insert(CatastoInfoTable.NAME, *section.map.toVarargArray())
                 }
-                is DatabaseParametriSismici ->
-                {
+                is DatabaseParametriSismici -> {
                     insert(ParametriSismiciInfoTable.NAME, *section.map.toVarargArray())
                 }
-                is DatabaseParametriSpettri ->
-                {
+                is DatabaseParametriSpettri -> {
                     insert(SpettriDiProgettoInfoTable.NAME, *section.map.toVarargArray())
                 }
-                is DatabaseCaratteristicheGenerali ->
-                {
+                is DatabaseCaratteristicheGenerali -> {
                     insert(CaratteristicheGeneraliInfoTable.NAME, *section.map.toVarargArray())
                 }
-                is DatabaseCaratteristichePilastri ->
-                {
+                is DatabaseCaratteristichePilastri -> {
                     insert(CaratteristichePilastriInfoTable.NAME, *section.map.toVarargArray())
                 }
-                is DatabaseRilievi->
-                {
+                is DatabaseRilievi -> {
                     insert(RilieviInfoTable.NAME, *section.map.toVarargArray())
                 }
+            }
+        }
+    }
+
+    private fun updateEachSectionIntoCorrectTable(sections: List<DatabaseSection>) = reportDatabaseHelper.use {
+
+        sections.forEach { section ->
+            when (section) {
+
+                is DatabaseLocalizationSection -> {
+                    update(LocalizationInfoTable.NAME, *section.map.toVarargArray())
+                }
+                is DatabaseCatastoSection -> {
+                    update(CatastoInfoTable.NAME, *section.map.toVarargArray())
+                }
+                is DatabaseParametriSismici -> {
+                    update(ParametriSismiciInfoTable.NAME, *section.map.toVarargArray())
+                }
+                is DatabaseParametriSpettri -> {
+                    update(SpettriDiProgettoInfoTable.NAME, *section.map.toVarargArray())
+                }
+                is DatabaseCaratteristicheGenerali -> {
+                    update(CaratteristicheGeneraliInfoTable.NAME, *section.map.toVarargArray())
+                }
+                is DatabaseCaratteristichePilastri -> {
+                    update(CaratteristichePilastriInfoTable.NAME, *section.map.toVarargArray())
+                }
+                is DatabaseRilievi -> {
+                    update(RilieviInfoTable.NAME, *section.map.toVarargArray())
+                }
+            //TODO
             }
         }
     }

@@ -1,13 +1,8 @@
 package com.polito.sismic.Presenters.ReportActivity.Fragments
 
 import android.content.Context
-import android.os.Bundle
-import com.polito.sismic.Extensions.putFragmentState
-import com.polito.sismic.Extensions.putReportExtraInfo
 import com.polito.sismic.Interactors.ReportManager
 import com.polito.sismic.Presenters.Adapters.InvalidReportFragment
-import com.polito.sismic.Presenters.ReportActivity.Fragments.MagliaStrutturaleReportFragment
-import com.polito.sismic.Presenters.ReportActivity.Fragments.*
 import com.polito.sismic.R
 import com.stepstone.stepper.Step
 import com.stepstone.stepper.viewmodel.StepViewModel
@@ -50,7 +45,7 @@ class ReportFragmentFactory(private val reportManager: ReportManager) {
 
     private fun pushFragment(fragment: BaseReportFragment): Step {
 
-        fragment.arguments = reportManager.createStateFor(fragment)
+        fragment.arguments = reportManager.getState()
         return fragment
     }
 
@@ -89,18 +84,19 @@ class ReportFragmentFactory(private val reportManager: ReportManager) {
     }
 
     fun updateAllFragments() {
-        mInfoLocReportFragment.arguments = reportManager.createStateFor(mInfoLocReportFragment)
-        mCatastoReportFragment.arguments = reportManager.createStateFor(mCatastoReportFragment)
-        mDatiSismoGeneticiReportFragment.arguments = reportManager.createStateFor(mDatiSismoGeneticiReportFragment)
-        mParametriSismiciReportFragment.arguments = reportManager.createStateFor(mParametriSismiciReportFragment)
-        mSpettriDiProgettoReportFragment.arguments = reportManager.createStateFor(mSpettriDiProgettoReportFragment)
-        mDatiGeneraliReportFragment.arguments = reportManager.createStateFor(mDatiGeneraliReportFragment)
-        mDatiStrutturaliReportFragment.arguments = reportManager.createStateFor(mDatiStrutturaliReportFragment)
-        mRilieviReportFragment.arguments = reportManager.createStateFor(mRilieviReportFragment)
-        mPilastriReportFragment.arguments = reportManager.createStateFor(mPilastriReportFragment)
-        mMagliaStruttReportFragment.arguments = reportManager.createStateFor(mMagliaStruttReportFragment)
-        mRiepilogoReportFragment.arguments = reportManager.createStateFor(mRiepilogoReportFragment)
-        mRisultatiReportFragment.arguments = reportManager.createStateFor(mRisultatiReportFragment)
+        val newState = reportManager.getState()
+        mInfoLocReportFragment.arguments = newState
+        mCatastoReportFragment.arguments = newState
+        mDatiSismoGeneticiReportFragment.arguments = newState
+        mParametriSismiciReportFragment.arguments = newState
+        mSpettriDiProgettoReportFragment.arguments = newState
+        mDatiGeneraliReportFragment.arguments = newState
+        mDatiStrutturaliReportFragment.arguments = newState
+        mRilieviReportFragment.arguments = newState
+        mPilastriReportFragment.arguments = newState
+        mMagliaStruttReportFragment.arguments = newState
+        mRiepilogoReportFragment.arguments = newState
+        mRisultatiReportFragment.arguments = newState
     }
 }
 

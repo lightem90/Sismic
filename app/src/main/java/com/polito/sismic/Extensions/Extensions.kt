@@ -13,9 +13,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.polito.sismic.Domain.NeighboursNodeData
 import com.polito.sismic.Domain.NeighboursNodeSquare
-import com.polito.sismic.Domain.ReportExtraInfo
 import com.polito.sismic.Presenters.Adapters.ReportFragmentsAdapter
-import com.polito.sismic.Presenters.ReportActivity.Fragments.FragmentState
 import com.stepstone.stepper.adapter.StepAdapter
 import org.jetbrains.anko.db.MapRowParser
 import org.jetbrains.anko.db.SelectQueryBuilder
@@ -23,8 +21,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.reflect.KProperty
 import android.provider.OpenableColumns
-
-
+import com.polito.sismic.Domain.ReportState
 
 
 /**
@@ -131,24 +128,14 @@ fun Date.toFormattedString() : String
 fun <K, V : Any> Map<K, V?>.toVarargArray(): Array<out Pair<K, V>> =
         map({ Pair(it.key, it.value!!) }).toTypedArray()
 
-fun Bundle.putFragmentState(state : FragmentState)
+fun Bundle.putReportState(state : ReportState)
 {
-    putParcelable("fragment_state", state)
+    putParcelable("report_state", state)
 }
 
-fun Bundle.getFragmentState() : FragmentState?
+fun Bundle.getReportState() : ReportState?
 {
-    return getParcelable<FragmentState>("fragment_state")
-}
-
-fun Bundle.putReportExtraInfo(extraInfo: ReportExtraInfo?)
-{
-    putParcelable("extra_info", extraInfo)
-}
-
-fun Bundle.getReportExtraInfo() : ReportExtraInfo?
-{
-    return getParcelable<ReportExtraInfo>("extra_info")
+    return getParcelable<ReportState>("report_state")
 }
 
 fun ViewGroup.inflate(layoutRes: Int): View {

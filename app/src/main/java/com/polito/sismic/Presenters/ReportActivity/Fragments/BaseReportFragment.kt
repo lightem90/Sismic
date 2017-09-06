@@ -7,14 +7,9 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.github.fafaldo.fabtoolbar.widget.FABToolbarLayout
-import com.polito.sismic.Domain.LocationExtraInfo
-import com.polito.sismic.Domain.ReportExtraInfo
-import com.polito.sismic.Domain.ReportSection
-import com.polito.sismic.Extensions.getFragmentState
-import com.polito.sismic.Extensions.getReportExtraInfo
+import com.polito.sismic.Domain.ReportState
+import com.polito.sismic.Extensions.getReportState
 import com.polito.sismic.Extensions.toast
-import com.polito.sismic.Interactors.Helpers.UiMapper
 import com.polito.sismic.Presenters.CustomLayout.FragmentScrollableCanvas
 import com.polito.sismic.R
 import com.stepstone.stepper.BlockingStep
@@ -28,24 +23,15 @@ import com.stepstone.stepper.VerificationError
 abstract class BaseReportFragment : Fragment(), BlockingStep {
 
     private var     mParametersCallback : BaseReportFragment.ParametersManager? = null
-    protected var   mLocalizationInfoUser : BaseReportFragment.LocalizationInfoUser? = null
     protected var   mNodeRequestCallback: BaseReportFragment.NodeCaluclationRequest? = null
-    //wrap the mapper into interactor
-    protected val mUiMapper : UiMapper = UiMapper()
-    protected var mFragmentState : FragmentState? = null
-    protected var mExtraInfo : ReportExtraInfo? = null
+    protected var mReportState : ReportState? = null
 
     //Is the activity the handler of the dto, each fragment only passes its own
     // parameters througth the callback when the button "next" is pressed
     //Each fragment must implement the method to get their own paramter name-value
     interface ParametersManager {
-        fun onParametersConfirmed(sectionParameters: ReportSection?)
+        fun onParametersConfirmed(currentState : ReportState?)
         fun onParametersSaveRequest()
-    }
-
-    interface LocalizationInfoUser
-    {
-        fun onLocalizationDataConfirmed(locationExtraInfo: LocationExtraInfo)
     }
 
     interface NodeCaluclationRequest
@@ -55,15 +41,12 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mFragmentState = arguments.getFragmentState()
-        mExtraInfo = arguments.getReportExtraInfo()
+        mReportState = arguments.getReportState()
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mFragmentState = arguments?.getFragmentState()
-        mExtraInfo = arguments?.getReportExtraInfo()
-        onParametersInjectedForEdit()
+        mReportState = arguments?.getReportState()
     }
 
     open fun reloadFragment()
@@ -101,13 +84,10 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
 
     //maps domain values to ui (could be done by each fragment or by mapper)
     private fun onParametersInjectedForEdit() {
-        mFragmentState?.mReportSectionParameters?.let {
-            mUiMapper.setInjectedDomainValueForEdit(mFragmentState!!.mReportSectionParameters!!, this)
-        }
     }
     //Each fragment must implement this, so the activity is in charge to save the data
     override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback?) {
-        mParametersCallback?.onParametersConfirmed(mUiMapper.getDomainParameterSectionFromFragment(this))
+        mParametersCallback?.onParametersConfirmed(mReportState)
         callback!!.goToNextStep()
     }
     override fun onCompleteClicked(callback: StepperLayout.OnCompleteClickedCallback?) {
@@ -132,13 +112,6 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
         }
         catch (e: ClassCastException) {
             throw ClassCastException(context!!.toString() + " must implement OnParametersConfirmed")
-        }
-        try
-        {
-            mLocalizationInfoUser = context as LocalizationInfoUser?
-        }
-        catch (e : ClassCastException){
-            throw ClassCastException(context!!.toString() + " must implement LocalizationInfoUser")
         }
         try
         {

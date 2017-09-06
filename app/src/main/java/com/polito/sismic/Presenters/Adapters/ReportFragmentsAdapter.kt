@@ -32,7 +32,7 @@ class ReportFragmentsAdapter(fragmentManager: FragmentManager, context: Context,
         return fragmentFactory.createDecoratorForStep(position, context)
     }
 
-    fun updateFragmentsData()
+    fun updateStateForExistingFragments()
     {
         fragmentFactory.updateAllFragments()
     }

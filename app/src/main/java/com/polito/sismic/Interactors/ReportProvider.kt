@@ -4,6 +4,7 @@ import android.content.Intent
 import android.database.sqlite.SQLiteException
 import android.support.v7.app.AlertDialog
 import com.polito.sismic.Domain.Report
+import com.polito.sismic.Domain.ReportState
 import com.polito.sismic.Extensions.toast
 import com.polito.sismic.Presenters.ReportActivity.ReportActivity
 import com.polito.sismic.R
@@ -42,8 +43,6 @@ class ReportProvider(val caller: ReportActivity) {
         {
             //creating new report, I need to do it now so I can have the report Id and other infos.. if the user cancels the operation
             //I will delete the tmp report as well
-            //dbInteractor.cleanDatabase()
-
             val customDialog = caller.layoutInflater.inflate(R.layout.report_wizard, null)
             AlertDialog.Builder(caller)
                     .setTitle(R.string.report_wizard_title)
@@ -61,7 +60,7 @@ class ReportProvider(val caller: ReportActivity) {
     private fun createFromNew(userName: String, title : String, description : String) : ReportManager {
 
         val reportDetails = dbInteractor.createReportDetailsForUser(userName, title, description)
-        val report = Report(reportDetails, listOf(), listOf())
+        val report = Report(reportDetails, ReportState())
         return ReportManager(report, dbInteractor)
     }
 
