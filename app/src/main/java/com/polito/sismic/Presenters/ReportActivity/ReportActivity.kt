@@ -8,6 +8,7 @@ import android.view.MenuItem
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.places.Places
+import com.polito.sismic.Domain.Report
 import com.polito.sismic.Domain.ReportState
 import com.polito.sismic.Extensions.getCustomAdapter
 import com.polito.sismic.Extensions.toast
@@ -74,7 +75,7 @@ class ReportActivity : AppCompatActivity(),
     }
 
     //Updates the state for all fragments
-    override fun onParametersConfirmed(sectionParameters: ReportState?) {
+    override fun onParametersConfirmed(report: Report?) {
         updateStateForFragments()
     }
 

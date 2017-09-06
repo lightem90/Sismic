@@ -40,25 +40,27 @@ class DatiSismoGeneticiReportFragment : BaseReportFragment() {
 
     override fun reloadFragment()
     {
-        if (mExtraInfo?.locationExtraInfo?.neighbours_points != null)
-        {
+        mReport?.reportState?.sismicState?.sismogenticState?.neighbours_points?.let {
+
             mNodeList.clear()
-            mNodeList.addAll(mExtraInfo!!.locationExtraInfo.neighbours_points.toList())
+            mNodeList.addAll(it.toList())
             list_nodi.adapter.notifyDataSetChanged()
         }
 
-        if (mExtraInfo?.locationExtraInfo?.periodData_list != null)
-        {
+        mReport?.reportState?.sismicState?.sismogenticState?.periodData_list?.let {
             mPeriodList.clear()
-            mPeriodList.addAll(mExtraInfo?.locationExtraInfo?.periodData_list!!)
+            mPeriodList.addAll(it)
             list_periodi.adapter.notifyDataSetChanged()
         }
 
         //Must never fail!
-        updateLabelsByCoordinate(mExtraInfo!!.locationExtraInfo.latitude.toString(),
-                mExtraInfo!!.locationExtraInfo.longitude.toString(),
-                mExtraInfo!!.locationExtraInfo.address,
-                mExtraInfo!!.locationExtraInfo.zone)
+        mReport?.reportState?.localizationState?.let {
+
+            updateLabelsByCoordinate(it.latitude.toString(),
+                    it.longitude.toString(),
+                    it.address,
+                    it.zone)
+        }
     }
 
     private fun updateLabelsByCoordinate(latitude : String, longitude : String, address : String, zone : String)

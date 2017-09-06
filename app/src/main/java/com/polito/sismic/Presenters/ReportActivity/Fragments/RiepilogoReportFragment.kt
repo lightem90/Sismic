@@ -19,10 +19,10 @@ import kotlinx.android.synthetic.main.riepilogo_report_layout.*
 
 class RiepilogoReportFragment : BaseReportFragment() {
 
-    private var mImageList : MutableList<ReportMedia> = mutableListOf()
-    private var mVideoList : MutableList<ReportMedia> = mutableListOf()
-    private var mAudioList : MutableList<ReportMedia> = mutableListOf()
-    private var mNoteList :  MutableList<ReportMedia> = mutableListOf()
+    private var mImageList: MutableList<ReportMedia> = mutableListOf()
+    private var mVideoList: MutableList<ReportMedia> = mutableListOf()
+    private var mAudioList: MutableList<ReportMedia> = mutableListOf()
+    private var mNoteList: MutableList<ReportMedia> = mutableListOf()
 
     override fun onCreateView(inflater: LayoutInflater?, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View? {
         return inflateFragment(R.layout.riepilogo_report_layout, inflater, container)
@@ -34,34 +34,33 @@ class RiepilogoReportFragment : BaseReportFragment() {
         reloadFragment()
     }
 
-    override fun reloadFragment()
-    {
-        mImageList.clear ()
-        mImageList = mFragmentState!!.mReportMedia
+    override fun reloadFragment() {
+        mImageList.clear()
+        mImageList = mReport!!.reportState.mediaState
                 .filter {
                     it.type == MediaType.Picture.toString() ||
-                    it.type == MediaType.Sketch.toString()
-                }
-                .toMutableList()
+                            it.type == MediaType.Sketch.toString()
+                }.toMutableList()
+
         image_grid.adapter = ReportImageAdapter(mImageList, activity)
 
         mVideoList.clear()
-        mVideoList = mFragmentState!!.mReportMedia
+        mVideoList = mReport!!.reportState.mediaState
                 .filter { it.type == MediaType.Video.toString() }
                 .toMutableList()
         video_grid.adapter = ReportVideoAdapter(mVideoList, activity)
 
         mNoteList.clear()
-        mNoteList = mFragmentState!!.mReportMedia
+        mNoteList = mReport!!.reportState.mediaState
                 .filter {
                     !it.note.isEmpty() &&
-                    it.type == MediaType.Note.toString()
+                            it.type == MediaType.Note.toString()
                 }
                 .toMutableList()
         note_grid.adapter = ReportStringAdapter(mNoteList, activity)
 
         mAudioList.clear()
-        mAudioList = mFragmentState!!.mReportMedia
+        mAudioList = mReport!!.reportState.mediaState
                 .filter { it.type == MediaType.Audio.toString() }
                 .toMutableList()
         audio_grid.adapter = ReportStringAdapter(mAudioList, activity)

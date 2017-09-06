@@ -38,10 +38,10 @@ class InfoLocReportFragment : BaseReportFragment(){
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mFragmentState?.mReportDetails?.let {
-            report_info_name_label.setValue(mFragmentState!!.mReportDetails!!.userIdentifier)
-            report_info_number_label.setValue(mFragmentState!!.mReportDetails!!.id.toString())
-            report_info_date_label.setValue(mFragmentState!!.mReportDetails!!.date.toFormattedString())
+        mReport?.let {
+            report_info_name_label.setValue(it.reportDetails.userIdentifier)
+            report_info_number_label.setValue(it.reportDetails.id.toString())
+            report_info_date_label.setValue(it.reportDetails.date.toFormattedString())
         }
 
         comune_parameter.attachDataConfirmedCallback {newComune ->
@@ -55,6 +55,7 @@ class InfoLocReportFragment : BaseReportFragment(){
         }
 
         //Signal to the activity that latitude and longitude changed, so certain data should be recalculated
+        //TODO, dont trigger if data didn't changes
         lat_parameter.attachDataConfirmedCallback { mLocationCallback?.onCoordinatesUpdated() }
         long_parameter.attachDataConfirmedCallback { mLocationCallback?.onCoordinatesUpdated() }
     }
@@ -188,14 +189,6 @@ class InfoLocReportFragment : BaseReportFragment(){
         if (zona_sismica_parameter.isEmpty()) return VerificationError(String.format(resources.getString(R.string.verification_empty_field), zona_sismica_parameter.getTitle()))
         if (codice_istat_parameter.isEmpty()) return VerificationError(String.format(resources.getString(R.string.verification_empty_field), codice_istat_parameter.getTitle()))
         return super.verifyStep()
-    }
-
-    //callback to activity, must add location info to all other fragments
-    override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback?) {
-
-        val info = mUiMapper.createLocationExtraInfoFromFragment(this)
-        mLocalizationInfoUser?.onLocalizationDataConfirmed(info)
-        super.onNextClicked(callback)
     }
 }
 

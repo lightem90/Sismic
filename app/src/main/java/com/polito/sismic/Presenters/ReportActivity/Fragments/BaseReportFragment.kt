@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.polito.sismic.Domain.Report
 import com.polito.sismic.Domain.ReportState
 import com.polito.sismic.Extensions.getReportState
 import com.polito.sismic.Extensions.toast
@@ -24,13 +25,14 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
 
     private var     mParametersCallback : BaseReportFragment.ParametersManager? = null
     protected var   mNodeRequestCallback: BaseReportFragment.NodeCaluclationRequest? = null
-    protected var mReportState : ReportState? = null
+    //TODO needs a presenter
+    protected var   mReport : Report? = null
 
     //Is the activity the handler of the dto, each fragment only passes its own
     // parameters througth the callback when the button "next" is pressed
     //Each fragment must implement the method to get their own paramter name-value
     interface ParametersManager {
-        fun onParametersConfirmed(currentState : ReportState?)
+        fun onParametersConfirmed(report : Report?)
         fun onParametersSaveRequest()
     }
 
@@ -41,12 +43,12 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mReportState = arguments.getReportState()
+        mReport = arguments.getReportState()
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mReportState = arguments?.getReportState()
+        mReport = arguments?.getReportState()
     }
 
     open fun reloadFragment()
@@ -87,7 +89,7 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
     }
     //Each fragment must implement this, so the activity is in charge to save the data
     override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback?) {
-        mParametersCallback?.onParametersConfirmed(mReportState)
+        mParametersCallback?.onParametersConfirmed(mReport)
         callback!!.goToNextStep()
     }
     override fun onCompleteClicked(callback: StepperLayout.OnCompleteClickedCallback?) {

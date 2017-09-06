@@ -41,7 +41,7 @@ class DatabaseInteractor(val reportDatabaseHelper: ReportDatabaseHelper = Report
                 .parseOpt { DatabaseReportDetails(HashMap(it)) }
 
         //returns new entry
-        databaseReportDetails!!.let { dataMapper.convertReportDetailsToDomain(databaseReportDetails) }
+        databaseReportDetails!!.let { dataMapper.convertReportDetailsToDomain(it) }
     }
 
     fun getReportForId(reportID: String, userID: String): Report? = reportDatabaseHelper.use {
@@ -106,10 +106,8 @@ class DatabaseInteractor(val reportDatabaseHelper: ReportDatabaseHelper = Report
                 rilieviInfo)
 
         databaseReportDetails?.let {
-            dataMapper.convertReportToDomain(DatabaseReport
-            (it,
-                    databaseMediaInfo,
-                    sectionList.filterNotNull())
+            dataMapper.convertReportToDomain(
+                DatabaseReport(it, databaseMediaInfo, sectionList.filterNotNull())
             )
         }
     }

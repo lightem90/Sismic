@@ -11,10 +11,30 @@ import java.util.*
 
 //It contains the whole report data, details only reading access, all the others are the report state (so it can change overtime)
 data class Report(val reportDetails: ReportDetails,
-                  var reportState : ReportState)
+                  var reportState: ReportState) : Parcelable {
+    constructor(source: Parcel) : this(
+            source.readParcelable<ReportDetails>(ReportDetails::class.java.classLoader),
+            source.readParcelable<ReportState>(ReportState::class.java.classLoader)
+    )
+
+    override fun describeContents() = 0
+
+    override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
+        writeParcelable(reportDetails, 0)
+        writeParcelable(reportState, 0)
+    }
+
+    companion object {
+        @JvmField
+        val CREATOR: Parcelable.Creator<Report> = object : Parcelable.Creator<Report> {
+            override fun createFromParcel(source: Parcel): Report = Report(source)
+            override fun newArray(size: Int): Array<Report?> = arrayOfNulls(size)
+        }
+    }
+}
 
 data class ReportState(var localizationState: LocalizationState,
-                       var sismogenticState: SismicState,
+                       var sismicState: SismicState,
                        var generalState: GeneralState,
                        var buildingState: BuildingState,
                        var mediaState: MutableList<ReportMedia>) : Parcelable {
@@ -31,7 +51,7 @@ data class ReportState(var localizationState: LocalizationState,
 
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
         writeParcelable(localizationState, 0)
-        writeParcelable(sismogenticState, 0)
+        writeParcelable(sismicState, 0)
         writeParcelable(generalState, 0)
         writeParcelable(buildingState, 0)
         writeTypedList(mediaState)

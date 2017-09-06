@@ -21,6 +21,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.reflect.KProperty
 import android.provider.OpenableColumns
+import com.polito.sismic.Domain.Report
 import com.polito.sismic.Domain.ReportState
 
 
@@ -128,14 +129,14 @@ fun Date.toFormattedString() : String
 fun <K, V : Any> Map<K, V?>.toVarargArray(): Array<out Pair<K, V>> =
         map({ Pair(it.key, it.value!!) }).toTypedArray()
 
-fun Bundle.putReportState(state : ReportState)
+fun Bundle.putReportState(state : Report)
 {
     putParcelable("report_state", state)
 }
 
-fun Bundle.getReportState() : ReportState?
+fun Bundle.getReportState() : Report?
 {
-    return getParcelable<ReportState>("report_state")
+    return getParcelable<Report>("report_state")
 }
 
 fun ViewGroup.inflate(layoutRes: Int): View {

@@ -12,10 +12,10 @@ class DatabaseDataMapper {
     private val helper : DatabaseMapperHelper = DatabaseMapperHelper()
 
     fun convertReportDetailsToDomain(databaseReport: DatabaseReportDetails): ReportDetails = with (databaseReport){
-        return ReportDetails(_id, title, description, userID, date.toFormattedDate(), size, value)
+        return ReportDetails(_id, title, description, userID, date.toFormattedDate())
     }
 
-    fun convertReportDetailsFromDomain(reportDetails: ReportDetails) : DatabaseReportDetails = with (reportDetails) {
+    fun convertReportDetailsFromDomain(reportDetails: ReportDetails, size : Double = 0.0, value: Int = 0) : DatabaseReportDetails = with (reportDetails) {
         return DatabaseReportDetails(id, title, description, userIdentifier, date.toFormattedString(), size, value)
     }
 
@@ -29,44 +29,30 @@ class DatabaseDataMapper {
         return DatabaseReportMedia(uri, type, note, size, reportId)
     }
 
-    fun  convertReportFromDomain(report: Report): DatabaseReport = with(report){
+    fun convertReportFromDomain(report: Report): DatabaseReport = with(report){
 
         val databaseReportDetails = convertReportDetailsFromDomain(reportDetails)
-        val databaseMediaList = with (mediaList)
+        val databaseMediaList = with (reportState.mediaState)
         {
             map {convertMediaFromDomain(databaseReportDetails._id, it)}
         }
 
-        val databaseSection = with(sectionList)
-        {
-            map { convertDomainSectionToDatabaseSection(databaseReportDetails._id, it) }
-        }
-
-        DatabaseReport(databaseReportDetails, databaseMediaList, databaseSection.filterNotNull())
+        val databaseSections = convertDomainSectionToDatabaseSection(databaseReportDetails._id, reportState)
+        DatabaseReport(databaseReportDetails, databaseMediaList, databaseSections.filterNotNull())
     }
 
     fun convertReportToDomain(databaseReport: DatabaseReport): Report = with (databaseReport){
 
-        val domainMediaList = with(mediaList){
-            map { convertMediaToDomain(it) }
-        }
-
-        val domainSections = with(sections)
-        {
-            map { convertDatabaseSectionToDomain(it) }
-        }
-
-        Report(convertReportDetailsToDomain(reportDetails), domainMediaList, domainSections.requireNoNulls())
+        Report(convertReportDetailsToDomain(reportDetails), convertDatabaseSectionToDomain(sections))
     }
 
-
-    private fun convertDatabaseSectionToDomain(section: DatabaseSection?) : ReportSection? = with (helper)
+    private fun convertDatabaseSectionToDomain(sections: List<DatabaseSection>) : ReportState = with (helper)
     {
-        helper.getDomainClassForSection(section)
+        helper.getReportStateFromDatabaseSections(sections)
     }
 
-    private fun convertDomainSectionToDatabaseSection(reportId: Int, section : ReportSection) : DatabaseSection? = with(helper)
+    private fun convertDomainSectionToDatabaseSection(reportId: Int, state : ReportState) : List<DatabaseSection?> = with(helper)
     {
-        helper.getDatabaseSectionForDomain(reportId, section)
+        helper.getDatabaseSectionForDomain(reportId, state)
     }
 }
