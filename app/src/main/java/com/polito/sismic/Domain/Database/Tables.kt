@@ -63,7 +63,7 @@ object CatastoInfoTable
 
 object ResultsInfoTable
 {
-    val NAME =    "General"
+    val NAME =    "Results"
     val ID =                "_id"
     val RESULT =            "result"
     val REPORT_ID =         "report_id"

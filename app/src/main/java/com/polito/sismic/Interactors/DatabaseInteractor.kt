@@ -98,6 +98,10 @@ class DatabaseInteractor(private val reportDatabaseHelper: ReportDatabaseHelper 
                 .byReportId(reportID)
                 .parseOpt { DatabaseMagliaStrutturale(HashMap(it)) }
 
+        val results = select(ResultsInfoTable.NAME)
+                .byReportId(reportID)
+                .parseOpt { DatabaseResults(HashMap(it)) }
+
         //TODO, add others!
 
         val sectionList = listOf(databaseLocalizationInfo,
@@ -132,6 +136,7 @@ class DatabaseInteractor(private val reportDatabaseHelper: ReportDatabaseHelper 
         clear(DatiStrutturaliInfoTable.NAME)
         clear(CaratteristichePilastriInfoTable.NAME)
         clear(MagliaStrutturaleInfoTable.NAME)
+        clear(ResultsInfoTable.NAME)
     }
 
     fun save(report: Report, editing: Boolean) = reportDatabaseHelper.use {
@@ -249,7 +254,6 @@ class DatabaseInteractor(private val reportDatabaseHelper: ReportDatabaseHelper 
             val generalDatas = select(ResultsInfoTable.NAME)
                 .orderBy(ReportMediaTable.ID)
                 .parseList { DatabaseResults(HashMap(it)) }
-
 
             //there's a smarter way to do this
             reports.map { dataMapper.convertReportDataForHistory(it, medias, generalDatas) }.toMutableList()

@@ -15,8 +15,8 @@ class DatabaseDataMapper {
         return ReportDetails(_id, title, description, userID, date.toFormattedDate())
     }
 
-    fun convertReportDetailsFromDomain(reportDetails: ReportDetails, size : Double = 0.0, value: Int = 0) : DatabaseReportDetails = with (reportDetails) {
-        return DatabaseReportDetails(id, title, description, userIdentifier, date.toFormattedString(), size, value)
+    fun convertReportDetailsFromDomain(reportDetails: ReportDetails, results: DatabaseResults, size : Double = 0.0) : DatabaseReportDetails = with (reportDetails) {
+        return DatabaseReportDetails(id, title, description, userIdentifier, date.toFormattedString(), size, results.result)
     }
 
     fun convertMediaToDomain(databaseReportMedia: DatabaseReportMedia): ReportMedia = with(databaseReportMedia)

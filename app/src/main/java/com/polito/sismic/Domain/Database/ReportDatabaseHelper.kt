@@ -181,7 +181,7 @@ class ReportDatabaseHelper(ctx: Context = App.instance) : ManagedSQLiteOpenHelpe
 
         db.createTable(ResultsInfoTable.NAME, ifNotExists = true,
                 columns = *arrayOf(ResultsInfoTable.ID to SqlType.create("INTEGER PRIMARY KEY AUTOINCREMENT"),
-                        ResultsInfoTable.NAME to INTEGER,
+                        ResultsInfoTable.RESULT to INTEGER,
                         ResultsInfoTable.REPORT_ID to INTEGER))
     }
 
