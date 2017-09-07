@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.*
 import com.polito.sismic.Domain.ReportDetails
+import com.polito.sismic.Domain.ReportItemHistory
 import com.polito.sismic.Interactors.DatabaseInteractor
 import com.polito.sismic.Presenters.Adapters.ReportAdapter
 import com.polito.sismic.Presenters.ReportActivity.ReportActivity
@@ -29,7 +30,7 @@ class ReportListFragment : Fragment() {
         fun onHistoryReloadRequest()
     }
 
-    var mReportDetailsList :  MutableList<ReportDetails> = DatabaseInteractor().getAllReportsDetails().toMutableList()
+    var mReportDetailsList :  MutableList<ReportItemHistory> = DatabaseInteractor().getDetailsForHistory()
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.report_list_fragment, container, false)
     }
@@ -68,11 +69,11 @@ class ReportListFragment : Fragment() {
     fun invalidateAndReload()
     {
         mReportDetailsList.clear()
-        mReportDetailsList.addAll(DatabaseInteractor().getAllReportsDetails().toMutableList())
+        mReportDetailsList.addAll(DatabaseInteractor().getDetailsForHistory())
         history_container?.adapter?.notifyDataSetChanged()
     }
 
-    private fun startReportEditing(reportDetails: ReportDetails): Boolean {
+    private fun startReportEditing(reportDetails: ReportItemHistory): Boolean {
 
         val intent = Intent(activity, ReportActivity::class.java)
         intent.putExtra("editing", true)

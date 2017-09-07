@@ -1,7 +1,6 @@
 package com.polito.sismic.Interactors.Helpers
 
 import android.content.Context
-import com.polito.sismic.Domain.LocationExtraInfo
 import com.polito.sismic.Interactors.ReportManager
 
 /**
@@ -21,21 +20,15 @@ class SismicActionParametersInteractor(val mReportManager: ReportManager,
             mCoordinateHelper.initialize()
 
             //calculates the 4 nodes that surrond a point
-            val lat = mReportManager.getExtraLatitudeCoordinate()
-            val long = mReportManager.getExtraLongitudeCoordinate()
+            val lat = mReportManager.report.reportState.localizationState.latitude
+            val long = mReportManager.report.reportState.localizationState.longitude
             val nodeSquare = mCoordinateHelper.getClosestPointsTo(long, lat)
 
             //calculates ag, f0 and tc* for point
             val periodList = SismicActionCalculatorHelper.calculatePeriodsForSquare(nodeSquare, mCoordinateHelper)
 
-            mReportManager.addLocationExtraInfo(
-                    LocationExtraInfo(mReportManager.getExtraLatitudeCoordinate(),
-                    mReportManager.getExtraLongitudeCoordinate(),
-                    mReportManager.getExtraAddress(),
-                    mReportManager.getExtraZone(),
-                    nodeSquare,
-                    periodList)
-            )
+            mReportManager.report.reportState.sismicState.sismogenticState.neighbours_points = nodeSquare
+            mReportManager.report.reportState.sismicState.sismogenticState.periodData_list = periodList
 
             mustRecalc = false
         }

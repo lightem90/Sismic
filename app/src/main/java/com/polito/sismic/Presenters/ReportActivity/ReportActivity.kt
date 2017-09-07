@@ -30,7 +30,6 @@ class ReportActivity : AppCompatActivity(),
 
     private lateinit var mGoogleApiClient: GoogleApiClient
     private lateinit var mUserActionInteractor: UserActionInteractor
-    private lateinit var mDomainInteractor: DomainInteractor
     private lateinit var mSismicParameterInteractor: SismicActionParametersInteractor
     private var mReportManager: ReportManager? = null
 
@@ -125,7 +124,6 @@ class ReportActivity : AppCompatActivity(),
         //To handle user action, it uses other interactor to pilot the ui changes to the domain
         if (mReportManager == null) mReportManager = reportManager
         mUserActionInteractor = UserActionInteractor(reportManager, this)
-        mDomainInteractor = DomainInteractor(reportManager)
         mSismicParameterInteractor = SismicActionParametersInteractor(reportManager, this)
         stepperLayout.adapter = ReportFragmentsAdapter(supportFragmentManager, this, reportManager)
         fabtoolbar_fab.setOnClickListener { fabtoolbar.show() }

@@ -47,7 +47,7 @@ object LocalizationInfoTable
 
 object CatastoInfoTable
 {
-    val NAME = "Catasto"
+    val NAME =    "General"
     val ID =                "_id"
     val FOGLIO =            "foglio"
     val MAPPALE =           "mappale"
@@ -58,6 +58,14 @@ object CatastoInfoTable
     val ZONA_URB =          "zona_urb"
     val PIANO_URB =         "piano_urb"
     val VINCOLI_URB =       "vincoli_urb"
+    val REPORT_ID =         "report_id"
+}
+
+object ResultsInfoTable
+{
+    val NAME =    "General"
+    val ID =                "_id"
+    val RESULT =            "result"
     val REPORT_ID =         "report_id"
 }
 
@@ -82,7 +90,6 @@ object DatiSismogeneticiInfoTable
     val SODist =            "so_dist"
     val ID =                "_id"
     val REPORT_ID =         "report_id"
-
 }
 
 object ParametriSismiciInfoTable
@@ -179,4 +186,9 @@ object CaratteristichePilastriInfoTable
     val REPORT_ID           = "report_id"
 }
 
-//TODO
+object MagliaStrutturaleInfoTable
+{
+    val NAME = "MagliaStrutturale"
+    val ID                  = "_id"
+    val REPORT_ID           = "report_id"
+}

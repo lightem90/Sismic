@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.polito.sismic.Domain.ReportDetails
+import com.polito.sismic.Domain.ReportItemHistory
 import com.polito.sismic.Extensions.inflate
 import com.polito.sismic.Interactors.Helpers.DangerStateProvider
 import com.polito.sismic.R
@@ -19,8 +20,8 @@ import kotlinx.android.synthetic.main.history_item.view.*
 
 //Manager of report list
 class ReportAdapter(val mContext: Context,
-                    val items: List<ReportDetails>,
-                    val longClick: (ReportDetails) -> Boolean) :
+                    val items: List<ReportItemHistory>,
+                    val longClick: (ReportItemHistory) -> Boolean) :
         RecyclerView.Adapter<ReportAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder? {
@@ -37,10 +38,10 @@ class ReportAdapter(val mContext: Context,
     }
 
     class ViewHolder(itemView: View,
-                     val longClick: (ReportDetails) -> Boolean,
+                     val longClick: (ReportItemHistory) -> Boolean,
                      val mContext: Context) : RecyclerView.ViewHolder(itemView)
     {
-        fun bindReport(reportDetails: ReportDetails) {
+        fun bindReport(reportDetails: ReportItemHistory) {
             with(reportDetails)
             {
                 itemView.isDuplicateParentStateEnabled = true

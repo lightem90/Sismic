@@ -24,7 +24,6 @@ import com.stepstone.stepper.VerificationError
 abstract class BaseReportFragment : Fragment(), BlockingStep {
 
     private var     mParametersCallback : BaseReportFragment.ParametersManager? = null
-    protected var   mNodeRequestCallback: BaseReportFragment.NodeCaluclationRequest? = null
     //TODO needs a presenter
     protected var   mReport : Report? = null
 
@@ -114,13 +113,6 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
         }
         catch (e: ClassCastException) {
             throw ClassCastException(context!!.toString() + " must implement OnParametersConfirmed")
-        }
-        try
-        {
-            mNodeRequestCallback = context as NodeCaluclationRequest?
-        }
-        catch (e : ClassCastException){
-            throw ClassCastException(context!!.toString() + " must implement NodeCaluclationRequest")
         }
     }
 

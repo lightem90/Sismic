@@ -403,6 +403,29 @@ data class DatabaseCaratteristichePilastri(var map: MutableMap<String, Any?>) : 
 
 }
 
+data class DatabaseMagliaStrutturale(var map: MutableMap<String, Any?>) : DatabaseSection {
+    var _id: Int by map
+    var report_id: Int by map
+
+    constructor(report_id: Int) : this(HashMap()) {
+        this.report_id = report_id
+    }
+}
+
+data class DatabaseResults(var map: MutableMap<String, Any?>) : DatabaseSection {
+    var _id: Int by map
+    var result : Int by map
+    var report_id: Int by map
+
+    constructor(result : Int,
+            report_id: Int) : this(HashMap()) {
+        this.result = result
+        this.report_id = report_id
+    }
+}
+
+
+
 data class DatabaseReportMedia(var map: MutableMap<String, Any?>) {
     var _id: Int by map
     var filepath: String by map

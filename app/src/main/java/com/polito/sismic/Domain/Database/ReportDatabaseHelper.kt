@@ -174,6 +174,15 @@ class ReportDatabaseHelper(ctx: Context = App.instance) : ManagedSQLiteOpenHelpe
                         CaratteristichePilastriInfoTable.FI to INTEGER,
                         CaratteristichePilastriInfoTable.REPORT_ID to INTEGER)
         )
+
+        db.createTable(MagliaStrutturaleInfoTable.NAME, ifNotExists = true,
+                columns = *arrayOf(MagliaStrutturaleInfoTable.ID to SqlType.create("INTEGER PRIMARY KEY AUTOINCREMENT"),
+                        MagliaStrutturaleInfoTable.REPORT_ID to INTEGER))
+
+        db.createTable(ResultsInfoTable.NAME, ifNotExists = true,
+                columns = *arrayOf(ResultsInfoTable.ID to SqlType.create("INTEGER PRIMARY KEY AUTOINCREMENT"),
+                        ResultsInfoTable.NAME to INTEGER,
+                        ResultsInfoTable.REPORT_ID to INTEGER))
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
@@ -188,6 +197,8 @@ class ReportDatabaseHelper(ctx: Context = App.instance) : ManagedSQLiteOpenHelpe
         db.dropTable(RilieviInfoTable.NAME, true)
         db.dropTable(DatiStrutturaliInfoTable.NAME, true)
         db.dropTable(CaratteristichePilastriInfoTable.NAME, true)
+        db.dropTable(MagliaStrutturaleInfoTable.NAME, true)
+        db.dropTable(ResultsInfoTable.NAME, true)
         db.dropTable(ReportMediaTable.NAME, true)
         onCreate(db)
     }

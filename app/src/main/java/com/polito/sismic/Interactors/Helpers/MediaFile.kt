@@ -2,6 +2,15 @@ package com.polito.sismic.Interactors.Helpers
 
 import android.net.Uri
 
+enum class MediaType
+{
+    Picture,
+    Video,
+    Audio,
+    Sketch,
+    Note
+}
+
 class MediaFile(var type : MediaType,
                 var uri: Uri,
                 var note : String = "",

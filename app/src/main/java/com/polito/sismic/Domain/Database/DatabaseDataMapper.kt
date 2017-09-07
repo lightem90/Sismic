@@ -55,4 +55,15 @@ class DatabaseDataMapper {
     {
         helper.getDatabaseSectionForDomain(reportId, state)
     }
+
+    fun convertReportDataForHistory(details: DatabaseReportDetails, medias: List<DatabaseReportMedia>, generalDatas: List<DatabaseResults>): ReportItemHistory {
+        var result = generalDatas.find { it.report_id == details._id }?.result
+        if (result == null) result = -1
+        return ReportItemHistory(details._id,
+                details.title,
+                details.description,
+                result,
+                medias.filter { it.report_id == details._id }.sumByDouble { it.size },
+                details.userID)
+    }
 }

@@ -157,7 +157,7 @@ fun StepAdapter.getCustomAdapter() : ReportFragmentsAdapter
     return this as ReportFragmentsAdapter
 }
 
-fun NeighboursNodeSquare.toList(): MutableList<NeighboursNodeData> {
+fun NeighboursNodeSquare.toMutableList(): MutableList<NeighboursNodeData> {
     return mutableListOf(NE, NO, SO, SE)
 }
 

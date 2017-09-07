@@ -66,14 +66,12 @@ data class ReportState(var localizationState: LocalizationState,
     }
 }
 
-class SismicState(var localizationState: LocalizationState,
-                  var sismogenticState: DatiSimogeneticiSate,
-                  var sismicParametersState: SismicParametersState,
-                  var projectSpectrumState: ProjectSpectrumState) : Parcelable {
-    constructor() : this (LocalizationState(), DatiSimogeneticiSate(), SismicParametersState(), ProjectSpectrumState())
+class SismicState(var sismogenticState:         SismogeneticState,
+                  var sismicParametersState:    SismicParametersState,
+                  var projectSpectrumState:     ProjectSpectrumState) : Parcelable {
+    constructor() : this (SismogeneticState(), SismicParametersState(), ProjectSpectrumState())
     constructor(source: Parcel) : this(
-            source.readParcelable<LocalizationState>(LocalizationState::class.java.classLoader),
-            source.readParcelable<DatiSimogeneticiSate>(DatiSimogeneticiSate::class.java.classLoader),
+            source.readParcelable<SismogeneticState>(SismogeneticState::class.java.classLoader),
             source.readParcelable<SismicParametersState>(SismicParametersState::class.java.classLoader),
             source.readParcelable<ProjectSpectrumState>(ProjectSpectrumState::class.java.classLoader)
     )
@@ -81,7 +79,6 @@ class SismicState(var localizationState: LocalizationState,
     override fun describeContents() = 0
 
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
-        writeParcelable(localizationState, 0)
         writeParcelable(sismogenticState, 0)
         writeParcelable(sismicParametersState, 0)
         writeParcelable(projectSpectrumState, 0)
@@ -97,16 +94,16 @@ class SismicState(var localizationState: LocalizationState,
 }
 
 
-data class LocalizationState(val latitude: Double,
-                             val longitude: Double,
-                             val country: String,
-                             val region: String,
-                             val province: String,
-                             val comune: String,
-                             val address: String,
-                             val cap: String,
-                             val zone: String,
-                             val code: String) : Parcelable {
+data class LocalizationState(var latitude: Double,
+                             var longitude: Double,
+                             var country: String,
+                             var region: String,
+                             var province: String,
+                             var comune: String,
+                             var address: String,
+                             var cap: String,
+                             var zone: String,
+                             var code: String) : Parcelable {
     constructor() : this(0.0, 0.0, "", "", "", "", "", "", "", "")
     constructor(source: Parcel) : this(
             source.readDouble(),
@@ -145,16 +142,16 @@ data class LocalizationState(val latitude: Double,
 }
 
 
-data class SismicParametersState(val vitaNominale: Int,
-                                 val classeUso: Double,
-                                 val vitaReale: Double,
-                                 val ag: Double,
-                                 val f0: Double,
-                                 val tg: Double,
-                                 val slo: Int,
-                                 val sld: Int,
-                                 val slv: Int,
-                                 val slc: Int) : Parcelable {
+data class SismicParametersState(var vitaNominale: Int,
+                                 var classeUso: Double,
+                                 var vitaReale: Double,
+                                 var ag: Double,
+                                 var f0: Double,
+                                 var tg: Double,
+                                 var slo: Int,
+                                 var sld: Int,
+                                 var slv: Int,
+                                 var slc: Int) : Parcelable {
     constructor() : this(0, 0.0, 0.0, 0.0, 0.0, 0.0, 0, 0, 0, 0)
     constructor(source: Parcel) : this(
             source.readInt(),
@@ -194,10 +191,11 @@ data class SismicParametersState(val vitaNominale: Int,
 }
 
 
-data class DatiSimogeneticiSate(val closedNodeData: List<NeighboursNodeData>,
-                                val neighbours_points: NeighboursNodeSquare,
-                                val periodData_list: List<PeriodData>) : Parcelable {
-    constructor() : this(listOf(), NeighboursNodeSquare.Invalid, listOf())
+data class SismogeneticState(var closedNodeData: List<NeighboursNodeData>,
+                             var neighbours_points: NeighboursNodeSquare = NeighboursNodeSquare.Invalid,
+                             var periodData_list: List<PeriodData> = listOf()) : Parcelable {
+
+    constructor() : this(listOf())
     constructor(source: Parcel) : this(
             source.createTypedArrayList(NeighboursNodeData.CREATOR),
             source.readParcelable<NeighboursNodeSquare>(NeighboursNodeSquare::class.java.classLoader),
@@ -214,9 +212,9 @@ data class DatiSimogeneticiSate(val closedNodeData: List<NeighboursNodeData>,
 
     companion object {
         @JvmField
-        val CREATOR: Parcelable.Creator<DatiSimogeneticiSate> = object : Parcelable.Creator<DatiSimogeneticiSate> {
-            override fun createFromParcel(source: Parcel): DatiSimogeneticiSate = DatiSimogeneticiSate(source)
-            override fun newArray(size: Int): Array<DatiSimogeneticiSate?> = arrayOfNulls(size)
+        val CREATOR: Parcelable.Creator<SismogeneticState> = object : Parcelable.Creator<SismogeneticState> {
+            override fun createFromParcel(source: Parcel): SismogeneticState = SismogeneticState(source)
+            override fun newArray(size: Int): Array<SismogeneticState?> = arrayOfNulls(size)
         }
     }
 }
@@ -276,11 +274,11 @@ data class PeriodData(val years: Int, val ag: Double, val f0: Double, val tcstar
     }
 }
 
-data class NeighboursNodeSquare(val NE: NeighboursNodeData,
-                                val NO: NeighboursNodeData,
-                                val SO: NeighboursNodeData,
-                                val SE: NeighboursNodeData,
-                                val isValid: Boolean) : Parcelable {
+data class NeighboursNodeSquare(var NE: NeighboursNodeData,
+                                var NO: NeighboursNodeData,
+                                var SO: NeighboursNodeData,
+                                var SE: NeighboursNodeData,
+                                var isValid: Boolean) : Parcelable {
     constructor() : this(NeighboursNodeData.Invalid, NeighboursNodeData.Invalid, NeighboursNodeData.Invalid, NeighboursNodeData.Invalid, false)
     constructor(source: Parcel) : this(
             source.readParcelable<NeighboursNodeData>(NeighboursNodeData::class.java.classLoader),
@@ -316,16 +314,16 @@ data class NeighboursNodeSquare(val NE: NeighboursNodeData,
     }
 }
 
-data class ProjectSpectrumState(val categoria_suolo: String,
-                                val categoria_topografica: String,
-                                val classe_duttilita: String,
-                                val tipologia : Int,
-                                val q0 : Double,
-                                val alfa: Double,
-                                val ss: Double,
-                                val cc: Double,
-                                val st: Double,
-                                val s: Double) : Parcelable {
+data class ProjectSpectrumState(var categoria_suolo: String,
+                                var categoria_topografica: String,
+                                var classe_duttilita: String,
+                                var tipologia : Int,
+                                var q0 : Double,
+                                var alfa: Double,
+                                var ss: Double,
+                                var cc: Double,
+                                var st: Double,
+                                var s: Double) : Parcelable {
     constructor() : this("", "", "", 0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
     constructor(source: Parcel) : this(
             source.readString(),
@@ -384,15 +382,15 @@ class GeneralState(var catastoState: CatastoState) : Parcelable {
     }
 }
 
-data class CatastoState(val foglio: String,
-                        val mappale: String,
-                        val particella: String,
-                        val foglio_cartografia: String,
-                        val edificio: String,
-                        val aggr_str: String,
-                        val zona_urb: String,
-                        val piano_urb: String,
-                        val vincoli_urb: String) : Parcelable {
+data class CatastoState(var foglio: String,
+                        var mappale: String,
+                        var particella: String,
+                        var foglio_cartografia: String,
+                        var edificio: String,
+                        var aggr_str: String,
+                        var zona_urb: String,
+                        var piano_urb: String,
+                        var vincoli_urb: String) : Parcelable {
     constructor() : this("", "", "", "", "", "", "", "", "")
     constructor(source: Parcel) : this(
             source.readString(),
@@ -463,10 +461,10 @@ class BuildingState(var buildingGeneralState: BuildingGeneralState,
 }
 
 
-data class BuildingGeneralState(val anno_costruzione: String,
-                                val tipologia_strutturale: String,
-                                val stato_edificio: String,
-                                val totale_unita: String) : Parcelable {
+data class BuildingGeneralState(var anno_costruzione: String,
+                                var tipologia_strutturale: String,
+                                var stato_edificio: String,
+                                var totale_unita: String) : Parcelable {
     constructor() : this("", "", "", "")
     constructor(source: Parcel) : this(
             source.readString(),
@@ -493,12 +491,12 @@ data class BuildingGeneralState(val anno_costruzione: String,
     }
 }
 
-data class TakeoverState(val numero_piani: Int,
-                         val altezza_piano_terra: Double,
-                         val altezza_piani_superiori: Double,
-                         val altezza_totale: Double,
-                         val lunghezza_esterna: Double,
-                         val larghezza_esterna: Double) : Parcelable {
+data class TakeoverState(var numero_piani: Int,
+                         var altezza_piano_terra: Double,
+                         var altezza_piani_superiori: Double,
+                         var altezza_totale: Double,
+                         var lunghezza_esterna: Double,
+                         var larghezza_esterna: Double) : Parcelable {
     constructor() : this(0, 0.0, 0.0, 0.0, 0.0, 0.0)
     constructor(source: Parcel) : this(
             source.readInt(),
@@ -529,18 +527,18 @@ data class TakeoverState(val numero_piani: Int,
     }
 }
 
-data class StructuralState(val tipo_fondazioni: Int,
-                           val altezza_fondazioni: Double,
-                           val tipo_solaio: String,
-                           val peso_solaio: String,
-                           val g1_solaio: Double,
-                           val g2_solaio: Double,
-                           val qk_solaio: Double,
-                           val tipo_copertura: String,
-                           val peso_copertura: String,
-                           val g1_copertura: Double,
-                           val g2_copertura: Double,
-                           val qk_copertura: Double) : Parcelable {
+data class StructuralState(var tipo_fondazioni: Int,
+                           var altezza_fondazioni: Double,
+                           var tipo_solaio: String,
+                           var peso_solaio: String,
+                           var g1_solaio: Double,
+                           var g2_solaio: Double,
+                           var qk_solaio: Double,
+                           var tipo_copertura: String,
+                           var peso_copertura: String,
+                           var g1_copertura: Double,
+                           var g2_copertura: Double,
+                           var qk_copertura: Double) : Parcelable {
     constructor() : this(0, 0.0, "", "", 0.0, 0.0, 0.0, "", "", 0.0, 0.0, 0.0)
     constructor(source: Parcel) : this(
             source.readInt(),
@@ -584,15 +582,15 @@ data class StructuralState(val tipo_fondazioni: Int,
 }
 
 
-data class PillarState(val classe_calcestruzzo: String,
-                       val conoscenza_calcestruzzo: Int,
-                       val classe_acciaio: String,
-                       val conoscenza_acciaio: Int,
-                       val bx: Double,
-                       val hy: Double,
-                       val c: Double,
-                       val longitudine_armatura: Int,
-                       val fi: Int) : Parcelable {
+data class PillarState(var classe_calcestruzzo: String,
+                       var conoscenza_calcestruzzo: Int,
+                       var classe_acciaio: String,
+                       var conoscenza_acciaio: Int,
+                       var bx: Double,
+                       var hy: Double,
+                       var c: Double,
+                       var longitudine_armatura: Int,
+                       var fi: Int) : Parcelable {
     constructor() : this("", 0, "", 0, 0.0, 0.0, 0.0, 0, 0)
     constructor(source: Parcel) : this(
             source.readString(),
@@ -715,24 +713,14 @@ data class ReportMedia(val id: Int,
     }
 }
 
+data class ReportItemHistory(val id : Int,
+        val title : String,
+        val description : String,
+        val value : Int,
+        val size : Double,
+        val userIdentifier: String)
+{
 
-data class ErrorSection(private val error: String) : Parcelable {
-    constructor(source: Parcel) : this(
-            source.readString()
-    )
-
-    override fun describeContents() = 0
-
-    override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
-        writeString(error)
-    }
-
-    companion object {
-        @JvmField val CREATOR: Parcelable.Creator<ErrorSection> = object : Parcelable.Creator<ErrorSection> {
-            override fun createFromParcel(source: Parcel): ErrorSection = ErrorSection(source)
-            override fun newArray(size: Int): Array<ErrorSection?> = arrayOfNulls(size)
-        }
-    }
 }
 
 data class UserDetails (val name : String,

@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.polito.sismic.Domain.NeighboursNodeData
 import com.polito.sismic.Domain.PeriodData
-import com.polito.sismic.Extensions.toList
+import com.polito.sismic.Extensions.toMutableList
 import com.polito.sismic.Presenters.Adapters.NodeListAdapter
 import com.polito.sismic.Presenters.Adapters.PeriodListAdapter
 import com.polito.sismic.R
@@ -43,7 +43,7 @@ class DatiSismoGeneticiReportFragment : BaseReportFragment() {
         mReport?.reportState?.sismicState?.sismogenticState?.neighbours_points?.let {
 
             mNodeList.clear()
-            mNodeList.addAll(it.toList())
+            mNodeList.addAll(it.toMutableList())
             list_nodi.adapter.notifyDataSetChanged()
         }
 
