@@ -66,6 +66,7 @@ object ResultsInfoTable
     val NAME =    "Results"
     val ID =                "_id"
     val RESULT =            "result"
+    val SIZE =              "size"
     val REPORT_ID =         "report_id"
 }
 

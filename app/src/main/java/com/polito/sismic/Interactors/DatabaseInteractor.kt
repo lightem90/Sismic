@@ -102,8 +102,6 @@ class DatabaseInteractor(private val reportDatabaseHelper: ReportDatabaseHelper 
                 .byReportId(reportID)
                 .parseOpt { DatabaseResults(HashMap(it)) }
 
-        //TODO, add others!
-
         val sectionList = listOf(databaseLocalizationInfo,
                 databaseCatastoInfo,
                 datiSismoGeneticiInfo,
@@ -113,11 +111,12 @@ class DatabaseInteractor(private val reportDatabaseHelper: ReportDatabaseHelper 
                 datiStrutturaliInfo,
                 caratteristichePilastriInfo,
                 rilieviInfo,
-                magliaStrutt)
+                magliaStrutt,
+                results)
 
         databaseReportDetails?.let {
             dataMapper.convertReportToDomain(
-                DatabaseReport(it, databaseMediaInfo, sectionList.filterNotNull())
+                    DatabaseReport(it, databaseMediaInfo, sectionList.filterNotNull())
             )
         }
     }
@@ -160,8 +159,6 @@ class DatabaseInteractor(private val reportDatabaseHelper: ReportDatabaseHelper 
         }
     }
 
-
-    //TODO: delete all sections with report_id as well
     fun delete(reportDetails: ReportDetails) = reportDatabaseHelper.use {
         with(dataMapper.convertReportDetailsFromDomain(reportDetails))
         {
@@ -177,6 +174,7 @@ class DatabaseInteractor(private val reportDatabaseHelper: ReportDatabaseHelper 
             delete(RilieviInfoTable.NAME, "${DatiStrutturaliInfoTable.REPORT_ID} = ?", arrayOf(_id.toString()))
             delete(CaratteristichePilastriInfoTable.NAME, "${CaratteristichePilastriInfoTable.REPORT_ID} = ?", arrayOf(_id.toString()))
             delete(MagliaStrutturaleInfoTable.NAME, "${MagliaStrutturaleInfoTable.REPORT_ID} = ?", arrayOf(_id.toString()))
+            delete(ResultsInfoTable.NAME, "${ResultsInfoTable.REPORT_ID} = ?", arrayOf(_id.toString()))
         }
     }
 
@@ -243,19 +241,15 @@ class DatabaseInteractor(private val reportDatabaseHelper: ReportDatabaseHelper 
 
     fun getDetailsForHistory(): MutableList<ReportItemHistory> = reportDatabaseHelper.use {
 
-            val reports = select(ReportTable.NAME)
-                    .orderBy(ReportTable.ID)
-                    .parseList { DatabaseReportDetails(HashMap(it)) }
+        val reports = select(ReportTable.NAME)
+                .orderBy(ReportTable.ID)
+                .parseList { DatabaseReportDetails(HashMap(it)) }
 
-            val medias = select(ReportMediaTable.NAME)
-                    .orderBy(ReportMediaTable.ID)
-                    .parseList { DatabaseReportMedia(HashMap(it)) }
-
-            val generalDatas = select(ResultsInfoTable.NAME)
-                .orderBy(ReportMediaTable.ID)
+        val results = select(ResultsInfoTable.NAME)
+                .orderBy(ResultsInfoTable.ID)
                 .parseList { DatabaseResults(HashMap(it)) }
 
-            //there's a smarter way to do this
-            reports.map { dataMapper.convertReportDataForHistory(it, medias, generalDatas) }.toMutableList()
+        //there's a smarter way to do this
+        reports.map { dataMapper.convertReportDataForHistory(it, results) }.toMutableList()
     }
 }

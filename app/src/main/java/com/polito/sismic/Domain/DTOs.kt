@@ -12,6 +12,12 @@ import java.util.*
 //It contains the whole report data, details only reading access, all the others are the report state (so it can change overtime)
 data class Report(val reportDetails: ReportDetails,
                   var reportState: ReportState) : Parcelable {
+
+    constructor(convertReportDetailsToDomain: ReportDetails, convertDatabaseSectionToDomain: ReportState, domainMediaList: List<ReportMedia>)
+            : this(convertReportDetailsToDomain, convertDatabaseSectionToDomain)
+    {
+        reportState.mediaState = domainMediaList.toMutableList<ReportMedia>()
+    }
     constructor(source: Parcel) : this(
             source.readParcelable<ReportDetails>(ReportDetails::class.java.classLoader),
             source.readParcelable<ReportState>(ReportState::class.java.classLoader)
@@ -31,15 +37,18 @@ data class Report(val reportDetails: ReportDetails,
             override fun newArray(size: Int): Array<Report?> = arrayOfNulls(size)
         }
     }
+
 }
 
-data class ReportState(var localizationState: LocalizationState,
+data class ReportState(var result : ReportResult,
+                       var localizationState: LocalizationState,
                        var sismicState: SismicState,
                        var generalState: GeneralState,
                        var buildingState: BuildingState,
                        var mediaState: MutableList<ReportMedia>) : Parcelable {
-    constructor() : this (LocalizationState(), SismicState(), GeneralState(), BuildingState(), mutableListOf())
+    constructor() : this (ReportResult(), LocalizationState(), SismicState(), GeneralState(), BuildingState(), mutableListOf())
     constructor(source: Parcel) : this(
+            source.readParcelable<ReportResult>(ReportResult::class.java.classLoader),
             source.readParcelable<LocalizationState>(LocalizationState::class.java.classLoader),
             source.readParcelable<SismicState>(SismicState::class.java.classLoader),
             source.readParcelable<GeneralState>(GeneralState::class.java.classLoader),
@@ -50,6 +59,7 @@ data class ReportState(var localizationState: LocalizationState,
     override fun describeContents() = 0
 
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
+        writeParcelable(result, 0)
         writeParcelable(localizationState, 0)
         writeParcelable(sismicState, 0)
         writeParcelable(generalState, 0)
@@ -62,6 +72,30 @@ data class ReportState(var localizationState: LocalizationState,
         val CREATOR: Parcelable.Creator<ReportState> = object : Parcelable.Creator<ReportState> {
             override fun createFromParcel(source: Parcel): ReportState = ReportState(source)
             override fun newArray(size: Int): Array<ReportState?> = arrayOfNulls(size)
+        }
+    }
+}
+
+data class ReportResult(var result: Int,
+                        var size: Double) : Parcelable {
+    constructor() : this(-1, -1.0)
+    constructor(source: Parcel) : this(
+            source.readInt(),
+            source.readDouble()
+    )
+
+    override fun describeContents() = 0
+
+    override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
+        writeInt(result)
+        writeDouble(size)
+    }
+
+    companion object {
+        @JvmField
+        val CREATOR: Parcelable.Creator<ReportResult> = object : Parcelable.Creator<ReportResult> {
+            override fun createFromParcel(source: Parcel): ReportResult = ReportResult(source)
+            override fun newArray(size: Int): Array<ReportResult?> = arrayOfNulls(size)
         }
     }
 }
@@ -721,6 +755,9 @@ data class ReportItemHistory(val id : Int,
         val userIdentifier: String)
 {
 
+    companion object {
+        val Invalid : ReportItemHistory = ReportItemHistory(-1, "", "", -1, -1.0, "")
+    }
 }
 
 data class UserDetails (val name : String,

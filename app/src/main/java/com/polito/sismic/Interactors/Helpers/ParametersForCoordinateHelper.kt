@@ -236,7 +236,7 @@ class ParametersForCoordinateHelper(val mContext : Context) {
 
         //I just want 4 points, the one with the minimum distance
         tmpList.sortBy { it.second }
-        val smallerList = tmpList.subList(0, 4) //inclusive from exclusive to
+        val smallerList = if (tmpList.size > 3) tmpList.subList(0, 4) else tmpList //inclusive from exclusive to
         Log.d("SmallerList", "Reduced list is: " + smallerList.toString())
 
         //pass to recursion: input point, new index, new sum, new points

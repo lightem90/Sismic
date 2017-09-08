@@ -15,8 +15,8 @@ class DatabaseDataMapper {
         return ReportDetails(_id, title, description, userID, date.toFormattedDate())
     }
 
-    fun convertReportDetailsFromDomain(reportDetails: ReportDetails, results: DatabaseResults, size : Double = 0.0) : DatabaseReportDetails = with (reportDetails) {
-        return DatabaseReportDetails(id, title, description, userIdentifier, date.toFormattedString(), size, results.result)
+    fun convertReportDetailsFromDomain(reportDetails: ReportDetails) : DatabaseReportDetails = with (reportDetails) {
+        return DatabaseReportDetails(id, title, description, userIdentifier, date.toFormattedString())
     }
 
     fun convertMediaToDomain(databaseReportMedia: DatabaseReportMedia): ReportMedia = with(databaseReportMedia)
@@ -24,7 +24,7 @@ class DatabaseDataMapper {
         return ReportMedia(_id, filepath, type, note, size)
     }
 
-    fun convertMediaFromDomain(reportId : Int, reportMedia : ReportMedia) : DatabaseReportMedia = with (reportMedia)
+    private fun convertMediaFromDomain(reportId : Int, reportMedia : ReportMedia) : DatabaseReportMedia = with (reportMedia)
     {
         return DatabaseReportMedia(uri, type, note, size, reportId)
     }
@@ -43,7 +43,11 @@ class DatabaseDataMapper {
 
     fun convertReportToDomain(databaseReport: DatabaseReport): Report = with (databaseReport){
 
-        Report(convertReportDetailsToDomain(reportDetails), convertDatabaseSectionToDomain(sections))
+        val domainMediaList = with (mediaList)
+        {
+            map {convertMediaToDomain(it)}
+        }
+        Report(convertReportDetailsToDomain(reportDetails), convertDatabaseSectionToDomain(sections), domainMediaList)
     }
 
     private fun convertDatabaseSectionToDomain(sections: List<DatabaseSection>) : ReportState = with (helper)
@@ -56,14 +60,16 @@ class DatabaseDataMapper {
         helper.getDatabaseSectionForDomain(reportId, state)
     }
 
-    fun convertReportDataForHistory(details: DatabaseReportDetails, medias: List<DatabaseReportMedia>, generalDatas: List<DatabaseResults>): ReportItemHistory {
-        var result = generalDatas.find { it.report_id == details._id }?.result
-        if (result == null) result = -1
+    fun convertReportDataForHistory(details: DatabaseReportDetails, generalDatas: List<DatabaseResults>): ReportItemHistory {
+
+        var result = generalDatas.find { it.report_id == details._id }
+        if (result == null) result = DatabaseResults.Invalid
+
         return ReportItemHistory(details._id,
                 details.title,
                 details.description,
-                result,
-                medias.filter { it.report_id == details._id }.sumByDouble { it.size },
+                result.result,
+                result.size,
                 details.userID)
     }
 }

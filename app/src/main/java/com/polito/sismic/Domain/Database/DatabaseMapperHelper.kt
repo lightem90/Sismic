@@ -10,6 +10,10 @@ class DatabaseMapperHelper {
     fun getReportStateFromDatabaseSections(sections: List<DatabaseSection>): ReportState {
 
         val newState = ReportState()
+
+        convertResultToDomain(sections.filterIsInstance<DatabaseResults>().firstOrNull())?.let {
+            newState.result = it
+        }
         convertLocalizationToDomain(sections.filterIsInstance<DatabaseLocalizationSection>().firstOrNull())?.let {
             newState.localizationState = it
         }
@@ -25,7 +29,6 @@ class DatabaseMapperHelper {
         convertCatastoStateToDomain(sections.filterIsInstance<DatabaseCatastoSection>().firstOrNull())?.let {
             newState.generalState.catastoState = it
         }
-
         convertCatastoStateToDomain(sections.filterIsInstance<DatabaseCatastoSection>().firstOrNull())?.let {
             newState.generalState.catastoState = it
         }
@@ -46,6 +49,12 @@ class DatabaseMapperHelper {
         }
 
         return newState
+    }
+
+    private fun convertResultToDomain(resultDbParams: DatabaseResults?): ReportResult? = with(resultDbParams) {
+        return resultDbParams?.let {
+            ReportResult(it.result, it.size)
+        }
     }
 
     private fun convertMagliaStrutturaleToDomain(pillarLayDbParams: DatabaseMagliaStrutturale?): PillarLayoutState? {
@@ -176,10 +185,10 @@ class DatabaseMapperHelper {
         }
     }
 
-    //TODO
     fun getDatabaseSectionForDomain(reportId: Int, state: ReportState): List<DatabaseSection?> {
 
         return listOf(
+                createResultForDb(reportId, state.result),
                 createLocalizationForDb(reportId, state.localizationState),
                 convertDatiSismogeneticiForDb(reportId, state.sismicState.sismogenticState),
                 createSismicForDb(reportId, state.sismicState.sismicParametersState),
@@ -193,7 +202,11 @@ class DatabaseMapperHelper {
         )
     }
 
-    private fun createPillarLayoutForDb(reportId: Int, pillarLayoutState: PillarLayoutState): DatabaseMagliaStrutturale {
+    private fun createResultForDb(reportId: Int, reportRes: ReportResult): DatabaseResults?  = with(reportRes){
+        return DatabaseResults(result, size, reportId)
+    }
+
+    private fun createPillarLayoutForDb(reportId: Int, pillarLayoutState: PillarLayoutState): DatabaseMagliaStrutturale = with(pillarLayoutState) {
         return DatabaseMagliaStrutturale(reportId)
     }
 
