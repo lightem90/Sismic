@@ -63,7 +63,8 @@ class DatabaseDataMapper {
     fun convertReportDataForHistory(details: DatabaseReportDetails, generalDatas: List<DatabaseResults>): ReportItemHistory {
 
         var result = generalDatas.find { it.report_id == details._id }
-        if (result == null) result = DatabaseResults.Invalid
+        if (result == null)
+            result = DatabaseResults.Invalid
 
         return ReportItemHistory(details._id,
                 details.title,

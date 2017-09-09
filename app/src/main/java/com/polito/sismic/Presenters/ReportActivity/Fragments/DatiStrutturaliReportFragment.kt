@@ -6,7 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.polito.sismic.Extensions.toast
+import com.polito.sismic.Interactors.Helpers.UiMapper
 import com.polito.sismic.R
+import com.stepstone.stepper.StepperLayout
 import kotlinx.android.synthetic.main.dati_strutturali_report_layout.*
 
 /**
@@ -104,5 +106,15 @@ class DatiStrutturaliReportFragment : BaseReportFragment() {
         (0..copertura_peso.count)
                 .firstOrNull { copertura_peso.getItemAtPosition(it) == peso_copertura }
                 ?.let { return copertura_peso.setSelection(it)}
+    }
+
+    //callback to activity updates domain instance for activity and all existing and future fragments
+    override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback?) {
+        getReport().reportState.buildingState.structuralState = UiMapper.createStructuralStateForDomain(this)
+        super.onNextClicked(callback)
+    }
+
+    override fun onParametersInjectedForEdit() {
+
     }
 }

@@ -402,7 +402,7 @@ data class DatabaseResults(var map: MutableMap<String, Any?>) : DatabaseSection 
     var report_id: Int by map
 
     companion object {
-        val Invalid: DatabaseResults = DatabaseResults(-1, -1.0, -1)
+        val Invalid : DatabaseResults by lazy { DatabaseResults(-1, -1.0, -1) }
     }
 
     constructor(result: Int,

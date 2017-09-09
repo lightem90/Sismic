@@ -20,12 +20,12 @@ import kotlinx.android.synthetic.main.info_loc_report_layout.*
 /**
  * Created by Matteo on 29/07/2017.
  */
-class InfoLocReportFragment : BaseReportFragment(){
+class InfoLocReportFragment : BaseReportFragment() {
 
-    private var  mLocationCallback: InfoLocReportFragment.CurrentLocationProvided? = null
-    private var  mActionHelper = LocalizationActionHelper()
-    private var  mPermissionHelper = PermissionsHelper()
-    private lateinit var  mLocaliationInfoHelper : LocationInfoHelper
+    private var mLocationCallback: InfoLocReportFragment.CurrentLocationProvided? = null
+    private var mActionHelper = LocalizationActionHelper()
+    private var mPermissionHelper = PermissionsHelper()
+    private lateinit var mLocaliationInfoHelper: LocationInfoHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,24 +38,24 @@ class InfoLocReportFragment : BaseReportFragment(){
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mReport?.let {
+        getReport().let {
             report_info_name_label.setValue(it.reportDetails.userIdentifier)
             report_info_number_label.setValue(it.reportDetails.id.toString())
             report_info_date_label.setValue(it.reportDetails.date.toFormattedString())
         }
 
-        comune_parameter.attachDataConfirmedCallback {newComune ->
+        comune_parameter.attachDataConfirmedCallback { newComune ->
             mLocaliationInfoHelper.setZoneCodeForComune(zona_sismica_parameter, codice_istat_parameter, newComune)
         }
-        province_parameter.attachDataConfirmedCallback{ newProvince ->
+        province_parameter.attachDataConfirmedCallback { newProvince ->
             mLocaliationInfoHelper.setComuniSuggestionForProvince(comune_parameter, newProvince)
         }
-        region_parameter.attachDataConfirmedCallback{ newRegion ->
+        region_parameter.attachDataConfirmedCallback { newRegion ->
             mLocaliationInfoHelper.setProvinceSuggestionForRegion(province_parameter, newRegion)
         }
 
         //Signal to the activity that latitude and longitude changed, so certain data should be recalculated
-        //TODO, dont trigger if data didn't changes
+        //TODO, dont trigger if data doesnt't change
         lat_parameter.attachDataConfirmedCallback { mLocationCallback?.onCoordinatesUpdated() }
         long_parameter.attachDataConfirmedCallback { mLocationCallback?.onCoordinatesUpdated() }
     }
@@ -64,38 +64,31 @@ class InfoLocReportFragment : BaseReportFragment(){
         super.onAttach(context)
         // This makes sure that the container activity has implemented
         // the callback interface. If not, it throws an exception
-        try
-        {
+        try {
             mLocationCallback = context as CurrentLocationProvided?
-        }
-        catch (e: ClassCastException) {
+        } catch (e: ClassCastException) {
             throw ClassCastException(context!!.toString() + " must implement CurrentLocationProvided")
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View?
-    {
+    override fun onCreateView(inflater: LayoutInflater?, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View? {
         return inflateFragment(R.layout.info_loc_report_layout, inflater, container)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         if (item != null) {
-            when (item.itemId)
-            {
-                R.id.reverseGeolocalization ->
-                {
+            when (item.itemId) {
+                R.id.reverseGeolocalization -> {
                     if (havePermission()) mActionHelper.handleActionRequest(LocalizationActionType.ReverseLocalization, this, null)
                     return true
                 }
 
-                R.id.geolocalization ->
-                {
+                R.id.geolocalization -> {
                     if (havePermission()) mActionHelper.handleActionRequest(LocalizationActionType.Localization, this, mLocationCallback)
                     return true
                 }
 
-                R.id.fromMap ->
-                {
+                R.id.fromMap -> {
                     if (havePermission()) mActionHelper.handleActionRequest(LocalizationActionType.PlacePicker, this, null)
                     return true
                 }
@@ -104,10 +97,8 @@ class InfoLocReportFragment : BaseReportFragment(){
         return false;
     }
 
-    fun havePermission() : Boolean
-    {
-        if (!mPermissionHelper.PERMISSION_POSITION_GRANTED)
-        {
+    private fun havePermission(): Boolean {
+        if (!mPermissionHelper.PERMISSION_POSITION_GRANTED) {
             context.toast(R.string.permission_denied)
             return false
         }
@@ -128,15 +119,12 @@ class InfoLocReportFragment : BaseReportFragment(){
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        when (requestCode)
-        {
-            mActionHelper.PLACE_PICKER_REQUEST ->
-            {
+        when (requestCode) {
+            mActionHelper.PLACE_PICKER_REQUEST -> {
                 updateByPlace(mActionHelper.handlePickerResponse(activity, resultCode, data))
             }
 
-            mActionHelper.REVERSE_LOCALIZATION_REQUEST ->
-            {
+            mActionHelper.REVERSE_LOCALIZATION_REQUEST -> {
                 updateByPlace(mActionHelper.handleAutoCompleteMapsResponse(activity, resultCode, data))
             }
         }
@@ -148,10 +136,8 @@ class InfoLocReportFragment : BaseReportFragment(){
         fun onCoordinatesUpdated()
     }
 
-    private fun updateByPlace(place : Place?)
-    {
-        if (place != null)
-        {
+    private fun updateByPlace(place: Place?) {
+        if (place != null) {
             lat_parameter.setParameterValue("%.4f".format(place.latLng.latitude))
             long_parameter.setParameterValue("%.4f".format(place.latLng.longitude))
 
@@ -159,8 +145,7 @@ class InfoLocReportFragment : BaseReportFragment(){
         }
     }
 
-    fun updateByLocation(location: Location)
-    {
+    fun updateByLocation(location: Location) {
         lat_parameter.setParameterValue("%.3f".format(location.latitude))
         long_parameter.setParameterValue("%.3f".format(location.longitude))
         country_parameter.setParameterValue("italia")
@@ -189,6 +174,15 @@ class InfoLocReportFragment : BaseReportFragment(){
         if (zona_sismica_parameter.isEmpty()) return VerificationError(String.format(resources.getString(R.string.verification_empty_field), zona_sismica_parameter.getTitle()))
         if (codice_istat_parameter.isEmpty()) return VerificationError(String.format(resources.getString(R.string.verification_empty_field), codice_istat_parameter.getTitle()))
         return super.verifyStep()
+    }
+
+    //callback to activity, must add location info to all other fragments
+    override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback?) {
+        getReport().reportState.localizationState = UiMapper.createLocationStateForDomain(this)
+        super.onNextClicked(callback)
+    }
+    override fun onParametersInjectedForEdit() {
+
     }
 }
 

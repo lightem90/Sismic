@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import android.widget.Adapter
 import android.widget.AdapterView
 import com.polito.sismic.Extensions.toast
+import com.polito.sismic.Interactors.Helpers.UiMapper
 import com.polito.sismic.R
+import com.stepstone.stepper.StepperLayout
 import kotlinx.android.synthetic.main.spettri_progetto_report_layout.*
 
 class SpettriDiProgettoReportFragment : BaseReportFragment() {
@@ -104,5 +106,15 @@ class SpettriDiProgettoReportFragment : BaseReportFragment() {
         (0..categoria_suolo_parameter.count)
                 .firstOrNull { categoria_topografica_parameter.getItemAtPosition(it) == categoria_topografica }
                 ?.let { return categoria_suolo_parameter.setSelection(it)}
+    }
+
+    //callback to activity updates domain instance for activity and all existing and future fragments
+    override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback?) {
+        getReport().reportState.sismicState.projectSpectrumState = UiMapper.createSpectrumStateForDomain(this)
+        super.onNextClicked(callback)
+    }
+
+    override fun onParametersInjectedForEdit() {
+
     }
 }

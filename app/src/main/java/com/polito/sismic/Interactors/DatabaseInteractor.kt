@@ -30,9 +30,7 @@ class DatabaseInteractor(private val reportDatabaseHelper: ReportDatabaseHelper 
                 ReportTable.USERID to userID,
                 ReportTable.TITLE to title,
                 ReportTable.DESCRIPTION to description,
-                ReportTable.DATE to date.toFormattedString(),
-                ReportTable.VALUE to value,
-                ReportTable.SIZE to size)
+                ReportTable.DATE to date.toFormattedString())
 
         val reportRequest = "${ReportTable.USERID} = ? "
         val databaseReportDetails = select(ReportTable.NAME)

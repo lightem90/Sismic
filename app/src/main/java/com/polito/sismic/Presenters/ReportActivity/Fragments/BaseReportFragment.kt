@@ -23,20 +23,22 @@ import com.stepstone.stepper.VerificationError
  */
 abstract class BaseReportFragment : Fragment(), BlockingStep {
 
-    private var     mParametersCallback : BaseReportFragment.ParametersManager? = null
-    //TODO needs a presenter
-    protected var   mReport : Report? = null
+    private var mParametersCallback: BaseReportFragment.ParametersManager? = null
+    private var mReport: Report? = null
+    fun getReport() : Report
+    {
+        return mReport!!
+    }
 
     //Is the activity the handler of the dto, each fragment only passes its own
     // parameters througth the callback when the button "next" is pressed
     //Each fragment must implement the method to get their own paramter name-value
     interface ParametersManager {
-        fun onParametersConfirmed(report : Report?)
+        fun onParametersConfirmed(report: Report?)
         fun onParametersSaveRequest()
     }
 
-    interface NodeCaluclationRequest
-    {
+    interface NodeCaluclationRequest {
         fun onClosedNodesCalculationRequested()
     }
 
@@ -48,15 +50,11 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mReport = arguments?.getReportState()
-    }
-
-    open fun reloadFragment()
-    {
-        return
+        onParametersInjectedForEdit()
     }
 
     //In this way I can make every fragment scrollable and use protected properties avoiding replicated zone
-    protected fun inflateFragment(resId: Int, inflater: LayoutInflater?, container: ViewGroup?, needScrollable : Boolean = true): View? {
+    protected fun inflateFragment(resId: Int, inflater: LayoutInflater?, container: ViewGroup?, needScrollable: Boolean = true): View? {
 
         //Custom view any layout with "scrollable" style
         val view = inflater!!.inflate(resId, container, false)
@@ -83,14 +81,16 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
-    //maps domain values to ui (could be done by each fragment or by mapper)
-    private fun onParametersInjectedForEdit() {
-    }
-    //Each fragment must implement this, so the activity is in charge to save the data
+    //callback to activity updates domain instance of each fragment.
+    //in this way activity and fragments work on the same data
     override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback?) {
         mParametersCallback?.onParametersConfirmed(mReport)
         callback!!.goToNextStep()
     }
+    //maps domain values to ui (done by each fragment by mapper)
+    protected abstract fun onParametersInjectedForEdit()
+    open fun reloadFragment() { return }
+
     override fun onCompleteClicked(callback: StepperLayout.OnCompleteClickedCallback?) {
         mParametersCallback?.onParametersSaveRequest()
         callback!!.complete()
@@ -107,22 +107,22 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
     override fun onAttach(context: Context?) {
 
         super.onAttach(context)
-        try
-        {
+        try {
             mParametersCallback = context as ParametersManager?
-        }
-        catch (e: ClassCastException) {
+        } catch (e: ClassCastException) {
             throw ClassCastException(context!!.toString() + " must implement OnParametersConfirmed")
         }
     }
 
-    protected fun hideBottomActions()
-    {
+    protected fun hideBottomActions() {
         activity.findViewById<FloatingActionButton>(R.id.fabtoolbar_fab)?.hide()
     }
 
     //Eventually in derived classes
-    override fun onSelected() {    }
-    override fun verifyStep(): VerificationError? { return null }
+    override fun onSelected() {}
+
+    override fun verifyStep(): VerificationError? {
+        return null
+    }
 }
 

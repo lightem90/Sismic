@@ -3,14 +3,12 @@ package com.polito.sismic.Presenters.Adapters
 import android.content.Context
 import android.graphics.Color
 import android.support.v7.widget.RecyclerView
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.polito.sismic.Domain.ReportDetails
 import com.polito.sismic.Domain.ReportItemHistory
 import com.polito.sismic.Extensions.inflate
-import com.polito.sismic.Interactors.Helpers.DangerStateProvider
+import com.polito.sismic.Interactors.DangerStateProvider
 import com.polito.sismic.R
 import kotlinx.android.synthetic.main.history_item.view.*
 

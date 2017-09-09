@@ -7,6 +7,7 @@ import android.support.annotation.Nullable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.polito.sismic.Interactors.Helpers.UiMapper
 import com.polito.sismic.R
 import com.stepstone.stepper.StepperLayout
 
@@ -35,6 +36,7 @@ class CatastoReportFragment : BaseReportFragment() {
     }
 
     override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback?) {
+        getReport().reportState.generalState.catastoState = UiMapper.createCatastoStateForDomain(this)
         callback?.stepperLayout?.showProgress(getString(R.string.calculating_neighbours_node))
         Handler().postDelayed({
             mNodeRequestCallback?.onClosedNodesCalculationRequested()

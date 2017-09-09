@@ -13,8 +13,6 @@ object ReportTable
     val DESCRIPTION = "description"
     val USERID = "userID"
     val DATE = "date"
-    val SIZE = "size"
-    val VALUE = "value"
 }
 
 object ReportMediaTable

@@ -7,7 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Adapter
 import android.widget.AdapterView
+import com.polito.sismic.Interactors.Helpers.UiMapper
 import com.polito.sismic.R
+import com.stepstone.stepper.StepperLayout
 import kotlinx.android.synthetic.main.parametri_sismici_report_layout.*
 
 /**
@@ -123,6 +125,15 @@ class ParametriSismiciReportFragment : BaseReportFragment() {
             100 -> vita_nominale_100.isChecked = true
             else -> vita_nominale_30.isChecked = true
         }
+    }
+
+    override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback?) {
+        getReport().reportState.sismicState.sismicParametersState = UiMapper.createSismicStateForDomain(this)
+        super.onNextClicked(callback)
+    }
+
+    override fun onParametersInjectedForEdit() {
+
     }
 }
 

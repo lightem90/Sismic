@@ -9,9 +9,11 @@ import android.view.ViewGroup
 import com.polito.sismic.Domain.NeighboursNodeData
 import com.polito.sismic.Domain.PeriodData
 import com.polito.sismic.Extensions.toMutableList
+import com.polito.sismic.Interactors.Helpers.UiMapper
 import com.polito.sismic.Presenters.Adapters.NodeListAdapter
 import com.polito.sismic.Presenters.Adapters.PeriodListAdapter
 import com.polito.sismic.R
+import com.stepstone.stepper.StepperLayout
 import kotlinx.android.synthetic.main.dati_sismogenetici_report_layout.*
 
 /**
@@ -40,21 +42,21 @@ class DatiSismoGeneticiReportFragment : BaseReportFragment() {
 
     override fun reloadFragment()
     {
-        mReport?.reportState?.sismicState?.sismogenticState?.neighbours_points?.let {
+        getReport().reportState.sismicState.sismogenticState.closedNodeData.let {
 
             mNodeList.clear()
-            mNodeList.addAll(it.toMutableList())
+            mNodeList.addAll(it)
             list_nodi.adapter.notifyDataSetChanged()
         }
 
-        mReport?.reportState?.sismicState?.sismogenticState?.periodData_list?.let {
+        getReport().reportState.sismicState.sismogenticState.periodData_list.let {
             mPeriodList.clear()
             mPeriodList.addAll(it)
             list_periodi.adapter.notifyDataSetChanged()
         }
 
         //Must never fail!
-        mReport?.reportState?.localizationState?.let {
+        getReport().reportState.localizationState.let {
 
             updateLabelsByCoordinate(it.latitude.toString(),
                     it.longitude.toString(),
@@ -68,6 +70,16 @@ class DatiSismoGeneticiReportFragment : BaseReportFragment() {
         report_datisimogenetici_coordinate_label.setValue(String.format(context.getString(R.string.coordinate_label), longitude, latitude))
         report_datisimogenetici_indirizzo.setValue(address)
         report_datisimogenetici_zonasismica.setValue(zone)
+    }
+
+    //callback to activity updates domain instance for activity and all existing and future fragments
+    override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback?) {
+        getReport().reportState.sismicState.sismogenticState = UiMapper.createSismogeneticStateForDomain(this)
+        super.onNextClicked(callback)
+    }
+
+    override fun onParametersInjectedForEdit() {
+
     }
 }
 

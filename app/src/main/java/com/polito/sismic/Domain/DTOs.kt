@@ -226,13 +226,11 @@ data class SismicParametersState(var vitaNominale: Int,
 
 
 data class SismogeneticState(var closedNodeData: List<NeighboursNodeData>,
-                             var neighbours_points: NeighboursNodeSquare = NeighboursNodeSquare.Invalid,
                              var periodData_list: List<PeriodData> = listOf()) : Parcelable {
 
     constructor() : this(listOf())
     constructor(source: Parcel) : this(
             source.createTypedArrayList(NeighboursNodeData.CREATOR),
-            source.readParcelable<NeighboursNodeSquare>(NeighboursNodeSquare::class.java.classLoader),
             source.createTypedArrayList(PeriodData.CREATOR)
     )
 
@@ -240,7 +238,6 @@ data class SismogeneticState(var closedNodeData: List<NeighboursNodeData>,
 
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
         writeTypedList(closedNodeData)
-        writeParcelable(neighbours_points, 0)
         writeTypedList(periodData_list)
     }
 

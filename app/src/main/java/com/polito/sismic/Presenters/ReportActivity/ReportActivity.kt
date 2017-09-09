@@ -9,11 +9,10 @@ import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.places.Places
 import com.polito.sismic.Domain.Report
-import com.polito.sismic.Domain.ReportState
 import com.polito.sismic.Extensions.getCustomAdapter
 import com.polito.sismic.Extensions.toast
 import com.polito.sismic.Interactors.*
-import com.polito.sismic.Interactors.Helpers.SismicActionParametersInteractor
+import com.polito.sismic.Interactors.SismicActionParametersInteractor
 import com.polito.sismic.Interactors.Helpers.UserActionType
 import com.polito.sismic.Presenters.Adapters.ReportFragmentsAdapter
 import com.polito.sismic.Presenters.ReportActivity.Fragments.BaseReportFragment
@@ -75,6 +74,7 @@ class ReportActivity : AppCompatActivity(),
 
     //Updates the state for all fragments
     override fun onParametersConfirmed(report: Report?) {
+        mReportManager!!.report == report
         updateStateForFragments()
     }
 
@@ -82,7 +82,7 @@ class ReportActivity : AppCompatActivity(),
     //the fragment not created will have the right arguments on creation
     private fun updateStateForFragments() {
 
-        stepperLayout.adapter.getCustomAdapter().updateStateForExistingFragments()
+        stepperLayout.adapter.getCustomAdapter().updateStateForFragments()
 
         //updates the fragment that has already called "createview"
         supportFragmentManager.fragments

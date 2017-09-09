@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import android.widget.Adapter
 import android.widget.AdapterView
 import com.polito.sismic.Extensions.toast
+import com.polito.sismic.Interactors.Helpers.UiMapper
 import com.polito.sismic.R
+import com.stepstone.stepper.StepperLayout
 import kotlinx.android.synthetic.main.rilievi_report_layout.*
 
 /**
@@ -50,5 +52,15 @@ class RilieviReportFragment : BaseReportFragment() {
         altezza_tot.text  = if (piani_numero_parameter.selectedItemPosition > 0)
             (altezza_piano_tr_parameter.getParameterValue().toDouble() + piani_numero_parameter.selectedItemPosition * altezza_piani_sup_parameter.getParameterValue().toDouble()).toString()
             else altezza_piano_tr_parameter.getParameterValue()
+    }
+
+    //callback to activity updates domain instance for activity and all existing and future fragments
+    override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback?) {
+        getReport().reportState.buildingState.takeoverState = UiMapper.createTakeoverStateForDomain(this)
+        super.onNextClicked(callback)
+    }
+
+    override fun onParametersInjectedForEdit() {
+
     }
 }

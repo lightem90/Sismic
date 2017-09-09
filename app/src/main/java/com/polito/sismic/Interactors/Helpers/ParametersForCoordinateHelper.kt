@@ -172,29 +172,29 @@ class ParametersForCoordinateHelper(val mContext : Context) {
         }
 
         //can interpolate on 3 points
-        var count = 0
+        var nullCounter = 0
         if (candidateNE == null)
         {
             candidateNE = NeighboursNodeData.Invalid
-            count++
+            nullCounter++
         }
         if (candidateSE == null)
         {
             candidateSE = NeighboursNodeData.Invalid
-            count++
+            nullCounter++
         }
         if (candidateSO == null)
         {
             candidateSO = NeighboursNodeData.Invalid
-            count++
+            nullCounter++
         }
         if (candidateNO == null)
         {
             candidateNO = NeighboursNodeData.Invalid
-            count++
+            nullCounter++
         }
 
-        return NeighboursNodeSquare(candidateNE!!, candidateNO!!, candidateSO!!, candidateSE!!, count <=1 )
+        return NeighboursNodeSquare(candidateNE!!, candidateNO!!, candidateSO!!, candidateSE!!, nullCounter <=1 )
     }
 
     private fun getDataForNode(nodeId : String, param : CoordinateDatabaseParameters) : Double

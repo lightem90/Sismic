@@ -5,7 +5,9 @@ import android.support.annotation.Nullable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.polito.sismic.Interactors.Helpers.UiMapper
 import com.polito.sismic.R
+import com.stepstone.stepper.StepperLayout
 import kotlinx.android.synthetic.main.pilastri_report_layout.*
 
 /**
@@ -166,5 +168,15 @@ class PilastriReportFragment : BaseReportFragment() {
         (0..calc_classe_parameter.count)
                 .firstOrNull { calc_classe_parameter.getItemAtPosition(it) == classe_calcestruzzo }
                 ?.let { return calc_classe_parameter.setSelection(it)}
+    }
+
+    //callback to activity updates domain instance for activity and all existing and future fragments
+    override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback?) {
+        getReport().reportState.buildingState.pillarState = UiMapper.createPillarStateForDomain(this)
+        super.onNextClicked(callback)
+    }
+
+    override fun onParametersInjectedForEdit() {
+
     }
 }
