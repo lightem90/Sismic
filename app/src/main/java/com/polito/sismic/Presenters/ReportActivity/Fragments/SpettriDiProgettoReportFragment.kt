@@ -94,17 +94,20 @@ class SpettriDiProgettoReportFragment : BaseReportFragment() {
     }
 
     fun selectCategoriaSuolo(categoria_suolo: String) {
+
+        if (categoria_suolo.isEmpty()) return
         //iterates all spinners element looking for the category requested
-        (0..categoria_suolo_parameter.count)
+        (0 until categoria_suolo_parameter.count)
                 .firstOrNull { categoria_suolo_parameter.getItemAtPosition(it).equals(categoria_suolo) }
                 ?.let { return categoria_suolo_parameter.setSelection(it)}
     }
 
     fun selectCategoriaTopografica(categoria_topografica: String)
     {
+        if (categoria_topografica.isEmpty()) return
         //iterates all spinners element looking for the category requested
-        (0..categoria_suolo_parameter.count)
-                .firstOrNull { categoria_topografica_parameter.getItemAtPosition(it) == categoria_topografica }
+        (0 until categoria_suolo_parameter.count)
+                .firstOrNull { categoria_topografica_parameter.getItemAtPosition(it).equals(categoria_topografica)}
                 ?.let { return categoria_suolo_parameter.setSelection(it)}
     }
 
@@ -112,9 +115,5 @@ class SpettriDiProgettoReportFragment : BaseReportFragment() {
     override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback?) {
         getReport().reportState.sismicState.projectSpectrumState = UiMapper.createSpectrumStateForDomain(this)
         super.onNextClicked(callback)
-    }
-
-    override fun onParametersInjectedForEdit() {
-
     }
 }

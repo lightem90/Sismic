@@ -20,9 +20,4 @@ class MagliaStrutturaleReportFragment : BaseReportFragment() {
         getReport().reportState.buildingState.pillarLayoutState = UiMapper.createPillarLayoutStateForDomain(this)
         super.onNextClicked(callback)
     }
-
-    override fun onParametersInjectedForEdit() {
-
-    }
-
 }

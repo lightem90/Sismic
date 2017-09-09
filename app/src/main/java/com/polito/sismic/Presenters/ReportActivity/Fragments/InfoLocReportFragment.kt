@@ -181,9 +181,6 @@ class InfoLocReportFragment : BaseReportFragment() {
         getReport().reportState.localizationState = UiMapper.createLocationStateForDomain(this)
         super.onNextClicked(callback)
     }
-    override fun onParametersInjectedForEdit() {
-
-    }
 }
 
 

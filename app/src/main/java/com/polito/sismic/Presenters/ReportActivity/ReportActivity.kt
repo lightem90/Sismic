@@ -62,9 +62,15 @@ class ReportActivity : AppCompatActivity(),
                 ?.updateByLocation(location)
     }
 
+    //TODO: handle better
     //requested sismic data
     override fun onClosedNodesCalculationRequested() {
         mSismicParameterInteractor.calculate()
+        updateStateFromCallback()
+    }
+
+    private fun updateStateFromCallback() {
+        updateStateForFragments(true)
     }
 
     //in this way sismic data are not recalculated if latitude or longitude doesn't change
@@ -73,21 +79,21 @@ class ReportActivity : AppCompatActivity(),
     }
 
     //Updates the state for all fragments
-    override fun onParametersConfirmed(report: Report?) {
-        mReportManager!!.report == report
-        updateStateForFragments()
+    override fun onParametersConfirmed(report: Report) {
+        mReportManager?.updateReportState(report)
+        updateStateForFragments(true)
     }
 
     //creates a new fragment state foreach active fragment, so everyone is updated
     //the fragment not created will have the right arguments on creation
-    private fun updateStateForFragments() {
+    private fun updateStateForFragments(callback: Boolean) {
 
         stepperLayout.adapter.getCustomAdapter().updateStateForFragments()
 
-        //updates the fragment that has already called "createview"
-        supportFragmentManager.fragments
-                .filterIsInstance<BaseReportFragment>()
-                .forEach { it.reloadFragment() }
+        //Needs update because is the activity who changed some data
+        if (callback) supportFragmentManager.fragments
+                        .filterIsInstance<BaseReportFragment>()
+                        .forEach { it.reloadFragmentFromCallback(mReportManager!!.report) }
     }
 
     //If I pass an Uri, data will be null
@@ -95,7 +101,7 @@ class ReportActivity : AppCompatActivity(),
         super.onActivityResult(requestCode, resultCode, data)
 
         mUserActionInteractor.onActionResponse(requestCode, resultCode, data)
-        updateStateForFragments()
+        updateStateForFragments(false)
     }
 
     override fun onConnectionFailed(p0: ConnectionResult) {

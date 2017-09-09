@@ -8,9 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.polito.sismic.Domain.Report
-import com.polito.sismic.Domain.ReportState
-import com.polito.sismic.Extensions.getReportState
+import com.polito.sismic.Extensions.getReport
 import com.polito.sismic.Extensions.toast
+import com.polito.sismic.Interactors.Helpers.UiMapper
 import com.polito.sismic.Presenters.CustomLayout.FragmentScrollableCanvas
 import com.polito.sismic.R
 import com.stepstone.stepper.BlockingStep
@@ -25,8 +25,7 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
 
     private var mParametersCallback: BaseReportFragment.ParametersManager? = null
     private var mReport: Report? = null
-    fun getReport() : Report
-    {
+    fun getReport(): Report {
         return mReport!!
     }
 
@@ -34,7 +33,7 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
     // parameters througth the callback when the button "next" is pressed
     //Each fragment must implement the method to get their own paramter name-value
     interface ParametersManager {
-        fun onParametersConfirmed(report: Report?)
+        fun onParametersConfirmed(report: Report)
         fun onParametersSaveRequest()
     }
 
@@ -44,13 +43,18 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mReport = arguments.getReportState()
+        mReport = arguments.getReport()
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mReport = arguments?.getReportState()
+        mReport = arguments?.getReport()
         onParametersInjectedForEdit()
+    }
+
+    //binds domain values to ui (done by each fragment by mapper)
+    protected open fun onParametersInjectedForEdit() {
+        UiMapper.bindToDomain(this, getReport().reportState)
     }
 
     //In this way I can make every fragment scrollable and use protected properties avoiding replicated zone
@@ -84,12 +88,19 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
     //callback to activity updates domain instance of each fragment.
     //in this way activity and fragments work on the same data
     override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback?) {
-        mParametersCallback?.onParametersConfirmed(mReport)
+        mParametersCallback?.onParametersConfirmed(getReport())
         callback!!.goToNextStep()
     }
-    //maps domain values to ui (done by each fragment by mapper)
-    protected abstract fun onParametersInjectedForEdit()
-    open fun reloadFragment() { return }
+
+    fun reloadFragmentFromCallback(newReportState: Report) {
+        mReport = newReportState
+        onReload()
+    }
+
+    protected open fun onReload()
+    {
+
+    }
 
     override fun onCompleteClicked(callback: StepperLayout.OnCompleteClickedCallback?) {
         mParametersCallback?.onParametersSaveRequest()
@@ -116,6 +127,10 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
 
     protected fun hideBottomActions() {
         activity.findViewById<FloatingActionButton>(R.id.fabtoolbar_fab)?.hide()
+    }
+
+    protected fun showBottomActions() {
+        activity.findViewById<FloatingActionButton>(R.id.fabtoolbar_fab)?.show()
     }
 
     //Eventually in derived classes

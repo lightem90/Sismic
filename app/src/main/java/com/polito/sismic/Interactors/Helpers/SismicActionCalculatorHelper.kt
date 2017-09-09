@@ -36,7 +36,6 @@ class SismicActionCalculatorHelper {
             return q0 * kr
         }
 
-        //TODO make this without writing much code
         fun calculatePeriodsForSquare(nodeSquare: NeighboursNodeSquare,
                                       mCoordinateHelper: ParametersForCoordinateHelper): List<PeriodData> {
 
@@ -45,7 +44,7 @@ class SismicActionCalculatorHelper {
             val soData = mCoordinateHelper.getRowDataForNode(nodeSquare.SO.id)
             val noData = mCoordinateHelper.getRowDataForNode(nodeSquare.NO.id)
 
-            //Foreache TR (reference year, it gets the relatives index of sismic data in the db and calculates the data, using distance)
+            //Foreach TR (reference year, it gets the relatives index of sismic data in the db and calculates the data, using distance)
             return TempiRitorno.values().map {
                 val triple = createTripleParameterFor(it, nodeSquare.NE.distance to neData,
                         nodeSquare.SE.distance to seData,

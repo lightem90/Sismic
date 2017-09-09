@@ -131,9 +131,5 @@ class ParametriSismiciReportFragment : BaseReportFragment() {
         getReport().reportState.sismicState.sismicParametersState = UiMapper.createSismicStateForDomain(this)
         super.onNextClicked(callback)
     }
-
-    override fun onParametersInjectedForEdit() {
-
-    }
 }
 

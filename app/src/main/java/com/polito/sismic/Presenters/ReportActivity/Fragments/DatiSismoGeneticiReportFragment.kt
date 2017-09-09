@@ -3,12 +3,13 @@ package com.polito.sismic.Presenters.ReportActivity.Fragments
 import android.os.Bundle
 import android.support.annotation.Nullable
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import com.polito.sismic.Domain.NeighboursNodeData
 import com.polito.sismic.Domain.PeriodData
-import com.polito.sismic.Extensions.toMutableList
 import com.polito.sismic.Interactors.Helpers.UiMapper
 import com.polito.sismic.Presenters.Adapters.NodeListAdapter
 import com.polito.sismic.Presenters.Adapters.PeriodListAdapter
@@ -24,6 +25,13 @@ class DatiSismoGeneticiReportFragment : BaseReportFragment() {
     var mNodeList : MutableList<NeighboursNodeData> = mutableListOf()
     var mPeriodList : MutableList<PeriodData> = mutableListOf()
 
+    private lateinit var mNodeAdapter : NodeListAdapter
+    private lateinit var mPeriodAdapter : PeriodListAdapter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
+
     override fun onCreateView(inflater: LayoutInflater?, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View? {
         return inflateFragment(R.layout.dati_sismogenetici_report_layout, inflater, container)
     }
@@ -31,37 +39,33 @@ class DatiSismoGeneticiReportFragment : BaseReportFragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        list_nodi.layoutManager = LinearLayoutManager(context)
-        list_nodi.adapter = NodeListAdapter(context, mNodeList)
-
-        list_periodi.layoutManager = LinearLayoutManager(context)
-        list_periodi.adapter = PeriodListAdapter(context, mPeriodList)
-
-        reloadFragment()
+        onReload()
     }
 
-    override fun reloadFragment()
+    override fun onReload()
     {
-        getReport().reportState.sismicState.sismogenticState.closedNodeData.let {
-
+        with(getReport().reportState.sismicState.sismogenticState.closedNodeData)
+        {
             mNodeList.clear()
-            mNodeList.addAll(it)
-            list_nodi.adapter.notifyDataSetChanged()
+            mNodeList.addAll(toList())
+            mNodeAdapter.notifyDataSetChanged()
         }
 
-        getReport().reportState.sismicState.sismogenticState.periodData_list.let {
+        Log.d("PeriodList", "Period list updating: " + getReport().reportState.sismicState.sismogenticState.periodData_list.toString())
+        if (getReport().reportState.sismicState.sismogenticState.periodData_list.isEmpty()) Log.e("PeriodList", "EMPTY!")
+
+        with(getReport().reportState.sismicState.sismogenticState.periodData_list){
             mPeriodList.clear()
-            mPeriodList.addAll(it)
-            list_periodi.adapter.notifyDataSetChanged()
+            mPeriodList.addAll(toList())
+            mPeriodAdapter.notifyDataSetChanged()
         }
 
-        //Must never fail!
-        getReport().reportState.localizationState.let {
+        with(getReport().reportState.localizationState) {
 
-            updateLabelsByCoordinate(it.latitude.toString(),
-                    it.longitude.toString(),
-                    it.address,
-                    it.zone)
+            updateLabelsByCoordinate(latitude.toString(),
+                    longitude.toString(),
+                    address,
+                    zone)
         }
     }
 
@@ -76,10 +80,6 @@ class DatiSismoGeneticiReportFragment : BaseReportFragment() {
     override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback?) {
         getReport().reportState.sismicState.sismogenticState = UiMapper.createSismogeneticStateForDomain(this)
         super.onNextClicked(callback)
-    }
-
-    override fun onParametersInjectedForEdit() {
-
     }
 }
 

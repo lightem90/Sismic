@@ -164,8 +164,9 @@ class PilastriReportFragment : BaseReportFragment() {
 
     fun setCalcestruzzoClasseByValue(classe_calcestruzzo: String) {
 
+        if (classe_calcestruzzo.isEmpty()) return
         //iterates all spinners element looking for the category requested
-        (0..calc_classe_parameter.count)
+        (0 until calc_classe_parameter.count)
                 .firstOrNull { calc_classe_parameter.getItemAtPosition(it) == classe_calcestruzzo }
                 ?.let { return calc_classe_parameter.setSelection(it)}
     }
@@ -174,9 +175,5 @@ class PilastriReportFragment : BaseReportFragment() {
     override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback?) {
         getReport().reportState.buildingState.pillarState = UiMapper.createPillarStateForDomain(this)
         super.onNextClicked(callback)
-    }
-
-    override fun onParametersInjectedForEdit() {
-
     }
 }

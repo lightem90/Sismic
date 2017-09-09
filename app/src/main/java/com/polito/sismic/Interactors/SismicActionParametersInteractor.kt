@@ -1,7 +1,7 @@
 package com.polito.sismic.Interactors
 
 import android.content.Context
-import com.polito.sismic.Extensions.toMutableList
+import com.polito.sismic.Extensions.toList
 import com.polito.sismic.Interactors.Helpers.ParametersForCoordinateHelper
 import com.polito.sismic.Interactors.Helpers.SismicActionCalculatorHelper
 
@@ -29,7 +29,7 @@ class SismicActionParametersInteractor(val mReportManager: ReportManager,
             //calculates ag, f0 and tc* for point
             val periodList = SismicActionCalculatorHelper.calculatePeriodsForSquare(nodeSquare, mCoordinateHelper)
 
-            mReportManager.report.reportState.sismicState.sismogenticState.closedNodeData= nodeSquare.toMutableList()
+            mReportManager.report.reportState.sismicState.sismogenticState.closedNodeData= nodeSquare.toList()
             mReportManager.report.reportState.sismicState.sismogenticState.periodData_list = periodList
 
             mustRecalc = false

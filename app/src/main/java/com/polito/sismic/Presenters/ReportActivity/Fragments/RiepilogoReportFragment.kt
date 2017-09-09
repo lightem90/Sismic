@@ -31,12 +31,12 @@ class RiepilogoReportFragment : BaseReportFragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        reloadFragment()
+        onReload()
     }
 
-    override fun reloadFragment() {
+    override fun onReload() {
         mImageList.clear()
-        mImageList = mReport!!.reportState.mediaState
+        mImageList = getReport().reportState.mediaState
                 .filter {
                     it.type == MediaType.Picture.toString() ||
                             it.type == MediaType.Sketch.toString()
@@ -45,13 +45,13 @@ class RiepilogoReportFragment : BaseReportFragment() {
         image_grid.adapter = ReportImageAdapter(mImageList, activity)
 
         mVideoList.clear()
-        mVideoList = mReport!!.reportState.mediaState
+        mVideoList = getReport().reportState.mediaState
                 .filter { it.type == MediaType.Video.toString() }
                 .toMutableList()
         video_grid.adapter = ReportVideoAdapter(mVideoList, activity)
 
         mNoteList.clear()
-        mNoteList = mReport!!.reportState.mediaState
+        mNoteList = getReport().reportState.mediaState
                 .filter {
                     !it.note.isEmpty() &&
                             it.type == MediaType.Note.toString()
@@ -60,7 +60,7 @@ class RiepilogoReportFragment : BaseReportFragment() {
         note_grid.adapter = ReportStringAdapter(mNoteList, activity)
 
         mAudioList.clear()
-        mAudioList = mReport!!.reportState.mediaState
+        mAudioList = getReport().reportState.mediaState
                 .filter { it.type == MediaType.Audio.toString() }
                 .toMutableList()
         audio_grid.adapter = ReportStringAdapter(mAudioList, activity)

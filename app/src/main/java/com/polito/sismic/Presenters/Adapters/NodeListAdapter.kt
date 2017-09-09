@@ -12,13 +12,13 @@ import com.polito.sismic.R
 import kotlinx.android.synthetic.main.close_points_layout.view.*
 import kotlinx.android.synthetic.main.period_data_layout.view.*
 
-class NodeListAdapter(val mContext : Context, val mNodeData : List<NeighboursNodeData>)
+class NodeListAdapter(val mNodeData : List<NeighboursNodeData>)
     : RecyclerView.Adapter<NodeListAdapter.ViewHolder>()
 {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NodeListAdapter.ViewHolder? {
         val v = parent.inflate(R.layout.close_points_layout)
-        return NodeListAdapter.ViewHolder(v, mContext)
+        return NodeListAdapter.ViewHolder(v, parent.context)
     }
 
     override fun onBindViewHolder(holder: NodeListAdapter.ViewHolder, position: Int) {
@@ -50,13 +50,13 @@ class NodeListAdapter(val mContext : Context, val mNodeData : List<NeighboursNod
     }
 }
 
-class PeriodListAdapter(val mContext : Context, val mPeriodDataList : List<PeriodData>)
+class PeriodListAdapter(val mPeriodDataList : List<PeriodData>)
     : RecyclerView.Adapter<PeriodListAdapter.ViewHolder>()
 {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PeriodListAdapter.ViewHolder? {
         val v = parent.inflate(R.layout.period_data_layout)
-        return PeriodListAdapter.ViewHolder(v, mContext)
+        return PeriodListAdapter.ViewHolder(v, parent.context)
     }
 
     override fun onBindViewHolder(holder: PeriodListAdapter.ViewHolder, position: Int) {
@@ -71,10 +71,10 @@ class PeriodListAdapter(val mContext : Context, val mPeriodDataList : List<Perio
     class ViewHolder(itemView: View, val mContext: Context) : RecyclerView.ViewHolder(itemView){
 
         fun bindPeriodData(periodData: PeriodData) = with(periodData){
-            itemView.year.text = periodData.years.toString()
-            itemView.ag.text = periodData.ag.toString()
-            itemView.f0.text = periodData.f0.toString()
-            itemView.tcstar.text = periodData.tcstar.toString()
+            itemView.year.text = years.toString()
+            itemView.ag.text = ag.toString()
+            itemView.f0.text = f0.toString()
+            itemView.tcstar.text = tcstar.toString()
         }
 
         fun bindHeader()

@@ -23,8 +23,4 @@ class DatiGeneraliReportFragment : BaseReportFragment() {
         getReport().reportState.buildingState.buildingGeneralState = UiMapper.createBuildingGeneralStateForDomain(this)
         super.onNextClicked(callback)
     }
-
-    override fun onParametersInjectedForEdit() {
-
-    }
 }

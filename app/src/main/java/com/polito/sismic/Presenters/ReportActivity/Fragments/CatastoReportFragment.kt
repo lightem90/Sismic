@@ -16,7 +16,7 @@ import com.stepstone.stepper.StepperLayout
  */
 class CatastoReportFragment : BaseReportFragment() {
 
-    protected var   mNodeRequestCallback: BaseReportFragment.NodeCaluclationRequest? = null
+    private var mNodeRequestCallback: BaseReportFragment.NodeCaluclationRequest? = null
 
     override fun onCreateView(inflater: LayoutInflater?, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View? {
         return inflateFragment(R.layout.catasto_report_layout, inflater, container)
@@ -36,12 +36,14 @@ class CatastoReportFragment : BaseReportFragment() {
     }
 
     override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback?) {
+        //these 2 lines update the state with "catasto" data
         getReport().reportState.generalState.catastoState = UiMapper.createCatastoStateForDomain(this)
+        super.onNextClicked(callback)
+
+        //callback to activity to update "sismogenetic" data
         callback?.stepperLayout?.showProgress(getString(R.string.calculating_neighbours_node))
-        Handler().postDelayed({
-            mNodeRequestCallback?.onClosedNodesCalculationRequested()
-            super.onNextClicked(callback)
-            callback?.stepperLayout?.hideProgress()
-        }, 5000L)
+        hideBottomActions()
+        mNodeRequestCallback?.onClosedNodesCalculationRequested()
+        callback?.stepperLayout?.hideProgress()
     }
 }

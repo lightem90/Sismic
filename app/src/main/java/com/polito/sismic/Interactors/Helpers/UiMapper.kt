@@ -3,7 +3,6 @@ package com.polito.sismic.Interactors.Helpers
 import com.polito.sismic.Domain.*
 import com.polito.sismic.Presenters.ReportActivity.Fragments.*
 import kotlinx.android.synthetic.main.catasto_report_layout.*
-import kotlinx.android.synthetic.main.catasto_report_layout.view.*
 import kotlinx.android.synthetic.main.dati_generali_report_layout.*
 import kotlinx.android.synthetic.main.dati_strutturali_report_layout.*
 import kotlinx.android.synthetic.main.info_loc_report_layout.*
@@ -51,7 +50,6 @@ class UiMapper {
         fun createSismogeneticStateForDomain(datiSismoGeneticiReportFragment: DatiSismoGeneticiReportFragment): SismogeneticState = with(datiSismoGeneticiReportFragment) {
             return SismogeneticState(mNodeList, mPeriodList)
         }
-
         //TODO
         fun createSismicStateForDomain(parametriSismiciReportFragment: ParametriSismiciReportFragment): SismicParametersState = with(parametriSismiciReportFragment) {
             return SismicParametersState(getVitaNominale(),
@@ -89,11 +87,11 @@ class UiMapper {
 
         fun createTakeoverStateForDomain(rilieviReportFragment: RilieviReportFragment): TakeoverState  = with(rilieviReportFragment){
             return TakeoverState(piani_numero_parameter.selectedItem.toString().toInt(),
-                    altezza_piano_tr_parameter.getParameterValue().toDouble(),
-                    altezza_piani_sup_parameter.getParameterValue().toDouble(),
-                    tot_high.text.toString().toDouble(),
-                    lunghezza_piano_parameter.getParameterValue().toDouble(),
-                    larghezza_piano_parameter.getParameterValue().toDouble())
+                    if (altezza_piano_tr_parameter.getParameterValue().isEmpty()) 0.0 else altezza_piano_tr_parameter.getParameterValue().toDouble(),
+                    if (altezza_piani_sup_parameter.getParameterValue().isEmpty()) 0.0 else altezza_piani_sup_parameter.getParameterValue().toDouble(),
+                    if (tot_high.text.toString().isEmpty()) 0.0 else tot_high.text.toString().toDouble(),
+                    if (lunghezza_piano_parameter.getParameterValue().isEmpty()) 0.0 else lunghezza_piano_parameter.getParameterValue().toDouble(),
+                    if (larghezza_piano_parameter.getParameterValue().isEmpty()) 0.0 else larghezza_piano_parameter.getParameterValue().toDouble())
         }
 
         fun createPillarStateForDomain(pilastriReportFragment: PilastriReportFragment): PillarState  = with(pilastriReportFragment){
@@ -125,6 +123,132 @@ class UiMapper {
         //TODO
         fun createPillarLayoutStateForDomain(magliaStrutturaleReportFragment: MagliaStrutturaleReportFragment): PillarLayoutState = with(magliaStrutturaleReportFragment){
             return PillarLayoutState()
+        }
+
+        fun bindToDomain(fragment: BaseReportFragment, reportState: ReportState) = with(fragment){
+            when (this)
+            {
+                is InfoLocReportFragment ->
+                {
+                    reportState.localizationState.let {
+                        lat_parameter.setParameterValue(if (it.latitude != 0.0) it.latitude.toString() else "")
+                        long_parameter.setParameterValue(if (it.latitude != 0.0) it.longitude.toString() else "")
+                        country_parameter.setParameterValue(it.country)
+                        region_parameter.setParameterValue(it.region)
+                        province_parameter.setParameterValue(it.province)
+                        comune_parameter.setParameterValue(it.comune)
+                        address_parameter.setParameterValue(it.address)
+                        cap_parameter.setParameterValue(it.cap)
+                        zona_sismica_parameter.setParameterValue(it.zone)
+                        codice_istat_parameter.setParameterValue(it.code)
+                    }
+                }
+                is CatastoReportFragment ->
+                {
+                    reportState.generalState.catastoState.let {
+                        foglio_parameter.setParameterValue(it.foglio)
+                        mappale_parameter.setParameterValue(it.mappale)
+                        particella_parameter.setParameterValue(it.particella)
+                        foglio_cart_parameter.setParameterValue(it.foglio_cartografia)
+                        edificio_parameter.setParameterValue(it.edificio)
+                        aggr_str_parameter.setParameterValue(it.aggr_str)
+                        piano_urb_parameter.setParameterValue(it.piano_urb)
+                        zona_urb_parameter.setParameterValue(it.zona_urb)
+                        vincoli_urb_parameter.setParameterValue(it.vincoli_urb)
+                    }
+                }
+
+                is DatiSismoGeneticiReportFragment ->
+                {
+                    reportState.sismicState.sismogenticState.let {
+                        mNodeList = it.closedNodeData.toMutableList()
+                        mPeriodList = it.periodData_list.toMutableList()
+                    }
+                }
+                is ParametriSismiciReportFragment ->
+                {
+                    reportState.sismicState.sismicParametersState.let {
+                        setVitaNominale(it.vitaNominale)
+                        classe_parameter.setSelection(getClasseUsoIndexByValue(it.classeUso))
+                        vita_reale.setValue(it.vitaReale.toString())
+
+                        //TODO
+                    }
+                }
+                is SpettriDiProgettoReportFragment ->
+                {
+                    reportState.sismicState.projectSpectrumState.let {
+                        selectCategoriaSuolo(it.categoria_suolo)
+                        selectCategoriaTopografica(it.categoria_topografica)
+                        if (categoria_classe_duttilita_parameter_cdb.textOn == it.classe_duttilita) categoria_classe_duttilita_parameter_cdb.isChecked = true else categoria_classe_duttilita_parameter_cda.isChecked = true
+                        alfa = it.alfa
+                        //TODO
+                    }
+
+                }
+                is DatiGeneraliReportFragment ->
+                {
+                    reportState.buildingState.buildingGeneralState.let {
+                        anno_costruzione_parameter.setParameterValue(it.anno_costruzione)
+                        tipologia_strutturale_parameter.setParameterValue(it.tipologia_strutturale)
+                        stato_parameter.setParameterValue(it.stato_edificio)
+                        totale_unita_parameter.setParameterValue(it.totale_unita)
+                    }
+                }
+
+                is RilieviReportFragment ->
+                {
+                    reportState.buildingState.takeoverState.let {
+                        piani_numero_parameter.setSelection(it.numero_piani-1)
+                        altezza_piano_tr_parameter.setParameterValue(it.altezza_piano_terra.toString())
+                        altezza_piani_sup_parameter.setParameterValue(it.altezza_piani_superiori.toString())
+                        tot_high.text = it.altezza_totale.toString()
+                        lunghezza_piano_parameter.setParameterValue(it.lunghezza_esterna.toString())
+                        larghezza_piano_parameter.setParameterValue(it.larghezza_esterna.toString())
+                    }
+                }
+                is DatiStrutturaliReportFragment ->
+                {
+                    reportState.buildingState.structuralState.let {
+                        setTipoFondazioni(it.tipo_fondazioni)
+                        fondazioni_h.setParameterValue(if (it.altezza_fondazioni.toString().isEmpty()) "" else it.altezza_fondazioni.toString())
+                        setPesoSolaioByValue(it.peso_solaio)
+                        solaio_g1.text = if (it.g1_solaio.toString().isEmpty()) "" else it.g1_solaio.toString()
+                        solaio_g2.setParameterValue(if (it.g2_solaio.toString().isEmpty()) "" else it.g2_solaio.toString())
+                        solaio_qk.setParameterValue(if (it.qk_solaio.toString().isEmpty()) "" else it.qk_solaio.toString())
+                        setPesoCoperturaByValue(it.peso_copertura)
+                        copertura_g1.text = if (it.g1_copertura.toString().isEmpty()) "" else it.g1_copertura.toString()
+                        copertura_g2.setParameterValue(if (it.g2_copertura.toString().isEmpty()) "" else it.g2_copertura.toString())
+                        copertura_qk.setParameterValue(if (it.qk_copertura.toString().isEmpty()) "" else it.qk_copertura.toString())
+                    }
+                }
+
+                is PilastriReportFragment ->
+                {
+                    reportState.buildingState.pillarState.let{
+                        setCalcestruzzoClasseByValue(it.classe_calcestruzzo)
+                        setConoscenzaCalcestruzzo(it.conoscenza_calcestruzzo)
+                        if (acc_classe_parameter_C.textOn == it.classe_acciaio) acc_classe_parameter_C.isChecked = true else acc_classe_parameter_A.isChecked = true
+                        setConoscenzaAcciaio(it.conoscenza_acciaio)
+                        sezione_bx_parameter.setParameterValue(if (it.bx.toString().isEmpty()) "" else it.bx.toString())
+                        sezione_hy_parameter.setParameterValue(if (it.hy.toString().isEmpty()) "" else it.bx.toString())
+                        sezione_c_parameter.setParameterValue(if (it.c.toString().isEmpty()) "" else it.bx.toString())
+                        armatura_longitudine.setParameterValue(if (it.longitudine_armatura.toString().isEmpty()) "" else it.bx.toString())
+                        armatura_fi.setParameterValue(if (it.fi.toString().isEmpty()) "" else it.bx.toString())
+                    }
+
+                }
+                is MagliaStrutturaleReportFragment ->
+                {
+                    //TODO
+                    reportState.buildingState.pillarLayoutState.let {
+
+                    }
+                }
+
+                else -> {
+                }
+            }
         }
 
     }

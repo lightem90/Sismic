@@ -59,8 +59,4 @@ class RilieviReportFragment : BaseReportFragment() {
         getReport().reportState.buildingState.takeoverState = UiMapper.createTakeoverStateForDomain(this)
         super.onNextClicked(callback)
     }
-
-    override fun onParametersInjectedForEdit() {
-
-    }
 }

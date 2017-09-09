@@ -165,7 +165,7 @@ class DatabaseMapperHelper {
                     NeighboursNodeData(it.se_id.toString(), it.se_lon, it.se_lat, it.se_dist),
                     NeighboursNodeData(it.so_id.toString(), it.so_lon, it.so_lat, it.so_dist),
                     NeighboursNodeData(it.no_id.toString(), it.no_lon, it.no_lat, it.no_dist)
-            )
+                ), listOf()
             )
         }
     }

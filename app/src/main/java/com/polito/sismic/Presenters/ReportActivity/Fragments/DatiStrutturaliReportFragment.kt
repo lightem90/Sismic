@@ -95,7 +95,7 @@ class DatiStrutturaliReportFragment : BaseReportFragment() {
     fun setPesoSolaioByValue(peso_solaio: String) {
 
         //iterates all spinners element looking for the category requested
-        (0..solaio_peso.count)
+        (0 until solaio_peso.count)
                 .firstOrNull { solaio_peso.getItemAtPosition(it) == peso_solaio }
                 ?.let { return solaio_peso.setSelection(it)}
     }
@@ -103,7 +103,7 @@ class DatiStrutturaliReportFragment : BaseReportFragment() {
     fun setPesoCoperturaByValue(peso_copertura: String) {
 
         //iterates all spinners element looking for the category requested
-        (0..copertura_peso.count)
+        (0 until copertura_peso.count)
                 .firstOrNull { copertura_peso.getItemAtPosition(it) == peso_copertura }
                 ?.let { return copertura_peso.setSelection(it)}
     }
@@ -112,9 +112,5 @@ class DatiStrutturaliReportFragment : BaseReportFragment() {
     override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback?) {
         getReport().reportState.buildingState.structuralState = UiMapper.createStructuralStateForDomain(this)
         super.onNextClicked(callback)
-    }
-
-    override fun onParametersInjectedForEdit() {
-
     }
 }

@@ -129,12 +129,12 @@ fun Date.toFormattedString() : String
 fun <K, V : Any> Map<K, V?>.toVarargArray(): Array<out Pair<K, V>> =
         map({ Pair(it.key, it.value!!) }).toTypedArray()
 
-fun Bundle.putReportState(state : Report)
+fun Bundle.putReport(state : Report)
 {
     putParcelable("report_state", state)
 }
 
-fun Bundle.getReportState() : Report?
+fun Bundle.getReport() : Report?
 {
     return getParcelable<Report>("report_state")
 }
@@ -157,8 +157,8 @@ fun StepAdapter.getCustomAdapter() : ReportFragmentsAdapter
     return this as ReportFragmentsAdapter
 }
 
-fun NeighboursNodeSquare.toMutableList(): MutableList<NeighboursNodeData> {
-    return mutableListOf(NE, NO, SO, SE)
+fun NeighboursNodeSquare.toList(): List<NeighboursNodeData> {
+    return listOf(NE, NO, SO, SE)
 }
 
 fun Uri.getFileName(mContext: Context): String? {

@@ -226,9 +226,9 @@ data class SismicParametersState(var vitaNominale: Int,
 
 
 data class SismogeneticState(var closedNodeData: List<NeighboursNodeData>,
-                             var periodData_list: List<PeriodData> = listOf()) : Parcelable {
+                             var periodData_list: List<PeriodData>) : Parcelable {
 
-    constructor() : this(listOf())
+    constructor() : this(listOf(), listOf())
     constructor(source: Parcel) : this(
             source.createTypedArrayList(NeighboursNodeData.CREATOR),
             source.createTypedArrayList(PeriodData.CREATOR)
