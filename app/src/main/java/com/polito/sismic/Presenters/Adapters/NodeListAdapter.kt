@@ -12,7 +12,7 @@ import com.polito.sismic.R
 import kotlinx.android.synthetic.main.close_points_layout.view.*
 import kotlinx.android.synthetic.main.period_data_layout.view.*
 
-class NodeListAdapter(val mNodeData : List<NeighboursNodeData>)
+class NodeListAdapter(private val mNodeData : List<NeighboursNodeData>)
     : RecyclerView.Adapter<NodeListAdapter.ViewHolder>()
 {
 
@@ -50,7 +50,7 @@ class NodeListAdapter(val mNodeData : List<NeighboursNodeData>)
     }
 }
 
-class PeriodListAdapter(val mPeriodDataList : List<PeriodData>)
+class PeriodListAdapter(private val mPeriodDataList : List<PeriodData>)
     : RecyclerView.Adapter<PeriodListAdapter.ViewHolder>()
 {
 

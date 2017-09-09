@@ -168,8 +168,8 @@ class ReportDatabaseHelper(ctx: Context = App.instance) : ManagedSQLiteOpenHelpe
                         CaratteristichePilastriInfoTable.BX to REAL,
                         CaratteristichePilastriInfoTable.HY to REAL,
                         CaratteristichePilastriInfoTable.C to REAL,
-                        CaratteristichePilastriInfoTable.LONG_ARMATURA to INTEGER,
-                        CaratteristichePilastriInfoTable.FI to INTEGER,
+                        CaratteristichePilastriInfoTable.LONG_ARMATURA to REAL,
+                        CaratteristichePilastriInfoTable.FI to REAL,
                         CaratteristichePilastriInfoTable.REPORT_ID to INTEGER)
         )
 

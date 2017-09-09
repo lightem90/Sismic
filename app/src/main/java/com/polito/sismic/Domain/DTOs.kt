@@ -102,7 +102,7 @@ data class ReportResult(var result: Int,
 
 class SismicState(var sismogenticState:         SismogeneticState,
                   var sismicParametersState:    SismicParametersState,
-                  var projectSpectrumState:     ProjectSpectrumState) : Parcelable {
+                  var projectSpectrumState:     ProjectSpectrumState) : FragmentState {
     constructor() : this (SismogeneticState(), SismicParametersState(), ProjectSpectrumState())
     constructor(source: Parcel) : this(
             source.readParcelable<SismogeneticState>(SismogeneticState::class.java.classLoader),
@@ -127,6 +127,7 @@ class SismicState(var sismogenticState:         SismogeneticState,
     }
 }
 
+interface FragmentState : Parcelable
 
 data class LocalizationState(var latitude: Double,
                              var longitude: Double,
@@ -137,7 +138,7 @@ data class LocalizationState(var latitude: Double,
                              var address: String,
                              var cap: String,
                              var zone: String,
-                             var code: String) : Parcelable {
+                             var code: String) : FragmentState {
     constructor() : this(0.0, 0.0, "", "", "", "", "", "", "", "")
     constructor(source: Parcel) : this(
             source.readDouble(),
@@ -392,7 +393,7 @@ data class ProjectSpectrumState(var categoria_suolo: String,
     }
 }
 
-class GeneralState(var catastoState: CatastoState) : Parcelable {
+class GeneralState(var catastoState: CatastoState) : FragmentState {
     constructor() : this (CatastoState())
     constructor(source: Parcel) : this(
             source.readParcelable<CatastoState>(CatastoState::class.java.classLoader)
@@ -462,7 +463,7 @@ class BuildingState(var buildingGeneralState: BuildingGeneralState,
                     var takeoverState: TakeoverState,
                     var structuralState: StructuralState,
                     var pillarState: PillarState,
-                    var pillarLayoutState: PillarLayoutState) : Parcelable {
+                    var pillarLayoutState: PillarLayoutState) : FragmentState {
     constructor() : this(BuildingGeneralState(), TakeoverState(), StructuralState(), PillarState(), PillarLayoutState())
     constructor(source: Parcel) : this(
             source.readParcelable<BuildingGeneralState>(BuildingGeneralState::class.java.classLoader),
@@ -620,9 +621,9 @@ data class PillarState(var classe_calcestruzzo: String,
                        var bx: Double,
                        var hy: Double,
                        var c: Double,
-                       var longitudine_armatura: Int,
-                       var fi: Int) : Parcelable {
-    constructor() : this("", 0, "", 0, 0.0, 0.0, 0.0, 0, 0)
+                       var longitudine_armatura: Double,
+                       var fi: Double) : Parcelable {
+    constructor() : this("", 0, "", 0, 0.0, 0.0, 0.0, 0.0, 0.0)
     constructor(source: Parcel) : this(
             source.readString(),
             source.readInt(),
@@ -631,8 +632,8 @@ data class PillarState(var classe_calcestruzzo: String,
             source.readDouble(),
             source.readDouble(),
             source.readDouble(),
-            source.readInt(),
-            source.readInt()
+            source.readDouble(),
+            source.readDouble()
     )
 
     override fun describeContents() = 0
@@ -645,8 +646,8 @@ data class PillarState(var classe_calcestruzzo: String,
         writeDouble(bx)
         writeDouble(hy)
         writeDouble(c)
-        writeInt(longitudine_armatura)
-        writeInt(fi)
+        writeDouble(longitudine_armatura)
+        writeDouble(fi)
     }
 
     companion object {

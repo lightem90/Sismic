@@ -39,6 +39,20 @@ class DatiSismoGeneticiReportFragment : BaseReportFragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        with(list_nodi)
+        {
+            layoutManager = LinearLayoutManager(context)
+            mNodeAdapter = NodeListAdapter(mNodeList.toList())
+            adapter = mNodeAdapter
+        }
+
+        with(list_periodi)
+        {
+            layoutManager = LinearLayoutManager(context)
+            mPeriodAdapter = PeriodListAdapter(mPeriodList.toList())
+            adapter = mPeriodAdapter
+        }
+
         onReload()
     }
 
@@ -51,13 +65,13 @@ class DatiSismoGeneticiReportFragment : BaseReportFragment() {
             mNodeAdapter.notifyDataSetChanged()
         }
 
-        Log.d("PeriodList", "Period list updating: " + getReport().reportState.sismicState.sismogenticState.periodData_list.toString())
-        if (getReport().reportState.sismicState.sismogenticState.periodData_list.isEmpty()) Log.e("PeriodList", "EMPTY!")
+        //Log.d("PeriodList", "Period list updating: " + getReport().reportState.sismicState.sismogenticState.periodData_list.toString())
+        //if (getReport().reportState.sismicState.sismogenticState.periodData_list.isEmpty()) Log.e("PeriodList", "EMPTY!")
 
         with(getReport().reportState.sismicState.sismogenticState.periodData_list){
             mPeriodList.clear()
             mPeriodList.addAll(toList())
-            mPeriodAdapter.notifyDataSetChanged()
+            mNodeAdapter.notifyDataSetChanged()
         }
 
         with(getReport().reportState.localizationState) {

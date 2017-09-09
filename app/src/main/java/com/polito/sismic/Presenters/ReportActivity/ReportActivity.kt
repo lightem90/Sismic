@@ -81,7 +81,7 @@ class ReportActivity : AppCompatActivity(),
     //Updates the state for all fragments
     override fun onParametersConfirmed(report: Report) {
         mReportManager?.updateReportState(report)
-        updateStateForFragments(true)
+        updateStateForFragments(false)
     }
 
     //creates a new fragment state foreach active fragment, so everyone is updated
@@ -128,7 +128,7 @@ class ReportActivity : AppCompatActivity(),
 
     private fun initializeFromManager(reportManager: ReportManager) {
         //To handle user action, it uses other interactor to pilot the ui changes to the domain
-        if (mReportManager == null) mReportManager = reportManager
+        mReportManager = reportManager
         mUserActionInteractor = UserActionInteractor(reportManager, this)
         mSismicParameterInteractor = SismicActionParametersInteractor(reportManager, this)
         stepperLayout.adapter = ReportFragmentsAdapter(supportFragmentManager, this, reportManager)

@@ -91,9 +91,7 @@ class PresenterActivity : AppCompatActivity(),
 
     override fun onHistoryReloadRequest() {
         val history = fragmentManager.findFragmentByTag("report_list") as ReportListFragment?
-        history?.let {
-            history.invalidateAndReload()
-        }
+        history?.invalidateAndReload()
     }
 }
 

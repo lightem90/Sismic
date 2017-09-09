@@ -102,8 +102,8 @@ class UiMapper {
                      sezione_bx_parameter.getParameterValue().toDouble(),
                      sezione_hy_parameter.getParameterValue().toDouble(),
                      sezione_c_parameter.getParameterValue().toDouble(),
-                     armatura_longitudine.getParameterValue().toInt(),
-                     armatura_fi.getParameterValue().toInt())
+                     armatura_longitudine.getParameterValue().toDouble(),
+                     armatura_fi.getParameterValue().toDouble())
         }
 
         fun createStructuralStateForDomain(datiStrutturaliReportFragment: DatiStrutturaliReportFragment): StructuralState  = with(datiStrutturaliReportFragment){
@@ -200,26 +200,26 @@ class UiMapper {
                 {
                     reportState.buildingState.takeoverState.let {
                         piani_numero_parameter.setSelection(it.numero_piani-1)
-                        altezza_piano_tr_parameter.setParameterValue(it.altezza_piano_terra.toString())
-                        altezza_piani_sup_parameter.setParameterValue(it.altezza_piani_superiori.toString())
+                        altezza_piano_tr_parameter.setParameterValue(if (it.altezza_piano_terra == 0.0) "" else it.altezza_piano_terra.toString())
+                        altezza_piani_sup_parameter.setParameterValue(if (it.altezza_piani_superiori == 0.0) "" else it.altezza_piani_superiori.toString())
                         tot_high.text = it.altezza_totale.toString()
-                        lunghezza_piano_parameter.setParameterValue(it.lunghezza_esterna.toString())
-                        larghezza_piano_parameter.setParameterValue(it.larghezza_esterna.toString())
+                        lunghezza_piano_parameter.setParameterValue(if (it.lunghezza_esterna == 0.0) "" else it.lunghezza_esterna.toString())
+                        larghezza_piano_parameter.setParameterValue(if (it.larghezza_esterna == 0.0) "" else it.larghezza_esterna.toString())
                     }
                 }
                 is DatiStrutturaliReportFragment ->
                 {
                     reportState.buildingState.structuralState.let {
                         setTipoFondazioni(it.tipo_fondazioni)
-                        fondazioni_h.setParameterValue(if (it.altezza_fondazioni.toString().isEmpty()) "" else it.altezza_fondazioni.toString())
+                        fondazioni_h.setParameterValue(if (it.altezza_fondazioni == 0.0) "" else it.altezza_fondazioni.toString())
                         setPesoSolaioByValue(it.peso_solaio)
-                        solaio_g1.text = if (it.g1_solaio.toString().isEmpty()) "" else it.g1_solaio.toString()
-                        solaio_g2.setParameterValue(if (it.g2_solaio.toString().isEmpty()) "" else it.g2_solaio.toString())
-                        solaio_qk.setParameterValue(if (it.qk_solaio.toString().isEmpty()) "" else it.qk_solaio.toString())
+                        solaio_g1.text = if (it.g1_solaio == 0.0) "" else it.g1_solaio.toString()
+                        solaio_g2.setParameterValue(if (it.g2_solaio == 0.0) "" else it.g2_solaio.toString())
+                        solaio_qk.setParameterValue(if (it.qk_solaio == 0.0) "" else it.qk_solaio.toString())
                         setPesoCoperturaByValue(it.peso_copertura)
-                        copertura_g1.text = if (it.g1_copertura.toString().isEmpty()) "" else it.g1_copertura.toString()
-                        copertura_g2.setParameterValue(if (it.g2_copertura.toString().isEmpty()) "" else it.g2_copertura.toString())
-                        copertura_qk.setParameterValue(if (it.qk_copertura.toString().isEmpty()) "" else it.qk_copertura.toString())
+                        copertura_g1.text = if (it.g1_copertura == 0.0) "" else it.g1_copertura.toString()
+                        copertura_g2.setParameterValue(if (it.g2_copertura == 0.0) "" else it.g2_copertura.toString())
+                        copertura_qk.setParameterValue(if (it.qk_copertura == 0.0) "" else it.qk_copertura.toString())
                     }
                 }
 
@@ -230,11 +230,11 @@ class UiMapper {
                         setConoscenzaCalcestruzzo(it.conoscenza_calcestruzzo)
                         if (acc_classe_parameter_C.textOn == it.classe_acciaio) acc_classe_parameter_C.isChecked = true else acc_classe_parameter_A.isChecked = true
                         setConoscenzaAcciaio(it.conoscenza_acciaio)
-                        sezione_bx_parameter.setParameterValue(if (it.bx.toString().isEmpty()) "" else it.bx.toString())
-                        sezione_hy_parameter.setParameterValue(if (it.hy.toString().isEmpty()) "" else it.bx.toString())
-                        sezione_c_parameter.setParameterValue(if (it.c.toString().isEmpty()) "" else it.bx.toString())
-                        armatura_longitudine.setParameterValue(if (it.longitudine_armatura.toString().isEmpty()) "" else it.bx.toString())
-                        armatura_fi.setParameterValue(if (it.fi.toString().isEmpty()) "" else it.bx.toString())
+                        sezione_bx_parameter.setParameterValue(if (it.bx == 0.0) "" else it.bx.toString())
+                        sezione_hy_parameter.setParameterValue(if (it.hy == 0.0) "" else it.bx.toString())
+                        sezione_c_parameter.setParameterValue(if (it.c == 0.0) "" else it.bx.toString())
+                        armatura_longitudine.setParameterValue(if (it.longitudine_armatura == 0.0) "" else it.bx.toString())
+                        armatura_fi.setParameterValue(if (it.fi == 0.0) "" else it.bx.toString())
                     }
 
                 }
