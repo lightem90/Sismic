@@ -174,9 +174,9 @@ data class DatabaseDatiSismogenetici(var map: MutableMap<String, Any?>) : Databa
 data class DatabaseParametriSismici(var map: MutableMap<String, Any?>) : DatabaseSection {
 
     var _id: Int by map
-    var vitaNominale: Int by map
-    var classeUso: Double by map
-    var vitaReale: Double by map
+    var vita_nominale: Int by map
+    var classe_uso: Double by map
+    var vita_reale: Double by map
     var ag: Double by map
     var f0: Double by map
     var tg: Double by map
@@ -186,9 +186,9 @@ data class DatabaseParametriSismici(var map: MutableMap<String, Any?>) : Databas
     var slc: Int by map
     var report_id: Int by map
 
-    constructor(vitaNominale: Int,
-                classeUso: Double,
-                vitaReale: Double,
+    constructor(vita_nominale: Int,
+                classe_uso: Double,
+                vita_reale: Double,
                 ag: Double,
                 f0: Double,
                 tg: Double,
@@ -197,9 +197,9 @@ data class DatabaseParametriSismici(var map: MutableMap<String, Any?>) : Databas
                 slv: Int,
                 slc: Int,
                 report_id: Int) : this(HashMap()) {
-        this.vitaNominale = vitaNominale
-        this.classeUso = classeUso
-        this.vitaReale = vitaReale
+        this.vita_nominale = vita_nominale
+        this.classe_uso = classe_uso
+        this.vita_reale = vita_reale
         this.ag = ag
         this.f0 = f0
         this.tg = tg

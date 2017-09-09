@@ -4,33 +4,16 @@ import android.annotation.TargetApi
 import android.content.Context
 import android.os.Build
 import android.support.design.widget.FloatingActionButton
+import android.support.v4.widget.NestedScrollView
 import android.util.AttributeSet
 import android.widget.ScrollView
 import com.github.fafaldo.fabtoolbar.widget.FABToolbarLayout
 import com.stepstone.stepper.StepperLayout
 
-class FragmentScrollableCanvas : ScrollView
+class FragmentScrollableCanvas @JvmOverloads constructor(
+        context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0)
+    : NestedScrollView(context, attrs, defStyleAttr)
 {
-    @JvmOverloads
-    constructor(
-            context: Context,
-            attrs: AttributeSet? = null,
-            defStyleAttr: Int = 0)
-            : super(context, attrs, defStyleAttr)
-    {
-    }
-
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    constructor(
-            context: Context,
-            attrs: AttributeSet?,
-            defStyleAttr: Int,
-            defStyleRes: Int)
-            : super(context, attrs, defStyleAttr, defStyleRes)
-    {
-    }
-
     private var fabToolbarReference : FABToolbarLayout? = null
     private var fabReference : FloatingActionButton? = null
     private var stepperReference : StepperLayout? = null

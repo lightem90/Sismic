@@ -99,26 +99,26 @@ class UiMapper {
                      getConoscenzaCalcestruzzo(),
                      if (acc_classe_parameter_A.isChecked) acc_classe_parameter_A.textOn.toString() else acc_classe_parameter_C.textOn.toString(),
                      getConoscenzaAcciaio(),
-                     sezione_bx_parameter.getParameterValue().toDouble(),
-                     sezione_hy_parameter.getParameterValue().toDouble(),
-                     sezione_c_parameter.getParameterValue().toDouble(),
-                     armatura_longitudine.getParameterValue().toDouble(),
-                     armatura_fi.getParameterValue().toDouble())
+                     if(sezione_bx_parameter.getParameterValue().isEmpty()) 0.0 else altezza_piano_tr_parameter.getParameterValue().toDouble(),
+                     if(sezione_hy_parameter.getParameterValue().isEmpty()) 0.0 else altezza_piano_tr_parameter.getParameterValue().toDouble(),
+                     if(sezione_c_parameter.getParameterValue().isEmpty()) 0.0 else altezza_piano_tr_parameter.getParameterValue().toDouble(),
+                     if(armatura_longitudine.getParameterValue().isEmpty()) 0.0 else altezza_piano_tr_parameter.getParameterValue().toDouble(),
+                     if(armatura_fi.getParameterValue().isEmpty()) 0.0 else altezza_piano_tr_parameter.getParameterValue().toDouble())
         }
 
         fun createStructuralStateForDomain(datiStrutturaliReportFragment: DatiStrutturaliReportFragment): StructuralState  = with(datiStrutturaliReportFragment){
             return StructuralState(getTipoFondazioni(),
-                    fondazioni_h.getParameterValue().toDouble(),
+                    if(fondazioni_h.getParameterValue().isEmpty()) 0.0 else altezza_piano_tr_parameter.getParameterValue().toDouble(),
                     solaio_type.textOn.toString(),
                     solaio_peso.selectedItem.toString(),
-                    solaio_g1.text.toString().toDouble(),
-                    solaio_g2.getParameterValue().toDouble(),
-                    solaio_qk.getParameterValue().toDouble(),
+                    if(solaio_g1.text.toString().isEmpty()) 0.0 else altezza_piano_tr_parameter.getParameterValue().toDouble(),
+                    if(solaio_g2.getParameterValue().isEmpty()) 0.0 else altezza_piano_tr_parameter.getParameterValue().toDouble(),
+                    if(solaio_qk.getParameterValue().isEmpty()) 0.0 else altezza_piano_tr_parameter.getParameterValue().toDouble(),
                     copertura_type.textOn.toString(),
                     copertura_peso.selectedItem.toString(),
-                    copertura_g1.text.toString().toDouble(),
-                    copertura_g2.getParameterValue().toDouble(),
-                    copertura_qk.getParameterValue().toDouble())
+                    if(copertura_g1.text.toString().isEmpty()) 0.0 else altezza_piano_tr_parameter.getParameterValue().toDouble(),
+                    if(copertura_g2.getParameterValue().isEmpty()) 0.0 else altezza_piano_tr_parameter.getParameterValue().toDouble(),
+                    if(copertura_qk.getParameterValue().isEmpty()) 0.0 else altezza_piano_tr_parameter.getParameterValue().toDouble())
         }
         //TODO
         fun createPillarLayoutStateForDomain(magliaStrutturaleReportFragment: MagliaStrutturaleReportFragment): PillarLayoutState = with(magliaStrutturaleReportFragment){

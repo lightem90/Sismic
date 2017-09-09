@@ -145,9 +145,9 @@ class DatabaseMapperHelper {
 
     private fun convertSismicParameterToDomain(sismicbParams: DatabaseParametriSismici?): SismicParametersState? {
         return sismicbParams?.let {
-            SismicParametersState(it.vitaNominale,
-                    it.classeUso,
-                    it.vitaReale,
+            SismicParametersState(it.vita_nominale,
+                    it.classe_uso,
+                    it.vita_reale,
                     it.ag,
                     it.f0,
                     it.tg,

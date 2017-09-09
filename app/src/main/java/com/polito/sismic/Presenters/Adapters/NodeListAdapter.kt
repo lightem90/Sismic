@@ -12,13 +12,13 @@ import com.polito.sismic.R
 import kotlinx.android.synthetic.main.close_points_layout.view.*
 import kotlinx.android.synthetic.main.period_data_layout.view.*
 
-class NodeListAdapter(private val mNodeData : List<NeighboursNodeData>)
+class NodeListAdapter(private val mContext: Context, private val mNodeData : List<NeighboursNodeData>)
     : RecyclerView.Adapter<NodeListAdapter.ViewHolder>()
 {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NodeListAdapter.ViewHolder? {
         val v = parent.inflate(R.layout.close_points_layout)
-        return NodeListAdapter.ViewHolder(v, parent.context)
+        return NodeListAdapter.ViewHolder(v, mContext)
     }
 
     override fun onBindViewHolder(holder: NodeListAdapter.ViewHolder, position: Int) {
@@ -50,13 +50,13 @@ class NodeListAdapter(private val mNodeData : List<NeighboursNodeData>)
     }
 }
 
-class PeriodListAdapter(private val mPeriodDataList : List<PeriodData>)
+class PeriodListAdapter(private val mContext: Context, private val mPeriodDataList : List<PeriodData>)
     : RecyclerView.Adapter<PeriodListAdapter.ViewHolder>()
 {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PeriodListAdapter.ViewHolder? {
         val v = parent.inflate(R.layout.period_data_layout)
-        return PeriodListAdapter.ViewHolder(v, parent.context)
+        return PeriodListAdapter.ViewHolder(v, mContext)
     }
 
     override fun onBindViewHolder(holder: PeriodListAdapter.ViewHolder, position: Int) {
@@ -70,19 +70,19 @@ class PeriodListAdapter(private val mPeriodDataList : List<PeriodData>)
 
     class ViewHolder(itemView: View, val mContext: Context) : RecyclerView.ViewHolder(itemView){
 
-        fun bindPeriodData(periodData: PeriodData) = with(periodData){
+        fun bindPeriodData(periodData: PeriodData) = with(periodData) {
             itemView.year.text = years.toString()
-            itemView.ag.text = ag.toString()
-            itemView.f0.text = f0.toString()
-            itemView.tcstar.text = tcstar.toString()
+            itemView.ag.text = String.format(mContext.resources.getText(R.string.params_format).toString(), ag)
+            itemView.f0.text = String.format(mContext.resources.getText(R.string.params_format).toString(), f0)
+            itemView.tcstar.text = String.format(mContext.resources.getText(R.string.params_format).toString(), tcstar)
         }
 
         fun bindHeader()
         {
-            itemView.year.text =             mContext.resources.getText(R.string.year_header)
-            itemView.ag.text =      mContext.resources.getText(R.string.ag_header)
-            itemView.f0.text =       mContext.resources.getText(R.string.f0_header)
-            itemView.tcstar.text =       mContext.resources.getText(R.string.tcstar_header)
+            itemView.year.text = mContext.resources.getText(R.string.year_header)
+            itemView.ag.text = mContext.resources.getText(R.string.ag_header)
+            itemView.f0.text = mContext.resources.getText(R.string.f0_header)
+            itemView.tcstar.text = mContext.resources.getText(R.string.tcstar_header)
             itemView.setBackgroundColor(ContextCompat.getColor(mContext, R.color.light_grey))
         }
 

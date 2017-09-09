@@ -23,7 +23,7 @@ import kotlinx.android.synthetic.main.dati_sismogenetici_report_layout.*
 class DatiSismoGeneticiReportFragment : BaseReportFragment() {
 
     var mNodeList : MutableList<NeighboursNodeData> = mutableListOf()
-    var mPeriodList : MutableList<PeriodData> = mutableListOf()
+    var mPeriodList : MutableList<PeriodData> = mutableListOf ()
 
     private lateinit var mNodeAdapter : NodeListAdapter
     private lateinit var mPeriodAdapter : PeriodListAdapter
@@ -42,14 +42,14 @@ class DatiSismoGeneticiReportFragment : BaseReportFragment() {
         with(list_nodi)
         {
             layoutManager = LinearLayoutManager(context)
-            mNodeAdapter = NodeListAdapter(mNodeList.toList())
+            mNodeAdapter = NodeListAdapter(context, mNodeList)
             adapter = mNodeAdapter
         }
 
         with(list_periodi)
         {
             layoutManager = LinearLayoutManager(context)
-            mPeriodAdapter = PeriodListAdapter(mPeriodList.toList())
+            mPeriodAdapter = PeriodListAdapter(context, mPeriodList)
             adapter = mPeriodAdapter
         }
 
@@ -71,7 +71,7 @@ class DatiSismoGeneticiReportFragment : BaseReportFragment() {
         with(getReport().reportState.sismicState.sismogenticState.periodData_list){
             mPeriodList.clear()
             mPeriodList.addAll(toList())
-            mNodeAdapter.notifyDataSetChanged()
+            mPeriodAdapter.notifyDataSetChanged()
         }
 
         with(getReport().reportState.localizationState) {
