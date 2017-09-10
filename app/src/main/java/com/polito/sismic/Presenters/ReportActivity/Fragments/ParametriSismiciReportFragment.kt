@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Adapter
 import android.widget.AdapterView
+import com.polito.sismic.Interactors.Helpers.ClasseUso
 import com.polito.sismic.Interactors.Helpers.UiMapper
 import com.polito.sismic.R
 import com.stepstone.stepper.StepperLayout
@@ -82,27 +83,12 @@ class ParametriSismiciReportFragment : BaseReportFragment() {
 
     fun getClasseUsoForIndex(index : Int) : Double
     {
-        when(index)
-        {
-            0 -> return 0.7
-            1 -> return 1.0
-            2 -> return 1.5
-            3 -> return 2.0
-        }
-
-        return -1.0
+        return ClasseUso.values()[index].multiplier
     }
 
     fun getClasseUsoIndexByValue(classeValue : Double) : Int
     {
-        return when (classeValue)
-        {
-            0.7 -> 0
-            1.0 -> 1
-            1.5 -> 2
-            2.0 -> 3
-            else -> 0
-        }
+        return ClasseUso.values().indexOfFirst { it.multiplier == classeValue }
     }
 
     fun getVitaNominale() : Int

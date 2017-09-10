@@ -118,11 +118,7 @@ object SpettriDiProgettoInfoTable
     val TIPOLOGIA               = "tipologia"
     val Q0                      = "q0"
     val ALFA                    = "alfa"
-    val SLO                     = "slo"
-    val SS                      = "ss"
-    val CC                      = "cc"
-    val ST                      = "st"
-    val S                       = "s"
+    val KR                      = "kr"
     val REPORT_ID               = "report_id"
 }
 

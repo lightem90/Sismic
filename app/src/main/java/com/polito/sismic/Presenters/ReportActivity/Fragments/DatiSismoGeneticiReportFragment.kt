@@ -3,13 +3,13 @@ package com.polito.sismic.Presenters.ReportActivity.Fragments
 import android.os.Bundle
 import android.support.annotation.Nullable
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
+import com.github.mikephil.charting.data.LineData
 import com.polito.sismic.Domain.NeighboursNodeData
 import com.polito.sismic.Domain.PeriodData
+import com.polito.sismic.Interactors.Helpers.SismicActionCalculatorHelper
 import com.polito.sismic.Interactors.Helpers.UiMapper
 import com.polito.sismic.Presenters.Adapters.NodeListAdapter
 import com.polito.sismic.Presenters.Adapters.PeriodListAdapter
@@ -80,6 +80,12 @@ class DatiSismoGeneticiReportFragment : BaseReportFragment() {
                     longitude.toString(),
                     address,
                     zone)
+        }
+
+        with (report_spettrodirisposta_chart)
+        {
+            data = LineData(SismicActionCalculatorHelper.getDefaultSpectrum(context, getReport().reportState))
+            invalidate()
         }
     }
 

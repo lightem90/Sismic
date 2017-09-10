@@ -64,17 +64,13 @@ class UiMapper {
 
         fun createSpectrumStateForDomain(spettriDiProgettoReportFragment: SpettriDiProgettoReportFragment): ProjectSpectrumState = with(spettriDiProgettoReportFragment) {
 
-            return ProjectSpectrumState(categoria_suolo_parameter.selectedItem.toString(),
-                    categoria_topografica_parameter.selectedItem.toString(),
-                    if (categoria_classe_duttilita_parameter_cda.isChecked) categoria_classe_duttilita_parameter_cda.textOn.toString() else categoria_classe_duttilita_parameter_cdb.textOn.toString(),
-                    categoria_tipologia_parameter.selectedItemPosition,
-                    alfa,
-                    -1.0,
-                    //TODO
-                    -1.0,
-                    -1.0,
-                    -1.0,
-                    -1.0)
+            return ProjectSpectrumState(CategoriaSottosuolo.values()[categoria_suolo_parameter.selectedItemPosition].multiplier,
+                    CategoriaTopografica.values()[categoria_topografica_parameter.selectedItemPosition].multiplier,
+                    categoria_classe_duttilita_parameter_cda.isChecked,
+                    categoria_tipologia_parameter.selectedItem.toString(),
+                    Alfa.values()[categoria_moltiplicatore_parameter.selectedItemPosition].multiplier * 1.0,
+                    Alfa.values()[categoria_moltiplicatore_parameter.selectedItemPosition].multiplier,
+                    1.0)
         }
 
         fun createBuildingGeneralStateForDomain(datiGeneraliReportFragment: DatiGeneraliReportFragment): BuildingGeneralState = with(datiGeneraliReportFragment){
@@ -180,9 +176,8 @@ class UiMapper {
                     reportState.sismicState.projectSpectrumState.let {
                         selectCategoriaSuolo(it.categoria_suolo)
                         selectCategoriaTopografica(it.categoria_topografica)
-                        if (categoria_classe_duttilita_parameter_cdb.textOn == it.classe_duttilita) categoria_classe_duttilita_parameter_cdb.isChecked = true else categoria_classe_duttilita_parameter_cda.isChecked = true
+                        if (it.classe_duttilita) categoria_classe_duttilita_parameter_cda.isChecked = true else categoria_classe_duttilita_parameter_cdb.isChecked = true
                         alfa = it.alfa
-                        //TODO
                     }
 
                 }

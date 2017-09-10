@@ -1,7 +1,13 @@
 package com.polito.sismic.Interactors.Helpers
 
+import android.content.Context
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.polito.sismic.Domain.NeighboursNodeSquare
 import com.polito.sismic.Domain.PeriodData
+import com.polito.sismic.Domain.ReportState
+import com.polito.sismic.R
 
 /**
  * Created by Matteo on 04/09/2017.
@@ -34,6 +40,32 @@ class SismicActionCalculatorHelper {
         fun calculateQ(q0 : Double, kr : Double = 1.0) : Double
         {
             return q0 * kr
+        }
+
+        fun calculateSs(ag : Double, f0 : Double, cat : Int) : Double
+        {
+            return when(cat)
+            {
+                0 -> 1.0
+                1 -> 1.4 - 0.40*f0*(ag/9.8)
+                2 -> 1.7 - 0.60*f0*(ag/9.8)
+                3 -> 2.4 - 1.5*f0*(ag/9.8)
+                4 -> 2.0 - 1.10*f0*(ag/9.8)
+                else -> -1.0
+            }
+        }
+
+        fun calculateCc(tcStar: Double, cat : Int) : Double
+        {
+            return when(cat)
+            {
+                0 -> 1.0
+                1 -> 1.1 * Math.pow(tcStar, -0.2)
+                2 -> 1.05 * Math.pow(tcStar, -0.33)
+                3 -> 1.25 * Math.pow(tcStar, -0.5)
+                4 -> 1.25 * Math.pow(tcStar, -0.4)
+                else -> -1.0
+            }
         }
 
         fun calculatePeriodsForSquare(nodeSquare: NeighboursNodeSquare,
@@ -82,6 +114,13 @@ class SismicActionCalculatorHelper {
             val numerator = paramAndDistancePairList.sumByDouble { it.first / it.second }
             val denominator = paramAndDistancePairList.sumByDouble { 1 / it.second}
             return numerator / denominator
+        }
+
+        //TODO
+        fun getDefaultSpectrum(context: Context, sismicState: ReportState): List<ILineDataSet> {
+            val spec30 = ArrayList<Entry>()
+            spec30.add(Entry(5.0F, 5.0F))
+            return listOf(LineDataSet(spec30, context.getString(R.string.spec_30_label)))
         }
     }
 

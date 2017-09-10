@@ -112,10 +112,12 @@
         <item>Strutture deformabili torsionalmente</item>
         <item>Strutture pendolo inverso</item>
     </string-array>
-    <string-array name="cat_moltiplicatore">
+    <string-array name="cat_moltiplicatore_1">
         <item>Strutture a telaio di un piano</item>
         <item>Strutture a telaio con più piani e una campata</item>
         <item>Strutture a telaio con più piani e più campate</item>
+    </string-array>
+    <string-array name="cat_moltiplicatore_2">
         <item>Strutture con solo due pareti accoppiate</item>
         <item>Strutture a pareti non accoppiate</item>
         <item>Strutture a pareti miste equivalenti a pareti</item>

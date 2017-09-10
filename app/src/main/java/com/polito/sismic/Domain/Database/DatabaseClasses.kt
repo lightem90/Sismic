@@ -214,28 +214,22 @@ data class DatabaseParametriSismici(var map: MutableMap<String, Any?>) : Databas
 data class DatabaseParametriSpettri(var map: MutableMap<String, Any?>) : DatabaseSection {
 
     var _id: Int by map
-    var categoria_suolo: String by map
-    var categoria_topografica: String by map
+    var categoria_suolo: Double by map
+    var categoria_topografica: Double by map
     var classe_duttilita: String by map
-    var tipologia: Int by map
+    var tipologia: String by map
     var q0: Double by map
     var alfa: Double by map
-    var ss: Double by map
-    var cc: Double by map
-    var st: Double by map
-    var s: Double by map
+    var kr : Double by map
     var report_id: Int by map
 
-    constructor(categoria_suolo: String,
-                categoria_topografica: String,
+    constructor(categoria_suolo: Double,
+                categoria_topografica: Double,
                 classe_duttilita: String,
-                tipologia: Int,
+                tipologia: String,
                 q0: Double,
                 alfa: Double,
-                ss: Double,
-                cc: Double,
-                st: Double,
-                s: Double,
+                kr : Double,
                 report_id: Int) : this(HashMap()) {
         this.categoria_suolo = categoria_suolo
         this.categoria_topografica = categoria_topografica
@@ -243,10 +237,7 @@ data class DatabaseParametriSpettri(var map: MutableMap<String, Any?>) : Databas
         this.tipologia = tipologia
         this.q0 = q0
         this.alfa = alfa
-        this.ss = ss
-        this.cc = cc
-        this.st = st
-        this.s = s
+        this.kr = kr
         this.report_id = report_id
     }
 }

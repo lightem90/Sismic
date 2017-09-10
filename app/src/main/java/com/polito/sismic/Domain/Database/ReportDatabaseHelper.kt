@@ -12,7 +12,7 @@ class ReportDatabaseHelper(ctx: Context = App.instance) : ManagedSQLiteOpenHelpe
 
     companion object {
         val DB_NAME = "reportdatabase.db"
-        val DB_VERSION = 10
+        val DB_VERSION = 11
         val instance by lazy { ReportDatabaseHelper() }
     }
 
@@ -106,17 +106,13 @@ class ReportDatabaseHelper(ctx: Context = App.instance) : ManagedSQLiteOpenHelpe
 
         db.createTable(SpettriDiProgettoInfoTable.NAME, ifNotExists = true,
                 columns = *arrayOf(SpettriDiProgettoInfoTable.ID to SqlType.create("INTEGER PRIMARY KEY AUTOINCREMENT"),
-                        SpettriDiProgettoInfoTable.CATEGORIA_SUOLO to TEXT,
-                        SpettriDiProgettoInfoTable.CATEGORIA_TOPOGRAFICA to TEXT,
+                        SpettriDiProgettoInfoTable.CATEGORIA_SUOLO to REAL,
+                        SpettriDiProgettoInfoTable.CATEGORIA_TOPOGRAFICA to REAL,
                         SpettriDiProgettoInfoTable.CLASSE_DUTTILITA to TEXT,
-                        SpettriDiProgettoInfoTable.TIPOLOGIA to INTEGER,
+                        SpettriDiProgettoInfoTable.TIPOLOGIA to TEXT,
                         SpettriDiProgettoInfoTable.Q0 to REAL,
                         SpettriDiProgettoInfoTable.ALFA to REAL,
-                        SpettriDiProgettoInfoTable.SLO to REAL,
-                        SpettriDiProgettoInfoTable.SS to REAL,
-                        SpettriDiProgettoInfoTable.CC to REAL,
-                        SpettriDiProgettoInfoTable.ST to REAL,
-                        SpettriDiProgettoInfoTable.S to REAL,
+                        SpettriDiProgettoInfoTable.KR to REAL,
                         SpettriDiProgettoInfoTable.REPORT_ID to INTEGER)
         )
 

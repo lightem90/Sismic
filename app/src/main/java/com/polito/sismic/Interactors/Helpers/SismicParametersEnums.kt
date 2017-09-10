@@ -58,3 +58,38 @@ enum class StatiLimite(val multiplier : Double)
     SLV(0.10),
     SLC(0.05)
 }
+
+enum class ClasseUso(val multiplier: Double)
+{
+    I(0.7),
+    II(1.0),
+    III(1.5),
+    IV(2.0)
+}
+
+enum class Alfa(val multiplier: Double)
+{
+    I(1.1),
+    II(1.2),
+    III(1.3),
+    IV(2.0),
+    V(1.0),
+    VI(1.2)
+}
+
+enum class CategoriaSottosuolo(val multiplier: Double)
+{
+    A(1.0),
+    B(1.2),
+    C(1.5),
+    D(1.8),
+    E(1.6)
+}
+
+enum class CategoriaTopografica(val multiplier: Double)
+{
+    T1(1.0),
+    T2(1.2),
+    T3(1.2),
+    T4(1.4)
+}

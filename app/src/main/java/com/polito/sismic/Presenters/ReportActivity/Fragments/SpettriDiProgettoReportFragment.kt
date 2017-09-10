@@ -8,14 +8,17 @@ import android.view.ViewGroup
 import android.widget.Adapter
 import android.widget.AdapterView
 import com.polito.sismic.Extensions.toast
+import com.polito.sismic.Interactors.Helpers.CategoriaSottosuolo
 import com.polito.sismic.Interactors.Helpers.UiMapper
 import com.polito.sismic.R
 import com.stepstone.stepper.StepperLayout
 import kotlinx.android.synthetic.main.spettri_progetto_report_layout.*
+import android.widget.ArrayAdapter
+import android.widget.Spinner
+
 
 class SpettriDiProgettoReportFragment : BaseReportFragment() {
 
-    var alfa : Double = 1.0
     override fun onCreateView(inflater: LayoutInflater?, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View? {
         return inflateFragment(R.layout.spettri_progetto_report_layout, inflater, container)
     }
@@ -63,13 +66,6 @@ class SpettriDiProgettoReportFragment : BaseReportFragment() {
         categoria_moltiplicatore_parameter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 
             override fun onItemSelected(parent: AdapterView<*>, mView: View?, pos: Int, id: Long) {
-                alfa = when (pos) {
-                    0,4 -> 1.1
-                    1,5 -> 1.2
-                    2 -> 1.3
-                    3 -> 1.0
-                    else -> 1.0
-                }
             }
             override fun onNothingSelected(parent: AdapterView<out Adapter>?) {  }
         }
@@ -80,10 +76,14 @@ class SpettriDiProgettoReportFragment : BaseReportFragment() {
         when (pos) {
             0 -> {
                 categoria_moltiplicatore_parameter_container.visibility = View.VISIBLE
+                updateSpinnerItemsVibility(categoria_moltiplicatore_parameter, resources.getStringArray(R.array.cat_moltiplicatore_1))
+
             }
             1 -> {
                 if (categoria_classe_duttilita_parameter_cda.isChecked)
-                    categoria_moltiplicatore_parameter_container.visibility = View.VISIBLE
+                {
+                    updateSpinnerItemsVibility(categoria_moltiplicatore_parameter, resources.getStringArray(R.array.cat_moltiplicatore_2))
+                }
                 else
                     categoria_moltiplicatore_parameter_container.visibility = View.GONE
             }
@@ -93,22 +93,31 @@ class SpettriDiProgettoReportFragment : BaseReportFragment() {
         }
     }
 
-    fun selectCategoriaSuolo(categoria_suolo: String) {
+    private fun updateSpinnerItemsVibility(spinnerToUpdate: Spinner, newStringArray: Array<out String>) {
+        // Creating adapter for spinner
+        val dataAdapter = ArrayAdapter<String>(context,
+                android.R.layout.simple_spinner_item, newStringArray)
 
-        if (categoria_suolo.isEmpty()) return
-        //iterates all spinners element looking for the category requested
-        (0 until categoria_suolo_parameter.count)
-                .firstOrNull { categoria_suolo_parameter.getItemAtPosition(it).equals(categoria_suolo) }
-                ?.let { return categoria_suolo_parameter.setSelection(it)}
+        // Drop down layout style - list view with radio button
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        // attaching data adapter to spinner
+        spinnerToUpdate.adapter = dataAdapter
     }
 
-    fun selectCategoriaTopografica(categoria_topografica: String)
-    {
-        if (categoria_topografica.isEmpty()) return
+    fun selectCategoriaSuolo(categoria_suolo: Double) {
+
         //iterates all spinners element looking for the category requested
-        (0 until categoria_suolo_parameter.count)
-                .firstOrNull { categoria_topografica_parameter.getItemAtPosition(it).equals(categoria_topografica)}
-                ?.let { return categoria_suolo_parameter.setSelection(it)}
+        categoria_suolo_parameter
+                .setSelection(CategoriaSottosuolo.values()
+                        .indexOfFirst { it.multiplier == categoria_suolo })
+    }
+
+    fun selectCategoriaTopografica(categoria_topografica: Double)
+    {
+        //iterates all spinners element looking for the category requested
+        categoria_topografica_parameter
+                .setSelection(CategoriaSottosuolo.values()
+                        .indexOfFirst { it.multiplier == categoria_topografica })
     }
 
     //callback to activity updates domain instance for activity and all existing and future fragments

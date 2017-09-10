@@ -92,7 +92,7 @@
         <Spinner
             android:id="@+id/categoria_moltiplicatore_parameter"
             style="@style/spinnerStyle"
-            android:entries="@array/cat_moltiplicatore"/>
+            android:entries="@array/cat_moltiplicatore_1"/>
     </LinearLayout>
 
     <TextView

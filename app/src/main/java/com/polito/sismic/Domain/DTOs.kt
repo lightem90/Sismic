@@ -2,6 +2,8 @@ package com.polito.sismic.Domain
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.polito.sismic.Interactors.Helpers.CategoriaSottosuolo
+import com.polito.sismic.Interactors.Helpers.CategoriaTopografica
 import java.util.*
 
 /**
@@ -346,25 +348,19 @@ data class NeighboursNodeSquare(var NE: NeighboursNodeData,
     }
 }
 
-data class ProjectSpectrumState(var categoria_suolo: String,
-                                var categoria_topografica: String,
-                                var classe_duttilita: String,
-                                var tipologia : Int,
-                                var q0 : Double,
+data class ProjectSpectrumState(var categoria_suolo: Double,
+                                var categoria_topografica: Double,
+                                var classe_duttilita: Boolean,
+                                var tipologia: String,
+                                var q0: Double,
                                 var alfa: Double,
-                                var ss: Double,
-                                var cc: Double,
-                                var st: Double,
-                                var s: Double) : Parcelable {
-    constructor() : this("", "", "", 0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+                                var kr: Double) : Parcelable {
+    constructor() : this (1.0, 1.0, true, "", 1.0, 1.0, 1.0)
     constructor(source: Parcel) : this(
-            source.readString(),
-            source.readString(),
-            source.readString(),
-            source.readInt(),
             source.readDouble(),
             source.readDouble(),
-            source.readDouble(),
+            1 == source.readInt(),
+            source.readString(),
             source.readDouble(),
             source.readDouble(),
             source.readDouble()
@@ -373,15 +369,13 @@ data class ProjectSpectrumState(var categoria_suolo: String,
     override fun describeContents() = 0
 
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
-        writeString(categoria_suolo)
-        writeString(categoria_topografica)
-        writeString(classe_duttilita)
+        writeDouble(categoria_suolo)
+        writeDouble(categoria_topografica)
+        writeInt((if (classe_duttilita) 1 else 0))
+        writeString(tipologia)
         writeDouble(q0)
         writeDouble(alfa)
-        writeDouble(ss)
-        writeDouble(cc)
-        writeDouble(st)
-        writeDouble(s)
+        writeDouble(kr)
     }
 
     companion object {
