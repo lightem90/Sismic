@@ -12,7 +12,7 @@ class ReportDatabaseHelper(ctx: Context = App.instance) : ManagedSQLiteOpenHelpe
 
     companion object {
         val DB_NAME = "reportdatabase.db"
-        val DB_VERSION = 8
+        val DB_VERSION = 10
         val instance by lazy { ReportDatabaseHelper() }
     }
 
@@ -143,7 +143,7 @@ class ReportDatabaseHelper(ctx: Context = App.instance) : ManagedSQLiteOpenHelpe
 
         db.createTable(DatiStrutturaliInfoTable.NAME, ifNotExists = true,
                 columns = *arrayOf(DatiStrutturaliInfoTable.ID to SqlType.create("INTEGER PRIMARY KEY AUTOINCREMENT"),
-                        DatiStrutturaliInfoTable.TIPO_FONDAZIONI to INTEGER,
+                        DatiStrutturaliInfoTable.TIPO_FONDAZIONI to TEXT,
                         DatiStrutturaliInfoTable.ALTEZZA_FONDAZIONI to REAL,
                         DatiStrutturaliInfoTable.TIPO_SOLAIO to TEXT,
                         DatiStrutturaliInfoTable.PESO_SOLAIO to TEXT,

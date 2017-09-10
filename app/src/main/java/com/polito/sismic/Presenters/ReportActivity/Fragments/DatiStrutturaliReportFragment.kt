@@ -66,29 +66,27 @@ class DatiStrutturaliReportFragment : BaseReportFragment() {
         solaio_type.setOnClickListener { context.toast(R.string.error_not_supported) }
     }
 
-    fun getTipoFondazioni(): Int {
+    fun getTipoFondazioni(): String {
 
         return when
         {
-            fondazioni_type_platea.isChecked -> 0
-            fondazioni_type_trave.isChecked -> 1
-            fondazioni_type_plinti.isChecked -> 2
-            else -> 0
+            fondazioni_type_platea.isChecked -> fondazioni_type_platea.textOn.toString()
+            fondazioni_type_trave.isChecked -> fondazioni_type_trave.textOn.toString()
+            fondazioni_type_plinti.isChecked -> fondazioni_type_plinti.textOn.toString()
+            else -> fondazioni_type_platea.textOn.toString()
         }
     }
 
-    fun setTipoFondazioni(tipo : Int)
+    fun setTipoFondazioni(tipo : String)
     {
         fondazioni_type_platea.isChecked = false
         fondazioni_type_trave.isChecked  = false
         fondazioni_type_plinti.isChecked  = false
 
-        when (tipo)
-        {
-            0 -> fondazioni_type_platea.isChecked = true
-            1 -> fondazioni_type_trave.isChecked = true
-            2 -> fondazioni_type_plinti.isChecked = true
-            else -> fondazioni_type_platea.isChecked = true
+        when {
+            fondazioni_type_platea.textOn.equals(tipo) -> fondazioni_type_platea.isChecked = true
+            fondazioni_type_trave.textOn.equals(tipo) -> fondazioni_type_trave.isChecked = true
+            fondazioni_type_plinti.textOn.equals(tipo) -> fondazioni_type_plinti.isChecked = true
         }
     }
 

@@ -139,7 +139,7 @@ object CaratteristicheGeneraliInfoTable
 
 object RilieviInfoTable
 {
-    val NAME = "DatiStrutturali"
+    val NAME = "Rilievi"
     val ID                        = "_id"
     val NUMERO_PIANI              = "numero_piani"
     val ALTEZZA_PIANO_TERRA       = "altezza_piano_terra"

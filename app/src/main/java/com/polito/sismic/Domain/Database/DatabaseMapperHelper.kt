@@ -29,9 +29,6 @@ class DatabaseMapperHelper {
         convertCatastoStateToDomain(sections.filterIsInstance<DatabaseCatastoSection>().firstOrNull())?.let {
             newState.generalState.catastoState = it
         }
-        convertCatastoStateToDomain(sections.filterIsInstance<DatabaseCatastoSection>().firstOrNull())?.let {
-            newState.generalState.catastoState = it
-        }
         convertGeneralDataToDomain(sections.filterIsInstance<DatabaseCaratteristicheGenerali>().firstOrNull())?.let {
             newState.buildingState.buildingGeneralState = it
         }

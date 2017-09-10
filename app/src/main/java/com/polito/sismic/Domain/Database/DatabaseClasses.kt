@@ -304,7 +304,7 @@ data class DatabaseRilievi(var map: MutableMap<String, Any?>) : DatabaseSection 
 
 data class DatabaseDatiStrutturali(var map: MutableMap<String, Any?>) : DatabaseSection {
     var _id: Int by map
-    var tipo_fondazioni: Int by map
+    var tipo_fondazioni: String by map
     var altezza_fondazioni: Double by map
     var tipo_solaio: String by map
     var peso_solaio: String by map
@@ -318,7 +318,7 @@ data class DatabaseDatiStrutturali(var map: MutableMap<String, Any?>) : Database
     var qk_copertura: Double by map
     var report_id: Int by map
 
-    constructor(tipo_fondazioni: Int,
+    constructor(tipo_fondazioni: String,
                 altezza_fondazioni: Double,
                 tipo_solaio: String,
                 peso_solaio: String,

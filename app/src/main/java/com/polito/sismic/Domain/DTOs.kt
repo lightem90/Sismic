@@ -559,7 +559,7 @@ data class TakeoverState(var numero_piani: Int,
     }
 }
 
-data class StructuralState(var tipo_fondazioni: Int,
+data class StructuralState(var tipo_fondazioni: String,
                            var altezza_fondazioni: Double,
                            var tipo_solaio: String,
                            var peso_solaio: String,
@@ -571,9 +571,9 @@ data class StructuralState(var tipo_fondazioni: Int,
                            var g1_copertura: Double,
                            var g2_copertura: Double,
                            var qk_copertura: Double) : Parcelable {
-    constructor() : this(0, 0.0, "", "", 0.0, 0.0, 0.0, "", "", 0.0, 0.0, 0.0)
+    constructor() : this("", 0.0, "", "", 0.0, 0.0, 0.0, "", "", 0.0, 0.0, 0.0)
     constructor(source: Parcel) : this(
-            source.readInt(),
+            source.readString(),
             source.readDouble(),
             source.readString(),
             source.readString(),
@@ -590,7 +590,7 @@ data class StructuralState(var tipo_fondazioni: Int,
     override fun describeContents() = 0
 
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
-        writeInt(tipo_fondazioni)
+        writeString(tipo_fondazioni)
         writeDouble(altezza_fondazioni)
         writeString(tipo_solaio)
         writeString(peso_solaio)

@@ -10,6 +10,7 @@ import org.jetbrains.anko.db.insert
 import org.jetbrains.anko.db.select
 import org.jetbrains.anko.db.update
 import java.util.*
+import javax.xml.transform.Result
 import kotlin.collections.HashMap
 
 /**
@@ -169,7 +170,7 @@ class DatabaseInteractor(private val reportDatabaseHelper: ReportDatabaseHelper 
             delete(CaratteristicheGeneraliInfoTable.NAME, "${CaratteristicheGeneraliInfoTable.REPORT_ID} = ?", arrayOf(_id.toString()))
             delete(SpettriDiProgettoInfoTable.NAME, "${SpettriDiProgettoInfoTable.REPORT_ID} = ?", arrayOf(_id.toString()))
             delete(DatiStrutturaliInfoTable.NAME, "${DatiStrutturaliInfoTable.REPORT_ID} = ?", arrayOf(_id.toString()))
-            delete(RilieviInfoTable.NAME, "${DatiStrutturaliInfoTable.REPORT_ID} = ?", arrayOf(_id.toString()))
+            delete(RilieviInfoTable.NAME, "${RilieviInfoTable.REPORT_ID} = ?", arrayOf(_id.toString()))
             delete(CaratteristichePilastriInfoTable.NAME, "${CaratteristichePilastriInfoTable.REPORT_ID} = ?", arrayOf(_id.toString()))
             delete(MagliaStrutturaleInfoTable.NAME, "${MagliaStrutturaleInfoTable.REPORT_ID} = ?", arrayOf(_id.toString()))
             delete(ResultsInfoTable.NAME, "${ResultsInfoTable.REPORT_ID} = ?", arrayOf(_id.toString()))
@@ -177,15 +178,16 @@ class DatabaseInteractor(private val reportDatabaseHelper: ReportDatabaseHelper 
     }
 
     private fun insertEachSectionIntoCorrectTable(sections: List<DatabaseSection>) = reportDatabaseHelper.use {
-
         sections.forEach { section ->
             when (section) {
-
                 is DatabaseLocalizationSection -> {
                     insert(LocalizationInfoTable.NAME, *section.map.toVarargArray())
                 }
                 is DatabaseCatastoSection -> {
                     insert(CatastoInfoTable.NAME, *section.map.toVarargArray())
+                }
+                is DatabaseDatiSismogenetici ->{
+                    insert(DatiSismogeneticiInfoTable.NAME, *section.map.toVarargArray())
                 }
                 is DatabaseParametriSismici -> {
                     insert(ParametriSismiciInfoTable.NAME, *section.map.toVarargArray())
@@ -196,18 +198,26 @@ class DatabaseInteractor(private val reportDatabaseHelper: ReportDatabaseHelper 
                 is DatabaseCaratteristicheGenerali -> {
                     insert(CaratteristicheGeneraliInfoTable.NAME, *section.map.toVarargArray())
                 }
+                is DatabaseRilievi -> {
+                    insert(RilieviInfoTable.NAME, *section.map.toVarargArray())
+                }
+                is DatabaseDatiStrutturali ->{
+                    insert(DatiStrutturaliInfoTable.NAME, *section.map.toVarargArray())
+                }
                 is DatabaseCaratteristichePilastri -> {
                     insert(CaratteristichePilastriInfoTable.NAME, *section.map.toVarargArray())
                 }
-                is DatabaseRilievi -> {
-                    insert(RilieviInfoTable.NAME, *section.map.toVarargArray())
+                is DatabaseMagliaStrutturale -> {
+                    insert(MagliaStrutturaleInfoTable.NAME, *section.map.toVarargArray())
+                }
+                is DatabaseResults -> {
+                    insert(ResultsInfoTable.NAME, *section.map.toVarargArray())
                 }
             }
         }
     }
 
     private fun updateEachSectionIntoCorrectTable(sections: List<DatabaseSection>) = reportDatabaseHelper.use {
-
         sections.forEach { section ->
             when (section) {
 
@@ -216,6 +226,9 @@ class DatabaseInteractor(private val reportDatabaseHelper: ReportDatabaseHelper 
                 }
                 is DatabaseCatastoSection -> {
                     update(CatastoInfoTable.NAME, *section.map.toVarargArray())
+                }
+                is DatabaseDatiSismogenetici -> {
+                    update(DatiSismogeneticiInfoTable.NAME, *section.map.toVarargArray())
                 }
                 is DatabaseParametriSismici -> {
                     update(ParametriSismiciInfoTable.NAME, *section.map.toVarargArray())
@@ -226,13 +239,21 @@ class DatabaseInteractor(private val reportDatabaseHelper: ReportDatabaseHelper 
                 is DatabaseCaratteristicheGenerali -> {
                     update(CaratteristicheGeneraliInfoTable.NAME, *section.map.toVarargArray())
                 }
-                is DatabaseCaratteristichePilastri -> {
-                    update(CaratteristichePilastriInfoTable.NAME, *section.map.toVarargArray())
-                }
                 is DatabaseRilievi -> {
                     update(RilieviInfoTable.NAME, *section.map.toVarargArray())
                 }
-            //TODO
+                is DatabaseDatiStrutturali -> {
+                    update(DatiStrutturaliInfoTable.NAME, *section.map.toVarargArray())
+                }
+                is DatabaseCaratteristichePilastri -> {
+                    update(CaratteristichePilastriInfoTable.NAME, *section.map.toVarargArray())
+                }
+                is DatabaseMagliaStrutturale -> {
+                    update(MagliaStrutturaleInfoTable.NAME, *section.map.toVarargArray())
+                }
+                is DatabaseResults -> {
+                    update(ResultsInfoTable.NAME, *section.map.toVarargArray())
+                }
             }
         }
     }
