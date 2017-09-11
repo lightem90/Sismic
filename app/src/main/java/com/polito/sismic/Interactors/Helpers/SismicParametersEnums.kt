@@ -93,3 +93,11 @@ enum class CategoriaTopografica(val multiplier: Double)
     T3(1.2),
     T4(1.4)
 }
+
+enum class ZonaSismica(val multiplier: Double)
+{
+    I(0.35),
+    II(0.25),
+    III(0.15),
+    IV(0.05)
+}

@@ -27,12 +27,29 @@ class InfoLocReportFragment : BaseReportFragment() {
     private var mPermissionHelper = PermissionsHelper()
     private lateinit var mLocaliationInfoHelper: LocationInfoHelper
 
+    // Container Activity must implement this interface
+    interface CurrentLocationProvided {
+        fun onLocationAcquired(location: Location)
+        fun onCoordinatesUpdated()
+    }
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        // This makes sure that the container activity has implemented
+        // the callback interface. If not, it throws an exception
+        try {
+            mLocationCallback = context as CurrentLocationProvided?
+        } catch (e: ClassCastException) {
+            throw ClassCastException(context!!.toString() + " must implement CurrentLocationProvided")
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mPermissionHelper.checAndAskLocationPermissions(activity, this)
-        setHasOptionsMenu(true)
         mLocaliationInfoHelper = LocationInfoHelper(activity)
         mLocaliationInfoHelper.initialize()
+        setHasOptionsMenu(true)
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
@@ -58,17 +75,6 @@ class InfoLocReportFragment : BaseReportFragment() {
         //TODO, dont trigger if data doesnt't change
         lat_parameter.attachDataConfirmedCallback { mLocationCallback?.onCoordinatesUpdated() }
         long_parameter.attachDataConfirmedCallback { mLocationCallback?.onCoordinatesUpdated() }
-    }
-
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-        // This makes sure that the container activity has implemented
-        // the callback interface. If not, it throws an exception
-        try {
-            mLocationCallback = context as CurrentLocationProvided?
-        } catch (e: ClassCastException) {
-            throw ClassCastException(context!!.toString() + " must implement CurrentLocationProvided")
-        }
     }
 
     override fun onCreateView(inflater: LayoutInflater?, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View? {
@@ -130,12 +136,6 @@ class InfoLocReportFragment : BaseReportFragment() {
         }
     }
 
-    // Container Activity must implement this interface
-    interface CurrentLocationProvided {
-        fun onLocationAcquired(location: Location)
-        fun onCoordinatesUpdated()
-    }
-
     private fun updateByPlace(place: Place?) {
         if (place != null) {
             lat_parameter.setParameterValue("%.4f".format(place.latLng.latitude))
@@ -145,6 +145,7 @@ class InfoLocReportFragment : BaseReportFragment() {
         }
     }
 
+    //TODO: remove
     fun updateByLocation(location: Location) {
         lat_parameter.setParameterValue("%.3f".format(location.latitude))
         long_parameter.setParameterValue("%.3f".format(location.longitude))

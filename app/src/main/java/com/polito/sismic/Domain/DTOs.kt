@@ -145,7 +145,22 @@ data class LocalizationState(var latitude: Double,
                              var address: String,
                              var cap: String,
                              var zone: String,
-                             var code: String) : FragmentState {
+                             var code: String,
+                             var zone_int : Int = 1) : FragmentState {
+
+
+    //because the istat db contains zones with subsections as letters, but their multiplier is the same, just the int matters to us
+    init {
+        //set only if default, otherwise i assume to restore a valid value
+        if (zone_int == 1)
+        {
+            if (zone.contains("1")) zone_int = 1
+            if (zone.contains("2")) zone_int = 2
+            if (zone.contains("3")) zone_int = 3
+            if (zone.contains("4")) zone_int = 4
+        }
+    }
+
     constructor() : this(0.0, 0.0, "", "", "", "", "", "", "", "")
     constructor(source: Parcel) : this(
             source.readDouble(),

@@ -175,7 +175,8 @@ class DatabaseMapperHelper {
                     it.address,
                     it.cap,
                     it.zone,
-                    it.code.toString())
+                    it.code.toString(),
+                    it.zone_int)
         }
     }
 
@@ -244,6 +245,7 @@ class DatabaseMapperHelper {
                 localizationState.cap,
                 localizationState.zone,
                 localizationState.code.toInt(),
+                localizationState.zone_int,
                 reportId)
     }
 

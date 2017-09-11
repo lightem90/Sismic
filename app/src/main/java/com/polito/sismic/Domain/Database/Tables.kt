@@ -39,6 +39,7 @@ object LocalizationInfoTable
     val ADDRESS = "address"
     val CAP = "cap"
     val SISMIC_ZONE = "zone"
+    val SISMIC_ZONE_INT = "zone_int"
     val ISTAT_CODE = "code"
     val REPORT_ID = "report_id"
 }

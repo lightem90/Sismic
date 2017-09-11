@@ -107,6 +107,15 @@ class SismicActionCalculatorHelper(val mCoordinateHelper: ParametersForCoordinat
 
     //TODO
     fun getDefaultSpectrum(context: Context, sismicState: ReportState): List<ILineDataSet> {
+
+        val ag = ZonaSismica.values()[sismicState.localizationState.zone_int-1].multiplier
+        val tcstar = sismicState.sismicState.sismogenticState.periodData_list[0].tcstar
+        val td = (4.0 * ag/9.8) + 1.6
+
+        val cc = 1
+        val tc = cc *tcstar       
+        val tb = tc/3
+
         val spec30 = ArrayList<Entry>()
         spec30.add(Entry(5.0F, 5.0F))
         return listOf(LineDataSet(spec30, context.getString(R.string.spec_30_label)))
@@ -117,6 +126,7 @@ class SismicActionCalculatorHelper(val mCoordinateHelper: ParametersForCoordinat
         spec30.add(Entry(5.0F, 5.0F))
         return listOf(LineDataSet(spec30, context.getString(R.string.spec_30_label)))
     }
+
 }
 
 class YearToDatabaseParameterMapper {
