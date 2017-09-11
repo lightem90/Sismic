@@ -16,10 +16,9 @@ import com.stepstone.stepper.StepperLayout
  */
 class CatastoReportFragment : BaseReportFragment() {
 
-    private var mNodeRequestCallback: BaseReportFragment.NodeCaluclationRequest? = null
-
-    override fun onCreateView(inflater: LayoutInflater?, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View? {
-        return inflateFragment(R.layout.catasto_report_layout, inflater, container)
+    private var mNodeRequestCallback: CatastoReportFragment.NodeCaluclationRequest? = null
+    interface NodeCaluclationRequest {
+        fun onClosedNodesCalculationRequested()
     }
 
     override fun onAttach(context: Context?) {
@@ -35,6 +34,10 @@ class CatastoReportFragment : BaseReportFragment() {
         }
     }
 
+    override fun onCreateView(inflater: LayoutInflater?, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View? {
+        return inflateFragment(R.layout.catasto_report_layout, inflater, container)
+    }
+
     override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback?) {
         //these 2 lines update the state with "catasto" data
         getReport().reportState.generalState.catastoState = UiMapper.createCatastoStateForDomain(this)
@@ -47,6 +50,6 @@ class CatastoReportFragment : BaseReportFragment() {
             mNodeRequestCallback?.onClosedNodesCalculationRequested()
             super.onNextClicked(callback)
             callback?.stepperLayout?.hideProgress()
-        }, 5000L)
+        }, 5000L)       //TODO this is just for ui/ux, so it displays that the calculation is going (in reality it is much faster)
     }
 }

@@ -1,5 +1,6 @@
 package com.polito.sismic.Presenters.ReportActivity.Fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.support.annotation.Nullable
 import android.support.v7.widget.LinearLayoutManager
@@ -7,9 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.polito.sismic.Domain.NeighboursNodeData
 import com.polito.sismic.Domain.PeriodData
-import com.polito.sismic.Interactors.Helpers.SismicActionCalculatorHelper
 import com.polito.sismic.Interactors.Helpers.UiMapper
 import com.polito.sismic.Presenters.Adapters.NodeListAdapter
 import com.polito.sismic.Presenters.Adapters.PeriodListAdapter
@@ -21,6 +22,21 @@ import kotlinx.android.synthetic.main.dati_sismogenetici_report_layout.*
  * Created by Matteo on 29/07/2017.
  */
 class DatiSismoGeneticiReportFragment : BaseReportFragment() {
+
+    interface DefaultReturnTimeRequest {
+        fun onDefaultReturnTimesRequested() : List<ILineDataSet>
+    }
+
+    private var mDefaultReturnTimeRequest: DefaultReturnTimeRequest? = null
+    override fun onAttach(context: Context?) {
+
+        super.onAttach(context)
+        try {
+            mDefaultReturnTimeRequest = context as DefaultReturnTimeRequest?
+        } catch (e: ClassCastException) {
+            throw ClassCastException(context!!.toString() + " must implement OnParametersConfirmed")
+        }
+    }
 
     var mNodeList : MutableList<NeighboursNodeData> = mutableListOf()
     var mPeriodList : MutableList<PeriodData> = mutableListOf ()
@@ -84,8 +100,10 @@ class DatiSismoGeneticiReportFragment : BaseReportFragment() {
 
         with (report_spettrodirisposta_chart)
         {
-            data = LineData(SismicActionCalculatorHelper.getDefaultSpectrum(context, getReport().reportState))
-            invalidate()
+            mDefaultReturnTimeRequest?.onDefaultReturnTimesRequested()?.let {
+                data = LineData(it)
+                invalidate()
+            }
         }
     }
 

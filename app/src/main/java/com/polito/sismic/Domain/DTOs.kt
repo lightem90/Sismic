@@ -2,6 +2,7 @@ package com.polito.sismic.Domain
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.polito.sismic.Interactors.Helpers.CategoriaSottosuolo
 import com.polito.sismic.Interactors.Helpers.CategoriaTopografica
 import java.util.*
@@ -104,7 +105,11 @@ data class ReportResult(var result: Int,
 
 class SismicState(var sismogenticState:         SismogeneticState,
                   var sismicParametersState:    SismicParametersState,
-                  var projectSpectrumState:     ProjectSpectrumState) : FragmentState {
+                  var projectSpectrumState:     ProjectSpectrumState,
+                  //TODO trasformarle in classi di dominio
+                  var returnTimes :             List<ILineDataSet> = listOf(),
+                  var defaultSpectrumReturnTimes:             List<ILineDataSet> = listOf(),
+                  var spectrumReturnTimes :             List<ILineDataSet> = listOf()) : FragmentState {
     constructor() : this (SismogeneticState(), SismicParametersState(), ProjectSpectrumState())
     constructor(source: Parcel) : this(
             source.readParcelable<SismogeneticState>(SismogeneticState::class.java.classLoader),

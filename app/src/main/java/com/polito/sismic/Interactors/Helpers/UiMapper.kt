@@ -177,7 +177,6 @@ class UiMapper {
                         selectCategoriaSuolo(it.categoria_suolo)
                         selectCategoriaTopografica(it.categoria_topografica)
                         if (it.classe_duttilita) categoria_classe_duttilita_parameter_cda.isChecked = true else categoria_classe_duttilita_parameter_cdb.isChecked = true
-                        alfa = it.alfa
                     }
 
                 }

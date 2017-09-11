@@ -1,5 +1,6 @@
 package com.polito.sismic.Presenters.ReportActivity.Fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.support.annotation.Nullable
 import android.view.LayoutInflater
@@ -15,9 +16,25 @@ import com.stepstone.stepper.StepperLayout
 import kotlinx.android.synthetic.main.spettri_progetto_report_layout.*
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 
 
 class SpettriDiProgettoReportFragment : BaseReportFragment() {
+
+    interface SpectrumReturnTimeRequest {
+        fun onReturnTimesRequested() : List<ILineDataSet>
+    }
+
+    private var mReturnTimeRequest: SpectrumReturnTimeRequest? = null
+    override fun onAttach(context: Context?) {
+
+        super.onAttach(context)
+        try {
+            mReturnTimeRequest = context as SpectrumReturnTimeRequest?
+        } catch (e: ClassCastException) {
+            throw ClassCastException(context!!.toString() + " must implement OnParametersConfirmed")
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater?, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View? {
         return inflateFragment(R.layout.spettri_progetto_report_layout, inflater, container)

@@ -5,6 +5,7 @@ import android.location.Location
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.places.Places
@@ -15,17 +16,20 @@ import com.polito.sismic.Interactors.*
 import com.polito.sismic.Interactors.SismicActionParametersInteractor
 import com.polito.sismic.Interactors.Helpers.UserActionType
 import com.polito.sismic.Presenters.Adapters.ReportFragmentsAdapter
-import com.polito.sismic.Presenters.ReportActivity.Fragments.BaseReportFragment
-import com.polito.sismic.Presenters.ReportActivity.Fragments.InfoLocReportFragment
+import com.polito.sismic.Presenters.ReportActivity.Fragments.*
 import com.polito.sismic.R
 import kotlinx.android.synthetic.main.activity_report.*
 
 
+//Activity is in charge of handling all data through interactors, then it signals fragment to update their copy of domain value and its grafic
 class ReportActivity : AppCompatActivity(),
-        InfoLocReportFragment.CurrentLocationProvided,
         BaseReportFragment.ParametersManager,
-        GoogleApiClient.OnConnectionFailedListener,
-        BaseReportFragment.NodeCaluclationRequest {
+        InfoLocReportFragment.CurrentLocationProvided,
+        CatastoReportFragment.NodeCaluclationRequest,
+        DatiSismoGeneticiReportFragment.DefaultReturnTimeRequest,
+        SpettriDiProgettoReportFragment.SpectrumReturnTimeRequest,
+        GoogleApiClient.OnConnectionFailedListener
+{
 
     private lateinit var mGoogleApiClient: GoogleApiClient
     private lateinit var mUserActionInteractor: UserActionInteractor
@@ -62,20 +66,28 @@ class ReportActivity : AppCompatActivity(),
                 ?.updateByLocation(location)
     }
 
-    //TODO: handle better
-    //requested sismic data
-    override fun onClosedNodesCalculationRequested() {
-        mSismicParameterInteractor.calculate()
-        updateStateFromCallback()
-    }
-
     private fun updateStateFromCallback() {
         updateStateForFragments(true)
     }
 
     //in this way sismic data are not recalculated if latitude or longitude doesn't change
     override fun onCoordinatesUpdated() {
-        mSismicParameterInteractor.mustRecalc()
+        mSismicParameterInteractor.mustRecalcReturnTimesParameters()
+    }
+
+    //requested sismic data by each fragment. ui update is useless since data dont go into ui
+    //TODO: add data to "note" so the user can check
+    override fun onClosedNodesCalculationRequested() {
+        mSismicParameterInteractor.calculateReturnPeriodsParameters()
+        updateStateFromCallback()
+    }
+
+    override fun onDefaultReturnTimesRequested(): List<ILineDataSet> = with(mSismicParameterInteractor){
+        getDefaultSpectrumLines(mReportManager.report.reportState)
+    }
+
+    override fun onReturnTimesRequested(): List<ILineDataSet> = with(mSismicParameterInteractor){
+        getSpectrumLines(mReportManager.report.reportState)
     }
 
     //Updates the state for all fragments

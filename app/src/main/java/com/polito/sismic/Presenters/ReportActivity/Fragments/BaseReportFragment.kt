@@ -26,7 +26,7 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
     private var mParametersCallback: BaseReportFragment.ParametersManager? = null
     private var mReport: Report? = null
     fun getReport(): Report {
-        return mReport!!
+        return mReport!!        //ALWAYS TRUE!
     }
 
     //Is the activity the handler of the dto, each fragment only passes its own
@@ -37,10 +37,7 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
         fun onParametersSaveRequest()
     }
 
-    interface NodeCaluclationRequest {
-        fun onClosedNodesCalculationRequested()
-    }
-
+    //domain report from bundle
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mReport = arguments.getReport()
@@ -92,14 +89,11 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
         callback!!.goToNextStep()
     }
 
+    //actions to update user interface when domain parameters change
+    protected open fun onReload()    {    }
     fun reloadFragmentFromCallback(newReportState: Report) {
         mReport = newReportState
         onReload()
-    }
-
-    protected open fun onReload()
-    {
-
     }
 
     override fun onCompleteClicked(callback: StepperLayout.OnCompleteClickedCallback?) {
