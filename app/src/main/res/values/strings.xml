@@ -288,6 +288,7 @@
     <string name="tcstar_header">Tc* [s]</string>
     <string name="params_format">%.5f</string>
     <string name="spec_30_label">30 anni</string>
+    <string name="label_year_format">%d anni</string>
 
 
 </resources>

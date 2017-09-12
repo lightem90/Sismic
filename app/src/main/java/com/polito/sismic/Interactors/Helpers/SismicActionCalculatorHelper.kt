@@ -7,6 +7,7 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.polito.sismic.Domain.NeighboursNodeSquare
 import com.polito.sismic.Domain.PeriodData
 import com.polito.sismic.Domain.ReportState
+import com.polito.sismic.Domain.SpectrumDTO
 import com.polito.sismic.R
 
 /**
@@ -108,17 +109,78 @@ class SismicActionCalculatorHelper(val mCoordinateHelper: ParametersForCoordinat
     //TODO
     fun getDefaultSpectrum(context: Context, sismicState: ReportState): List<ILineDataSet> {
 
-        val ag = ZonaSismica.values()[sismicState.localizationState.zone_int-1].multiplier
-        val tcstar = sismicState.sismicState.sismogenticState.periodData_list[0].tcstar
-        val td = (4.0 * ag/9.8) + 1.6
+        val ag = ZonaSismica.values()[sismicState.localizationState.zone_int - 1].multiplier
+        val spectrums: List<SpectrumDTO> = sismicState.sismicState.sismogenticState.periodData_list.map {
+            calculateSpectrumPointListFor(it.years, it.ag, it.tcstar)
+        }
 
-        val cc = 1
-        val tc = cc *tcstar       
-        val tb = tc/3
+        return spectrums.map { LineDataSet(it.pointList, String.format(context.getString(R.string.label_year_format), it.year)) }
+    }
 
-        val spec30 = ArrayList<Entry>()
-        spec30.add(Entry(5.0F, 5.0F))
-        return listOf(LineDataSet(spec30, context.getString(R.string.spec_30_label)))
+    private fun calculateSpectrumPointListFor(year: Int, ag: Double, tcStar: Double, q: Double = 1.0, ss: Double = 1.0, st: Double = 1.0, cc: Double = 1.0, f0: Double = 2.2): SpectrumDTO {
+        val td = (4.0 * ag / 9.8) + 1.6
+        val tc = cc * tcStar
+        val tb = tc / 3
+        val s = ss * st
+        val ni = 1 / q
+        //to avoid calculating it always
+        val repeatingTerm = ag * s * ni * f0
+
+        val entryPointList = mutableListOf<Entry>()
+        //linear between 0 and tb
+        entryPointList.addAll(calculateFirstLinearInterval(repeatingTerm, ni, f0, tb))
+        entryPointList.addAll(calculateSecondCostantInterval(repeatingTerm, tc))
+        entryPointList.addAll(calculateThirdHyperbolicInterval(repeatingTerm, tc, td))
+        entryPointList.addAll(calculateFourthHyperbolicInterval(repeatingTerm, tc, td))
+
+        return SpectrumDTO(year, ag, f0, tcStar, ss, cc, st, q, s, ni, tb, tc, td, entryPointList)
+    }
+
+    private fun calculateFourthHyperbolicInterval(repeatingTerm: Double, tc: Double, td: Double, limit: Double = 4.0): List<Entry> {
+        //ten steps
+        val step = (limit - td) / 10
+        var t = td
+        val pointsInFourthInterval = mutableListOf<Entry>()
+        while (t <= limit) {
+            pointsInFourthInterval.add(Entry(t.toFloat(), calculatePointForFourthInterval(repeatingTerm, t, tc, td)))
+            t += step
+        }
+        return pointsInFourthInterval
+    }
+
+    private fun calculatePointForFourthInterval(repeatingTerm: Double, t: Double, tc: Double, td: Double): Float {
+        return (repeatingTerm * (tc * td / t * t)).toFloat()
+    }
+
+    private fun calculateThirdHyperbolicInterval(repeatingTerm: Double, td: Double, tc: Double): List<Entry> {
+//ten steps
+        val step = (td - tc) / 10
+        var t = tc
+        val pointsInThirdInterval = mutableListOf<Entry>()
+        while (t <= td) {
+            pointsInThirdInterval.add(Entry(t.toFloat(), calculatePointForThirdInterval(repeatingTerm, t, tc)))
+            t += step
+        }
+        return pointsInThirdInterval
+    }
+
+    private fun calculatePointForThirdInterval(repeatingTerm: Double, t: Double, tc: Double): Float {
+        return (repeatingTerm * (tc / t)).toFloat()
+    }
+
+    //costant interval equals to repeating term
+    private fun calculateSecondCostantInterval(repeatingTerm: Double, tc: Double): List<Entry> {
+        return listOf(Entry(tc.toFloat(), repeatingTerm.toFloat()))
+    }
+
+    //linear interval, just 2 points
+    private fun calculateFirstLinearInterval(repeatingTerm: Double, ni: Double, f0: Double, tb: Double): List<Entry> {
+        return listOf(Entry(0.0F, calculatePointForFirstInterval(repeatingTerm, 0.0, tb, ni, f0)),
+                Entry(tb.toFloat(), calculatePointForFirstInterval(repeatingTerm, tb, tb, ni, f0)))
+    }
+
+    private fun calculatePointForFirstInterval(repeatingTerm: Double, t: Double, tb: Double, ni: Double, f0: Double): Float {
+        return (repeatingTerm * ((t / tb) + ((1 / (ni * f0)) * (1 - (t / tb))))).toFloat()
     }
 
     fun getSpectrum(context: Context, sismicState: ReportState): List<ILineDataSet> {
@@ -126,7 +188,6 @@ class SismicActionCalculatorHelper(val mCoordinateHelper: ParametersForCoordinat
         spec30.add(Entry(5.0F, 5.0F))
         return listOf(LineDataSet(spec30, context.getString(R.string.spec_30_label)))
     }
-
 }
 
 class YearToDatabaseParameterMapper {

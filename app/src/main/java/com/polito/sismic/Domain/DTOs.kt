@@ -2,6 +2,7 @@ package com.polito.sismic.Domain
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.polito.sismic.Interactors.Helpers.CategoriaSottosuolo
 import com.polito.sismic.Interactors.Helpers.CategoriaTopografica
@@ -326,6 +327,24 @@ data class PeriodData(val years: Int, val ag: Double, val f0: Double, val tcstar
             override fun newArray(size: Int): Array<PeriodData?> = arrayOfNulls(size)
         }
     }
+}
+
+data class SpectrumDTO(var year : Int,
+                       var ag : Double,
+                       var f0 : Double,
+                       var tcStar : Double,
+                       var ss : Double,
+                       var cc : Double,
+                       var st : Double,
+                       var q : Double,
+                       var s : Double,
+                       var ni : Double,
+                       var tb : Double,
+                       var tc : Double,
+                       var td : Double,
+                       var pointList : List<Entry>)
+{
+
 }
 
 data class NeighboursNodeSquare(var NE: NeighboursNodeData,
