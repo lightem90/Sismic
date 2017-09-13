@@ -81,10 +81,10 @@ class DatiSismoGeneticiReportFragment : BaseReportFragment() {
             mNodeAdapter.notifyDataSetChanged()
         }
 
-        //Log.d("PeriodList", "Period list updating: " + getReport().reportState.sismicState.sismogenticState.periodData_list.toString())
-        //if (getReport().reportState.sismicState.sismogenticState.periodData_list.isEmpty()) Log.e("PeriodList", "EMPTY!")
+        //Log.d("PeriodList", "Period list updating: " + getReport().reportState.sismicState.sismogenticState.default_periods.toString())
+        //if (getReport().reportState.sismicState.sismogenticState.default_periods.isEmpty()) Log.e("PeriodList", "EMPTY!")
 
-        with(getReport().reportState.sismicState.sismogenticState.periodData_list){
+        with(getReport().reportState.sismicState.sismogenticState.default_periods){
             mPeriodList.clear()
             mPeriodList.addAll(toList())
             mPeriodAdapter.notifyDataSetChanged()

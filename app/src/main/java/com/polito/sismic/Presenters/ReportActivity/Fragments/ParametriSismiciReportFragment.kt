@@ -1,5 +1,6 @@
 package com.polito.sismic.Presenters.ReportActivity.Fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.support.annotation.Nullable
 import android.view.LayoutInflater
@@ -7,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Adapter
 import android.widget.AdapterView
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.polito.sismic.Interactors.Helpers.ClasseUso
 import com.polito.sismic.Interactors.Helpers.UiMapper
 import com.polito.sismic.R
@@ -17,6 +19,21 @@ import kotlinx.android.synthetic.main.parametri_sismici_report_layout.*
  * Created by Matteo on 29/07/2017.
  */
 class ParametriSismiciReportFragment : BaseReportFragment() {
+
+    interface LimitStateRequest {
+        fun onLimitStatesRequested() : List<ILineDataSet>
+    }
+
+    private var mLimitStateRequest: LimitStateRequest? = null
+    override fun onAttach(context: Context?) {
+
+        super.onAttach(context)
+        try {
+            mLimitStateRequest = context as LimitStateRequest?
+        } catch (e: ClassCastException) {
+            throw ClassCastException(context!!.toString() + " must implement OnParametersConfirmed")
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater?, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View? {
         return inflateFragment(R.layout.parametri_sismici_report_layout, inflater, container)
@@ -74,6 +91,24 @@ class ParametriSismiciReportFragment : BaseReportFragment() {
             }
             override fun onNothingSelected(parent: AdapterView<out Adapter>?) {  }
         }
+    }
+
+    override fun onReload() {
+        super.onReload()
+
+
+        with (report_spettrodirisposta_chart)
+        {
+            mLimitStateRequest?.onLimitStatesRequested()?.let {
+                data = com.github.mikephil.charting.data.LineData(it)
+                invalidate()
+            }
+        }
+    }
+
+    private fun getData()
+    {
+        report_spettrodirisposta_chart.data
     }
 
     private fun setVitaReale(classeUso : Int)

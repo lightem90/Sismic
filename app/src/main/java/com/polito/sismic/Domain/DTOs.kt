@@ -4,8 +4,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
-import com.polito.sismic.Interactors.Helpers.CategoriaSottosuolo
-import com.polito.sismic.Interactors.Helpers.CategoriaTopografica
+import com.polito.sismic.Interactors.Helpers.StatiLimite
 import java.util.*
 
 /**
@@ -18,10 +17,10 @@ data class Report(val reportDetails: ReportDetails,
                   var reportState: ReportState) : Parcelable {
 
     constructor(convertReportDetailsToDomain: ReportDetails, convertDatabaseSectionToDomain: ReportState, domainMediaList: List<ReportMedia>)
-            : this(convertReportDetailsToDomain, convertDatabaseSectionToDomain)
-    {
+            : this(convertReportDetailsToDomain, convertDatabaseSectionToDomain) {
         reportState.mediaState = domainMediaList.toMutableList<ReportMedia>()
     }
+
     constructor(source: Parcel) : this(
             source.readParcelable<ReportDetails>(ReportDetails::class.java.classLoader),
             source.readParcelable<ReportState>(ReportState::class.java.classLoader)
@@ -44,13 +43,13 @@ data class Report(val reportDetails: ReportDetails,
 
 }
 
-data class ReportState(var result : ReportResult,
+data class ReportState(var result: ReportResult,
                        var localizationState: LocalizationState,
                        var sismicState: SismicState,
                        var generalState: GeneralState,
                        var buildingState: BuildingState,
                        var mediaState: MutableList<ReportMedia>) : Parcelable {
-    constructor() : this (ReportResult(), LocalizationState(), SismicState(), GeneralState(), BuildingState(), mutableListOf())
+    constructor() : this(ReportResult(), LocalizationState(), SismicState(), GeneralState(), BuildingState(), mutableListOf())
     constructor(source: Parcel) : this(
             source.readParcelable<ReportResult>(ReportResult::class.java.classLoader),
             source.readParcelable<LocalizationState>(LocalizationState::class.java.classLoader),
@@ -104,14 +103,14 @@ data class ReportResult(var result: Int,
     }
 }
 
-class SismicState(var sismogenticState:         SismogeneticState,
-                  var sismicParametersState:    SismicParametersState,
-                  var projectSpectrumState:     ProjectSpectrumState,
-                  //TODO trasformarle in classi di dominio
-                  var returnTimes :             List<ILineDataSet> = listOf(),
-                  var defaultSpectrumReturnTimes:             List<ILineDataSet> = listOf(),
-                  var spectrumReturnTimes :             List<ILineDataSet> = listOf()) : FragmentState {
-    constructor() : this (SismogeneticState(), SismicParametersState(), ProjectSpectrumState())
+class SismicState(var sismogenticState: SismogeneticState,
+                  var sismicParametersState: SismicParametersState,
+                  var projectSpectrumState: ProjectSpectrumState,
+                    //TODO trasformarle in classi di dominio
+                  var defaultReturnTimes: List<ILineDataSet> = listOf(),
+                  var limitStateTimes: List<ILineDataSet> = listOf(),
+                  var spectrumReturnTimes: List<ILineDataSet> = listOf()) : FragmentState {
+    constructor() : this(SismogeneticState(), SismicParametersState(), ProjectSpectrumState())
     constructor(source: Parcel) : this(
             source.readParcelable<SismogeneticState>(SismogeneticState::class.java.classLoader),
             source.readParcelable<SismicParametersState>(SismicParametersState::class.java.classLoader),
@@ -147,14 +146,13 @@ data class LocalizationState(var latitude: Double,
                              var cap: String,
                              var zone: String,
                              var code: String,
-                             var zone_int : Int = 1) : FragmentState {
+                             var zone_int: Int = 1) : FragmentState {
 
 
     //because the istat db contains zones with subsections as letters, but their multiplier is the same, just the int matters to us
     init {
         //set only if default, otherwise i assume to restore a valid value
-        if (zone_int == 1)
-        {
+        if (zone_int == 1) {
             if (zone.contains("1")) zone_int = 1
             if (zone.contains("2")) zone_int = 2
             if (zone.contains("3")) zone_int = 3
@@ -192,36 +190,25 @@ data class LocalizationState(var latitude: Double,
     }
 
     companion object {
-        @JvmField val CREATOR: Parcelable.Creator<LocalizationState> = object : Parcelable.Creator<LocalizationState> {
+        @JvmField
+        val CREATOR: Parcelable.Creator<LocalizationState> = object : Parcelable.Creator<LocalizationState> {
             override fun createFromParcel(source: Parcel): LocalizationState = LocalizationState(source)
             override fun newArray(size: Int): Array<LocalizationState?> = arrayOfNulls(size)
         }
     }
 }
 
-
 data class SismicParametersState(var vitaNominale: Int,
                                  var classeUso: Double,
                                  var vitaReale: Double,
-                                 var ag: Double,
-                                 var f0: Double,
-                                 var tg: Double,
-                                 var slo: Int,
-                                 var sld: Int,
-                                 var slv: Int,
-                                 var slc: Int) : Parcelable {
-    constructor() : this(0, 0.0, 0.0, 0.0, 0.0, 0.0, 0, 0, 0, 0)
+                                 var limit_states: List<LimitState>) : Parcelable {
+    constructor() : this(0, 0.0, 0.0, listOf())
+
     constructor(source: Parcel) : this(
             source.readInt(),
             source.readDouble(),
             source.readDouble(),
-            source.readDouble(),
-            source.readDouble(),
-            source.readDouble(),
-            source.readInt(),
-            source.readInt(),
-            source.readInt(),
-            source.readInt()
+            ArrayList<LimitState>().apply { source.readList(this, LimitState::class.java.classLoader) }
     )
 
     override fun describeContents() = 0
@@ -230,13 +217,7 @@ data class SismicParametersState(var vitaNominale: Int,
         writeInt(vitaNominale)
         writeDouble(classeUso)
         writeDouble(vitaReale)
-        writeDouble(ag)
-        writeDouble(f0)
-        writeInt(slo)
-        writeInt(sld)
-        writeInt(slv)
-        writeInt(slc)
-        writeDouble(tg)
+        writeList(limit_states)
     }
 
     companion object {
@@ -248,9 +229,32 @@ data class SismicParametersState(var vitaNominale: Int,
     }
 }
 
+data class LimitState(var stato: StatiLimite,
+                      var period: List<PeriodData>) : Parcelable {
+    constructor(source: Parcel) : this(
+            StatiLimite.values()[source.readInt()],
+            source.createTypedArrayList(PeriodData.CREATOR)
+    )
+
+    override fun describeContents() = 0
+
+    override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
+        writeInt(stato.ordinal)
+        writeTypedList(period)
+    }
+
+    companion object {
+        @JvmField
+        val CREATOR: Parcelable.Creator<LimitState> = object : Parcelable.Creator<LimitState> {
+            override fun createFromParcel(source: Parcel): LimitState = LimitState(source)
+            override fun newArray(size: Int): Array<LimitState?> = arrayOfNulls(size)
+        }
+    }
+}
+
 
 data class SismogeneticState(var closedNodeData: List<NeighboursNodeData>,
-                             var periodData_list: List<PeriodData>) : Parcelable {
+                             var default_periods: List<PeriodData>) : Parcelable {
 
     constructor() : this(listOf(), listOf())
     constructor(source: Parcel) : this(
@@ -262,7 +266,7 @@ data class SismogeneticState(var closedNodeData: List<NeighboursNodeData>,
 
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
         writeTypedList(closedNodeData)
-        writeTypedList(periodData_list)
+        writeTypedList(default_periods)
     }
 
     companion object {
@@ -294,7 +298,8 @@ data class NeighboursNodeData(val id: String, val longitude: Double, val latitud
     }
 
     companion object {
-        @JvmField val CREATOR: Parcelable.Creator<NeighboursNodeData> = object : Parcelable.Creator<NeighboursNodeData> {
+        @JvmField
+        val CREATOR: Parcelable.Creator<NeighboursNodeData> = object : Parcelable.Creator<NeighboursNodeData> {
             override fun createFromParcel(source: Parcel): NeighboursNodeData = NeighboursNodeData(source)
             override fun newArray(size: Int): Array<NeighboursNodeData?> = arrayOfNulls(size)
         }
@@ -329,21 +334,20 @@ data class PeriodData(val years: Int, val ag: Double, val f0: Double, val tcstar
     }
 }
 
-data class SpectrumDTO(var year : Int,
-                       var ag : Double,
-                       var f0 : Double,
-                       var tcStar : Double,
-                       var ss : Double,
-                       var cc : Double,
-                       var st : Double,
-                       var q : Double,
-                       var s : Double,
-                       var ni : Double,
-                       var tb : Double,
-                       var tc : Double,
-                       var td : Double,
-                       var pointList : List<Entry>)
-{
+data class SpectrumDTO(var year: Int,
+                       var ag: Double,
+                       var f0: Double,
+                       var tcStar: Double,
+                       var ss: Double,
+                       var cc: Double,
+                       var st: Double,
+                       var q: Double,
+                       var s: Double,
+                       var ni: Double,
+                       var tb: Double,
+                       var tc: Double,
+                       var td: Double,
+                       var pointList: List<Pair<Double, Double>>) {
 
 }
 
@@ -394,7 +398,7 @@ data class ProjectSpectrumState(var categoria_suolo: Double,
                                 var q0: Double,
                                 var alfa: Double,
                                 var kr: Double) : Parcelable {
-    constructor() : this (1.0, 1.0, true, "", 1.0, 1.0, 1.0)
+    constructor() : this(1.0, 1.0, true, "", 1.0, 1.0, 1.0)
     constructor(source: Parcel) : this(
             source.readDouble(),
             source.readDouble(),
@@ -427,7 +431,7 @@ data class ProjectSpectrumState(var categoria_suolo: Double,
 }
 
 class GeneralState(var catastoState: CatastoState) : FragmentState {
-    constructor() : this (CatastoState())
+    constructor() : this(CatastoState())
     constructor(source: Parcel) : this(
             source.readParcelable<CatastoState>(CatastoState::class.java.classLoader)
     )
@@ -484,7 +488,8 @@ data class CatastoState(var foglio: String,
     }
 
     companion object {
-        @JvmField val CREATOR: Parcelable.Creator<CatastoState> = object : Parcelable.Creator<CatastoState> {
+        @JvmField
+        val CREATOR: Parcelable.Creator<CatastoState> = object : Parcelable.Creator<CatastoState> {
             override fun createFromParcel(source: Parcel): CatastoState = CatastoState(source)
             override fun newArray(size: Int): Array<CatastoState?> = arrayOfNulls(size)
         }
@@ -740,7 +745,8 @@ data class ReportDetails(val id: Int,
     }
 
     companion object {
-        @JvmField val CREATOR: Parcelable.Creator<ReportDetails> = object : Parcelable.Creator<ReportDetails> {
+        @JvmField
+        val CREATOR: Parcelable.Creator<ReportDetails> = object : Parcelable.Creator<ReportDetails> {
             override fun createFromParcel(source: Parcel): ReportDetails = ReportDetails(source)
             override fun newArray(size: Int): Array<ReportDetails?> = arrayOfNulls(size)
         }
@@ -771,33 +777,33 @@ data class ReportMedia(val id: Int,
     }
 
     companion object {
-        @JvmField val CREATOR: Parcelable.Creator<ReportMedia> = object : Parcelable.Creator<ReportMedia> {
+        @JvmField
+        val CREATOR: Parcelable.Creator<ReportMedia> = object : Parcelable.Creator<ReportMedia> {
             override fun createFromParcel(source: Parcel): ReportMedia = ReportMedia(source)
             override fun newArray(size: Int): Array<ReportMedia?> = arrayOfNulls(size)
         }
     }
 }
 
-data class ReportItemHistory(val id : Int,
-        val title : String,
-        val description : String,
-        val value : Int,
-        val size : Double,
-        val userIdentifier: String)
-{
+data class ReportItemHistory(val id: Int,
+                             val title: String,
+                             val description: String,
+                             val value: Int,
+                             val size: Double,
+                             val userIdentifier: String) {
 
     companion object {
-        val Invalid : ReportItemHistory = ReportItemHistory(-1, "", "", -1, -1.0, "")
+        val Invalid: ReportItemHistory = ReportItemHistory(-1, "", "", -1, -1.0, "")
     }
 }
 
-data class UserDetails (val name : String,
-                        val address : String,
-                        val email : String,
-                        val phone : String,
-                        val qualification : String,
-                        val registration : String,
-                        val imageUri: String)
+data class UserDetails(val name: String,
+                       val address: String,
+                       val email: String,
+                       val phone: String,
+                       val qualification: String,
+                       val registration: String,
+                       val imageUri: String)
 
 
 

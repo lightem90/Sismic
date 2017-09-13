@@ -55,11 +55,7 @@ class UiMapper {
             return SismicParametersState(getVitaNominale(),
                     getClasseUsoForIndex(classe_parameter.selectedItemPosition),
                     vita_reale.getValue().toDouble(),
-                    -1.0, -1.0, -1.0,
-                    -1,
-                    -1,
-                    -1,
-                    -1)
+                    listOf())
         }
 
         fun createSpectrumStateForDomain(spettriDiProgettoReportFragment: SpettriDiProgettoReportFragment): ProjectSpectrumState = with(spettriDiProgettoReportFragment) {
@@ -158,7 +154,7 @@ class UiMapper {
                 {
                     reportState.sismicState.sismogenticState.let {
                         mNodeList = it.closedNodeData.toMutableList()
-                        mPeriodList = it.periodData_list.toMutableList()
+                        mPeriodList = it.default_periods.toMutableList()
                     }
                 }
                 is ParametriSismiciReportFragment ->

@@ -8,6 +8,9 @@ import com.polito.sismic.Domain.NeighboursNodeSquare
 import com.polito.sismic.Domain.PeriodData
 import com.polito.sismic.Domain.ReportState
 import com.polito.sismic.Domain.SpectrumDTO
+import com.polito.sismic.Extensions.interpolateWith
+import com.polito.sismic.Extensions.toDoublePairList
+import com.polito.sismic.Extensions.toEntryList
 import com.polito.sismic.R
 
 /**
@@ -106,18 +109,78 @@ class SismicActionCalculatorHelper(val mCoordinateHelper: ParametersForCoordinat
         return numerator / denominator
     }
 
-    //TODO
+    //Sismogenetic data: shows default period data straight read from database
     fun getDefaultSpectrum(context: Context, sismicState: ReportState): List<ILineDataSet> {
 
-        val ag = ZonaSismica.values()[sismicState.localizationState.zone_int - 1].multiplier
-        val spectrums: List<SpectrumDTO> = sismicState.sismicState.sismogenticState.periodData_list.map {
-            calculateSpectrumPointListFor(it.years, it.ag, it.tcstar)
+        val st = ZonaSismica.values()[sismicState.localizationState.zone_int - 1].multiplier
+        val spectrums: List<SpectrumDTO> = sismicState.sismicState.sismogenticState.default_periods.map {
+            calculateSpectrumPointListFor(it.years, it.ag, it.f0, it.tcstar, st)
         }
 
-        return spectrums.map { LineDataSet(it.pointList, String.format(context.getString(R.string.label_year_format), it.year)) }
+        return spectrums.map { LineDataSet(it.pointList.toEntryList(), String.format(context.getString(R.string.label_year_format), it.year)) }
     }
 
-    private fun calculateSpectrumPointListFor(year: Int, ag: Double, tcStar: Double, q: Double = 1.0, ss: Double = 1.0, st: Double = 1.0, cc: Double = 1.0, f0: Double = 2.2): SpectrumDTO {
+    //Sismicparameters data: shows periods based on life
+    fun getLimitStateSpectrum(context: Context, sismicState: ReportState): List<ILineDataSet> {
+
+        val st = ZonaSismica.values()[sismicState.localizationState.zone_int - 1].multiplier
+        val vr = sismicState.sismicState.sismicParametersState.vitaReale
+        // SLO, SLD, SLV, SLC
+        val limitStateYears = StatiLimite.values().map { (vr * it.multiplier).toInt() }
+
+        val spectrums: MutableList<SpectrumDTO> = mutableListOf()
+        limitStateYears.forEach { year ->
+            if (year <= TempiRitorno.Y30.years.toDouble())
+            {
+                //Year lesser or equal 30, I use data from db
+                sismicState.sismicState.sismogenticState.default_periods[TempiRitorno.Y30.ordinal].let {
+                    spectrums.add(calculateSpectrumPointListFor(it.years, it.ag, it.f0, it.tcstar, st))
+                }
+            }else if (year >= TempiRitorno.Y2475.years.toDouble())
+            {
+                //Year greater or equal 2475, I use data from db
+                sismicState.sismicState.sismogenticState.default_periods[TempiRitorno.Y2475.ordinal].let {
+                spectrums.add(calculateSpectrumPointListFor(it.years, it.ag, it.f0, it.tcstar, st))
+            }
+            } else
+            {
+                //look for a year in the db, if it exist add it, otherwise need interpolation
+                val period = sismicState.sismicState.sismogenticState.default_periods.firstOrNull { it.years == year }
+                if (period != null)
+                {
+                    spectrums.add(calculateSpectrumPointListFor(period.years, period.ag, period.f0, period.tcstar, st))
+
+                } else
+                {
+                    interpolatePeriodDataForYear(sismicState.sismicState.sismogenticState.default_periods, year, st).let{
+                        spectrums.add(it)
+                    }
+                }
+            }
+        }
+
+        return spectrums.map { LineDataSet(it.pointList.toEntryList(), String.format(context.getString(R.string.label_year_format), it.year)) }
+    }
+
+    private fun interpolatePeriodDataForYear(default_periods: List<PeriodData>, year: Int, st: Double): SpectrumDTO {
+        val yearIndex = default_periods.indexOfFirst { it.years > year }
+        val interpolatedData = default_periods[yearIndex-1].interpolateWith(default_periods[yearIndex], year)
+
+        return calculateSpectrumPointListFor(interpolatedData.years, interpolatedData.ag, interpolatedData.f0, interpolatedData.tcstar, st)
+    }
+
+    //spectrum data: shows periods based on spectrum data
+    fun getSpectrum(context: Context, sismicState: ReportState): List<ILineDataSet> {
+
+        val st = ZonaSismica.values()[sismicState.localizationState.zone_int - 1].multiplier
+        val spectrums: List<SpectrumDTO> = sismicState.sismicState.sismogenticState.default_periods.map {
+            calculateSpectrumPointListFor(it.years, it.ag, it.f0, it.tcstar, st)
+        }
+
+        return spectrums.map { LineDataSet(it.pointList.toEntryList(), String.format(context.getString(R.string.label_year_format), it.year)) }
+    }
+
+    private fun calculateSpectrumPointListFor(year: Int, ag: Double, f0: Double, tcStar: Double, st: Double, q: Double = 1.0, ss: Double = 1.0, cc: Double = 1.0): SpectrumDTO {
         val td = (4.0 * ag / 9.8) + 1.6
         val tc = cc * tcStar
         val tb = tc / 3
@@ -133,7 +196,7 @@ class SismicActionCalculatorHelper(val mCoordinateHelper: ParametersForCoordinat
         entryPointList.addAll(calculateThirdHyperbolicInterval(repeatingTerm, tc, td))
         entryPointList.addAll(calculateFourthHyperbolicInterval(repeatingTerm, tc, td))
 
-        return SpectrumDTO(year, ag, f0, tcStar, ss, cc, st, q, s, ni, tb, tc, td, entryPointList)
+        return SpectrumDTO(year, ag, f0, tcStar, ss, cc, st, q, s, ni, tb, tc, td, entryPointList.toDoublePairList())
     }
 
     private fun calculateFourthHyperbolicInterval(repeatingTerm: Double, tc: Double, td: Double, limit: Double = 4.0): List<Entry> {
@@ -181,12 +244,6 @@ class SismicActionCalculatorHelper(val mCoordinateHelper: ParametersForCoordinat
 
     private fun calculatePointForFirstInterval(repeatingTerm: Double, t: Double, tb: Double, ni: Double, f0: Double): Float {
         return (repeatingTerm * ((t / tb) + ((1 / (ni * f0)) * (1 - (t / tb))))).toFloat()
-    }
-
-    fun getSpectrum(context: Context, sismicState: ReportState): List<ILineDataSet> {
-        val spec30 = ArrayList<Entry>()
-        spec30.add(Entry(5.0F, 5.0F))
-        return listOf(LineDataSet(spec30, context.getString(R.string.spec_30_label)))
     }
 }
 

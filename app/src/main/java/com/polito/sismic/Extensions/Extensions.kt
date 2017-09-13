@@ -11,8 +11,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.polito.sismic.Domain.NeighboursNodeData
-import com.polito.sismic.Domain.NeighboursNodeSquare
 import com.polito.sismic.Presenters.Adapters.ReportFragmentsAdapter
 import com.stepstone.stepper.adapter.StepAdapter
 import org.jetbrains.anko.db.MapRowParser
@@ -21,8 +19,8 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.reflect.KProperty
 import android.provider.OpenableColumns
-import com.polito.sismic.Domain.Report
-import com.polito.sismic.Domain.ReportState
+import com.github.mikephil.charting.data.Entry
+import com.polito.sismic.Domain.*
 
 
 /**
@@ -194,3 +192,32 @@ fun String.toUri() : Uri {
     return Uri.parse(this)
 }
 
+fun List<Entry>.toDoublePairList() : List<Pair<Double, Double>>
+{
+    return map { Pair(it.x.toDouble(), it.y.toDouble()) }
+}
+
+
+fun List<Pair<Double, Double>>.toEntryList() : List<Entry>
+{
+    return map { Entry(it.first.toFloat(), it.second.toFloat()) }
+}
+
+fun PeriodData.interpolateWith(next : PeriodData, newYear : Int) : PeriodData
+{
+    val newAg = MathUti.periodDataInterpolation(ag, next.ag, years, next.years, newYear)
+    val newF0 = MathUti.periodDataInterpolation(f0, next.f0, years, next.years, newYear)
+    val newTcStar = MathUti.periodDataInterpolation(tcstar, next.tcstar, years, next.years, newYear)
+    return PeriodData(newYear, newAg, newF0, newTcStar)
+}
+
+class MathUti
+{
+    companion object {
+
+        fun periodDataInterpolation(p1 : Double, p2 : Double, tr1 : Int, tr2 : Int, tr : Int) : Double
+        {
+            return Math.log(p1) + (Math.log((p2/p1)))*Math.log((tr/tr1).toDouble())*Math.pow(Math.log((tr2/tr1).toDouble()), -1.0)
+        }
+    }
+}

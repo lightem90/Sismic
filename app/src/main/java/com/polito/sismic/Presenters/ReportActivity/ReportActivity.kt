@@ -27,6 +27,7 @@ class ReportActivity : AppCompatActivity(),
         InfoLocReportFragment.CurrentLocationProvided,
         CatastoReportFragment.NodeCaluclationRequest,
         DatiSismoGeneticiReportFragment.DefaultReturnTimeRequest,
+        ParametriSismiciReportFragment.LimitStateRequest,
         SpettriDiProgettoReportFragment.SpectrumReturnTimeRequest,
         GoogleApiClient.OnConnectionFailedListener
 {
@@ -87,7 +88,11 @@ class ReportActivity : AppCompatActivity(),
     }
 
     override fun onReturnTimesRequested(): List<ILineDataSet> = with(mSismicParameterInteractor){
-        getSpectrumLines(mReportManager.report.reportState)
+        getLimitStateLines(mReportManager.report.reportState)
+    }
+
+    override fun onLimitStatesRequested(): List<ILineDataSet> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     //Updates the state for all fragments
