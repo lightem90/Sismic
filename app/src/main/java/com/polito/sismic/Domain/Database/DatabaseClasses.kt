@@ -180,36 +180,15 @@ data class DatabaseParametriSismici(var map: MutableMap<String, Any?>) : Databas
     var vita_nominale: Int by map
     var classe_uso: Double by map
     var vita_reale: Double by map
-    var ag: Double by map
-    var f0: Double by map
-    var tg: Double by map
-    var slo: Int by map
-    var sld: Int by map
-    var slv: Int by map
-    var slc: Int by map
     var report_id: Int by map
 
     constructor(vita_nominale: Int,
                 classe_uso: Double,
                 vita_reale: Double,
-                ag: Double,
-                f0: Double,
-                tg: Double,
-                slo: Int,
-                sld: Int,
-                slv: Int,
-                slc: Int,
                 report_id: Int) : this(HashMap()) {
         this.vita_nominale = vita_nominale
         this.classe_uso = classe_uso
         this.vita_reale = vita_reale
-        this.ag = ag
-        this.f0 = f0
-        this.tg = tg
-        this.slo = slo
-        this.sld = sld
-        this.slv = slv
-        this.slc = slc
         this.report_id = report_id
     }
 }
@@ -224,6 +203,7 @@ data class DatabaseParametriSpettri(var map: MutableMap<String, Any?>) : Databas
     var q0: Double by map
     var alfa: Double by map
     var kr : Double by map
+    var categoria_suolo_string : String by map
     var report_id: Int by map
 
     constructor(categoria_suolo: Double,
@@ -233,6 +213,7 @@ data class DatabaseParametriSpettri(var map: MutableMap<String, Any?>) : Databas
                 q0: Double,
                 alfa: Double,
                 kr : Double,
+                categoria_suolo_string : String,
                 report_id: Int) : this(HashMap()) {
         this.categoria_suolo = categoria_suolo
         this.categoria_topografica = categoria_topografica
@@ -241,6 +222,7 @@ data class DatabaseParametriSpettri(var map: MutableMap<String, Any?>) : Databas
         this.q0 = q0
         this.alfa = alfa
         this.kr = kr
+        this.categoria_suolo_string = categoria_suolo_string
         this.report_id = report_id
     }
 }

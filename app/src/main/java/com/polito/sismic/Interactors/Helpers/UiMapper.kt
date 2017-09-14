@@ -60,13 +60,14 @@ class UiMapper {
 
         fun createSpectrumStateForDomain(spettriDiProgettoReportFragment: SpettriDiProgettoReportFragment): ProjectSpectrumState = with(spettriDiProgettoReportFragment) {
 
-            return ProjectSpectrumState(CategoriaSottosuolo.values()[categoria_suolo_parameter.selectedItemPosition].multiplier,
+            return ProjectSpectrumState(CategoriaSottosuolo.values()[categoria_suolo_parameter.selectedItemPosition].multiplierSS,
                     CategoriaTopografica.values()[categoria_topografica_parameter.selectedItemPosition].multiplier,
                     categoria_classe_duttilita_parameter_cda.isChecked,
                     categoria_tipologia_parameter.selectedItem.toString(),
                     Alfa.values()[categoria_moltiplicatore_parameter.selectedItemPosition].multiplier * 1.0,
                     Alfa.values()[categoria_moltiplicatore_parameter.selectedItemPosition].multiplier,
-                    1.0)
+                    1.0,
+                    categoria_suolo_parameter.selectedItem.toString())
         }
 
         fun createBuildingGeneralStateForDomain(datiGeneraliReportFragment: DatiGeneraliReportFragment): BuildingGeneralState = with(datiGeneraliReportFragment){

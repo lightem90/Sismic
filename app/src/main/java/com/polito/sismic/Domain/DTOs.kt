@@ -106,7 +106,7 @@ data class ReportResult(var result: Int,
 class SismicState(var sismogenticState: SismogeneticState,
                   var sismicParametersState: SismicParametersState,
                   var projectSpectrumState: ProjectSpectrumState,
-                    //TODO trasformarle in classi di dominio
+                    //TODO trasformarle in classi di dominio ?
                   var defaultReturnTimes: List<ILineDataSet> = listOf(),
                   var limitStateTimes: List<ILineDataSet> = listOf(),
                   var spectrumReturnTimes: List<ILineDataSet> = listOf()) : FragmentState {
@@ -397,8 +397,9 @@ data class ProjectSpectrumState(var categoria_suolo: Double,
                                 var tipologia: String,
                                 var q0: Double,
                                 var alfa: Double,
-                                var kr: Double) : Parcelable {
-    constructor() : this(1.0, 1.0, true, "", 1.0, 1.0, 1.0)
+                                var kr: Double,
+                                var categoria_suolo_string: String) : Parcelable {
+    constructor() : this(1.0, 1.0, true, "", 1.0, 1.0, 1.0, "")
     constructor(source: Parcel) : this(
             source.readDouble(),
             source.readDouble(),
@@ -406,7 +407,8 @@ data class ProjectSpectrumState(var categoria_suolo: Double,
             source.readString(),
             source.readDouble(),
             source.readDouble(),
-            source.readDouble()
+            source.readDouble(),
+            source.readString()
     )
 
     override fun describeContents() = 0
@@ -419,6 +421,7 @@ data class ProjectSpectrumState(var categoria_suolo: Double,
         writeDouble(q0)
         writeDouble(alfa)
         writeDouble(kr)
+        writeString(categoria_suolo_string)
     }
 
     companion object {

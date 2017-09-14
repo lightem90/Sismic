@@ -125,6 +125,11 @@ class SismicActionCalculatorHelper(val mCoordinateHelper: ParametersForCoordinat
 
         val st = ZonaSismica.values()[sismicState.localizationState.zone_int - 1].multiplier
         val vr = sismicState.sismicState.sismicParametersState.vitaReale
+        val categoria_sottosuolo = if (sismicState.sismicState.projectSpectrumState.categoria_suolo_string.isEmpty()) CategoriaSottosuolo.A
+                else CategoriaSottosuolo.values().first { it.toString() ==  sismicState.sismicState.projectSpectrumState.categoria_suolo_string}
+
+        val ss = categoria_sottosuolo.multiplierSS
+        val q = sismicState.sismicState.projectSpectrumState.q0
         // SLO, SLD, SLV, SLC
         val limitStateYears = StatiLimite.values().map { (vr * it.multiplier).toInt() }
 
@@ -134,13 +139,13 @@ class SismicActionCalculatorHelper(val mCoordinateHelper: ParametersForCoordinat
             {
                 //Year lesser or equal 30, I use data from db
                 sismicState.sismicState.sismogenticState.default_periods[TempiRitorno.Y30.ordinal].let {
-                    spectrums.add(calculateSpectrumPointListFor(it.years, it.ag, it.f0, it.tcstar, st))
+                    spectrums.add(calculateSpectrumPointListFor(it.years, it.ag, it.f0, it.tcstar, st, q, ss, categoria_sottosuolo))
                 }
             }else if (year >= TempiRitorno.Y2475.years.toDouble())
             {
                 //Year greater or equal 2475, I use data from db
                 sismicState.sismicState.sismogenticState.default_periods[TempiRitorno.Y2475.ordinal].let {
-                spectrums.add(calculateSpectrumPointListFor(it.years, it.ag, it.f0, it.tcstar, st))
+                spectrums.add(calculateSpectrumPointListFor(it.years, it.ag, it.f0, it.tcstar, st, q, ss, categoria_sottosuolo))
             }
             } else
             {
@@ -148,11 +153,11 @@ class SismicActionCalculatorHelper(val mCoordinateHelper: ParametersForCoordinat
                 val period = sismicState.sismicState.sismogenticState.default_periods.firstOrNull { it.years == year }
                 if (period != null)
                 {
-                    spectrums.add(calculateSpectrumPointListFor(period.years, period.ag, period.f0, period.tcstar, st))
+                    spectrums.add(calculateSpectrumPointListFor(period.years, period.ag, period.f0, period.tcstar, st, q, ss, categoria_sottosuolo))
 
                 } else
                 {
-                    interpolatePeriodDataForYear(sismicState.sismicState.sismogenticState.default_periods, year, st).let{
+                    interpolatePeriodDataForYear(sismicState.sismicState.sismogenticState.default_periods, year, st, q, ss, categoria_sottosuolo).let{
                         spectrums.add(it)
                     }
                 }
@@ -162,11 +167,11 @@ class SismicActionCalculatorHelper(val mCoordinateHelper: ParametersForCoordinat
         return spectrums.map { LineDataSet(it.pointList.toEntryList(), String.format(context.getString(R.string.label_year_format), it.year)) }
     }
 
-    private fun interpolatePeriodDataForYear(default_periods: List<PeriodData>, year: Int, st: Double): SpectrumDTO {
+    private fun interpolatePeriodDataForYear(default_periods: List<PeriodData>, year: Int, st: Double, q: Double, ss: Double, categoria_sottosuolo: CategoriaSottosuolo): SpectrumDTO {
         val yearIndex = default_periods.indexOfFirst { it.years > year }
         val interpolatedData = default_periods[yearIndex-1].interpolateWith(default_periods[yearIndex], year)
 
-        return calculateSpectrumPointListFor(interpolatedData.years, interpolatedData.ag, interpolatedData.f0, interpolatedData.tcstar, st)
+        return calculateSpectrumPointListFor(interpolatedData.years, interpolatedData.ag, interpolatedData.f0, interpolatedData.tcstar, st, q, ss, categoria_sottosuolo)
     }
 
     //spectrum data: shows periods based on spectrum data
@@ -180,8 +185,9 @@ class SismicActionCalculatorHelper(val mCoordinateHelper: ParametersForCoordinat
         return spectrums.map { LineDataSet(it.pointList.toEntryList(), String.format(context.getString(R.string.label_year_format), it.year)) }
     }
 
-    private fun calculateSpectrumPointListFor(year: Int, ag: Double, f0: Double, tcStar: Double, st: Double, q: Double = 1.0, ss: Double = 1.0, cc: Double = 1.0): SpectrumDTO {
+    private fun calculateSpectrumPointListFor(year: Int, ag: Double, f0: Double, tcStar: Double, st: Double, q: Double = 1.0, ss: Double = 1.0, categoria_sottosuolo: CategoriaSottosuolo = CategoriaSottosuolo.A): SpectrumDTO {
         val td = (4.0 * ag / 9.8) + 1.6
+        val cc = categoria_sottosuolo.multiplierCC * Math.pow(tcStar, categoria_sottosuolo.expCC)
         val tc = cc * tcStar
         val tb = tc / 3
         val s = ss * st

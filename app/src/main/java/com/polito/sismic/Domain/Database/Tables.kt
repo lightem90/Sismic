@@ -120,6 +120,7 @@ object SpettriDiProgettoInfoTable
     val Q0                      = "q0"
     val ALFA                    = "alfa"
     val KR                      = "kr"
+    val CATEGORIA_SUOLO_STRING         = "categoria_suolo_string"
     val REPORT_ID               = "report_id"
 }
 

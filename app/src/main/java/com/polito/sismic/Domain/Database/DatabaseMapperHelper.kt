@@ -133,7 +133,8 @@ class DatabaseMapperHelper {
                     it.tipologia,
                     it.q0,
                     it.alfa,
-                    it.kr)
+                    it.kr,
+                    it.categoria_suolo_string)
         }
     }
 
@@ -142,13 +143,7 @@ class DatabaseMapperHelper {
             SismicParametersState(it.vita_nominale,
                     it.classe_uso,
                     it.vita_reale,
-                    it.ag,
-                    it.f0,
-                    it.tg,
-                    it.slo,
-                    it.sld,
-                    it.slv,
-                    it.slc)
+                    listOf())
         }
     }
 
@@ -227,11 +222,11 @@ class DatabaseMapperHelper {
     }
 
     private fun createSpectrumForDb(reportId: Int, projectSpectrumState: ProjectSpectrumState): DatabaseSection = with(projectSpectrumState) {
-        return DatabaseParametriSpettri(categoria_suolo, categoria_topografica, if(classe_duttilita) "CDA" else "CDB", tipologia, q0, alfa, kr, reportId)
+        return DatabaseParametriSpettri(categoria_suolo, categoria_topografica, if(classe_duttilita) "CDA" else "CDB", tipologia, q0, alfa, kr, categoria_suolo_string, reportId)
     }
 
     private fun createSismicForDb(reportId: Int, sismicParametersState: SismicParametersState): DatabaseSection = with(sismicParametersState) {
-        return DatabaseParametriSismici(vitaNominale, classeUso, vitaReale, ag, f0, tg, slo, sld, slv, slc, reportId)
+        return DatabaseParametriSismici(vitaNominale, classeUso, vitaReale, reportId)
     }
 
     private fun createLocalizationForDb(reportId: Int, localizationState: LocalizationState): DatabaseLocalizationSection {

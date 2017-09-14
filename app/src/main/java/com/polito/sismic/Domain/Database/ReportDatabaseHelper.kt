@@ -12,7 +12,7 @@ class ReportDatabaseHelper(ctx: Context = App.instance) : ManagedSQLiteOpenHelpe
 
     companion object {
         val DB_NAME = "reportdatabase.db"
-        val DB_VERSION = 12
+        val DB_VERSION = 13
         val instance by lazy { ReportDatabaseHelper() }
     }
 
@@ -114,6 +114,7 @@ class ReportDatabaseHelper(ctx: Context = App.instance) : ManagedSQLiteOpenHelpe
                         SpettriDiProgettoInfoTable.Q0 to REAL,
                         SpettriDiProgettoInfoTable.ALFA to REAL,
                         SpettriDiProgettoInfoTable.KR to REAL,
+                        SpettriDiProgettoInfoTable.CATEGORIA_SUOLO_STRING to TEXT,
                         SpettriDiProgettoInfoTable.REPORT_ID to INTEGER)
         )
 
