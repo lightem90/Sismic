@@ -50,6 +50,7 @@
         <item>T3</item>
         <item>T4</item>
     </string-array>
+    
     <string-array name="classi_calcestruzzo">
         <item>C8/10</item>
         <item>C12/15</item>
@@ -73,8 +74,6 @@
     <string-array name="solaio_pesi">
         <item>12+4</item>
         <item>12+5</item>
-        <item>14+4</item>
-        <item>14+5</item>
         <item>16+4</item>
         <item>16+5</item>
         <item>18+4</item>
@@ -85,34 +84,30 @@
         <item>22+5</item>
         <item>24+4</item>
         <item>24+5</item>
-        <item>30+4</item>
-        <item>30+5</item>
+        <item>28+4</item>
+        <item>28+5</item>
     </string-array>
 
-    <string-array name="solaio_int_pesi">
-        <item>221</item>
-        <item>246</item>
-        <item>232</item>
-        <item>257</item>
-        <item>255</item>
-        <item>280</item>
-        <item>270</item>
-        <item>295</item>
-        <item>286</item>
-        <item>311</item>
-        <item>304</item>
-        <item>329</item>
-        <item>321</item>
-        <item>346</item>
-        <item>369</item>
-        <item>394</item>
-    </string-array>
+    <double-array name="solaio_int_pesi">
+        <item>2.50</item>
+        <item>2.75</item>
+        <item>2.85</item>
+        <item>3.10</item>
+        <item>3.00</item>
+        <item>3.25</item>
+        <item>3.20</item>
+        <item>3.45</item>
+        <item>3.40</item>
+        <item>3.65</item>
+        <item>3.65</item>
+        <item>3.90</item>
+        <item>4.05</item>
+        <item>4.30</item>
+    </double-array>
 
     <string-array name="copertura_pesi">
         <item>12+4</item>
         <item>12+5</item>
-        <item>14+4</item>
-        <item>14+5</item>
         <item>16+4</item>
         <item>16+5</item>
         <item>18+4</item>
@@ -123,28 +118,26 @@
         <item>22+5</item>
         <item>24+4</item>
         <item>24+5</item>
-        <item>30+4</item>
-        <item>30+5</item>
+        <item>28+4</item>
+        <item>28+5</item>
     </string-array>
 
-    <string-array name="copertura_int_pesi">
-        <item>221</item>
-        <item>246</item>
-        <item>232</item>
-        <item>257</item>
-        <item>255</item>
-        <item>280</item>
-        <item>270</item>
-        <item>295</item>
-        <item>286</item>
-        <item>311</item>
-        <item>304</item>
-        <item>329</item>
-        <item>321</item>
-        <item>346</item>
-        <item>369</item>
-        <item>394</item>
-    </string-array>
+    <double-array name="copertura_int_pesi">
+        <item>2.50</item>
+        <item>2.75</item>
+        <item>2.85</item>
+        <item>3.10</item>
+        <item>3.00</item>
+        <item>3.25</item>
+        <item>3.20</item>
+        <item>3.45</item>
+        <item>3.40</item>
+        <item>3.65</item>
+        <item>3.65</item>
+        <item>3.90</item>
+        <item>4.05</item>
+        <item>4.30</item>
+    </double-array>
 
     <string-array name="cat_tipologia">
         <item>Strutture a telaio, pareti accoppiate o miste</item>
