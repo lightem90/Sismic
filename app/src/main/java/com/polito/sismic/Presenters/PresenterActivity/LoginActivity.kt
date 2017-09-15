@@ -24,10 +24,17 @@ import android.Manifest.permission.READ_CONTACTS
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import com.polito.sismic.Domain.UserDetails
 import com.polito.sismic.Interactors.Helpers.LoginSharedPreferences
 import com.polito.sismic.R
 
 import kotlinx.android.synthetic.main.activity_login.*
+import org.json.JSONObject
+import java.io.BufferedReader
+import java.io.Console
+import java.io.InputStreamReader
+import java.net.HttpURLConnection
+import java.net.URL
 
 /**
  * A login screen that offers login via email/password.
@@ -249,29 +256,67 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
      */
     inner class UserLoginTask internal constructor(private val mEmail: String,
                                                    private val mPassword: String,
-                                                   private val caller : Activity) : AsyncTask<Void, Void, Boolean>() {
+                                                   private val caller : Activity) : AsyncTask<Void, Void, JSONObject?>() {
 
-        override fun doInBackground(vararg params: Void): Boolean? {
+        private val SERVER_ADDR_lOGIN = "https://polito/sismic/login?"
+        override fun doInBackground(vararg params: Void): JSONObject? {
             // TODO: attempt authentication against a network service.
             LoginSharedPreferences.demoLogin(applicationContext)
             try {
-                return true
+                val sb = StringBuilder(SERVER_ADDR_lOGIN)
+                sb.append("username=")
+                sb.append(mEmail)
+                sb.append("&secret=")
+                sb.append(mPassword)
+
+                val urlUse = URL(sb.toString())
+                val conn: HttpURLConnection?
+                conn = urlUse.openConnection() as HttpURLConnection
+                    conn.requestMethod = "POST"
+                conn.connectTimeout = 5000
+                val status = conn.responseCode
+
+                when (status) {
+                    200, 201 -> {
+                        val br = BufferedReader(InputStreamReader(conn.inputStream))
+                        val sb2 = StringBuilder()
+                        var line: String? = null
+                        while ({ line = br.readLine(); line }() != null) {
+                            sb2.append(line + "\n")
+                        }
+                        br.close()
+                        return JSONObject(sb2.toString())
+                    }
+                }
             } catch (e: InterruptedException) {
-                return false
+                return null
             }
+            return null
         }
 
-        override fun onPostExecute(success: Boolean?) {
+        override fun onPostExecute(success: JSONObject?) {
             mAuthTask = null
             showProgress(false)
 
-            if (success!!) {
-
-                caller.startActivity(Intent(caller, PresenterActivity::class.java))
-                finish()
-            } else {
-                password.error = getString(R.string.error_incorrect_password)
-                password.requestFocus()
+            success?.let {
+                val results = it.getJSONObject("result").getJSONArray("result_data")
+                if (results[0].toString().equals("success")) {
+                    LoginSharedPreferences.login(UserDetails(
+                            results[1].toString(),
+                            results[2].toString(),
+                            results[3].toString(),
+                            results[4].toString(),
+                            results[5].toString(),
+                            results[6].toString(),
+                            results[7].toString()),
+                            caller
+                    )
+                    caller.startActivity(Intent(caller, PresenterActivity::class.java))
+                    finish()
+                } else {
+                    password.error = getString(R.string.error_incorrect_password)
+                    password.requestFocus()
+                }
             }
         }
 

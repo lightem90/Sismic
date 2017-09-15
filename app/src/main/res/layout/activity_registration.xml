@@ -1,208 +1,172 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_centerInParent="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:showDividers="middle"
-        android:divider="@drawable/divider"
-        android:background="@color/white">
+        android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/profile_img_canvas"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="0.6"
-            android:orientation="horizontal"
-            android:background="@color/light_grey">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <ImageView
-                android:id="@+id/profile_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:alpha="0.5"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                app:srcCompat="@drawable/ic_person_black_24dp" />
+
+            <EditText
+                android:id="@+id/et_name"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:srcCompat="@drawable/ic_person_black_24dp"
-                android:alpha="0.5"/>
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:hint="@string/et_name_hint"
+                android:inputType="text" />
 
         </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/profile_details_canvas"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="0.4"
-        android:orientation="vertical"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin">
-
-        <ScrollView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-            <LinearLayout
-                android:orientation="vertical"
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:alpha="0.5"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                app:srcCompat="@drawable/ic_location_city_black_24dp" />
+
+            <EditText
+                android:id="@+id/et_address"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:hint="@string/et_address_hint"
+                android:inputType="text" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+        </LinearLayout>
 
-                    <ImageView
-                        app:srcCompat="@drawable/ic_person_black_24dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:paddingRight="@dimen/activity_horizontal_margin"
-                        android:alpha="0.5"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-                    <EditText
-                        android:id="@+id/et_name"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:hint="@string/et_name_hint"
-                        android:inputType="text"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:alpha="0.5"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                app:srcCompat="@drawable/ic_email_black_24dp" />
 
-                </LinearLayout>
+            <EditText
+                android:id="@+id/et_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:hint="@string/et_email_hint"
+                android:inputType="textEmailAddress" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+        </LinearLayout>
 
-                    <ImageView
-                        app:srcCompat="@drawable/ic_location_city_black_24dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:paddingRight="@dimen/activity_horizontal_margin"
-                        android:alpha="0.5"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-                    <EditText
-                        android:id="@+id/et_address"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:hint="@string/et_address_hint"
-                        android:inputType="text"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:alpha="0.5"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                app:srcCompat="@drawable/ic_local_phone_black_24dp" />
 
-                </LinearLayout>
+            <EditText
+                android:id="@+id/et_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:hint="@string/et_phone_hint"
+                android:inputType="textEmailAddress" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+        </LinearLayout>
 
-                    <ImageView
-                        app:srcCompat="@drawable/ic_email_black_24dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:alpha="0.5"
-                        android:paddingRight="@dimen/activity_horizontal_margin"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-                    <EditText
-                        android:id="@+id/et_email"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:hint="@string/et_email_hint"
-                        android:inputType="textEmailAddress"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:alpha="0.5"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                app:srcCompat="@drawable/ic_assignment_ind_black_24dp" />
 
-                </LinearLayout>
+            <EditText
+                android:id="@+id/et_qualification"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:hint="@string/et_qualification_hint"
+                android:inputType="textEmailAddress" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+        </LinearLayout>
 
-                    <ImageView
-                        app:srcCompat="@drawable/ic_local_phone_black_24dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:alpha="0.5"
-                        android:paddingRight="@dimen/activity_horizontal_margin"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-                    <EditText
-                        android:id="@+id/et_phone"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:hint="@string/et_phone_hint"
-                        android:inputType="textEmailAddress"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:alpha="0.5"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                app:srcCompat="@drawable/ic_format_indent_increase_black_24dp" />
 
-                </LinearLayout>
+            <EditText
+                android:id="@+id/et_register"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:hint="@string/et_register_hint"
+                android:inputType="textEmailAddress" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+        </LinearLayout>
 
-                    <ImageView
-                        app:srcCompat="@drawable/ic_assignment_ind_black_24dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:alpha="0.5"
-                        android:paddingRight="@dimen/activity_horizontal_margin"/>
+        <EditText
+            android:id="@+id/et_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:hint="@string/et_password_hint"
+            android:inputType="textWebPassword" />
 
-                    <EditText
-                        android:id="@+id/et_qualification"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:hint="@string/et_qualification_hint"
-                        android:inputType="textEmailAddress"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        app:srcCompat="@drawable/ic_format_indent_increase_black_24dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:alpha="0.5"
-                        android:paddingRight="@dimen/activity_horizontal_margin"/>
-
-                    <EditText
-                        android:id="@+id/et_register"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:hint="@string/et_register_hint"
-                        android:inputType="textEmailAddress"/>
-
-                </LinearLayout>
-
-                <Button
-                    android:id="@+id/btn_reg_confirm"
-                    android:layout_gravity="end"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/activity_vertical_margin"
-                    android:background="@color/colorPrimaryDark"
-                    android:text="@string/confir_reg_btn"/>
-
-            </LinearLayout>
-
-        </ScrollView>
+        <Button
+            android:id="@+id/btn_reg_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:background="@color/colorPrimaryDark"
+            android:text="@string/confir_reg_btn" />
 
     </LinearLayout>
 
-    </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
@@ -210,10 +174,9 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:clickable="true"
-        app:srcCompat="@drawable/ic_camera_alt_black_24dp"
         app:layout_anchor="@id/profile_img_canvas"
-        app:layout_anchorGravity="bottom|right|end"/>
-
+        app:layout_anchorGravity="bottom|right|end"
+        app:srcCompat="@drawable/ic_camera_alt_black_24dp" />
 
 
 </android.support.design.widget.CoordinatorLayout>

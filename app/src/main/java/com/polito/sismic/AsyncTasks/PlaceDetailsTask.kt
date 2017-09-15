@@ -25,13 +25,13 @@ class PlaceDetailsTask(fragmentView: View, val context: Context) : AsyncTask<Pla
     private var  m_dialog : ProgressBar? = null
 
     init {
-        state_parameter = fragmentView.findViewById<ParameterReportLayout>(R.id.country_parameter)
-        region_parameter = fragmentView.findViewById<ParameterReportLayout>(R.id.region_parameter)
-        province_parameter = fragmentView.findViewById<ParameterReportLayout>(R.id.province_parameter)
-        comune_parameter = fragmentView.findViewById<ParameterReportLayout>(R.id.comune_parameter)
-        address_parameter = fragmentView.findViewById<ParameterReportLayout>(R.id.address_parameter)
-        cap_parameter = fragmentView.findViewById<ParameterReportLayout>(R.id.cap_parameter)
-        m_dialog = fragmentView.findViewById<ProgressBar>(R.id.update_position_progressbar)
+        state_parameter = fragmentView.findViewById(R.id.country_parameter)
+        region_parameter = fragmentView.findViewById(R.id.region_parameter)
+        province_parameter = fragmentView.findViewById(R.id.province_parameter)
+        comune_parameter = fragmentView.findViewById(R.id.comune_parameter)
+        address_parameter = fragmentView.findViewById(R.id.address_parameter)
+        cap_parameter = fragmentView.findViewById(R.id.cap_parameter)
+        m_dialog = fragmentView.findViewById(R.id.update_position_progressbar)
     }
 
 
@@ -51,7 +51,7 @@ class PlaceDetailsTask(fragmentView: View, val context: Context) : AsyncTask<Pla
         sb.append("it")
 
         val urlUse = URL(sb.toString())
-        var conn: HttpURLConnection?
+        val conn: HttpURLConnection?
         conn = urlUse.openConnection() as HttpURLConnection
         conn.requestMethod = "GET"
         conn.connectTimeout = 5000
@@ -62,7 +62,7 @@ class PlaceDetailsTask(fragmentView: View, val context: Context) : AsyncTask<Pla
                 //Mi fa cagare ma..
                 val br = BufferedReader(InputStreamReader(conn.inputStream))
                 val sb2 = StringBuilder()
-                var line: String? = null;
+                var line: String? = null
                 while ({ line = br.readLine(); line }() != null) {
                     sb2.append(line + "\n")
                 }
@@ -70,7 +70,7 @@ class PlaceDetailsTask(fragmentView: View, val context: Context) : AsyncTask<Pla
                 return JSONObject(sb2.toString())
             }
         }
-        return null;
+        return null
     }
 
     //UI thread
@@ -83,14 +83,14 @@ class PlaceDetailsTask(fragmentView: View, val context: Context) : AsyncTask<Pla
             return super.onPostExecute(result)
         }
 
-        var addressComponents = result.getJSONObject("result")?.getJSONArray("address_components")
+        val addressComponents = result.getJSONObject("result")?.getJSONArray("address_components")
         if (addressComponents != null) {
             for(i in 0 until addressComponents.length())
             {
-                var obj = addressComponents.getJSONObject(i)
+                val obj = addressComponents.getJSONObject(i)
                 val typesArray = obj.getJSONArray("types")
                 for(j in 0 until typesArray.length()) {
-                    var type = typesArray.get(j).toString()
+                    val type = typesArray.get(j).toString()
                     if (type.equals("country"))
                         state_parameter?.setParameterValue(obj.getString("long_name"))
 
