@@ -192,15 +192,15 @@ fun String.toUri() : Uri {
     return Uri.parse(this)
 }
 
-fun List<Entry>.toDoublePairList() : List<Pair<Double, Double>>
+fun List<Entry>.toSpectrumPointList() : List<SpectrumPoint>
 {
-    return map { Pair(it.x.toDouble(), it.y.toDouble()) }
+    return map { SpectrumPoint(it.x.toDouble(), it.y.toDouble()) }
 }
 
 
-fun List<Pair<Double, Double>>.toEntryList() : List<Entry>
+fun List<SpectrumPoint>.toEntryList() : List<Entry>
 {
-    return map { Entry(it.first.toFloat(), it.second.toFloat()) }
+    return map { Entry(it.x.toFloat(), it.y.toFloat()) }
 }
 
 fun PeriodData.interpolateWith(next : PeriodData, newYear : Int) : PeriodData

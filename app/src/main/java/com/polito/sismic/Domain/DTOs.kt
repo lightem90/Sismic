@@ -201,7 +201,8 @@ data class LocalizationState(var latitude: Double,
 data class SismicParametersState(var vitaNominale: Int,
                                  var classeUso: Double,
                                  var vitaReale: Double,
-                                 var limit_states: List<LimitState>) : Parcelable {
+                                 var limit_states: List<LimitState>,
+                                 var spectrums : List<SpectrumDTO> = listOf()) : Parcelable {
     constructor() : this(0, 0.0, 0.0, listOf())
 
     constructor(source: Parcel) : this(
@@ -229,18 +230,15 @@ data class SismicParametersState(var vitaNominale: Int,
     }
 }
 
-data class LimitState(var stato: StatiLimite,
-                      var period: List<PeriodData>) : Parcelable {
+data class LimitState(var stato: StatiLimite) : Parcelable {
     constructor(source: Parcel) : this(
-            StatiLimite.values()[source.readInt()],
-            source.createTypedArrayList(PeriodData.CREATOR)
+            StatiLimite.values()[source.readInt()]
     )
 
     override fun describeContents() = 0
 
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
         writeInt(stato.ordinal)
-        writeTypedList(period)
     }
 
     companion object {
@@ -254,7 +252,8 @@ data class LimitState(var stato: StatiLimite,
 
 
 data class SismogeneticState(var closedNodeData: List<NeighboursNodeData>,
-                             var default_periods: List<PeriodData>) : Parcelable {
+                             var default_periods: List<PeriodData>,
+                             var default_spectrum : List<SpectrumDTO> = listOf()) : Parcelable {
 
     constructor() : this(listOf(), listOf())
     constructor(source: Parcel) : this(
@@ -334,6 +333,28 @@ data class PeriodData(val years: Int, val ag: Double, val f0: Double, val tcstar
     }
 }
 
+data class SpectrumPoint(val x: Double, val y: Double) : Parcelable {
+    constructor(source: Parcel) : this(
+            source.readDouble(),
+            source.readDouble()
+    )
+
+    override fun describeContents() = 0
+
+    override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
+        writeDouble(x)
+        writeDouble(y)
+    }
+
+    companion object {
+        @JvmField
+        val CREATOR: Parcelable.Creator<SpectrumPoint> = object : Parcelable.Creator<SpectrumPoint> {
+            override fun createFromParcel(source: Parcel): SpectrumPoint = SpectrumPoint(source)
+            override fun newArray(size: Int): Array<SpectrumPoint?> = arrayOfNulls(size)
+        }
+    }
+}
+
 data class SpectrumDTO(var year: Int,
                        var ag: Double,
                        var f0: Double,
@@ -347,8 +368,50 @@ data class SpectrumDTO(var year: Int,
                        var tb: Double,
                        var tc: Double,
                        var td: Double,
-                       var pointList: List<Pair<Double, Double>>) {
+                       var pointList: List<SpectrumPoint>) : Parcelable {
+    constructor(source: Parcel) : this(
+            source.readInt(),
+            source.readDouble(),
+            source.readDouble(),
+            source.readDouble(),
+            source.readDouble(),
+            source.readDouble(),
+            source.readDouble(),
+            source.readDouble(),
+            source.readDouble(),
+            source.readDouble(),
+            source.readDouble(),
+            source.readDouble(),
+            source.readDouble(),
+            source.createTypedArrayList(SpectrumPoint.CREATOR)
+    )
 
+    override fun describeContents() = 0
+
+    override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
+        writeInt(year)
+        writeDouble(ag)
+        writeDouble(f0)
+        writeDouble(tcStar)
+        writeDouble(ss)
+        writeDouble(cc)
+        writeDouble(st)
+        writeDouble(q)
+        writeDouble(s)
+        writeDouble(ni)
+        writeDouble(tb)
+        writeDouble(tc)
+        writeDouble(td)
+        writeTypedList(pointList)
+    }
+
+    companion object {
+        @JvmField
+        val CREATOR: Parcelable.Creator<SpectrumDTO> = object : Parcelable.Creator<SpectrumDTO> {
+            override fun createFromParcel(source: Parcel): SpectrumDTO = SpectrumDTO(source)
+            override fun newArray(size: Int): Array<SpectrumDTO?> = arrayOfNulls(size)
+        }
+    }
 }
 
 data class NeighboursNodeSquare(var NE: NeighboursNodeData,
@@ -391,37 +454,35 @@ data class NeighboursNodeSquare(var NE: NeighboursNodeData,
     }
 }
 
-data class ProjectSpectrumState(var categoria_suolo: Double,
+data class ProjectSpectrumState(var categoria_suolo: String,
                                 var categoria_topografica: Double,
                                 var classe_duttilita: Boolean,
                                 var tipologia: String,
                                 var q0: Double,
                                 var alfa: Double,
                                 var kr: Double,
-                                var categoria_suolo_string: String) : Parcelable {
-    constructor() : this(1.0, 1.0, true, "", 1.0, 1.0, 1.0, "A")
+                                var spectrums : List<SpectrumDTO> = listOf()) : Parcelable {
+    constructor() : this("A", 1.0, true, "", 1.0, 1.0, 1.0)
     constructor(source: Parcel) : this(
-            source.readDouble(),
+            source.readString(),
             source.readDouble(),
             1 == source.readInt(),
             source.readString(),
             source.readDouble(),
             source.readDouble(),
-            source.readDouble(),
-            source.readString()
+            source.readDouble()
     )
 
     override fun describeContents() = 0
 
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
-        writeDouble(categoria_suolo)
+        writeString(categoria_suolo)
         writeDouble(categoria_topografica)
-        writeInt((if (classe_duttilita) 1 else 0))
+        writeInt(if (classe_duttilita) 1 else 0)
         writeString(tipologia)
         writeDouble(q0)
         writeDouble(alfa)
         writeDouble(kr)
-        writeString(categoria_suolo_string)
     }
 
     companion object {

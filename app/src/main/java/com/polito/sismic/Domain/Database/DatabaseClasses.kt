@@ -135,6 +135,7 @@ data class DatabaseDatiSismogenetici(var map: MutableMap<String, Any?>) : Databa
     var so_lat: Double by map
     var so_lon: Double by map
     var so_dist: Double by map
+    var data_list : String by map
     var report_id: Int by map
 
     constructor(ne_id: Int,
@@ -153,6 +154,7 @@ data class DatabaseDatiSismogenetici(var map: MutableMap<String, Any?>) : Databa
                 so_lat: Double,
                 so_lon: Double,
                 so_dist: Double,
+                data_list: String,
                 report_id: Int) : this(HashMap()) {
         this.ne_id = ne_id
         this.ne_lat = ne_lat
@@ -170,6 +172,7 @@ data class DatabaseDatiSismogenetici(var map: MutableMap<String, Any?>) : Databa
         this.so_lat = so_lat
         this.so_lon = so_lon
         this.so_dist = so_dist
+        this.data_list = data_list
         this.report_id = report_id
     }
 }
@@ -180,15 +183,18 @@ data class DatabaseParametriSismici(var map: MutableMap<String, Any?>) : Databas
     var vita_nominale: Int by map
     var classe_uso: Double by map
     var vita_reale: Double by map
+    var data_list : String by map
     var report_id: Int by map
 
     constructor(vita_nominale: Int,
                 classe_uso: Double,
                 vita_reale: Double,
+                data_list: String,
                 report_id: Int) : this(HashMap()) {
         this.vita_nominale = vita_nominale
         this.classe_uso = classe_uso
         this.vita_reale = vita_reale
+        this.data_list = data_list
         this.report_id = report_id
     }
 }
@@ -196,24 +202,24 @@ data class DatabaseParametriSismici(var map: MutableMap<String, Any?>) : Databas
 data class DatabaseParametriSpettri(var map: MutableMap<String, Any?>) : DatabaseSection {
 
     var _id: Int by map
-    var categoria_suolo: Double by map
+    var categoria_suolo: String by map
     var categoria_topografica: Double by map
     var classe_duttilita: String by map
     var tipologia: String by map
     var q0: Double by map
     var alfa: Double by map
     var kr : Double by map
-    var categoria_suolo_string : String by map
+    var data_list : String by map
     var report_id: Int by map
 
-    constructor(categoria_suolo: Double,
+    constructor(categoria_suolo: String,
                 categoria_topografica: Double,
                 classe_duttilita: String,
                 tipologia: String,
                 q0: Double,
                 alfa: Double,
                 kr : Double,
-                categoria_suolo_string : String,
+                data_list : String,
                 report_id: Int) : this(HashMap()) {
         this.categoria_suolo = categoria_suolo
         this.categoria_topografica = categoria_topografica
@@ -222,7 +228,7 @@ data class DatabaseParametriSpettri(var map: MutableMap<String, Any?>) : Databas
         this.q0 = q0
         this.alfa = alfa
         this.kr = kr
-        this.categoria_suolo_string = categoria_suolo_string
+        this.data_list = data_list
         this.report_id = report_id
     }
 }

@@ -86,6 +86,7 @@ class ReportDatabaseHelper(ctx: Context = App.instance) : ManagedSQLiteOpenHelpe
                         DatiSismogeneticiInfoTable.SOLat to REAL,
                         DatiSismogeneticiInfoTable.SOLon to REAL,
                         DatiSismogeneticiInfoTable.SODist to REAL,
+                        ParametriSismiciInfoTable.DATA_LIST to TEXT,
                         DatiSismogeneticiInfoTable.REPORT_ID to INTEGER)
         )
 
@@ -94,27 +95,21 @@ class ReportDatabaseHelper(ctx: Context = App.instance) : ManagedSQLiteOpenHelpe
                         ParametriSismiciInfoTable.VITA_NOMINALE to INTEGER,
                         ParametriSismiciInfoTable.CLASSE_USO to REAL,
                         ParametriSismiciInfoTable.VITA_REALE to REAL,
-                        ParametriSismiciInfoTable.AG to REAL,
-                        ParametriSismiciInfoTable.F0 to REAL,
-                        ParametriSismiciInfoTable.TC to REAL,
-                        ParametriSismiciInfoTable.SLO to INTEGER,
-                        ParametriSismiciInfoTable.SLC to INTEGER,
-                        ParametriSismiciInfoTable.SLV to INTEGER,
-                        ParametriSismiciInfoTable.SLD to INTEGER,
+                        ParametriSismiciInfoTable.DATA_LIST to TEXT,
                         ParametriSismiciInfoTable.REPORT_ID to INTEGER)
         )
 
 
         db.createTable(SpettriDiProgettoInfoTable.NAME, ifNotExists = true,
                 columns = *arrayOf(SpettriDiProgettoInfoTable.ID to SqlType.create("INTEGER PRIMARY KEY AUTOINCREMENT"),
-                        SpettriDiProgettoInfoTable.CATEGORIA_SUOLO to REAL,
+                        SpettriDiProgettoInfoTable.CATEGORIA_SUOLO to TEXT,
                         SpettriDiProgettoInfoTable.CATEGORIA_TOPOGRAFICA to REAL,
                         SpettriDiProgettoInfoTable.CLASSE_DUTTILITA to TEXT,
                         SpettriDiProgettoInfoTable.TIPOLOGIA to TEXT,
                         SpettriDiProgettoInfoTable.Q0 to REAL,
                         SpettriDiProgettoInfoTable.ALFA to REAL,
                         SpettriDiProgettoInfoTable.KR to REAL,
-                        SpettriDiProgettoInfoTable.CATEGORIA_SUOLO_STRING to TEXT,
+                        ParametriSismiciInfoTable.DATA_LIST to TEXT,
                         SpettriDiProgettoInfoTable.REPORT_ID to INTEGER)
         )
 

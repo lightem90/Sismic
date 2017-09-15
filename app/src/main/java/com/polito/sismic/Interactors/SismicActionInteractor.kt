@@ -12,8 +12,8 @@ import com.polito.sismic.Interactors.Helpers.SismicActionCalculatorHelper
  */
 
 //Handles requests for seismic spectrum. the helper and the calculator are used to calculate the various parameters and graphs point
-class SismicActionParametersInteractor(val mReportManager: ReportManager,
-                                       val mContext: Context)
+class SismicActionInteractor(val mReportManager: ReportManager,
+                             val mContext: Context)
 {
     private val mCoordinateHelper: ParametersForCoordinateHelper = ParametersForCoordinateHelper(mContext)
     private val mSismicActionCalculatorHelper: SismicActionCalculatorHelper = SismicActionCalculatorHelper(mCoordinateHelper)
@@ -25,6 +25,12 @@ class SismicActionParametersInteractor(val mReportManager: ReportManager,
     // lat and long are updated
     fun mustRecalcReturnTimesParameters(flag: Boolean = true) {
         mustRecalcReturnTimesParameters = flag
+        if (flag)
+        {
+            mustRecalcDefaultSpectrum = true
+            mustRecalcLimitState = true
+            mustRecalcSpectrum = true
+        }
     }
 
     fun calculateReturnPeriodsParameters() {

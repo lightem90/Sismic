@@ -100,7 +100,7 @@ class DatiSismoGeneticiReportFragment : BaseReportFragment() {
 
         with (report_spettrodirisposta_chart)
         {
-            mDefaultReturnTimeRequest?.onDefaultReturnTimesRequested()?.let {
+            mDefaultReturnTimeRequest?.onDefaultReturnTimesRequested().let {
                 data = LineData(it)
                 invalidate()
             }

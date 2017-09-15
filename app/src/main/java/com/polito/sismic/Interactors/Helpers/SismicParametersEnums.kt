@@ -77,13 +77,13 @@ enum class Alfa(val multiplier: Double)
     VI(1.2)
 }
 
-enum class CategoriaSottosuolo(val multiplierSS: Double, val multiplierCC: Double, val expCC: Double)
+enum class CategoriaSottosuolo(val multiplierCC: Double, val expCC: Double)
 {
-    A(1.0, 1.0, 1.0),
-    B(1.2, 1.1, -0.2),
-    C(1.5, 1.05, -0.33),
-    D(1.8, 1.25, -0.5),
-    E(1.6, 1.25, -0.4)
+    A(1.0, 1.0),
+    B(1.1, -0.2),
+    C(1.05, -0.33),
+    D(1.25, -0.5),
+    E(1.25, -0.4)
 }
 
 enum class CategoriaTopografica(val multiplier: Double)

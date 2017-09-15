@@ -16,7 +16,9 @@ import com.stepstone.stepper.StepperLayout
 import kotlinx.android.synthetic.main.spettri_progetto_report_layout.*
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
+import com.polito.sismic.Interactors.Helpers.CategoriaTopografica
 
 
 class SpettriDiProgettoReportFragment : BaseReportFragment() {
@@ -86,6 +88,16 @@ class SpettriDiProgettoReportFragment : BaseReportFragment() {
             }
             override fun onNothingSelected(parent: AdapterView<out Adapter>?) {  }
         }
+
+        update_graph.setOnClickListener {
+            with (report_spettrodirisposta_chart)
+            {
+                mReturnTimeRequest?.onReturnTimesRequested().let {
+                    data = LineData(it)
+                    invalidate()
+                }
+            }
+        }
     }
 
     private fun updateMoltiplicatoreVisibility(pos: Int)
@@ -129,12 +141,12 @@ class SpettriDiProgettoReportFragment : BaseReportFragment() {
                         .indexOfFirst { it.name == categoria_suolo })
     }
 
-    fun selectCategoriaTopografica(categoria_topografica: Double)
+    fun selectCategoriaTopografica(categoria_topografica_multiplier: Double)
     {
         //iterates all spinners element looking for the category requested
         categoria_topografica_parameter
-                .setSelection(CategoriaSottosuolo.values()
-                        .indexOfFirst { it.multiplierSS == categoria_topografica })
+                .setSelection(CategoriaTopografica.values()
+                        .indexOfFirst { it.multiplier == categoria_topografica_multiplier })
     }
 
     //callback to activity updates domain instance for activity and all existing and future fragments

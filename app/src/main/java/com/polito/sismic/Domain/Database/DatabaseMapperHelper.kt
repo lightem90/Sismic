@@ -134,7 +134,7 @@ class DatabaseMapperHelper {
                     it.q0,
                     it.alfa,
                     it.kr,
-                    it.categoria_suolo_string)
+                    listOf())
         }
     }
 
@@ -143,6 +143,7 @@ class DatabaseMapperHelper {
             SismicParametersState(it.vita_nominale,
                     it.classe_uso,
                     it.vita_reale,
+                    listOf(),
                     listOf())
         }
     }
@@ -154,7 +155,7 @@ class DatabaseMapperHelper {
                     NeighboursNodeData(it.se_id.toString(), it.se_lon, it.se_lat, it.se_dist),
                     NeighboursNodeData(it.so_id.toString(), it.so_lon, it.so_lat, it.so_dist),
                     NeighboursNodeData(it.no_id.toString(), it.no_lon, it.no_lat, it.no_dist)
-                ), listOf()
+                ), listOf(), listOf()
             )
         }
     }
@@ -222,11 +223,11 @@ class DatabaseMapperHelper {
     }
 
     private fun createSpectrumForDb(reportId: Int, projectSpectrumState: ProjectSpectrumState): DatabaseSection = with(projectSpectrumState) {
-        return DatabaseParametriSpettri(categoria_suolo, categoria_topografica, if(classe_duttilita) "CDA" else "CDB", tipologia, q0, alfa, kr, categoria_suolo_string, reportId)
+        return DatabaseParametriSpettri(categoria_suolo, categoria_topografica, if(classe_duttilita) "CDA" else "CDB", tipologia, q0, alfa, kr, spectrums.joinToString { "-" }, reportId)
     }
 
     private fun createSismicForDb(reportId: Int, sismicParametersState: SismicParametersState): DatabaseSection = with(sismicParametersState) {
-        return DatabaseParametriSismici(vitaNominale, classeUso, vitaReale, reportId)
+        return DatabaseParametriSismici(vitaNominale, classeUso, vitaReale, spectrums.joinToString { "-" }, reportId)
     }
 
     private fun createLocalizationForDb(reportId: Int, localizationState: LocalizationState): DatabaseLocalizationSection {
@@ -262,6 +263,7 @@ class DatabaseMapperHelper {
                 closedNodeData[3].latitude,
                 closedNodeData[3].longitude,
                 closedNodeData[3].distance,
+                default_spectrum.joinToString { "-" },
                 reportId)
     }
 }

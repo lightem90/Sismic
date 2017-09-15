@@ -13,7 +13,7 @@ import com.polito.sismic.Domain.Report
 import com.polito.sismic.Extensions.getCustomAdapter
 import com.polito.sismic.Extensions.toast
 import com.polito.sismic.Interactors.*
-import com.polito.sismic.Interactors.SismicActionParametersInteractor
+import com.polito.sismic.Interactors.SismicActionInteractor
 import com.polito.sismic.Interactors.Helpers.UserActionType
 import com.polito.sismic.Presenters.Adapters.ReportFragmentsAdapter
 import com.polito.sismic.Presenters.ReportActivity.Fragments.*
@@ -34,7 +34,7 @@ class ReportActivity : AppCompatActivity(),
 
     private lateinit var mGoogleApiClient: GoogleApiClient
     private lateinit var mUserActionInteractor: UserActionInteractor
-    private lateinit var mSismicParameterInteractor: SismicActionParametersInteractor
+    private lateinit var mSismicParameterInteractor: SismicActionInteractor
     private var mReportManager: ReportManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -147,7 +147,7 @@ class ReportActivity : AppCompatActivity(),
         //To handle user action, it uses other interactor to pilot the ui changes to the domain
         mReportManager = reportManager
         mUserActionInteractor = UserActionInteractor(reportManager, this)
-        mSismicParameterInteractor = SismicActionParametersInteractor(reportManager, this)
+        mSismicParameterInteractor = SismicActionInteractor(reportManager, this)
         stepperLayout.adapter = ReportFragmentsAdapter(supportFragmentManager, this, reportManager)
         fabtoolbar_fab.setOnClickListener { fabtoolbar.show() }
         pic.setOnClickListener { mUserActionInteractor.onActionRequested(UserActionType.PicRequest) }

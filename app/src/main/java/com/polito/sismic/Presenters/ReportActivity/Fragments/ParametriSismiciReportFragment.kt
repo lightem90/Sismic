@@ -91,24 +91,18 @@ class ParametriSismiciReportFragment : BaseReportFragment() {
             }
             override fun onNothingSelected(parent: AdapterView<out Adapter>?) {  }
         }
-    }
 
-    override fun onReload() {
-        super.onReload()
+        update_graph.setOnClickListener {
 
-
-        with (report_spettrodirisposta_chart)
-        {
-            mLimitStateRequest?.onLimitStatesRequested()?.let {
-                data = com.github.mikephil.charting.data.LineData(it)
-                invalidate()
+            with (report_spettrodirisposta_chart)
+            {
+                mLimitStateRequest?.onLimitStatesRequested()?.let {
+                    data = com.github.mikephil.charting.data.LineData(it)
+                    invalidate()
+                }
             }
         }
-    }
 
-    private fun getData()
-    {
-        report_spettrodirisposta_chart.data
     }
 
     private fun setVitaReale(classeUso : Int)

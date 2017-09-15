@@ -72,6 +72,7 @@ object ResultsInfoTable
 object DatiSismogeneticiInfoTable
 {
     val NAME =              "DatiSismogenetici"
+    val ID =                "_id"
     val NEId =              "ne_id"
     val NELat =             "ne_lat"
     val NELon =             "ne_lon"
@@ -88,7 +89,7 @@ object DatiSismogeneticiInfoTable
     val SOLat =             "so_lat"
     val SOLon =             "so_lon"
     val SODist =            "so_dist"
-    val ID =                "_id"
+    val DATA_LIST =         "data_list"
     val REPORT_ID =         "report_id"
 }
 
@@ -99,13 +100,7 @@ object ParametriSismiciInfoTable
     val VITA_NOMINALE =     "vita_nominale"
     val CLASSE_USO =        "classe_uso"
     val VITA_REALE =        "vita_reale"
-    val AG =                "ag"
-    val F0 =                "f0"
-    val TC =                "tcstar"
-    val SLO =               "slo"
-    val SLD =               "sld"
-    val SLV =               "slv"
-    val SLC =               "slc"
+    val DATA_LIST =         "data_list"
     val REPORT_ID =         "report_id"
 }
 
@@ -120,7 +115,7 @@ object SpettriDiProgettoInfoTable
     val Q0                      = "q0"
     val ALFA                    = "alfa"
     val KR                      = "kr"
-    val CATEGORIA_SUOLO_STRING         = "categoria_suolo_string"
+    val DATA_LIST               = "data_list"
     val REPORT_ID               = "report_id"
 }
 

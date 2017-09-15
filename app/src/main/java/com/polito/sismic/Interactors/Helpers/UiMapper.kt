@@ -60,14 +60,13 @@ class UiMapper {
 
         fun createSpectrumStateForDomain(spettriDiProgettoReportFragment: SpettriDiProgettoReportFragment): ProjectSpectrumState = with(spettriDiProgettoReportFragment) {
 
-            return ProjectSpectrumState(CategoriaSottosuolo.values()[categoria_suolo_parameter.selectedItemPosition].multiplierSS,
+            return ProjectSpectrumState(CategoriaSottosuolo.values()[categoria_suolo_parameter.selectedItemPosition].name,
                     CategoriaTopografica.values()[categoria_topografica_parameter.selectedItemPosition].multiplier,
                     categoria_classe_duttilita_parameter_cda.isChecked,
                     categoria_tipologia_parameter.selectedItem.toString(),
-                    Alfa.values()[categoria_moltiplicatore_parameter.selectedItemPosition].multiplier * 1.0,
+                    SismicActionCalculatorHelper.calculateQ0(categoria_tipologia_parameter.selectedItemPosition, Alfa.values()[categoria_moltiplicatore_parameter.selectedItemPosition].multiplier,categoria_classe_duttilita_parameter_cda.isChecked),
                     Alfa.values()[categoria_moltiplicatore_parameter.selectedItemPosition].multiplier,
-                    1.0,
-                    categoria_suolo_parameter.selectedItem.toString())
+                    1.0)
         }
 
         fun createBuildingGeneralStateForDomain(datiGeneraliReportFragment: DatiGeneraliReportFragment): BuildingGeneralState = with(datiGeneraliReportFragment){
@@ -171,7 +170,7 @@ class UiMapper {
                 is SpettriDiProgettoReportFragment ->
                 {
                     reportState.sismicState.projectSpectrumState.let {
-                        selectCategoriaSuolo(it.categoria_suolo_string)
+                        selectCategoriaSuolo(it.categoria_suolo)
                         selectCategoriaTopografica(it.categoria_topografica)
                         if (it.classe_duttilita) categoria_classe_duttilita_parameter_cda.isChecked = true else categoria_classe_duttilita_parameter_cdb.isChecked = true
                     }
