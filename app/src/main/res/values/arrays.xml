@@ -85,9 +85,29 @@
         <item>22+5</item>
         <item>24+4</item>
         <item>24+5</item>
-        <item>25+4</item>
-        <item>25+5</item>
+        <item>30+4</item>
+        <item>30+5</item>
     </string-array>
+
+    <string-array name="solaio_int_pesi">
+        <item>221</item>
+        <item>246</item>
+        <item>232</item>
+        <item>257</item>
+        <item>255</item>
+        <item>280</item>
+        <item>270</item>
+        <item>295</item>
+        <item>286</item>
+        <item>311</item>
+        <item>304</item>
+        <item>329</item>
+        <item>321</item>
+        <item>346</item>
+        <item>369</item>
+        <item>394</item>
+    </string-array>
+
     <string-array name="copertura_pesi">
         <item>12+4</item>
         <item>12+5</item>
@@ -103,9 +123,29 @@
         <item>22+5</item>
         <item>24+4</item>
         <item>24+5</item>
-        <item>25+4</item>
-        <item>25+5</item>
+        <item>30+4</item>
+        <item>30+5</item>
     </string-array>
+
+    <string-array name="copertura_int_pesi">
+        <item>221</item>
+        <item>246</item>
+        <item>232</item>
+        <item>257</item>
+        <item>255</item>
+        <item>280</item>
+        <item>270</item>
+        <item>295</item>
+        <item>286</item>
+        <item>311</item>
+        <item>304</item>
+        <item>329</item>
+        <item>321</item>
+        <item>346</item>
+        <item>369</item>
+        <item>394</item>
+    </string-array>
+
     <string-array name="cat_tipologia">
         <item>Strutture a telaio, pareti accoppiate o miste</item>
         <item>Strutture pareti non accoppiate</item>

@@ -91,8 +91,8 @@ class ReportActivity : AppCompatActivity(),
         getLimitStateLines(mReportManager.report.reportState)
     }
 
-    override fun onLimitStatesRequested(): List<ILineDataSet> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun onLimitStatesRequested(): List<ILineDataSet> = with(mSismicParameterInteractor){
+        getSpectrumLines(mReportManager.report.reportState)
     }
 
     //Updates the state for all fragments

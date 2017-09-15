@@ -121,12 +121,12 @@ class SpettriDiProgettoReportFragment : BaseReportFragment() {
         spinnerToUpdate.adapter = dataAdapter
     }
 
-    fun selectCategoriaSuolo(categoria_suolo: Double) {
+    fun selectCategoriaSuolo(categoria_suolo: String) {
 
         //iterates all spinners element looking for the category requested
         categoria_suolo_parameter
                 .setSelection(CategoriaSottosuolo.values()
-                        .indexOfFirst { it.multiplier == categoria_suolo })
+                        .indexOfFirst { it.name == categoria_suolo })
     }
 
     fun selectCategoriaTopografica(categoria_topografica: Double)
@@ -134,7 +134,7 @@ class SpettriDiProgettoReportFragment : BaseReportFragment() {
         //iterates all spinners element looking for the category requested
         categoria_topografica_parameter
                 .setSelection(CategoriaSottosuolo.values()
-                        .indexOfFirst { it.multiplier == categoria_topografica })
+                        .indexOfFirst { it.multiplierSS == categoria_topografica })
     }
 
     //callback to activity updates domain instance for activity and all existing and future fragments

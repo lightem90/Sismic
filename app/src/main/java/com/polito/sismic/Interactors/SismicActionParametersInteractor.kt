@@ -83,7 +83,7 @@ class SismicActionParametersInteractor(val mReportManager: ReportManager,
             mustRecalcSpectrum = false
             mustRecalcLimitState = false
             mustRecalcDefaultSpectrum = false
-            reportState.sismicState.spectrumReturnTimes = mSismicActionCalculatorHelper.getDefaultSpectrum(mContext, reportState)
+            reportState.sismicState.spectrumReturnTimes = mSismicActionCalculatorHelper.getLimitStateSpectrum(mContext, reportState)
             reportState.sismicState.spectrumReturnTimes
         }
         else

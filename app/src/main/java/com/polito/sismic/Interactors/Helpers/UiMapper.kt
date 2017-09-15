@@ -171,7 +171,7 @@ class UiMapper {
                 is SpettriDiProgettoReportFragment ->
                 {
                     reportState.sismicState.projectSpectrumState.let {
-                        selectCategoriaSuolo(it.categoria_suolo)
+                        selectCategoriaSuolo(it.categoria_suolo_string)
                         selectCategoriaTopografica(it.categoria_topografica)
                         if (it.classe_duttilita) categoria_classe_duttilita_parameter_cda.isChecked = true else categoria_classe_duttilita_parameter_cdb.isChecked = true
                     }

@@ -399,7 +399,7 @@ data class ProjectSpectrumState(var categoria_suolo: Double,
                                 var alfa: Double,
                                 var kr: Double,
                                 var categoria_suolo_string: String) : Parcelable {
-    constructor() : this(1.0, 1.0, true, "", 1.0, 1.0, 1.0, "")
+    constructor() : this(1.0, 1.0, true, "", 1.0, 1.0, 1.0, "A")
     constructor(source: Parcel) : this(
             source.readDouble(),
             source.readDouble(),

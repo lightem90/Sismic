@@ -129,7 +129,7 @@ class SismicActionCalculatorHelper(val mCoordinateHelper: ParametersForCoordinat
                 else CategoriaSottosuolo.values().first { it.toString() ==  sismicState.sismicState.projectSpectrumState.categoria_suolo_string}
 
         val ss = categoria_sottosuolo.multiplierSS
-        val q = sismicState.sismicState.projectSpectrumState.q0
+        val q = sismicState.sismicState.projectSpectrumState.q0 * sismicState.sismicState.projectSpectrumState.kr
         // SLO, SLD, SLV, SLC
         val limitStateYears = StatiLimite.values().map { (vr * it.multiplier).toInt() }
 
