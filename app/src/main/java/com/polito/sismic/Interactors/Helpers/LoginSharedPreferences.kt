@@ -39,7 +39,7 @@ class LoginSharedPreferences {
 
         fun login(userDetails: UserDetails, context: Context) = with(context)
         {
-            getSharedPreferences("login", Context.MODE_PRIVATE).edit
+            getSharedPreferences("login", Context.MODE_PRIVATE).edit()
             {
                 putString("name", userDetails.name)
                 putString("address", userDetails.address)
