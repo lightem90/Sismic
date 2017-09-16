@@ -1,5 +1,7 @@
 package com.polito.sismic.Interactors.Helpers
 
+import com.polito.sismic.R
+
 /**
  * Created by Matteo on 22/08/2017.
  */
@@ -38,25 +40,25 @@ enum class CoordinateDatabaseParameters
     Tc2475
 }
 
-enum class TempiRitorno(val years : Int)
+enum class TempiRitorno(val years : Int, val color : Int)
 {
-    Y30(30),
-    Y50(50),
-    Y72(72),
-    Y101(101),
-    Y140(140),
-    Y201(201),
-    Y475(475),
-    Y975(975),
-    Y2475(2475)
+    Y30(30, R.color.Y30),
+    Y50(50, R.color.Y50),
+    Y72(72, R.color.Y72),
+    Y101(101, R.color.Y101),
+    Y140(140, R.color.Y140),
+    Y201(201, R.color.Y201),
+    Y475(475, R.color.Y475),
+    Y975(975, R.color.Y975),
+    Y2475(2475, R.color.Y2475)
 }
 
-enum class StatiLimite(val multiplier : Double)
+enum class StatiLimite(val multiplier : Double, val color : Int)
 {
-    SLO(0.81),
-    SLD(0.63),
-    SLV(0.10),
-    SLC(0.05)
+    SLO(0.81, R.color.slo),
+    SLD(0.63, R.color.sld),
+    SLV(0.10, R.color.slv),
+    SLC(0.05, R.color.slc)
 }
 
 enum class ClasseUso(val multiplier: Double)

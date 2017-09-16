@@ -12,6 +12,21 @@
     <color name="report_danger_normal">#33CC00</color>
     <color name="report_danger_low">#0099FF</color>
 
+    <color name="slc">#FF0000</color>
+    <color name="slv">#FF9900</color>
+    <color name="slo">#33CC00</color>
+    <color name="sld">#0099FF</color>
+
+    <color name="Y30">#FF0000</color>
+    <color name="Y50">#FF9900</color>
+    <color name="Y72">#FFFF00</color>
+    <color name="Y101">#0099FF</color>
+    <color name="Y140">#33CC00</color>
+    <color name="Y201">#cc00ff</color>
+    <color name="Y475">#A9A9A9</color>
+    <color name="Y975">#D3D3D3</color>
+    <color name="Y2475">#000000</color>
+
 
     <!-- per debug -->
     <color name="hot_pink">#FF69B4</color>

@@ -59,9 +59,9 @@ class SismicActionInteractor(val mReportManager: ReportManager,
     fun getDefaultSpectrumLines(reportState: ReportState): List<ILineDataSet> {
         return if (mustRecalcDefaultSpectrum)
         {
+            mustRecalcDefaultSpectrum = false
             mustRecalcLimitState = true
             mustRecalcSpectrum = true
-            mustRecalcDefaultSpectrum = false
             reportState.sismicState.defaultReturnTimes = mSismicActionCalculatorHelper.getDefaultSpectrum(mContext, reportState)
             reportState.sismicState.defaultReturnTimes
         }
@@ -71,11 +71,10 @@ class SismicActionInteractor(val mReportManager: ReportManager,
 
     //chart in sismicstate fragment
     fun getLimitStateLines(reportState: ReportState): List<ILineDataSet> {
-        return if (mustRecalcDefaultSpectrum)
+        return if (mustRecalcLimitState)
         {
+            mustRecalcLimitState = true
             mustRecalcSpectrum = true
-            mustRecalcLimitState = false
-            mustRecalcDefaultSpectrum = false
             reportState.sismicState.limitStateTimes = mSismicActionCalculatorHelper.getLimitStateSpectrum(mContext, reportState)
             reportState.sismicState.limitStateTimes
         }
@@ -87,8 +86,6 @@ class SismicActionInteractor(val mReportManager: ReportManager,
         return if (mustRecalcSpectrum)
         {
             mustRecalcSpectrum = false
-            mustRecalcLimitState = false
-            mustRecalcDefaultSpectrum = false
             reportState.sismicState.spectrumReturnTimes = mSismicActionCalculatorHelper.getLimitStateSpectrum(mContext, reportState)
             reportState.sismicState.spectrumReturnTimes
         }

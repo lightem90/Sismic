@@ -7,7 +7,10 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.polito.sismic.Domain.NeighboursNodeData
 import com.polito.sismic.Domain.PeriodData
@@ -69,6 +72,15 @@ class DatiSismoGeneticiReportFragment : BaseReportFragment() {
             adapter = mPeriodAdapter
         }
 
+        with (report_spettrodirisposta_chart)
+        {
+            xAxis.position = XAxis.XAxisPosition.BOTTOM
+            xAxis.axisMaximum = 4.0f
+            xAxis.axisMinimum = 0.0f
+            getAxis(YAxis.AxisDependency.RIGHT).setDrawAxisLine(false)
+        }
+
+
         onReload()
     }
 
@@ -101,6 +113,7 @@ class DatiSismoGeneticiReportFragment : BaseReportFragment() {
         with (report_spettrodirisposta_chart)
         {
             mDefaultReturnTimeRequest?.onDefaultReturnTimesRequested().let {
+                it?.forEach { dataset -> dataset.axisDependency = YAxis.AxisDependency.LEFT }
                 data = LineData(it)
                 invalidate()
             }

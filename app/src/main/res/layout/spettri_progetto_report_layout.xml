@@ -102,7 +102,7 @@
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/report_spettrodirisposta_chart"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="500dp" />
 
     <Button
         android:id="@+id/update_graph"

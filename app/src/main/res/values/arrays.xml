@@ -88,7 +88,7 @@
         <item>28+5</item>
     </string-array>
 
-    <double-array name="solaio_int_pesi">
+    <string-array name="solaio_int_pesi">
         <item>2.50</item>
         <item>2.75</item>
         <item>2.85</item>
@@ -103,7 +103,7 @@
         <item>3.90</item>
         <item>4.05</item>
         <item>4.30</item>
-    </double-array>
+    </string-array>
 
     <string-array name="copertura_pesi">
         <item>12+4</item>
@@ -122,7 +122,7 @@
         <item>28+5</item>
     </string-array>
 
-    <double-array name="copertura_int_pesi">
+    <string-array name="copertura_int_pesi">
         <item>2.50</item>
         <item>2.75</item>
         <item>2.85</item>
@@ -137,7 +137,7 @@
         <item>3.90</item>
         <item>4.05</item>
         <item>4.30</item>
-    </double-array>
+    </string-array>
 
     <string-array name="cat_tipologia">
         <item>Strutture a telaio, pareti accoppiate o miste</item>

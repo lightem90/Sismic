@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Adapter
 import android.widget.AdapterView
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.polito.sismic.Interactors.Helpers.ClasseUso
 import com.polito.sismic.Interactors.Helpers.UiMapper
@@ -101,6 +103,15 @@ class ParametriSismiciReportFragment : BaseReportFragment() {
                     invalidate()
                 }
             }
+        }
+
+
+        with (report_spettrodirisposta_chart)
+        {
+            xAxis.position = XAxis.XAxisPosition.BOTTOM
+            xAxis.axisMaximum = 4.0f
+            xAxis.axisMinimum = 0.0f
+            getAxis(YAxis.AxisDependency.RIGHT).setDrawAxisLine(false)
         }
 
     }

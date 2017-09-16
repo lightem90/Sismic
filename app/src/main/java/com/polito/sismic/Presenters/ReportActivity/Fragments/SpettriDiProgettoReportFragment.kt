@@ -16,6 +16,8 @@ import com.stepstone.stepper.StepperLayout
 import kotlinx.android.synthetic.main.spettri_progetto_report_layout.*
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.polito.sismic.Interactors.Helpers.CategoriaTopografica
@@ -97,6 +99,14 @@ class SpettriDiProgettoReportFragment : BaseReportFragment() {
                     invalidate()
                 }
             }
+        }
+
+        with (report_spettrodirisposta_chart)
+        {
+            xAxis.position = XAxis.XAxisPosition.BOTTOM
+            xAxis.axisMaximum = 4.0f
+            xAxis.axisMinimum = 0.0f
+            getAxis(YAxis.AxisDependency.RIGHT).setDrawAxisLine(false)
         }
     }
 
