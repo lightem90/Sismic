@@ -264,6 +264,11 @@ data class DatabaseRilievi(var map: MutableMap<String, Any?>) : DatabaseSection 
     var altezza_totale: Double by map
     var lunghezza_esterna: Double by map
     var larghezza_esterna: Double by map
+    var area : Double by map
+    var perimetro : Double by map
+    var centro_gravita_x : Double by map
+    var centro_gravita_y : Double by map
+    var t1 : Double by map
     var report_id: Int by map
 
     constructor(numero_piani: Int,
@@ -272,6 +277,11 @@ data class DatabaseRilievi(var map: MutableMap<String, Any?>) : DatabaseSection 
                 altezza_totale: Double,
                 lunghezza_esterna: Double,
                 larghezza_esterna: Double,
+                area : Double,
+                perimetro : Double,
+                centro_gravita_x : Double,
+                centro_gravita_y : Double,
+                t1 : Double,
                 report_id: Int)
             : this(HashMap()) {
         this.numero_piani = numero_piani
@@ -280,6 +290,11 @@ data class DatabaseRilievi(var map: MutableMap<String, Any?>) : DatabaseSection 
         this.altezza_totale = altezza_totale
         this.lunghezza_esterna = lunghezza_esterna
         this.larghezza_esterna = larghezza_esterna
+        this.area = area
+        this.perimetro = perimetro
+        this.centro_gravita_x = centro_gravita_x
+        this.centro_gravita_y = centro_gravita_y
+        this.t1 = t1
         this.report_id = report_id
     }
 }

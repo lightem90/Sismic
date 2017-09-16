@@ -140,7 +140,13 @@ object RilieviInfoTable
     val ALTEZZA_TOT               = "altezza_totale"
     val LUNGHEZZA_EST             = "lunghezza_esterna"
     val LARGHEZZA_EST             = "larghezza_esterna"
+    val AREA                      =  "area"
+    val PERIMETRO                 =  "perimetro"
+    val CENTRO_GRAVITA_X            = "centro_gravita_x"
+    val CENTRO_GRAVITA_Y          = "centro_gravita_y"
+    val T1                          = "t1"
     val REPORT_ID                 = "report_id"
+
 }
 
 object DatiStrutturaliInfoTable

@@ -2,7 +2,9 @@ package com.polito.sismic.Interactors
 
 import android.content.Context
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
+import com.polito.sismic.Domain.ProjectSpectrumState
 import com.polito.sismic.Domain.ReportState
+import com.polito.sismic.Domain.SismicParametersState
 import com.polito.sismic.Extensions.toList
 import com.polito.sismic.Interactors.Helpers.ParametersForCoordinateHelper
 import com.polito.sismic.Interactors.Helpers.SismicActionCalculatorHelper
@@ -70,23 +72,23 @@ class SismicActionInteractor(val mReportManager: ReportManager,
     }
 
     //chart in sismicstate fragment
-    fun getLimitStateLines(reportState: ReportState): List<ILineDataSet> {
+    fun getLimitStateLines(reportState: ReportState, data: ProjectSpectrumState): List<ILineDataSet> {
         return if (mustRecalcLimitState)
         {
             mustRecalcLimitState = true
             mustRecalcSpectrum = true
-            reportState.sismicState.limitStateTimes = mSismicActionCalculatorHelper.getLimitStateSpectrum(mContext, reportState)
+            reportState.sismicState.limitStateTimes = mSismicActionCalculatorHelper.getLimitStateSpectrum(mContext, reportState, null, data)
             reportState.sismicState.limitStateTimes
         }
         else reportState.sismicState.limitStateTimes
     }
 
     //chart in spectrum fragment
-    fun getSpectrumLines(reportState: ReportState): List<ILineDataSet> {
+    fun getSpectrumLines(reportState: ReportState, data: SismicParametersState): List<ILineDataSet> {
         return if (mustRecalcSpectrum)
         {
             mustRecalcSpectrum = false
-            reportState.sismicState.spectrumReturnTimes = mSismicActionCalculatorHelper.getLimitStateSpectrum(mContext, reportState)
+            reportState.sismicState.spectrumReturnTimes = mSismicActionCalculatorHelper.getLimitStateSpectrum(mContext, reportState, data)
             reportState.sismicState.spectrumReturnTimes
         }
         else

@@ -1,6 +1,7 @@
 package com.polito.sismic.Interactors.Helpers
 
 import com.polito.sismic.Domain.*
+import com.polito.sismic.Interactors.SismicBuildingInteractor
 import com.polito.sismic.Presenters.ReportActivity.Fragments.*
 import kotlinx.android.synthetic.main.catasto_report_layout.*
 import kotlinx.android.synthetic.main.dati_generali_report_layout.*
@@ -78,12 +79,26 @@ class UiMapper {
         }
 
         fun createTakeoverStateForDomain(rilieviReportFragment: RilieviReportFragment): TakeoverState  = with(rilieviReportFragment){
+
+            //For now we assume a ractangle / square
+            val lunghezza = if (lunghezza_piano_parameter.getParameterValue().isEmpty()) 0.0 else lunghezza_piano_parameter.getParameterValue().toDouble()
+            val larghezza = if (larghezza_piano_parameter.getParameterValue().isEmpty()) 0.0 else larghezza_piano_parameter.getParameterValue().toDouble()
+            val perimetro = (lunghezza + larghezza) * 2
+            val area = lunghezza * larghezza
+            val gravity_center = SpectrumPoint(lunghezza/2, larghezza/2)
+            val hTot = if (tot_high.text.toString().isEmpty()) 0.0 else tot_high.text.toString().toDouble()
+            val t1 = SismicBuildingInteractor.calculateT1(hTot)
+
             return TakeoverState(piani_numero_parameter.selectedItem.toString().toInt(),
                     if (altezza_piano_tr_parameter.getParameterValue().isEmpty()) 0.0 else altezza_piano_tr_parameter.getParameterValue().toDouble(),
                     if (altezza_piani_sup_parameter.getParameterValue().isEmpty()) 0.0 else altezza_piani_sup_parameter.getParameterValue().toDouble(),
-                    if (tot_high.text.toString().isEmpty()) 0.0 else tot_high.text.toString().toDouble(),
-                    if (lunghezza_piano_parameter.getParameterValue().isEmpty()) 0.0 else lunghezza_piano_parameter.getParameterValue().toDouble(),
-                    if (larghezza_piano_parameter.getParameterValue().isEmpty()) 0.0 else larghezza_piano_parameter.getParameterValue().toDouble())
+                    hTot,
+                    lunghezza,
+                    larghezza,
+                    area,
+                    t1,
+                    perimetro,
+                    gravity_center)
         }
 
         fun createPillarStateForDomain(pilastriReportFragment: PilastriReportFragment): PillarState  = with(pilastriReportFragment){

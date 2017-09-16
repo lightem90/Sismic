@@ -1,13 +1,11 @@
 package com.polito.sismic.Interactors.Helpers
 
 import android.content.Context
+import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
-import com.polito.sismic.Domain.NeighboursNodeSquare
-import com.polito.sismic.Domain.PeriodData
-import com.polito.sismic.Domain.ReportState
-import com.polito.sismic.Domain.SpectrumDTO
+import com.polito.sismic.Domain.*
 import com.polito.sismic.Extensions.interpolateWith
 import com.polito.sismic.Extensions.toSpectrumPointList
 import com.polito.sismic.Extensions.toEntryList
@@ -96,19 +94,32 @@ class SismicActionCalculatorHelper(val mCoordinateHelper: ParametersForCoordinat
         return spectrums.map {
             val lds = LineDataSet(it.pointList.toEntryList(), String.format(context.getString(R.string.label_year_format), it.year))
             lds.color = it.color
+            lds.fillColor = it.color
+            lds.setDrawCircles(false)
+            lds.lineWidth = 2f
+            lds.axisDependency = YAxis.AxisDependency.LEFT
             lds
         }
     }
 
-    //Sismicparameters data: shows periods based on life
-    fun getLimitStateSpectrum(context: Context, sismicState: ReportState): List<ILineDataSet> {
+    //Sismicparameters data: shows periods based on life TODO: correct!
+    fun getLimitStateSpectrum(context: Context, sismicState: ReportState, currentSismicState: SismicParametersState? = null, currentProjectSpectrumState: ProjectSpectrumState? = null): List<ILineDataSet> {
 
         val st = ZonaSismica.values()[sismicState.localizationState.zone_int - 1].multiplier
-        val vr = sismicState.sismicState.sismicParametersState.vitaReale
-        val categoria_sottosuolo = if (sismicState.sismicState.projectSpectrumState.categoria_suolo.isEmpty()) CategoriaSottosuolo.A
+        val vr = if (currentSismicState != null) currentSismicState.vitaReale else sismicState.sismicState.sismicParametersState.vitaReale
+
+        var categoria_sottosuolo = if (sismicState.sismicState.projectSpectrumState.categoria_suolo.isEmpty()) CategoriaSottosuolo.A
                 else CategoriaSottosuolo.values().first { it.toString() ==  sismicState.sismicState.projectSpectrumState.categoria_suolo}
 
-        val q = sismicState.sismicState.projectSpectrumState.q0 * sismicState.sismicState.projectSpectrumState.kr
+        var q = sismicState.sismicState.projectSpectrumState.q0 * sismicState.sismicState.projectSpectrumState.kr
+
+        if (currentProjectSpectrumState != null)
+        {
+            categoria_sottosuolo = CategoriaSottosuolo.values()
+                    .first { it.toString() ==  currentProjectSpectrumState.categoria_suolo}
+
+            q = currentProjectSpectrumState.q0 * currentProjectSpectrumState.kr
+        }
         // SLO, SLD, SLV, SLC
         val limitStateYears = StatiLimite.values().map { calculateTrFor(vr, it) }
 
@@ -148,6 +159,10 @@ class SismicActionCalculatorHelper(val mCoordinateHelper: ParametersForCoordinat
         return spectrums.map {
             val lds = LineDataSet(it.pointList.toEntryList(), String.format(context.getString(R.string.label_year_format), it.year))
             lds.color = it.color
+            lds.lineWidth = 2f
+            lds.fillColor = it.color
+            lds.setDrawCircles(false)
+            lds.axisDependency = YAxis.AxisDependency.LEFT
             lds
         }
     }
@@ -240,9 +255,8 @@ class SismicActionCalculatorHelper(val mCoordinateHelper: ParametersForCoordinat
 
     //Return time in years ?
     private fun calculateTrFor(vr: Double, st: StatiLimite): Pair<Int, Int> {
-        val year = -(vr / Math.log(1 - st.multiplier)).toInt()
-
-        return Pair(year, st.color)
+        val tr =  -1 / (Math.log(1 - st.multiplier))
+        return Pair((tr * vr).toInt(), st.color)
     }
 }
 

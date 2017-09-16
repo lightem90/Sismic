@@ -9,4 +9,13 @@ class SismicBuildingInteractor(val mReportManager: ReportManager,
                                val mContext: Context)
 {
 
+    companion object {
+
+        fun calculateT1(hTot : Double) : Double
+        {
+            return 0.075 * Math.pow(hTot, (3.0/4.0))
+        }
+    }
+
+
 }

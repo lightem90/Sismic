@@ -2,7 +2,6 @@ package com.polito.sismic.Domain
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.polito.sismic.Interactors.Helpers.StatiLimite
 import java.util.*
@@ -633,15 +632,24 @@ data class TakeoverState(var numero_piani: Int,
                          var altezza_piani_superiori: Double,
                          var altezza_totale: Double,
                          var lunghezza_esterna: Double,
-                         var larghezza_esterna: Double) : Parcelable {
-    constructor() : this(0, 0.0, 0.0, 0.0, 0.0, 0.0)
+                         var larghezza_esterna: Double,
+                         var t1 : Double,
+                         var area: Double,
+                         var perimetro: Double,
+                         var gravity_center: SpectrumPoint) : Parcelable {
+    constructor() : this(0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, SpectrumPoint(0.0, 0.0))
+
     constructor(source: Parcel) : this(
             source.readInt(),
             source.readDouble(),
             source.readDouble(),
             source.readDouble(),
             source.readDouble(),
-            source.readDouble()
+            source.readDouble(),
+            source.readDouble(),
+            source.readDouble(),
+            source.readDouble(),
+            source.readParcelable<SpectrumPoint>(SpectrumPoint::class.java.classLoader)
     )
 
     override fun describeContents() = 0
@@ -653,6 +661,10 @@ data class TakeoverState(var numero_piani: Int,
         writeDouble(altezza_totale)
         writeDouble(lunghezza_esterna)
         writeDouble(larghezza_esterna)
+        writeDouble(t1)
+        writeDouble(area)
+        writeDouble(perimetro)
+        writeParcelable(gravity_center, 0)
     }
 
     companion object {

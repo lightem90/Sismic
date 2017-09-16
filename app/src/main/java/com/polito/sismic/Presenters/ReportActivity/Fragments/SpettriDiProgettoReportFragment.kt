@@ -16,17 +16,19 @@ import com.stepstone.stepper.StepperLayout
 import kotlinx.android.synthetic.main.spettri_progetto_report_layout.*
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
+import com.polito.sismic.Domain.ProjectSpectrumState
 import com.polito.sismic.Interactors.Helpers.CategoriaTopografica
 
 
 class SpettriDiProgettoReportFragment : BaseReportFragment() {
 
     interface SpectrumReturnTimeRequest {
-        fun onReturnTimesRequested() : List<ILineDataSet>
+        fun onReturnTimesRequested(data : ProjectSpectrumState) : List<ILineDataSet>
     }
 
     private var mReturnTimeRequest: SpectrumReturnTimeRequest? = null
@@ -92,9 +94,10 @@ class SpettriDiProgettoReportFragment : BaseReportFragment() {
         }
 
         update_graph.setOnClickListener {
-            with (report_spettrodirisposta_chart)
-            {
-                mReturnTimeRequest?.onReturnTimesRequested().let {
+
+            mReturnTimeRequest?.onReturnTimesRequested(UiMapper.createSpectrumStateForDomain(this)).let {
+                with(report_spettrodirisposta_chart)
+                {
                     data = LineData(it)
                     invalidate()
                 }
@@ -103,10 +106,13 @@ class SpettriDiProgettoReportFragment : BaseReportFragment() {
 
         with (report_spettrodirisposta_chart)
         {
+
             xAxis.position = XAxis.XAxisPosition.BOTTOM
             xAxis.axisMaximum = 4.0f
             xAxis.axisMinimum = 0.0f
-            getAxis(YAxis.AxisDependency.RIGHT).setDrawAxisLine(false)
+            legend.verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
+            legend.setDrawInside(false)
+            getAxis(YAxis.AxisDependency.RIGHT).isEnabled = false
         }
     }
 

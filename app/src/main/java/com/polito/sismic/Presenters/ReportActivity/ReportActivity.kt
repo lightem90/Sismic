@@ -9,7 +9,9 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.places.Places
+import com.polito.sismic.Domain.ProjectSpectrumState
 import com.polito.sismic.Domain.Report
+import com.polito.sismic.Domain.SismicParametersState
 import com.polito.sismic.Extensions.getCustomAdapter
 import com.polito.sismic.Extensions.toast
 import com.polito.sismic.Interactors.*
@@ -87,12 +89,14 @@ class ReportActivity : AppCompatActivity(),
         getDefaultSpectrumLines(mReportManager.report.reportState)
     }
 
-    override fun onReturnTimesRequested(): List<ILineDataSet> = with(mSismicParameterInteractor){
-        getLimitStateLines(mReportManager.report.reportState)
+    //data is not aligned until confirmation, so i have to pass it
+    override fun onReturnTimesRequested(data: ProjectSpectrumState): List<ILineDataSet> = with(mSismicParameterInteractor){
+        getLimitStateLines(mReportManager.report.reportState, data)
     }
 
-    override fun onLimitStatesRequested(): List<ILineDataSet> = with(mSismicParameterInteractor){
-        getSpectrumLines(mReportManager.report.reportState)
+    //data is not aligned until confirmation, so i have to pass it
+    override fun onLimitStatesRequested(data: SismicParametersState): List<ILineDataSet> = with(mSismicParameterInteractor){
+        getSpectrumLines(mReportManager.report.reportState, data)
     }
 
     //Updates the state for all fragments

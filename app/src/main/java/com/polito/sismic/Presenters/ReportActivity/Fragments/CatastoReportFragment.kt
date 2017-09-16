@@ -46,10 +46,8 @@ class CatastoReportFragment : BaseReportFragment() {
         callback?.stepperLayout?.showProgress(getString(R.string.calculating_neighbours_node))
         hideBottomActions()
 
-        Handler().postDelayed({
-            mNodeRequestCallback?.onClosedNodesCalculationRequested()
-            super.onNextClicked(callback)
-            callback?.stepperLayout?.hideProgress()
-        }, 5000L)       //TODO this is just for ui/ux, so it displays that the calculation is going (in reality it is much faster)
+        mNodeRequestCallback?.onClosedNodesCalculationRequested()
+        super.onNextClicked(callback)
+        callback?.stepperLayout?.hideProgress()
     }
 }

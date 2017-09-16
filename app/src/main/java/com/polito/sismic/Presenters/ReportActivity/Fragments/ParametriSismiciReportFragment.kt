@@ -8,9 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Adapter
 import android.widget.AdapterView
+import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
+import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
+import com.polito.sismic.Domain.SismicParametersState
 import com.polito.sismic.Interactors.Helpers.ClasseUso
 import com.polito.sismic.Interactors.Helpers.UiMapper
 import com.polito.sismic.R
@@ -23,7 +26,7 @@ import kotlinx.android.synthetic.main.parametri_sismici_report_layout.*
 class ParametriSismiciReportFragment : BaseReportFragment() {
 
     interface LimitStateRequest {
-        fun onLimitStatesRequested() : List<ILineDataSet>
+        fun onLimitStatesRequested(data : SismicParametersState) : List<ILineDataSet>
     }
 
     private var mLimitStateRequest: LimitStateRequest? = null
@@ -95,23 +98,23 @@ class ParametriSismiciReportFragment : BaseReportFragment() {
         }
 
         update_graph.setOnClickListener {
-
-            with (report_spettrodirisposta_chart)
-            {
-                mLimitStateRequest?.onLimitStatesRequested()?.let {
-                    data = com.github.mikephil.charting.data.LineData(it)
+            mLimitStateRequest?.onLimitStatesRequested(UiMapper.createSismicStateForDomain(this)).let {
+                with(report_spettrodirisposta_chart)
+                {
+                    data = LineData(it)
                     invalidate()
                 }
             }
         }
-
 
         with (report_spettrodirisposta_chart)
         {
             xAxis.position = XAxis.XAxisPosition.BOTTOM
             xAxis.axisMaximum = 4.0f
             xAxis.axisMinimum = 0.0f
-            getAxis(YAxis.AxisDependency.RIGHT).setDrawAxisLine(false)
+            legend.verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
+            legend.setDrawInside(false)
+            getAxis(YAxis.AxisDependency.RIGHT).isEnabled = false
         }
 
     }

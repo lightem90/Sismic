@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.LineData
@@ -77,7 +78,10 @@ class DatiSismoGeneticiReportFragment : BaseReportFragment() {
             xAxis.position = XAxis.XAxisPosition.BOTTOM
             xAxis.axisMaximum = 4.0f
             xAxis.axisMinimum = 0.0f
-            getAxis(YAxis.AxisDependency.RIGHT).setDrawAxisLine(false)
+            legend.verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
+            legend.setDrawInside(false)
+            legend.isWordWrapEnabled = true
+            getAxis(YAxis.AxisDependency.RIGHT).isEnabled = false
         }
 
 
@@ -113,7 +117,6 @@ class DatiSismoGeneticiReportFragment : BaseReportFragment() {
         with (report_spettrodirisposta_chart)
         {
             mDefaultReturnTimeRequest?.onDefaultReturnTimesRequested().let {
-                it?.forEach { dataset -> dataset.axisDependency = YAxis.AxisDependency.LEFT }
                 data = LineData(it)
                 invalidate()
             }

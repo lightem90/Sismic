@@ -217,7 +217,12 @@ class MathUti
 
         fun periodDataInterpolation(p1 : Double, p2 : Double, tr1 : Int, tr2 : Int, tr : Int) : Double
         {
-            return Math.log(p1) + (Math.log((p2/p1)))*Math.log((tr/tr1).toDouble())*Math.pow(Math.log((tr2/tr1).toDouble()), -1.0)
+            val first = Math.log(p1)
+            val second = Math.log((p2/p1))
+            val third = Math.log(tr.toDouble()/tr1.toDouble())
+            val internal = Math.log(tr2.toDouble()/tr1.toDouble())
+            val fourth = Math.pow(internal, -1.0)
+            return first + second*third*fourth
         }
     }
 }

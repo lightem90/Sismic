@@ -93,12 +93,17 @@ class DatabaseMapperHelper {
 
     private fun convertRilieviToDomain(takeoverDbParams: DatabaseRilievi?): TakeoverState? {
         return takeoverDbParams?.let {
+            val gravCent = SpectrumPoint(it.centro_gravita_x, it.centro_gravita_y)
             TakeoverState(it.numero_piani,
                     it.altezza_piano_terra,
                     it.altezza_piani_superiori,
                     it.altezza_totale,
                     it.lunghezza_esterna,
-                    it.larghezza_esterna)
+                    it.larghezza_esterna,
+                    it.t1,
+                    it.area,
+                    it.perimetro,
+                    gravCent)
         }
     }
 
@@ -206,7 +211,7 @@ class DatabaseMapperHelper {
     }
 
     private fun createTakeoverForDb(reportId: Int, takeoverState: TakeoverState): DatabaseSection = with(takeoverState){
-        return DatabaseRilievi(numero_piani,altezza_piano_terra, altezza_piani_superiori, altezza_totale, lunghezza_esterna, larghezza_esterna, reportId)
+        return DatabaseRilievi(numero_piani,altezza_piano_terra, altezza_piani_superiori, altezza_totale, lunghezza_esterna, larghezza_esterna, area, t1, perimetro, gravity_center.x, gravity_center.y, reportId)
 
     }
 
