@@ -220,9 +220,8 @@ class MathUti
             val first = Math.log(p1)
             val second = Math.log((p2/p1))
             val third = Math.log(tr.toDouble()/tr1.toDouble())
-            val internal = Math.log(tr2.toDouble()/tr1.toDouble())
-            val fourth = Math.pow(internal, -1.0)
-            return first + second*third*fourth
+            val fourth = Math.log(tr2.toDouble()/tr1.toDouble())
+            return first + (second*third*(1/fourth))
         }
     }
 }

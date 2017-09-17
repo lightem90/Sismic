@@ -354,7 +354,8 @@ data class SpectrumPoint(val x: Double, val y: Double) : Parcelable {
     }
 }
 
-data class SpectrumDTO(var year: Int,
+data class SpectrumDTO(var name : String,
+                       var year: Int,
                        var color : Int,
                        var ag: Double,
                        var f0: Double,
@@ -370,6 +371,7 @@ data class SpectrumDTO(var year: Int,
                        var td: Double,
                        var pointList: List<SpectrumPoint>) : Parcelable {
     constructor(source: Parcel) : this(
+            source.readString(),
             source.readInt(),
             source.readInt(),
             source.readDouble(),
@@ -390,6 +392,7 @@ data class SpectrumDTO(var year: Int,
     override fun describeContents() = 0
 
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
+        writeString(name)
         writeInt(year)
         writeInt(color)
         writeDouble(ag)

@@ -84,7 +84,6 @@ class DatiSismoGeneticiReportFragment : BaseReportFragment() {
             getAxis(YAxis.AxisDependency.RIGHT).isEnabled = false
         }
 
-
         onReload()
     }
 

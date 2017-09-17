@@ -28,7 +28,7 @@ import com.polito.sismic.Interactors.Helpers.CategoriaTopografica
 class SpettriDiProgettoReportFragment : BaseReportFragment() {
 
     interface SpectrumReturnTimeRequest {
-        fun onReturnTimesRequested(data : ProjectSpectrumState) : List<ILineDataSet>
+        fun onReturnTimesRequested(data: ProjectSpectrumState): List<ILineDataSet>
     }
 
     private var mReturnTimeRequest: SpectrumReturnTimeRequest? = null
@@ -55,24 +55,18 @@ class SpettriDiProgettoReportFragment : BaseReportFragment() {
         }
 
         categoria_classe_duttilita_parameter_cda.setOnCheckedChangeListener { _, flag ->
-            if (flag)
-            {
+            if (flag) {
                 categoria_classe_duttilita_parameter_cdb.isChecked = false
-            }
-            else
-            {
+            } else {
                 categoria_classe_duttilita_parameter_cda.isClickable = true
             }
             updateMoltiplicatoreVisibility(categoria_tipologia_parameter.selectedItemPosition)
         }
 
         categoria_classe_duttilita_parameter_cdb.setOnCheckedChangeListener { _, flag ->
-            if (flag)
-            {
+            if (flag) {
                 categoria_classe_duttilita_parameter_cda.isChecked = false
-            }
-            else
-            {
+            } else {
                 categoria_classe_duttilita_parameter_cdb.isClickable = true
             }
             updateMoltiplicatoreVisibility(categoria_tipologia_parameter.selectedItemPosition)
@@ -83,14 +77,16 @@ class SpettriDiProgettoReportFragment : BaseReportFragment() {
             override fun onItemSelected(parent: AdapterView<*>, mView: View?, pos: Int, id: Long) {
                 updateMoltiplicatoreVisibility(pos)
             }
-            override fun onNothingSelected(parent: AdapterView<out Adapter>?) {  }
+
+            override fun onNothingSelected(parent: AdapterView<out Adapter>?) {}
         }
 
         categoria_moltiplicatore_parameter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 
             override fun onItemSelected(parent: AdapterView<*>, mView: View?, pos: Int, id: Long) {
             }
-            override fun onNothingSelected(parent: AdapterView<out Adapter>?) {  }
+
+            override fun onNothingSelected(parent: AdapterView<out Adapter>?) {}
         }
 
         update_graph.setOnClickListener {
@@ -104,9 +100,8 @@ class SpettriDiProgettoReportFragment : BaseReportFragment() {
             }
         }
 
-        with (report_spettrodirisposta_chart)
+        with(report_spettrodirisposta_chart)
         {
-
             xAxis.position = XAxis.XAxisPosition.BOTTOM
             xAxis.axisMaximum = 4.0f
             xAxis.axisMinimum = 0.0f
@@ -116,8 +111,7 @@ class SpettriDiProgettoReportFragment : BaseReportFragment() {
         }
     }
 
-    private fun updateMoltiplicatoreVisibility(pos: Int)
-    {
+    private fun updateMoltiplicatoreVisibility(pos: Int) {
         when (pos) {
             0 -> {
                 categoria_moltiplicatore_parameter_container.visibility = View.VISIBLE
@@ -125,11 +119,9 @@ class SpettriDiProgettoReportFragment : BaseReportFragment() {
 
             }
             1 -> {
-                if (categoria_classe_duttilita_parameter_cda.isChecked)
-                {
+                if (categoria_classe_duttilita_parameter_cda.isChecked) {
                     updateSpinnerItemsVibility(categoria_moltiplicatore_parameter, resources.getStringArray(R.array.cat_moltiplicatore_2))
-                }
-                else
+                } else
                     categoria_moltiplicatore_parameter_container.visibility = View.GONE
             }
             else -> {
@@ -157,8 +149,7 @@ class SpettriDiProgettoReportFragment : BaseReportFragment() {
                         .indexOfFirst { it.name == categoria_suolo })
     }
 
-    fun selectCategoriaTopografica(categoria_topografica_multiplier: Double)
-    {
+    fun selectCategoriaTopografica(categoria_topografica_multiplier: Double) {
         //iterates all spinners element looking for the category requested
         categoria_topografica_parameter
                 .setSelection(CategoriaTopografica.values()

@@ -288,7 +288,8 @@
     <string name="tcstar_header">Tc* [s]</string>
     <string name="params_format">%.5f</string>
     <string name="spec_30_label">30 anni</string>
-    <string name="label_year_format">%d anni</string>
+    <string name="label_year_format">%s anni</string>
+    <string name="label_limit_state_format">%s: %d anni</string>
     <string name="et_password_hint">Password</string>
     <string name="registration_error">Errore di registrazione. Riprovare</string>
 
