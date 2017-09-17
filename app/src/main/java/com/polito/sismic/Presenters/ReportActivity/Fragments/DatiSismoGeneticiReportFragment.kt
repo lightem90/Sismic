@@ -81,6 +81,7 @@ class DatiSismoGeneticiReportFragment : BaseReportFragment() {
             legend.verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
             legend.setDrawInside(false)
             legend.isWordWrapEnabled = true
+            description.isEnabled = false
             getAxis(YAxis.AxisDependency.RIGHT).isEnabled = false
         }
 

@@ -107,6 +107,7 @@ class SpettriDiProgettoReportFragment : BaseReportFragment() {
             xAxis.axisMinimum = 0.0f
             legend.verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
             legend.setDrawInside(false)
+            description.isEnabled = false
             getAxis(YAxis.AxisDependency.RIGHT).isEnabled = false
         }
     }
