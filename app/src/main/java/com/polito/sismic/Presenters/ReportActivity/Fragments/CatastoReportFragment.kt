@@ -46,8 +46,10 @@ class CatastoReportFragment : BaseReportFragment() {
         callback?.stepperLayout?.showProgress(getString(R.string.calculating_neighbours_node))
         hideBottomActions()
 
-        mNodeRequestCallback?.onClosedNodesCalculationRequested()
-        super.onNextClicked(callback)
-        callback?.stepperLayout?.hideProgress()
+        Handler().postDelayed({
+            mNodeRequestCallback?.onClosedNodesCalculationRequested()
+            super.onNextClicked(callback)
+            callback?.stepperLayout?.hideProgress()
+        }, 300L)
     }
 }
