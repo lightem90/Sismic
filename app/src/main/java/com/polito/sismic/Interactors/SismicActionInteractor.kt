@@ -15,24 +15,14 @@ import com.polito.sismic.Interactors.Helpers.SismicActionCalculatorHelper
 
 //Handles requests for seismic spectrum. the helper and the calculator are used to calculate the various parameters and graphs point
 class SismicActionInteractor(val mReportManager: ReportManager,
-                             val mContext: Context)
-{
+                             val mContext: Context) {
     private val mCoordinateHelper: ParametersForCoordinateHelper = ParametersForCoordinateHelper(mContext)
     private val mSismicActionCalculatorHelper: SismicActionCalculatorHelper = SismicActionCalculatorHelper(mCoordinateHelper)
     private var mustRecalcReturnTimesParameters: Boolean = true
-    private var mustRecalcDefaultSpectrum: Boolean = true
-    private var mustRecalcLimitState: Boolean = true
-    private var mustRecalcSpectrum: Boolean = true
 
     // lat and long are updated
     fun mustRecalcReturnTimesParameters(flag: Boolean = true) {
         mustRecalcReturnTimesParameters = flag
-        if (flag)
-        {
-            mustRecalcDefaultSpectrum = true
-            mustRecalcLimitState = true
-            mustRecalcSpectrum = true
-        }
     }
 
     fun calculateReturnPeriodsParameters() {
@@ -51,47 +41,27 @@ class SismicActionInteractor(val mReportManager: ReportManager,
 
             }
             mustRecalcReturnTimesParameters = false
-            mustRecalcDefaultSpectrum = true
-            mustRecalcLimitState = true
-            mustRecalcSpectrum = true
         }
     }
 
     //chart in sismogenetic fragment
     fun getDefaultSpectrumLines(reportState: ReportState): List<ILineDataSet> {
-        return if (mustRecalcDefaultSpectrum)
-        {
-            mustRecalcDefaultSpectrum = false
-            mustRecalcLimitState = true
-            mustRecalcSpectrum = true
-            reportState.sismicState.defaultReturnTimes = mSismicActionCalculatorHelper.getDefaultSpectrum(mContext, reportState)
-            reportState.sismicState.defaultReturnTimes
-        }
-        else
-            reportState.sismicState.defaultReturnTimes
+
+        reportState.sismicState.defaultReturnTimes = mSismicActionCalculatorHelper.getDefaultSpectrum(mContext, reportState)
+        return reportState.sismicState.defaultReturnTimes
     }
 
     //chart in sismicstate fragment
     fun getLimitStateLines(reportState: ReportState, data: ProjectSpectrumState): List<ILineDataSet> {
-        return if (mustRecalcLimitState)
-        {
-            mustRecalcLimitState = true
-            mustRecalcSpectrum = true
-            reportState.sismicState.limitStateTimes = mSismicActionCalculatorHelper.getLimitStateSpectrum(mContext, reportState, null, data)
-            reportState.sismicState.limitStateTimes
-        }
-        else reportState.sismicState.limitStateTimes
+
+        reportState.sismicState.limitStateTimes = mSismicActionCalculatorHelper.getLimitStateSpectrum(mContext, reportState, null, data)
+        return reportState.sismicState.limitStateTimes
     }
 
     //chart in spectrum fragment
     fun getSpectrumLines(reportState: ReportState, data: SismicParametersState): List<ILineDataSet> {
-        return if (mustRecalcSpectrum)
-        {
-            mustRecalcSpectrum = false
-            reportState.sismicState.spectrumReturnTimes = mSismicActionCalculatorHelper.getLimitStateSpectrum(mContext, reportState, data)
-            reportState.sismicState.spectrumReturnTimes
-        }
-        else
-            reportState.sismicState.spectrumReturnTimes
+
+        reportState.sismicState.spectrumReturnTimes = mSismicActionCalculatorHelper.getLimitStateSpectrum(mContext, reportState, data)
+        return reportState.sismicState.spectrumReturnTimes
     }
 }

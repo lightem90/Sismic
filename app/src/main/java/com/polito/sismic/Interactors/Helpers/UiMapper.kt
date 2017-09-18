@@ -3,6 +3,7 @@ package com.polito.sismic.Interactors.Helpers
 import com.polito.sismic.Domain.*
 import com.polito.sismic.Interactors.SismicBuildingInteractor
 import com.polito.sismic.Presenters.ReportActivity.Fragments.*
+import com.polito.sismic.R
 import kotlinx.android.synthetic.main.catasto_report_layout.*
 import kotlinx.android.synthetic.main.dati_generali_report_layout.*
 import kotlinx.android.synthetic.main.dati_strutturali_report_layout.*
@@ -106,26 +107,36 @@ class UiMapper {
                      getConoscenzaCalcestruzzo(),
                      if (acc_classe_parameter_A.isChecked) acc_classe_parameter_A.textOn.toString() else acc_classe_parameter_C.textOn.toString(),
                      getConoscenzaAcciaio(),
-                     if(sezione_bx_parameter.getParameterValue().isEmpty()) 0.0 else altezza_piano_tr_parameter.getParameterValue().toDouble(),
-                     if(sezione_hy_parameter.getParameterValue().isEmpty()) 0.0 else altezza_piano_tr_parameter.getParameterValue().toDouble(),
-                     if(sezione_c_parameter.getParameterValue().isEmpty()) 0.0 else altezza_piano_tr_parameter.getParameterValue().toDouble(),
-                     if(armatura_longitudine.getParameterValue().isEmpty()) 0.0 else altezza_piano_tr_parameter.getParameterValue().toDouble(),
-                     if(armatura_fi.getParameterValue().isEmpty()) 0.0 else altezza_piano_tr_parameter.getParameterValue().toDouble())
+                     if(sezione_bx_parameter.getParameterValue().isEmpty()) 0.0 else sezione_bx_parameter.getParameterValue().toDouble(),
+                     if(sezione_hy_parameter.getParameterValue().isEmpty()) 0.0 else sezione_hy_parameter.getParameterValue().toDouble(),
+                     if(sezione_c_parameter.getParameterValue().isEmpty()) 0.0 else sezione_c_parameter.getParameterValue().toDouble(),
+                     if(armatura_longitudine.getParameterValue().isEmpty()) 0.0 else armatura_longitudine.getParameterValue().toDouble(),
+                     if(armatura_fi.getParameterValue().isEmpty()) 0.0 else armatura_fi.getParameterValue().toDouble())
         }
 
-        fun createStructuralStateForDomain(datiStrutturaliReportFragment: DatiStrutturaliReportFragment): StructuralState  = with(datiStrutturaliReportFragment){
+        fun createStructuralStateForDomain(datiStrutturaliReportFragment: DatiStrutturaliReportFragment, buildingState: BuildingState): StructuralState  = with(datiStrutturaliReportFragment){
+
+            val context = datiStrutturaliReportFragment.context
+            val pesiSolaiArray = context.resources.getStringArray(R.array.solaio_int_pesi)
+            val pesiCopertureArray = context.resources.getStringArray(R.array.copertura_int_pesi)
+            val pesoSolaio = pesiSolaiArray[solaio_peso.selectedItemPosition].toDouble()
+            val pesoCopertura = pesiCopertureArray[copertura_peso.selectedItemPosition].toDouble()
+
             return StructuralState(getTipoFondazioni(),
-                    if(fondazioni_h.getParameterValue().isEmpty()) 0.0 else altezza_piano_tr_parameter.getParameterValue().toDouble(),
+                    if(fondazioni_h.getParameterValue().isEmpty()) 0.0 else fondazioni_h.getParameterValue().toDouble(),
                     solaio_type.textOn.toString(),
                     solaio_peso.selectedItem.toString(),
-                    if(solaio_g1.text.toString().isEmpty()) 0.0 else altezza_piano_tr_parameter.getParameterValue().toDouble(),
-                    if(solaio_g2.getParameterValue().isEmpty()) 0.0 else altezza_piano_tr_parameter.getParameterValue().toDouble(),
-                    if(solaio_qk.getParameterValue().isEmpty()) 0.0 else altezza_piano_tr_parameter.getParameterValue().toDouble(),
+                    pesoSolaio,
+                    if(solaio_g1.text.toString().isEmpty()) 0.0 else solaio_g1.text.toString().toDouble(),
+                    if(solaio_g2.getParameterValue().isEmpty()) 0.0 else solaio_g2.getParameterValue().toDouble(),
+                    if(solaio_qk.getParameterValue().isEmpty()) 0.0 else solaio_qk.getParameterValue().toDouble(),
                     copertura_type.textOn.toString(),
                     copertura_peso.selectedItem.toString(),
-                    if(copertura_g1.text.toString().isEmpty()) 0.0 else altezza_piano_tr_parameter.getParameterValue().toDouble(),
-                    if(copertura_g2.getParameterValue().isEmpty()) 0.0 else altezza_piano_tr_parameter.getParameterValue().toDouble(),
-                    if(copertura_qk.getParameterValue().isEmpty()) 0.0 else altezza_piano_tr_parameter.getParameterValue().toDouble())
+                    pesoCopertura,
+                    if(copertura_g1.text.toString().isEmpty()) 0.0 else copertura_g1.text.toString().toDouble(),
+                    if(copertura_g2.getParameterValue().isEmpty()) 0.0 else copertura_g2.getParameterValue().toDouble(),
+                    if(copertura_qk.getParameterValue().isEmpty()) 0.0 else copertura_qk.getParameterValue().toDouble(),
+                    SismicBuildingInteractor.calculateBuildWeigth(buildingState, pesoSolaio, pesoCopertura))
         }
         //TODO
         fun createPillarLayoutStateForDomain(magliaStrutturaleReportFragment: MagliaStrutturaleReportFragment): PillarLayoutState = with(magliaStrutturaleReportFragment){
@@ -214,14 +225,17 @@ class UiMapper {
                 }
                 is DatiStrutturaliReportFragment ->
                 {
+                    val pesiSolaiArray = context.resources.getStringArray(R.array.solaio_int_pesi)
+                    val pesiCopertureArray = context.resources.getStringArray(R.array.copertura_int_pesi)
+
                     reportState.buildingState.structuralState.let {
                         setTipoFondazioni(it.tipo_fondazioni)
                         fondazioni_h.setParameterValue(if (it.altezza_fondazioni == 0.0) "" else it.altezza_fondazioni.toString())
-                        setPesoSolaioByValue(it.peso_solaio)
+                        setPesoSolaioByValue(it.peso_solaio_string)
                         solaio_g1.text = if (it.g1_solaio == 0.0) "" else it.g1_solaio.toString()
                         solaio_g2.setParameterValue(if (it.g2_solaio == 0.0) "" else it.g2_solaio.toString())
                         solaio_qk.setParameterValue(if (it.qk_solaio == 0.0) "" else it.qk_solaio.toString())
-                        setPesoCoperturaByValue(it.peso_copertura)
+                        setPesoCoperturaByValue(it.peso_copertura_string)
                         copertura_g1.text = if (it.g1_copertura == 0.0) "" else it.g1_copertura.toString()
                         copertura_g2.setParameterValue(if (it.g2_copertura == 0.0) "" else it.g2_copertura.toString())
                         copertura_qk.setParameterValue(if (it.qk_copertura == 0.0) "" else it.qk_copertura.toString())
