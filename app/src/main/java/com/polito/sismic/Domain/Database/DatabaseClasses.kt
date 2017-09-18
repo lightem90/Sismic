@@ -304,43 +304,52 @@ data class DatabaseDatiStrutturali(var map: MutableMap<String, Any?>) : Database
     var tipo_fondazioni: String by map
     var altezza_fondazioni: Double by map
     var tipo_solaio: String by map
-    var peso_solaio: String by map
+    var peso_solaio: Double by map
+    var peso_solaio_string: String by map
     var g1_solaio: Double by map
     var g2_solaio: Double by map
     var qk_solaio: Double by map
     var tipo_copertura: String by map
-    var peso_copertura: String by map
+    var peso_copertura: Double by map
+    var peso_copertura_string: String by map
     var g1_copertura: Double by map
     var g2_copertura: Double by map
     var qk_copertura: Double by map
+    var peso_totale: Double by map
     var report_id: Int by map
 
     constructor(tipo_fondazioni: String,
                 altezza_fondazioni: Double,
                 tipo_solaio: String,
-                peso_solaio: String,
+                peso_solaio: Double,
+                peso_solaio_string : String,
                 g1_solaio: Double,
                 g2_solaio: Double,
                 qk_solaio: Double,
                 tipo_copertura: String,
-                peso_copertura: String,
+                peso_copertura: Double,
+                peso_copertura_string: String,
                 g1_copertura: Double,
                 g2_copertura: Double,
                 qk_copertura: Double,
+                peso_totale: Double,
                 report_id: Int
     ) : this(HashMap()) {
         this.tipo_fondazioni = tipo_fondazioni
         this.altezza_fondazioni = altezza_fondazioni
         this.tipo_solaio = tipo_solaio
         this.peso_solaio = peso_solaio
+        this.peso_solaio_string = peso_solaio_string
         this.g1_solaio = g1_solaio
         this.g2_solaio = g2_solaio
         this.qk_solaio = qk_solaio
         this.tipo_copertura = tipo_copertura
         this.peso_copertura = peso_copertura
+        this.peso_copertura_string = peso_copertura_string
         this.g1_copertura = g1_copertura
         this.g2_copertura = g2_copertura
         this.qk_copertura = qk_copertura
+        this.peso_totale = peso_totale
         this.report_id = report_id
     }
 }

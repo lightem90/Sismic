@@ -23,6 +23,7 @@ class DatiStrutturaliReportFragment : BaseReportFragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //TODO logic to hide container when piani <= 1
         fondazioni_type_platea.setOnCheckedChangeListener { _, flag ->
             if (flag)
             {
@@ -108,7 +109,7 @@ class DatiStrutturaliReportFragment : BaseReportFragment() {
 
     //callback to activity updates domain instance for activity and all existing and future fragments
     override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback?) {
-        getReport().reportState.buildingState.structuralState = UiMapper.createStructuralStateForDomain(this)
+        getReport().reportState.buildingState.structuralState = UiMapper.createStructuralStateForDomain(this, getReport().reportState.buildingState)
         super.onNextClicked(callback)
     }
 }

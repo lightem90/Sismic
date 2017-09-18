@@ -85,6 +85,7 @@ class ReportActivity : AppCompatActivity(),
         updateStateFromCallback()
     }
 
+    //the next 3 methods act on the current fragment, they dont need to call "reload"
     override fun onDefaultReturnTimesRequested(): List<ILineDataSet> = with(mSismicParameterInteractor){
         getDefaultSpectrumLines(mReportManager.report.reportState)
     }
