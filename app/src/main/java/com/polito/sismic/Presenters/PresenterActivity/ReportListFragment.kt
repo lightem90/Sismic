@@ -64,13 +64,14 @@ class ReportListFragment : Fragment() {
             startReportEditing(it)
         }
         history_container.adapter = adapter
+        invalidateAndReload()
     }
 
     fun invalidateAndReload()
     {
         mReportDetailsList.clear()
         mReportDetailsList.addAll(DatabaseInteractor().getDetailsForHistory())
-        history_container?.adapter?.notifyDataSetChanged()
+        history_container.adapter.notifyDataSetChanged()
     }
 
     private fun startReportEditing(reportDetails: ReportItemHistory): Boolean {

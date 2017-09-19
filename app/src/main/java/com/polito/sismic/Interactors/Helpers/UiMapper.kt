@@ -21,7 +21,7 @@ class UiMapper {
     companion object {
 
         fun convertMediaForDomain(reportId: Int, mediaFile: MediaFile): ReportMedia {
-            return ReportMedia(reportId, mediaFile.uri.toString(), mediaFile.type.toString(), mediaFile.note, mediaFile.getSize().toDouble())
+            return ReportMedia(reportId, mediaFile.uri.toString(), mediaFile.type.toString(), mediaFile.note, mediaFile.size)
         }
 
         fun createLocationStateForDomain(infoLocReportFragment: InfoLocReportFragment): LocalizationState = with(infoLocReportFragment) {

@@ -269,6 +269,7 @@ class DatabaseInteractor(private val reportDatabaseHelper: ReportDatabaseHelper 
                 .parseList { DatabaseResults(HashMap(it)) }
 
         //there's a smarter way to do this
+
         reports.map { dataMapper.convertReportDataForHistory(it, results) }.toMutableList()
     }
 }

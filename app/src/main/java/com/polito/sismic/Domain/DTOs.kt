@@ -80,7 +80,7 @@ data class ReportState(var result: ReportResult,
 
 data class ReportResult(var result: Int,
                         var size: Double) : Parcelable {
-    constructor() : this(-1, -1.0)
+    constructor() : this(-1, 0.0)
     constructor(source: Parcel) : this(
             source.readInt(),
             source.readDouble()
