@@ -687,14 +687,16 @@ data class StructuralState(var tipo_fondazioni: String,
                            var g1_solaio: Double,
                            var g2_solaio: Double,
                            var qk_solaio: Double,
+                           var q_solaio: Double,
                            var tipo_copertura: String,
                            var peso_copertura_string: String,
                            var peso_copertura: Double,
                            var g1_copertura: Double,
                            var g2_copertura: Double,
                            var qk_copertura: Double,
+                           var q_copertura: Double,
                            var peso_totale: Double) : Parcelable {
-    constructor() : this("", 0.0, "", "", 0.0, 0.0, 0.0, 0.0, "", "", 0.0, 0.0, 0.0, 0.0, 0.0)
+    constructor() : this("", 0.0, "", "", 0.0, 0.0, 0.0, 0.0, 0.0, "", "", 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
     constructor(source: Parcel) : this(
             source.readString(),
             source.readDouble(),
@@ -704,8 +706,10 @@ data class StructuralState(var tipo_fondazioni: String,
             source.readDouble(),
             source.readDouble(),
             source.readDouble(),
+            source.readDouble(),
             source.readString(),
             source.readString(),
+            source.readDouble(),
             source.readDouble(),
             source.readDouble(),
             source.readDouble(),
@@ -724,12 +728,14 @@ data class StructuralState(var tipo_fondazioni: String,
         writeDouble(g1_solaio)
         writeDouble(g2_solaio)
         writeDouble(qk_solaio)
+        writeDouble(q_solaio)
         writeString(tipo_copertura)
         writeString(peso_copertura_string)
         writeDouble(peso_copertura)
         writeDouble(g1_copertura)
         writeDouble(g2_copertura)
         writeDouble(qk_copertura)
+        writeDouble(q_copertura)
         writeDouble(peso_totale)
     }
 

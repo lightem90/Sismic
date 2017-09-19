@@ -292,6 +292,7 @@
     <string name="label_limit_state_format">%s: %d anni</string>
     <string name="et_password_hint">Password</string>
     <string name="registration_error">Errore di registrazione. Riprovare</string>
+    <string name="g1_format">G1: %s [kN/mq]</string>
 
 
 </resources>

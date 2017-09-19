@@ -5,6 +5,9 @@ import android.support.annotation.Nullable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Adapter
+import android.widget.AdapterView
+import com.polito.sismic.Extensions.toDoubleOrZero
 import com.polito.sismic.Extensions.toast
 import com.polito.sismic.Interactors.Helpers.UiMapper
 import com.polito.sismic.R
@@ -63,8 +66,53 @@ class DatiStrutturaliReportFragment : BaseReportFragment() {
             }
         }
 
+        //Set g1 according to weigth (Foreach copertura/solaio there's the specified weigth at position)
+        solaio_peso.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+
+            override fun onItemSelected(parent: AdapterView<*>, mView: View?, pos: Int, id: Long) {
+                solaio_g1.text = context.resources.getStringArray(R.array.solaio_int_pesi)[pos]
+            }
+            override fun onNothingSelected(parent: AdapterView<out Adapter>?) {  }
+        }
+
+        copertura_peso.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+
+            override fun onItemSelected(parent: AdapterView<*>, mView: View?, pos: Int, id: Long) {
+                val peso = context.resources.getStringArray(R.array.copertura_int_pesi)[pos]
+                copertura_g1.text = String.format(context.getString(R.string.g1_format), peso)
+            }
+            override fun onNothingSelected(parent: AdapterView<out Adapter>?) {  }
+        }
+
+        solaio_peso.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+
+            override fun onItemSelected(parent: AdapterView<*>, mView: View?, pos: Int, id: Long) {
+                val peso = context.resources.getStringArray(R.array.solaio_int_pesi)[pos]
+                solaio_g1.text = String.format(context.getString(R.string.g1_format), peso)
+                updateSolaioQ()
+            }
+            override fun onNothingSelected(parent: AdapterView<out Adapter>?) {  }
+        }
+        solaio_g2.attachDataConfirmedCallback { updateSolaioQ() }
+        solaio_qk.attachDataConfirmedCallback { updateSolaioQ() }
+
+        copertura_g2.attachDataConfirmedCallback { updateCoperturaQ() }
+        copertura_qk.attachDataConfirmedCallback { updateCoperturaQ() }
+
         copertura_type.setOnClickListener { context.toast(R.string.error_not_supported) }
         solaio_type.setOnClickListener { context.toast(R.string.error_not_supported) }
+    }
+
+    private fun updateSolaioQ()
+    {
+        val q = solaio_g1.text.toString().toDoubleOrZero() + solaio_g2.getParameterValue().toDoubleOrZero() + solaio_qk.getParameterValue().toDoubleOrZero()*0.3
+        solaio_q.text = q.toString()
+    }
+
+    private fun updateCoperturaQ()
+    {
+        val q = copertura_g1.text.toString().toDoubleOrZero() + copertura_g2.getParameterValue().toDoubleOrZero() + copertura_qk.getParameterValue().toDoubleOrZero()*0.3
+        copertura_q.text = q.toString()
     }
 
     fun getTipoFondazioni(): String {

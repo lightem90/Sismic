@@ -149,12 +149,14 @@ class ReportDatabaseHelper(ctx: Context = App.instance) : ManagedSQLiteOpenHelpe
                         DatiStrutturaliInfoTable.G1_SOLAIO to REAL,
                         DatiStrutturaliInfoTable.G2_SOLAIO to REAL,
                         DatiStrutturaliInfoTable.QK_SOLAIO to REAL,
+                        DatiStrutturaliInfoTable.Q_SOLAIO to REAL,
                         DatiStrutturaliInfoTable.TIPO_COPERTURA to TEXT,
                         DatiStrutturaliInfoTable.PESO_COPERTURA to REAL,
                         DatiStrutturaliInfoTable.PESO_COPERTURA_STRING to TEXT,
                         DatiStrutturaliInfoTable.G1_COPERTURA to REAL,
                         DatiStrutturaliInfoTable.G2_COPERTURA to REAL,
                         DatiStrutturaliInfoTable.QK_COPERTURA to REAL,
+                        DatiStrutturaliInfoTable.Q_COPERTURA to REAL,
                         DatiStrutturaliInfoTable.PESO_TOTALE to REAL,
                         DatiStrutturaliInfoTable.REPORT_ID to INTEGER)
         )

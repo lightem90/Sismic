@@ -1,6 +1,8 @@
 package com.polito.sismic.Interactors.Helpers
 
 import com.polito.sismic.Domain.*
+import com.polito.sismic.Extensions.toDoubleOrZero
+import com.polito.sismic.Extensions.toStringOrEmpty
 import com.polito.sismic.Interactors.SismicBuildingInteractor
 import com.polito.sismic.Presenters.ReportActivity.Fragments.*
 import com.polito.sismic.R
@@ -25,8 +27,8 @@ class UiMapper {
         }
 
         fun createLocationStateForDomain(infoLocReportFragment: InfoLocReportFragment): LocalizationState = with(infoLocReportFragment) {
-            return LocalizationState(lat_parameter.getParameterValue().toDouble(),
-                    long_parameter.getParameterValue().toDouble(),
+            return LocalizationState(lat_parameter.getParameterValue().toDoubleOrZero(),
+                    long_parameter.getParameterValue().toDoubleOrZero(),
                     country_parameter.getParameterValue(),
                     region_parameter.getParameterValue(),
                     province_parameter.getParameterValue(),
@@ -56,7 +58,7 @@ class UiMapper {
         fun createSismicStateForDomain(parametriSismiciReportFragment: ParametriSismiciReportFragment): SismicParametersState = with(parametriSismiciReportFragment) {
             return SismicParametersState(getVitaNominale(),
                     getClasseUsoForIndex(classe_parameter.selectedItemPosition),
-                    vita_reale.getValue().toDouble(),
+                    vita_reale.getValue().toDoubleOrZero(),
                     listOf())
         }
 
@@ -82,17 +84,17 @@ class UiMapper {
         fun createTakeoverStateForDomain(rilieviReportFragment: RilieviReportFragment): TakeoverState  = with(rilieviReportFragment){
 
             //For now we assume a ractangle / square
-            val lunghezza = if (lunghezza_piano_parameter.getParameterValue().isEmpty()) 0.0 else lunghezza_piano_parameter.getParameterValue().toDouble()
-            val larghezza = if (larghezza_piano_parameter.getParameterValue().isEmpty()) 0.0 else larghezza_piano_parameter.getParameterValue().toDouble()
+            val lunghezza = lunghezza_piano_parameter.getParameterValue().toDoubleOrZero()
+            val larghezza = larghezza_piano_parameter.getParameterValue().toDoubleOrZero()
             val perimetro = (lunghezza + larghezza) * 2
             val area = lunghezza * larghezza
             val gravity_center = SpectrumPoint(lunghezza/2, larghezza/2)
-            val hTot = if (tot_high.text.toString().isEmpty()) 0.0 else tot_high.text.toString().toDouble()
+            val hTot = tot_high.text.toString().toDoubleOrZero()
             val t1 = SismicBuildingInteractor.calculateT1(hTot)
 
             return TakeoverState(piani_numero_parameter.selectedItem.toString().toInt(),
-                    if (altezza_piano_tr_parameter.getParameterValue().isEmpty()) 0.0 else altezza_piano_tr_parameter.getParameterValue().toDouble(),
-                    if (altezza_piani_sup_parameter.getParameterValue().isEmpty()) 0.0 else altezza_piani_sup_parameter.getParameterValue().toDouble(),
+                   altezza_piano_tr_parameter.getParameterValue().toDoubleOrZero(),
+                   altezza_piani_sup_parameter.getParameterValue().toDoubleOrZero(),
                     hTot,
                     lunghezza,
                     larghezza,
@@ -107,11 +109,11 @@ class UiMapper {
                      getConoscenzaCalcestruzzo(),
                      if (acc_classe_parameter_A.isChecked) acc_classe_parameter_A.textOn.toString() else acc_classe_parameter_C.textOn.toString(),
                      getConoscenzaAcciaio(),
-                     if(sezione_bx_parameter.getParameterValue().isEmpty()) 0.0 else sezione_bx_parameter.getParameterValue().toDouble(),
-                     if(sezione_hy_parameter.getParameterValue().isEmpty()) 0.0 else sezione_hy_parameter.getParameterValue().toDouble(),
-                     if(sezione_c_parameter.getParameterValue().isEmpty()) 0.0 else sezione_c_parameter.getParameterValue().toDouble(),
-                     if(armatura_longitudine.getParameterValue().isEmpty()) 0.0 else armatura_longitudine.getParameterValue().toDouble(),
-                     if(armatura_fi.getParameterValue().isEmpty()) 0.0 else armatura_fi.getParameterValue().toDouble())
+                     sezione_bx_parameter.getParameterValue().toDoubleOrZero(),
+                     sezione_hy_parameter.getParameterValue().toDoubleOrZero(),
+                     sezione_c_parameter.getParameterValue().toDoubleOrZero(),
+                     armatura_longitudine.getParameterValue().toDoubleOrZero(),
+                     armatura_fi.getParameterValue().toDoubleOrZero())
         }
 
         fun createStructuralStateForDomain(datiStrutturaliReportFragment: DatiStrutturaliReportFragment, buildingState: BuildingState): StructuralState  = with(datiStrutturaliReportFragment){
@@ -123,19 +125,21 @@ class UiMapper {
             val pesoCopertura = pesiCopertureArray[copertura_peso.selectedItemPosition].toDouble()
 
             return StructuralState(getTipoFondazioni(),
-                    if(fondazioni_h.getParameterValue().isEmpty()) 0.0 else fondazioni_h.getParameterValue().toDouble(),
+                    fondazioni_h.getParameterValue().toDoubleOrZero(),
                     solaio_type.textOn.toString(),
                     solaio_peso.selectedItem.toString(),
                     pesoSolaio,
-                    if(solaio_g1.text.toString().isEmpty()) 0.0 else solaio_g1.text.toString().toDouble(),
-                    if(solaio_g2.getParameterValue().isEmpty()) 0.0 else solaio_g2.getParameterValue().toDouble(),
-                    if(solaio_qk.getParameterValue().isEmpty()) 0.0 else solaio_qk.getParameterValue().toDouble(),
+                    solaio_g1.text.toString().toDoubleOrZero(),
+                    solaio_g2.getParameterValue().toDoubleOrZero(),
+                    solaio_qk.getParameterValue().toDoubleOrZero(),
+                    solaio_q.text.toString().toDoubleOrZero(),
                     copertura_type.textOn.toString(),
                     copertura_peso.selectedItem.toString(),
                     pesoCopertura,
-                    if(copertura_g1.text.toString().isEmpty()) 0.0 else copertura_g1.text.toString().toDouble(),
-                    if(copertura_g2.getParameterValue().isEmpty()) 0.0 else copertura_g2.getParameterValue().toDouble(),
-                    if(copertura_qk.getParameterValue().isEmpty()) 0.0 else copertura_qk.getParameterValue().toDouble(),
+                    copertura_g1.text.toString().toDoubleOrZero(),
+                    copertura_g2.getParameterValue().toDoubleOrZero(),
+                    copertura_qk.getParameterValue().toDoubleOrZero(),
+                    copertura_q.text.toString().toDoubleOrZero(),
                     SismicBuildingInteractor.calculateBuildWeigth(buildingState, pesoSolaio, pesoCopertura))
         }
         //TODO
@@ -149,8 +153,8 @@ class UiMapper {
                 is InfoLocReportFragment ->
                 {
                     reportState.localizationState.let {
-                        lat_parameter.setParameterValue(if (it.latitude != 0.0) it.latitude.toString() else "")
-                        long_parameter.setParameterValue(if (it.latitude != 0.0) it.longitude.toString() else "")
+                        lat_parameter.setParameterValue(it.latitude.toStringOrEmpty())
+                        long_parameter.setParameterValue(it.longitude.toStringOrEmpty())
                         country_parameter.setParameterValue(it.country)
                         region_parameter.setParameterValue(it.region)
                         province_parameter.setParameterValue(it.province)
@@ -188,9 +192,9 @@ class UiMapper {
                     reportState.sismicState.sismicParametersState.let {
                         setVitaNominale(it.vitaNominale)
                         classe_parameter.setSelection(getClasseUsoIndexByValue(it.classeUso))
-                        vita_reale.setValue(it.vitaReale.toString())
+                        vita_reale.setValue(it.vitaReale.toStringOrEmpty())
 
-                        //TODO
+                        //TODO ??
                     }
                 }
                 is SpettriDiProgettoReportFragment ->
@@ -216,11 +220,11 @@ class UiMapper {
                 {
                     reportState.buildingState.takeoverState.let {
                         piani_numero_parameter.setSelection(it.numero_piani-1)
-                        altezza_piano_tr_parameter.setParameterValue(if (it.altezza_piano_terra == 0.0) "" else it.altezza_piano_terra.toString())
-                        altezza_piani_sup_parameter.setParameterValue(if (it.altezza_piani_superiori == 0.0) "" else it.altezza_piani_superiori.toString())
-                        tot_high.text = it.altezza_totale.toString()
-                        lunghezza_piano_parameter.setParameterValue(if (it.lunghezza_esterna == 0.0) "" else it.lunghezza_esterna.toString())
-                        larghezza_piano_parameter.setParameterValue(if (it.larghezza_esterna == 0.0) "" else it.larghezza_esterna.toString())
+                        altezza_piano_tr_parameter.setParameterValue(it.altezza_piano_terra.toStringOrEmpty())
+                        altezza_piani_sup_parameter.setParameterValue(it.altezza_piani_superiori.toStringOrEmpty())
+                        tot_high.text = it.altezza_totale.toStringOrEmpty()
+                        lunghezza_piano_parameter.setParameterValue(it.lunghezza_esterna.toStringOrEmpty())
+                        larghezza_piano_parameter.setParameterValue(it.larghezza_esterna.toStringOrEmpty())
                     }
                 }
                 is DatiStrutturaliReportFragment ->
@@ -230,15 +234,15 @@ class UiMapper {
 
                     reportState.buildingState.structuralState.let {
                         setTipoFondazioni(it.tipo_fondazioni)
-                        fondazioni_h.setParameterValue(if (it.altezza_fondazioni == 0.0) "" else it.altezza_fondazioni.toString())
+                        fondazioni_h.setParameterValue(it.altezza_fondazioni.toStringOrEmpty())
                         setPesoSolaioByValue(it.peso_solaio_string)
-                        solaio_g1.text = if (it.g1_solaio == 0.0) "" else it.g1_solaio.toString()
-                        solaio_g2.setParameterValue(if (it.g2_solaio == 0.0) "" else it.g2_solaio.toString())
-                        solaio_qk.setParameterValue(if (it.qk_solaio == 0.0) "" else it.qk_solaio.toString())
+                        solaio_g1.text = it.g1_solaio.toStringOrEmpty()
+                        solaio_g2.setParameterValue(it.g2_solaio.toStringOrEmpty())
+                        solaio_qk.setParameterValue(it.qk_solaio.toStringOrEmpty())
                         setPesoCoperturaByValue(it.peso_copertura_string)
-                        copertura_g1.text = if (it.g1_copertura == 0.0) "" else it.g1_copertura.toString()
-                        copertura_g2.setParameterValue(if (it.g2_copertura == 0.0) "" else it.g2_copertura.toString())
-                        copertura_qk.setParameterValue(if (it.qk_copertura == 0.0) "" else it.qk_copertura.toString())
+                        copertura_g1.text = it.g1_copertura.toStringOrEmpty()
+                        copertura_g2.setParameterValue(it.g2_copertura.toStringOrEmpty())
+                        copertura_qk.setParameterValue(it.qk_copertura.toStringOrEmpty())
                     }
                 }
 
@@ -249,11 +253,11 @@ class UiMapper {
                         setConoscenzaCalcestruzzo(it.conoscenza_calcestruzzo)
                         if (acc_classe_parameter_C.textOn == it.classe_acciaio) acc_classe_parameter_C.isChecked = true else acc_classe_parameter_A.isChecked = true
                         setConoscenzaAcciaio(it.conoscenza_acciaio)
-                        sezione_bx_parameter.setParameterValue(if (it.bx == 0.0) "" else it.bx.toString())
-                        sezione_hy_parameter.setParameterValue(if (it.hy == 0.0) "" else it.bx.toString())
-                        sezione_c_parameter.setParameterValue(if (it.c == 0.0) "" else it.bx.toString())
-                        armatura_longitudine.setParameterValue(if (it.longitudine_armatura == 0.0) "" else it.bx.toString())
-                        armatura_fi.setParameterValue(if (it.fi == 0.0) "" else it.bx.toString())
+                        sezione_bx_parameter.setParameterValue(it.bx.toStringOrEmpty())
+                        sezione_hy_parameter.setParameterValue(it.bx.toStringOrEmpty())
+                        sezione_c_parameter.setParameterValue(it.bx.toStringOrEmpty())
+                        armatura_longitudine.setParameterValue(it.bx.toStringOrEmpty())
+                        armatura_fi.setParameterValue(it.bx.toStringOrEmpty())
                     }
 
                 }

@@ -211,6 +211,16 @@ fun PeriodData.interpolateWith(next : PeriodData, newYear : Int) : PeriodData
     return PeriodData(newYear, newAg, newF0, newTcStar)
 }
 
+fun String.toDoubleOrZero() : Double
+{
+    return if (isEmpty()) 0.0 else toDouble()
+}
+
+fun Double.toStringOrEmpty() : String
+{
+    return if (this == 0.0) "" else toString()
+}
+
 class MathUti
 {
     companion object {
