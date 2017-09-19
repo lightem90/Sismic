@@ -19,12 +19,18 @@ import kotlinx.android.synthetic.main.dati_strutturali_report_layout.*
  */
 class DatiStrutturaliReportFragment : BaseReportFragment() {
 
+    private lateinit var mPesiSolaio: Array<out String>
+    private lateinit var mPesiCopertura: Array<out String>
+
     override fun onCreateView(inflater: LayoutInflater?, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View? {
         return inflateFragment(R.layout.dati_strutturali_report_layout, inflater, container)
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        mPesiSolaio = context.resources.getStringArray(R.array.solaio_int_pesi)
+        mPesiCopertura = context.resources.getStringArray(R.array.copertura_int_pesi)
 
         //TODO logic to hide container when piani <= 1
         fondazioni_type_platea.setOnCheckedChangeListener { _, flag ->
@@ -78,7 +84,7 @@ class DatiStrutturaliReportFragment : BaseReportFragment() {
         copertura_peso.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 
             override fun onItemSelected(parent: AdapterView<*>, mView: View?, pos: Int, id: Long) {
-                val peso = context.resources.getStringArray(R.array.copertura_int_pesi)[pos]
+                val peso = mPesiCopertura[pos]
                 copertura_g1.text = String.format(context.getString(R.string.g1_format), peso)
             }
             override fun onNothingSelected(parent: AdapterView<out Adapter>?) {  }
@@ -87,7 +93,7 @@ class DatiStrutturaliReportFragment : BaseReportFragment() {
         solaio_peso.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 
             override fun onItemSelected(parent: AdapterView<*>, mView: View?, pos: Int, id: Long) {
-                val peso = context.resources.getStringArray(R.array.solaio_int_pesi)[pos]
+                val peso = mPesiSolaio[pos]
                 solaio_g1.text = String.format(context.getString(R.string.g1_format), peso)
                 updateSolaioQ()
             }
@@ -105,13 +111,13 @@ class DatiStrutturaliReportFragment : BaseReportFragment() {
 
     private fun updateSolaioQ()
     {
-        val q = solaio_g1.text.toString().toDoubleOrZero() + solaio_g2.getParameterValue().toDoubleOrZero() + solaio_qk.getParameterValue().toDoubleOrZero()*0.3
+        val q = mPesiSolaio[solaio_peso.selectedItemPosition].toDoubleOrZero() + solaio_g2.getParameterValue().toDoubleOrZero() + solaio_qk.getParameterValue().toDoubleOrZero()*0.3
         solaio_q.text = q.toString()
     }
 
     private fun updateCoperturaQ()
     {
-        val q = copertura_g1.text.toString().toDoubleOrZero() + copertura_g2.getParameterValue().toDoubleOrZero() + copertura_qk.getParameterValue().toDoubleOrZero()*0.3
+        val q = mPesiCopertura[copertura_peso.selectedItemPosition].toDoubleOrZero() + copertura_g2.getParameterValue().toDoubleOrZero() + copertura_qk.getParameterValue().toDoubleOrZero()*0.3
         copertura_q.text = q.toString()
     }
 

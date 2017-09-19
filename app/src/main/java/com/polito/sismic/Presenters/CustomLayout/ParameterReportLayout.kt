@@ -14,7 +14,9 @@ import kotlinx.android.synthetic.main.report_parameter_layout.view.*
 import android.widget.ArrayAdapter
 import android.os.Bundle
 import android.os.Parcelable
+import android.text.Editable
 import android.text.InputType
+import android.text.TextWatcher
 
 
 /**
@@ -89,6 +91,21 @@ class ParameterReportLayout : LinearLayout{
                 else
                     section_parameter_help.visibility = View.INVISIBLE
             }
+
+            section_parameter_value.addTextChangedListener(object : TextWatcher {
+                var beforeString : String = getParameterValue()
+                override fun afterTextChanged(p0: Editable?) {
+                    if (beforeString != getParameterValue())
+                        dataConfirmedCallback?.invoke(getParameterValue())
+                }
+
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                    beforeString = getParameterValue()
+                }
+
+                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                }
+            })
             typedArray.recycle()
         }
     }
