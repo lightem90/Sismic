@@ -129,14 +129,12 @@ class UiMapper {
                     solaio_type.textOn.toString(),
                     solaio_peso.selectedItem.toString(),
                     pesoSolaio,
-                    solaio_g1.text.toString().toDoubleOrZero(),
                     solaio_g2.getParameterValue().toDoubleOrZero(),
                     solaio_qk.getParameterValue().toDoubleOrZero(),
                     solaio_q.text.toString().toDoubleOrZero(),
                     copertura_type.textOn.toString(),
                     copertura_peso.selectedItem.toString(),
                     pesoCopertura,
-                    copertura_g1.text.toString().toDoubleOrZero(),
                     copertura_g2.getParameterValue().toDoubleOrZero(),
                     copertura_qk.getParameterValue().toDoubleOrZero(),
                     copertura_q.text.toString().toDoubleOrZero(),
@@ -229,18 +227,13 @@ class UiMapper {
                 }
                 is DatiStrutturaliReportFragment ->
                 {
-                    val pesiSolaiArray = context.resources.getStringArray(R.array.solaio_int_pesi)
-                    val pesiCopertureArray = context.resources.getStringArray(R.array.copertura_int_pesi)
-
                     reportState.buildingState.structuralState.let {
                         setTipoFondazioni(it.tipo_fondazioni)
                         fondazioni_h.setParameterValue(it.altezza_fondazioni.toStringOrEmpty())
                         setPesoSolaioByValue(it.peso_solaio_string)
-                        solaio_g1.text = it.g1_solaio.toStringOrEmpty()
                         solaio_g2.setParameterValue(it.g2_solaio.toStringOrEmpty())
                         solaio_qk.setParameterValue(it.qk_solaio.toStringOrEmpty())
                         setPesoCoperturaByValue(it.peso_copertura_string)
-                        copertura_g1.text = it.g1_copertura.toStringOrEmpty()
                         copertura_g2.setParameterValue(it.g2_copertura.toStringOrEmpty())
                         copertura_qk.setParameterValue(it.qk_copertura.toStringOrEmpty())
                     }

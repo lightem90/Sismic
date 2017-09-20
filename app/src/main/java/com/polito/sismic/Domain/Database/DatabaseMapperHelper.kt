@@ -81,14 +81,12 @@ class DatabaseMapperHelper {
                     it.tipo_solaio,
                     it.peso_solaio_string,
                     it.peso_solaio,
-                    it.g1_solaio,
                     it.g2_solaio,
                     it.qk_solaio,
                     it.q_solaio,
                     it.tipo_copertura,
                     it.peso_copertura_string,
                     it.peso_copertura,
-                    it.g1_copertura,
                     it.g2_copertura,
                     it.qk_copertura,
                     it.q_copertura,
@@ -221,7 +219,7 @@ class DatabaseMapperHelper {
     }
 
     private fun createStructForDb(reportId: Int, structuralState: StructuralState): DatabaseSection = with(structuralState) {
-        return DatabaseDatiStrutturali(tipo_fondazioni, altezza_fondazioni, tipo_solaio, peso_solaio, peso_solaio_string, g1_solaio, g2_solaio, qk_solaio, q_solaio, tipo_copertura, peso_copertura, peso_copertura_string, g1_copertura, g2_copertura, qk_copertura, q_copertura, peso_totale, reportId)
+        return DatabaseDatiStrutturali(tipo_fondazioni, altezza_fondazioni, tipo_solaio, peso_solaio, peso_solaio_string, g2_solaio, qk_solaio, q_solaio, tipo_copertura, peso_copertura, peso_copertura_string, g2_copertura, qk_copertura, q_copertura, peso_totale, reportId)
     }
 
     private fun createBuildGenForDb(reportId: Int, buildingGeneralState: BuildingGeneralState): DatabaseSection = with(buildingGeneralState) {
