@@ -1,6 +1,8 @@
 # Polito
 
-Applicazione per la classificazione sismica degli edifici, in collaborazione col Professor. Fabrizio Barpi, Luca Torchiano e Denis Zucchini. 
+Android app for sismic classification of building on Italian soil, master thesis project of: Matteo Liera.
+Co-Author: Denis Zucchini
+Coordinator: Fabrizio Barpi, Luca Ardito
 
 
 # License
