@@ -61,6 +61,7 @@ class SpettriDiProgettoReportFragment : BaseReportFragment() {
                 categoria_classe_duttilita_parameter_cda.isClickable = true
             }
             updateMoltiplicatoreVisibility(categoria_tipologia_parameter.selectedItemPosition)
+            updateGraph()
         }
 
         categoria_classe_duttilita_parameter_cdb.setOnCheckedChangeListener { _, flag ->
@@ -70,12 +71,14 @@ class SpettriDiProgettoReportFragment : BaseReportFragment() {
                 categoria_classe_duttilita_parameter_cdb.isClickable = true
             }
             updateMoltiplicatoreVisibility(categoria_tipologia_parameter.selectedItemPosition)
+            updateGraph()
         }
 
         categoria_tipologia_parameter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 
             override fun onItemSelected(parent: AdapterView<*>, mView: View?, pos: Int, id: Long) {
                 updateMoltiplicatoreVisibility(pos)
+                updateGraph()
             }
 
             override fun onNothingSelected(parent: AdapterView<out Adapter>?) {}
@@ -84,20 +87,28 @@ class SpettriDiProgettoReportFragment : BaseReportFragment() {
         categoria_moltiplicatore_parameter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 
             override fun onItemSelected(parent: AdapterView<*>, mView: View?, pos: Int, id: Long) {
+                updateGraph()
             }
 
             override fun onNothingSelected(parent: AdapterView<out Adapter>?) {}
         }
 
-        update_graph.setOnClickListener {
+        categoria_topografica_parameter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 
-            mReturnTimeRequest?.onReturnTimesRequested(UiMapper.createSpectrumStateForDomain(this)).let {
-                with(report_spettrodirisposta_chart)
-                {
-                    data = LineData(it)
-                    invalidate()
-                }
+            override fun onItemSelected(parent: AdapterView<*>, mView: View?, pos: Int, id: Long) {
+                updateGraph()
             }
+
+            override fun onNothingSelected(parent: AdapterView<out Adapter>?) {}
+        }
+
+        categoria_suolo_parameter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+
+            override fun onItemSelected(parent: AdapterView<*>, mView: View?, pos: Int, id: Long) {
+                updateGraph()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<out Adapter>?) {}
         }
 
         with(report_spettrodirisposta_chart)
@@ -112,23 +123,37 @@ class SpettriDiProgettoReportFragment : BaseReportFragment() {
         }
     }
 
+    private fun updateGraph()
+    {
+        mReturnTimeRequest?.onReturnTimesRequested(UiMapper.createSpectrumStateForDomain(this)).let {
+            with(report_spettrodirisposta_chart)
+            {
+                data = LineData(it)
+                invalidate()
+            }
+        }
+    }
+
     private fun updateMoltiplicatoreVisibility(pos: Int) {
         when (pos) {
             0 -> {
                 categoria_moltiplicatore_parameter_container.visibility = View.VISIBLE
                 updateSpinnerItemsVibility(categoria_moltiplicatore_parameter, resources.getStringArray(R.array.cat_moltiplicatore_1))
-
+                updateGraph()
             }
             1 -> {
                 if (categoria_classe_duttilita_parameter_cda.isChecked) {
                     updateSpinnerItemsVibility(categoria_moltiplicatore_parameter, resources.getStringArray(R.array.cat_moltiplicatore_2))
                 } else
                     categoria_moltiplicatore_parameter_container.visibility = View.GONE
+                updateGraph()
             }
             else -> {
                 categoria_moltiplicatore_parameter_container.visibility = View.GONE
+                updateGraph()
             }
         }
+
     }
 
     private fun updateSpinnerItemsVibility(spinnerToUpdate: Spinner, newStringArray: Array<out String>) {
@@ -140,6 +165,7 @@ class SpettriDiProgettoReportFragment : BaseReportFragment() {
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         // attaching data adapter to spinner
         spinnerToUpdate.adapter = dataAdapter
+        updateGraph()
     }
 
     fun selectCategoriaSuolo(categoria_suolo: String) {

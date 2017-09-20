@@ -59,6 +59,7 @@ class ParametriSismiciReportFragment : BaseReportFragment() {
             {
                 vita_nominale_30.isClickable = true
             }
+            updateGraph()
         }
 
         vita_nominale_50.setOnCheckedChangeListener { _, flag ->
@@ -73,6 +74,7 @@ class ParametriSismiciReportFragment : BaseReportFragment() {
             {
                 vita_nominale_50.isClickable = true
             }
+            updateGraph()
         }
 
         vita_nominale_100.setOnCheckedChangeListener { _, flag ->
@@ -87,24 +89,16 @@ class ParametriSismiciReportFragment : BaseReportFragment() {
             {
                 vita_nominale_100.isClickable = true
             }
+            updateGraph()
         }
 
         classe_parameter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 
             override fun onItemSelected(parent: AdapterView<*>, mView: View?, pos: Int, id: Long) {
                 setVitaReale(pos)
+                updateGraph()
             }
             override fun onNothingSelected(parent: AdapterView<out Adapter>?) {  }
-        }
-
-        update_graph.setOnClickListener {
-            mLimitStateRequest?.onLimitStatesRequested(UiMapper.createSismicStateForDomain(this)).let {
-                with(report_spettrodirisposta_chart)
-                {
-                    data = LineData(it)
-                    invalidate()
-                }
-            }
         }
 
         with (report_spettrodirisposta_chart)
@@ -116,6 +110,17 @@ class ParametriSismiciReportFragment : BaseReportFragment() {
             legend.setDrawInside(false)
             description.isEnabled = false
             getAxis(YAxis.AxisDependency.RIGHT).isEnabled = false
+        }
+    }
+
+    private fun updateGraph()
+    {
+        mLimitStateRequest?.onLimitStatesRequested(UiMapper.createSismicStateForDomain(this)).let {
+            with(report_spettrodirisposta_chart)
+            {
+                data = LineData(it)
+                invalidate()
+            }
         }
     }
 
