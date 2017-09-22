@@ -293,6 +293,7 @@
     <string name="et_password_hint">Password</string>
     <string name="registration_error">Errore di registrazione. Riprovare</string>
     <string name="g1_format">G1: %s [kN/mq]</string>
+    <string name="report_delete_succeded">Report %d deleted correctly</string>
 
 
 </resources>

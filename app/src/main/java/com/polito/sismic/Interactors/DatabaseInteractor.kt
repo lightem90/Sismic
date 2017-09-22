@@ -158,23 +158,27 @@ class DatabaseInteractor(private val reportDatabaseHelper: ReportDatabaseHelper 
         }
     }
 
-    fun delete(reportDetails: ReportDetails) = reportDatabaseHelper.use {
-        with(dataMapper.convertReportDetailsFromDomain(reportDetails))
-        {
-            delete(ReportTable.NAME, "${ReportTable.ID} = ?", arrayOf(_id.toString()))
-            delete(ReportMediaTable.NAME, "${ReportMediaTable.REPORT_ID} = ?", arrayOf(_id.toString()))
-            delete(LocalizationInfoTable.NAME, "${LocalizationInfoTable.REPORT_ID} = ?", arrayOf(_id.toString()))
-            delete(CatastoInfoTable.NAME, "${CatastoInfoTable.REPORT_ID} = ?", arrayOf(_id.toString()))
-            delete(DatiSismogeneticiInfoTable.NAME, "${DatiSismogeneticiInfoTable.REPORT_ID} = ?", arrayOf(_id.toString()))
-            delete(ParametriSismiciInfoTable.NAME, "${ParametriSismiciInfoTable.REPORT_ID} = ?", arrayOf(_id.toString()))
-            delete(CaratteristicheGeneraliInfoTable.NAME, "${CaratteristicheGeneraliInfoTable.REPORT_ID} = ?", arrayOf(_id.toString()))
-            delete(SpettriDiProgettoInfoTable.NAME, "${SpettriDiProgettoInfoTable.REPORT_ID} = ?", arrayOf(_id.toString()))
-            delete(DatiStrutturaliInfoTable.NAME, "${DatiStrutturaliInfoTable.REPORT_ID} = ?", arrayOf(_id.toString()))
-            delete(RilieviInfoTable.NAME, "${RilieviInfoTable.REPORT_ID} = ?", arrayOf(_id.toString()))
-            delete(CaratteristichePilastriInfoTable.NAME, "${CaratteristichePilastriInfoTable.REPORT_ID} = ?", arrayOf(_id.toString()))
-            delete(MagliaStrutturaleInfoTable.NAME, "${MagliaStrutturaleInfoTable.REPORT_ID} = ?", arrayOf(_id.toString()))
-            delete(ResultsInfoTable.NAME, "${ResultsInfoTable.REPORT_ID} = ?", arrayOf(_id.toString()))
-        }
+    fun delete(reportDetails: ReportDetails)
+    {
+        delete(reportDetails.id)
+    }
+
+    fun delete(_id : Int) = reportDatabaseHelper.use {
+
+        delete(ReportTable.NAME, "${ReportTable.ID} = ?", arrayOf(_id.toString()))
+        delete(ReportMediaTable.NAME, "${ReportMediaTable.REPORT_ID} = ?", arrayOf(_id.toString()))
+        delete(LocalizationInfoTable.NAME, "${LocalizationInfoTable.REPORT_ID} = ?", arrayOf(_id.toString()))
+        delete(CatastoInfoTable.NAME, "${CatastoInfoTable.REPORT_ID} = ?", arrayOf(_id.toString()))
+        delete(DatiSismogeneticiInfoTable.NAME, "${DatiSismogeneticiInfoTable.REPORT_ID} = ?", arrayOf(_id.toString()))
+        delete(ParametriSismiciInfoTable.NAME, "${ParametriSismiciInfoTable.REPORT_ID} = ?", arrayOf(_id.toString()))
+        delete(CaratteristicheGeneraliInfoTable.NAME, "${CaratteristicheGeneraliInfoTable.REPORT_ID} = ?", arrayOf(_id.toString()))
+        delete(SpettriDiProgettoInfoTable.NAME, "${SpettriDiProgettoInfoTable.REPORT_ID} = ?", arrayOf(_id.toString()))
+        delete(DatiStrutturaliInfoTable.NAME, "${DatiStrutturaliInfoTable.REPORT_ID} = ?", arrayOf(_id.toString()))
+        delete(RilieviInfoTable.NAME, "${RilieviInfoTable.REPORT_ID} = ?", arrayOf(_id.toString()))
+        delete(CaratteristichePilastriInfoTable.NAME, "${CaratteristichePilastriInfoTable.REPORT_ID} = ?", arrayOf(_id.toString()))
+        delete(MagliaStrutturaleInfoTable.NAME, "${MagliaStrutturaleInfoTable.REPORT_ID} = ?", arrayOf(_id.toString()))
+        delete(ResultsInfoTable.NAME, "${ResultsInfoTable.REPORT_ID} = ?", arrayOf(_id.toString()))
+
     }
 
     private fun insertEachSectionIntoCorrectTable(sections: List<DatabaseSection>) = reportDatabaseHelper.use {

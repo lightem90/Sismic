@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.report_list_fragment.*
 class ReportListFragment : Fragment() {
 
     val mDatabaseInteractor = DatabaseInteractor()
-    var mReportHistoryInteractor = HistoryItemInteractor(mDatabaseInteractor)
+    var mReportHistoryInteractor = HistoryItemInteractor(activity, mDatabaseInteractor)
 
     fun getFragmentTag() : String
     {
@@ -52,7 +52,7 @@ class ReportListFragment : Fragment() {
                 R.id.reorder_history_date_desc -> return true
             }
         }
-        return false;
+        return false
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {

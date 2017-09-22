@@ -71,6 +71,7 @@ class DatabaseDataMapper {
                 details.description,
                 result.result,
                 result.size,
-                details.userID)
+                details.userID,
+                details.date.toFormattedDate())
     }
 }

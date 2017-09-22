@@ -881,10 +881,11 @@ data class ReportItemHistory(val id: Int,
                              val description: String,
                              val value: Int,
                              val size: Double,
-                             val userIdentifier: String) {
+                             val userIdentifier: String,
+                             val date : Date) {
 
     companion object {
-        val Invalid: ReportItemHistory = ReportItemHistory(-1, "", "", -1, -1.0, "")
+        val Invalid: ReportItemHistory = ReportItemHistory(-1, "", "", -1, -1.0, "", Date())
     }
 }
 
