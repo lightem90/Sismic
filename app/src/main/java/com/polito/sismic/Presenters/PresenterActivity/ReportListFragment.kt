@@ -5,20 +5,22 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.*
-import com.polito.sismic.Domain.ReportDetails
 import com.polito.sismic.Domain.ReportItemHistory
 import com.polito.sismic.Interactors.DatabaseInteractor
+import com.polito.sismic.Interactors.HistoryItemInteractor
 import com.polito.sismic.Presenters.Adapters.ReportAdapter
 import com.polito.sismic.Presenters.ReportActivity.ReportActivity
 import com.polito.sismic.R
 import kotlinx.android.synthetic.main.report_list_fragment.*
-import org.jetbrains.anko.startActivity
 
 
 /**
  * Created by Matteo on 27/07/2017.
  */
 class ReportListFragment : Fragment() {
+
+    val mDatabaseInteractor = DatabaseInteractor()
+    var mReportHistoryInteractor = HistoryItemInteractor(mDatabaseInteractor)
 
     fun getFragmentTag() : String
     {
@@ -30,7 +32,6 @@ class ReportListFragment : Fragment() {
         fun onHistoryReloadRequest()
     }
 
-    var mReportDetailsList :  MutableList<ReportItemHistory> = DatabaseInteractor().getDetailsForHistory()
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.report_list_fragment, container, false)
     }
@@ -45,10 +46,10 @@ class ReportListFragment : Fragment() {
             //TODO
             when (item.itemId)
             {
-                R.id.reorder_history_az -> return true;
-                R.id.reorder_history_za -> return true;
-                R.id.reorder_history_date_asc -> return true;
-                R.id.reorder_history_date_desc -> return true;
+                R.id.reorder_history_az -> return true
+                R.id.reorder_history_za -> return true
+                R.id.reorder_history_date_asc -> return true
+                R.id.reorder_history_date_desc -> return true
             }
         }
         return false;
@@ -58,7 +59,7 @@ class ReportListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         history_container.layoutManager = LinearLayoutManager(activity)
-        val adapter = ReportAdapter(activity, mReportDetailsList)
+        val adapter = ReportAdapter(activity, mReportHistoryInteractor)
         {
             //on long press, edit the whole report
             startReportEditing(it)
@@ -69,8 +70,7 @@ class ReportListFragment : Fragment() {
 
     fun invalidateAndReload()
     {
-        mReportDetailsList.clear()
-        mReportDetailsList.addAll(DatabaseInteractor().getDetailsForHistory())
+        mReportHistoryInteractor.reloadList()
         history_container.adapter.notifyDataSetChanged()
     }
 

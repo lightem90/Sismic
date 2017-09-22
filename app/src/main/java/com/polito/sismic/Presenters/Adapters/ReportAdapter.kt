@@ -9,6 +9,7 @@ import android.widget.TextView
 import com.polito.sismic.Domain.ReportItemHistory
 import com.polito.sismic.Extensions.inflate
 import com.polito.sismic.Interactors.DangerStateProvider
+import com.polito.sismic.Interactors.HistoryItemInteractor
 import com.polito.sismic.R
 import kotlinx.android.synthetic.main.history_item.view.*
 
@@ -18,13 +19,14 @@ import kotlinx.android.synthetic.main.history_item.view.*
 
 //Manager of report list
 class ReportAdapter(val mContext: Context,
-                    val items: List<ReportItemHistory>,
+                    val mHistoryInteractor: HistoryItemInteractor,
                     val longClick: (ReportItemHistory) -> Boolean) :
         RecyclerView.Adapter<ReportAdapter.ViewHolder>() {
 
+    val items = mHistoryInteractor.mReportHistoryItems
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder? {
         val v = parent.inflate(R.layout.history_item)
-        return ViewHolder(v, longClick, mContext)
+        return ViewHolder(v, mHistoryInteractor, longClick, mContext)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -36,6 +38,7 @@ class ReportAdapter(val mContext: Context,
     }
 
     class ViewHolder(itemView: View,
+                     val mHistoryInteractor : HistoryItemInteractor,
                      val longClick: (ReportItemHistory) -> Boolean,
                      val mContext: Context) : RecyclerView.ViewHolder(itemView)
     {
@@ -52,6 +55,9 @@ class ReportAdapter(val mContext: Context,
                 itemView.history_item_value.text = reportDetails.value.toString()
                 setTextColorByDanger(reportDetails.value, itemView.history_item_value)
                 itemView.setOnLongClickListener { longClick(this) }
+                itemView.btn_delete_item_history.setOnClickListener { mHistoryInteractor.deleteItemById(reportDetails.id) }
+                itemView.btn_print_item_history.setOnClickListener { mHistoryInteractor.printItem(reportDetails.id) }
+                itemView.btn_upload_item_history.setOnClickListener { mHistoryInteractor.uploadItem(reportDetails.id) }
             }
         }
 
