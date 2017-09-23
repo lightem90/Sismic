@@ -357,9 +357,21 @@ data class DatabaseDatiStrutturali(var map: MutableMap<String, Any?>) : Database
 data class DatabaseCaratteristichePilastri(var map: MutableMap<String, Any?>) : DatabaseSection {
     var _id: Int by map
     var classe_calcestruzzo: String  by map
-    var conoscenza_calcestruzzo: Int by map
+    var conoscenza_calcestruzzo: Double by map
+    var eps2 : Double by map
+    var epsu : Double by map
+    var rck : Double by map
+    var fck : Double by map
+    var ecm : Double by map
+    var fcd : Double by map
+    var fcm : Double by map
     var classe_acciaio: String by map
-    var conoscenza_acciaio: Int by map
+    var conoscenza_acciaio: Double by map
+    var epsy : Double by map
+    var epsuy : Double by map
+    var e : Double by map
+    var fyk : Double by map
+    var fyd : Double by map
     var bx: Double by map
     var hy: Double by map
     var c: Double by map
@@ -368,9 +380,21 @@ data class DatabaseCaratteristichePilastri(var map: MutableMap<String, Any?>) : 
     var report_id: Int by map
 
     constructor(classe_calcestruzzo: String,
-                conoscenza_calcestruzzo: Int,
+                conoscenza_calcestruzzo: Double,
+                eps2: Double,
+                epsu: Double,
+                rck: Double,
+                fck: Double,
+                ecm: Double,
+                fcd: Double,
+                fcm : Double,
                 classe_acciaio: String,
-                conoscenza_acciaio: Int,
+                conoscenza_acciaio: Double,
+                epsy : Double,
+                epsuy : Double,
+                e : Double,
+                fyk : Double,
+                fyd : Double,
                 bx: Double,
                 hy: Double,
                 c: Double,
@@ -381,8 +405,20 @@ data class DatabaseCaratteristichePilastri(var map: MutableMap<String, Any?>) : 
     ) : this(HashMap()) {
         this.classe_calcestruzzo = classe_calcestruzzo
         this.conoscenza_calcestruzzo = conoscenza_calcestruzzo
+        this.eps2 = eps2
+        this.epsu = epsu
+        this.rck = rck
+        this.fck = fck
+        this.ecm = ecm
+        this.fcd = fcd
+        this.fcm = fcm
         this.classe_acciaio = classe_acciaio
         this.conoscenza_acciaio = conoscenza_acciaio
+        this.epsy = epsy
+        this.epsuy = epsuy
+        this.e = e
+        this.fyk = fyk
+        this.fyd = fyd
         this.bx = bx
         this.hy = hy
         this.c = c

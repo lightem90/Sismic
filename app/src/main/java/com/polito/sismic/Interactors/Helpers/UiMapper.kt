@@ -104,18 +104,6 @@ class UiMapper {
                     gravity_center)
         }
 
-        fun createPillarStateForDomain(pilastriReportFragment: PilastriReportFragment): PillarState  = with(pilastriReportFragment){
-             return PillarState(calc_classe_parameter.selectedItem.toString(),
-                     getConoscenzaCalcestruzzo(),
-                     if (acc_classe_parameter_A.isChecked) acc_classe_parameter_A.textOn.toString() else acc_classe_parameter_C.textOn.toString(),
-                     getConoscenzaAcciaio(),
-                     sezione_bx_parameter.getParameterValue().toDoubleOrZero(),
-                     sezione_hy_parameter.getParameterValue().toDoubleOrZero(),
-                     sezione_c_parameter.getParameterValue().toDoubleOrZero(),
-                     armatura_longitudine.getParameterValue().toDoubleOrZero(),
-                     armatura_fi.getParameterValue().toDoubleOrZero())
-        }
-
         fun createStructuralStateForDomain(datiStrutturaliReportFragment: DatiStrutturaliReportFragment, buildingState: BuildingState): StructuralState  = with(datiStrutturaliReportFragment){
 
             val context = datiStrutturaliReportFragment.context
@@ -243,15 +231,17 @@ class UiMapper {
                 {
                     reportState.buildingState.pillarState.let{
                         setCalcestruzzoClasseByValue(it.classe_calcestruzzo)
-                        setConoscenzaCalcestruzzo(it.conoscenza_calcestruzzo)
+                        setConoscenzaCalcestruzzo(LivelloConoscenza.values().first { con -> con.multiplier == it.conoscenza_calcestruzzo })
                         if (acc_classe_parameter_C.textOn == it.classe_acciaio) acc_classe_parameter_C.isChecked = true else acc_classe_parameter_A.isChecked = true
-                        setConoscenzaAcciaio(it.conoscenza_acciaio)
+                        setConoscenzaAcciaio(LivelloConoscenza.values().first { con -> con.multiplier == it.conoscenza_acciaio })
                         sezione_bx_parameter.setParameterValue(it.bx.toStringOrEmpty())
                         sezione_hy_parameter.setParameterValue(it.bx.toStringOrEmpty())
                         sezione_c_parameter.setParameterValue(it.bx.toStringOrEmpty())
                         armatura_longitudine.setParameterValue(it.bx.toStringOrEmpty())
                         armatura_fi.setParameterValue(it.bx.toStringOrEmpty())
                     }
+                    //sync with domain
+                    fixAndReloadDataForUi()
 
                 }
                 is MagliaStrutturaleReportFragment ->

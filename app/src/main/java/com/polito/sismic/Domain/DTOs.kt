@@ -744,20 +744,46 @@ data class StructuralState(var tipo_fondazioni: String,
 
 
 data class PillarState(var classe_calcestruzzo: String,
-                       var conoscenza_calcestruzzo: Int,
+                       var conoscenza_calcestruzzo: Double,
+                       var eps2: Double = 2.0,
+                       var epsu: Double = 3.5,
+                       var rck: Double,
+                       var fck: Double,
+                       var fcm: Double,
+                       var fcd: Double,
+                       var ecm: Double,
                        var classe_acciaio: String,
-                       var conoscenza_acciaio: Int,
+                       var conoscenza_acciaio: Double,
+                       var epsy: Double = 10.0,
+                       var epsyu: Double = 67.5,
+                       var E: Double = 210000.0,
+                       var fyk: Double = 450.0,
+                       var fyd: Double,
                        var bx: Double,
                        var hy: Double,
                        var c: Double,
                        var longitudine_armatura: Double,
                        var fi: Double) : Parcelable {
-    constructor() : this("", 0, "", 0, 0.0, 0.0, 0.0, 0.0, 0.0)
+    constructor() : this("", 0.0, 2.0, 3.5, 0.0, 0.0, 0.0, 0.0, 0.0, "", 0.0, 10.0, 67.5,
+            210000.0, 450.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+
     constructor(source: Parcel) : this(
             source.readString(),
-            source.readInt(),
+            source.readDouble(),
+            source.readDouble(),
+            source.readDouble(),
+            source.readDouble(),
+            source.readDouble(),
+            source.readDouble(),
+            source.readDouble(),
+            source.readDouble(),
             source.readString(),
-            source.readInt(),
+            source.readDouble(),
+            source.readDouble(),
+            source.readDouble(),
+            source.readDouble(),
+            source.readDouble(),
+            source.readDouble(),
             source.readDouble(),
             source.readDouble(),
             source.readDouble(),
@@ -769,9 +795,21 @@ data class PillarState(var classe_calcestruzzo: String,
 
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
         writeString(classe_calcestruzzo)
-        writeInt(conoscenza_calcestruzzo)
+        writeDouble(conoscenza_calcestruzzo)
+        writeDouble(eps2)
+        writeDouble(epsu)
+        writeDouble(rck)
+        writeDouble(fck)
+        writeDouble(fcm)
+        writeDouble(fcd)
+        writeDouble(ecm)
         writeString(classe_acciaio)
-        writeInt(conoscenza_acciaio)
+        writeDouble(conoscenza_acciaio)
+        writeDouble(epsy)
+        writeDouble(epsyu)
+        writeDouble(E)
+        writeDouble(fyk)
+        writeDouble(fyd)
         writeDouble(bx)
         writeDouble(hy)
         writeDouble(c)

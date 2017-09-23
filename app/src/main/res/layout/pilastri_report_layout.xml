@@ -56,6 +56,78 @@
 
     </LinearLayout>
 
+    <com.polito.sismic.Presenters.CustomLayout.LabelReportLayout
+        android:id="@+id/eps2"
+        app:report_label_title="@string/eps2_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.LabelReportLayout
+        android:id="@+id/epsu"
+        app:report_label_title="@string/epsu_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.LabelReportLayout
+        android:id="@+id/fck"
+        app:report_label_title="@string/fck_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.LabelReportLayout
+        android:id="@+id/rck"
+        app:report_label_title="@string/rck_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.LabelReportLayout
+        android:id="@+id/fcm"
+        app:report_label_title="@string/fcm_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.LabelReportLayout
+        android:id="@+id/fcd"
+        app:report_label_title="@string/fcd_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.LabelReportLayout
+        android:id="@+id/ecm"
+        app:report_label_title="@string/ecm_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.LabelReportLayout
+        android:id="@+id/epsy"
+        app:report_label_title="@string/Epsy_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.LabelReportLayout
+        android:id="@+id/epsuAcc"
+        app:report_label_title="@string/EpsuAcc_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.LabelReportLayout
+        android:id="@+id/E"
+        app:report_label_title="@string/E_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.LabelReportLayout
+        android:id="@+id/fyk"
+        app:report_label_title="@string/fyk_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.LabelReportLayout
+        android:id="@+id/fyd"
+        app:report_label_title="@string/fyd_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
     <TextView
         style="@style/sectionButtonTitle"
         android:layout_marginBottom="4dp"

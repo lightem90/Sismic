@@ -5,7 +5,11 @@ import android.support.annotation.Nullable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.polito.sismic.Interactors.Helpers.UiMapper
+import android.widget.Adapter
+import android.widget.AdapterView
+import com.polito.sismic.Extensions.toDoubleOrZero
+import com.polito.sismic.Interactors.Helpers.LivelloConoscenza
+import com.polito.sismic.Interactors.Helpers.SismicBuildingCalculatorHelper
 import com.polito.sismic.R
 import com.stepstone.stepper.StepperLayout
 import kotlinx.android.synthetic.main.pilastri_report_layout.*
@@ -22,17 +26,39 @@ class PilastriReportFragment : BaseReportFragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val r_calc_intArray = context.resources.getIntArray(R.array.classi_calcestruzzo_r)
+        val f_calc_intArray = context.resources.getIntArray(R.array.classi_calcestruzzo_f)
+
+        eps2.setValue(String.format(context.getString(R.string.eps2_value), getReport().reportState.buildingState.pillarState.eps2))
+        epsu.setValue(String.format(context.getString(R.string.epsu_value), getReport().reportState.buildingState.pillarState.epsu))
+        epsy.setValue(String.format(context.getString(R.string.Epsy_value), getReport().reportState.buildingState.pillarState.epsy))
+        epsuAcc.setValue(String.format(context.getString(R.string.epsuAcc_value), getReport().reportState.buildingState.pillarState.epsyu))
+        E.setValue(String.format(context.getString(R.string.E_value), getReport().reportState.buildingState.pillarState.E))
+
+        calc_classe_parameter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+
+            override fun onItemSelected(parent: AdapterView<*>, mView: View?, pos: Int, id: Long) {
+                val fkc = f_calc_intArray[pos].toDouble()
+                val rkc = r_calc_intArray[pos].toDouble()
+                getReport().reportState.buildingState.pillarState.fck = fkc
+                getReport().reportState.buildingState.pillarState.rck = rkc
+                fixAndReloadDataForUi()
+            }
+            override fun onNothingSelected(parent: AdapterView<out Adapter>?) {  }
+        }
         calc_classe_res_parameter_lc1.setOnCheckedChangeListener { _, flag ->
             if (flag)
             {
                 calc_classe_res_parameter_lc2.isChecked = false
                 calc_classe_res_parameter_lc3.isChecked = false
                 calc_classe_res_parameter_lc1.isClickable = false
+                getReport().reportState.buildingState.pillarState.conoscenza_calcestruzzo = LivelloConoscenza.I.multiplier
             }
             else
             {
                 calc_classe_res_parameter_lc1.isClickable = true
             }
+            fixAndReloadDataForUi()
         }
         calc_classe_res_parameter_lc2.setOnCheckedChangeListener { _, flag ->
             if (flag)
@@ -40,11 +66,13 @@ class PilastriReportFragment : BaseReportFragment() {
                 calc_classe_res_parameter_lc1.isChecked = false
                 calc_classe_res_parameter_lc3.isChecked = false
                 calc_classe_res_parameter_lc2.isClickable = false
+                getReport().reportState.buildingState.pillarState.conoscenza_calcestruzzo = LivelloConoscenza.II.multiplier
             }
             else
             {
                 calc_classe_res_parameter_lc2.isClickable = true
             }
+            fixAndReloadDataForUi()
         }
         calc_classe_res_parameter_lc3.setOnCheckedChangeListener { _, flag ->
             if (flag)
@@ -52,11 +80,13 @@ class PilastriReportFragment : BaseReportFragment() {
                 calc_classe_res_parameter_lc2.isChecked = false
                 calc_classe_res_parameter_lc1.isChecked = false
                 calc_classe_res_parameter_lc3.isClickable = false
+                getReport().reportState.buildingState.pillarState.conoscenza_calcestruzzo = LivelloConoscenza.III.multiplier
             }
             else
             {
                 calc_classe_res_parameter_lc3.isClickable = true
             }
+            fixAndReloadDataForUi()
         }
         acc_classe_res_parameter_lc1.setOnCheckedChangeListener { _, flag ->
             if (flag)
@@ -64,11 +94,13 @@ class PilastriReportFragment : BaseReportFragment() {
                 acc_classe_res_parameter_lc2.isChecked = false
                 acc_classe_res_parameter_lc3.isChecked = false
                 acc_classe_res_parameter_lc1.isClickable = false
+                getReport().reportState.buildingState.pillarState.conoscenza_acciaio = LivelloConoscenza.I.multiplier
             }
             else
             {
                 acc_classe_res_parameter_lc1.isClickable = true
             }
+            fixAndReloadDataForUi()
         }
         acc_classe_res_parameter_lc2.setOnCheckedChangeListener { _, flag ->
             if (flag)
@@ -76,11 +108,13 @@ class PilastriReportFragment : BaseReportFragment() {
                 acc_classe_res_parameter_lc1.isChecked = false
                 acc_classe_res_parameter_lc3.isChecked = false
                 acc_classe_res_parameter_lc2.isClickable = false
+                getReport().reportState.buildingState.pillarState.conoscenza_acciaio = LivelloConoscenza.II.multiplier
             }
             else
             {
                 acc_classe_res_parameter_lc2.isClickable = true
             }
+            fixAndReloadDataForUi()
         }
         acc_classe_res_parameter_lc3.setOnCheckedChangeListener { _, flag ->
             if (flag)
@@ -88,11 +122,13 @@ class PilastriReportFragment : BaseReportFragment() {
                 acc_classe_res_parameter_lc2.isChecked = false
                 acc_classe_res_parameter_lc1.isChecked = false
                 acc_classe_res_parameter_lc3.isClickable = false
+                getReport().reportState.buildingState.pillarState.conoscenza_acciaio = LivelloConoscenza.III.multiplier
             }
             else
             {
                 acc_classe_res_parameter_lc3.isClickable = true
             }
+            fixAndReloadDataForUi()
         }
         acc_classe_parameter_A.setOnCheckedChangeListener { _, flag ->
             if (flag)
@@ -104,6 +140,7 @@ class PilastriReportFragment : BaseReportFragment() {
             {
                 acc_classe_parameter_A.isClickable = true
             }
+            fixAndReloadDataForUi()
         }
         acc_classe_parameter_C.setOnCheckedChangeListener { _, flag ->
             if (flag)
@@ -115,34 +152,58 @@ class PilastriReportFragment : BaseReportFragment() {
             {
                 acc_classe_parameter_C.isClickable = true
             }
+            fixAndReloadDataForUi()
         }
     }
 
-    fun getConoscenzaCalcestruzzo() : Int
+    fun fixAndReloadDataForUi()
+    {
+        //The state values are synchro with ui
+        val lcCalc = getReport().reportState.buildingState.pillarState.conoscenza_calcestruzzo
+        val lcAcc = getReport().reportState.buildingState.pillarState.conoscenza_acciaio
+        getReport().reportState.buildingState.pillarState.fck /= lcCalc
+        getReport().reportState.buildingState.pillarState.rck /= lcCalc
+        getReport().reportState.buildingState.pillarState.fcm = getReport().reportState.buildingState.pillarState.fck + 8
+        getReport().reportState.buildingState.pillarState.fcd = SismicBuildingCalculatorHelper.calculateFCD(getReport().reportState.buildingState.pillarState.fck)
+        getReport().reportState.buildingState.pillarState.ecm = SismicBuildingCalculatorHelper.calculateECM(getReport().reportState.buildingState.pillarState.fcm)
+        fck.setValue(String.format(context.getString(R.string.fck_value), getReport().reportState.buildingState.pillarState.fck))
+        rck.setValue(String.format(context.getString(R.string.rck_value), getReport().reportState.buildingState.pillarState.rck))
+        fcm.setValue(String.format(context.getString(R.string.fcm_value), getReport().reportState.buildingState.pillarState.fcm))
+        fcd.setValue(String.format(context.getString(R.string.fcd_value), getReport().reportState.buildingState.pillarState.fcd))
+        ecm.setValue(String.format(context.getString(R.string.ecm_value), getReport().reportState.buildingState.pillarState.ecm))
+
+        getReport().reportState.buildingState.pillarState.fyk /= lcAcc
+        getReport().reportState.buildingState.pillarState.fyd = SismicBuildingCalculatorHelper.calculateFYD(getReport().reportState.buildingState.pillarState.fyk)
+        fyk.setValue(String.format(context.getString(R.string.fyk_value), getReport().reportState.buildingState.pillarState.fyk))
+        fyd.setValue(String.format(context.getString(R.string.fyd_value), getReport().reportState.buildingState.pillarState.fyd))
+
+    }
+
+    fun getConoscenzaCalcestruzzo() : Double
     {
         return when
         {
-            calc_classe_res_parameter_lc1.isChecked -> 0
-            calc_classe_res_parameter_lc2.isChecked -> 1
-            calc_classe_res_parameter_lc3.isChecked -> 2
-            else -> 0
+            calc_classe_res_parameter_lc1.isChecked -> LivelloConoscenza.I.multiplier
+            calc_classe_res_parameter_lc2.isChecked -> LivelloConoscenza.II.multiplier
+            calc_classe_res_parameter_lc3.isChecked -> LivelloConoscenza.III.multiplier
+            else -> 0.0
         }
     }
 
-    fun getConoscenzaAcciaio() : Int
+    fun getConoscenzaAcciaio() : Double
     {
         return when
         {
-            acc_classe_res_parameter_lc1.isChecked -> 0
-            acc_classe_res_parameter_lc2.isChecked -> 1
-            acc_classe_res_parameter_lc3.isChecked -> 2
-            else -> 0
+            acc_classe_res_parameter_lc1.isChecked -> LivelloConoscenza.I.multiplier
+            acc_classe_res_parameter_lc2.isChecked -> LivelloConoscenza.II.multiplier
+            acc_classe_res_parameter_lc3.isChecked -> LivelloConoscenza.III.multiplier
+            else -> 0.0
         }
     }
 
-    fun setConoscenzaCalcestruzzo(con : Int)
+    fun setConoscenzaCalcestruzzo(con : LivelloConoscenza)
     {
-        when (con)
+        when (con.ordinal)
         {
             0 -> calc_classe_res_parameter_lc1.isChecked = true
             1 -> calc_classe_res_parameter_lc2.isChecked = true
@@ -151,9 +212,9 @@ class PilastriReportFragment : BaseReportFragment() {
         }
     }
 
-    fun setConoscenzaAcciaio(con : Int)
+    fun setConoscenzaAcciaio(con : LivelloConoscenza)
     {
-        when (con)
+        when (con.ordinal)
         {
             0 -> acc_classe_res_parameter_lc1.isChecked = true
             1 -> acc_classe_res_parameter_lc2.isChecked = true
@@ -172,8 +233,19 @@ class PilastriReportFragment : BaseReportFragment() {
     }
 
     //callback to activity updates domain instance for activity and all existing and future fragments
+    //this class doesn't use mappers since it modifies the state directly --> do this in every fragment
     override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback?) {
-        getReport().reportState.buildingState.pillarState = UiMapper.createPillarStateForDomain(this)
+
+        getReport().reportState.buildingState.pillarState.classe_calcestruzzo = calc_classe_parameter.selectedItem.toString()
+        getReport().reportState.buildingState.pillarState.conoscenza_calcestruzzo = getConoscenzaCalcestruzzo()
+        getReport().reportState.buildingState.pillarState.classe_acciaio = if (acc_classe_parameter_A.isChecked) acc_classe_parameter_A.textOn.toString() else acc_classe_parameter_C.textOn.toString()
+        getReport().reportState.buildingState.pillarState.conoscenza_acciaio = getConoscenzaAcciaio()
+        getReport().reportState.buildingState.pillarState.bx = sezione_bx_parameter.getParameterValue().toDoubleOrZero()
+        getReport().reportState.buildingState.pillarState.hy = sezione_hy_parameter.getParameterValue().toDoubleOrZero()
+        getReport().reportState.buildingState.pillarState.c = sezione_c_parameter.getParameterValue().toDoubleOrZero()
+        getReport().reportState.buildingState.pillarState.longitudine_armatura = armatura_longitudine.getParameterValue().toDoubleOrZero()
+        getReport().reportState.buildingState.pillarState.fi = armatura_fi.getParameterValue().toDoubleOrZero()
+
         super.onNextClicked(callback)
     }
 }

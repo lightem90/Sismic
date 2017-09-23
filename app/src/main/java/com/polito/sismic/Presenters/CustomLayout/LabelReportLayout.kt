@@ -48,7 +48,7 @@ class LabelReportLayout : LinearLayout {
                     .getResourceId(R.styleable.report_label_components_report_label_title,
                             R.string.not_defined))
 
-            report_label_title.setText(title)
+            report_label_title.text = title
         }
     }
 

@@ -50,7 +50,8 @@
         <item>T3</item>
         <item>T4</item>
     </string-array>
-    
+
+    <!-- This replication sucks but want to do things fast -->
     <string-array name="classi_calcestruzzo">
         <item>C8/10</item>
         <item>C12/15</item>
@@ -71,6 +72,49 @@
         <item>C90/105</item>
         <item>C100/120</item>
     </string-array>
+
+    <string-array name="classi_calcestruzzo_f">
+        <item>8</item>
+        <item>12</item>
+        <item>16</item>
+        <item>20</item>
+        <item>25</item>
+        <item>28</item>
+        <item>30</item>
+        <item>32</item>
+        <item>35</item>
+        <item>40</item>
+        <item>45</item>
+        <item>50</item>
+        <item>55</item>
+        <item>60</item>
+        <item>70</item>
+        <item>80</item>
+        <item>90</item>
+        <item>100</item>
+    </string-array>
+
+    <string-array name="classi_calcestruzzo_r">
+        <item>10</item>
+        <item>15</item>
+        <item>20</item>
+        <item>25</item>
+        <item>30</item>
+        <item>35</item>
+        <item>37</item>
+        <item>40</item>
+        <item>45</item>
+        <item>50</item>
+        <item>55</item>
+        <item>60</item>
+        <item>67</item>
+        <item>75</item>
+        <item>85</item>
+        <item>95</item>
+        <item>105</item>
+        <item>C100/120</item>
+    </string-array>
+
     <string-array name="solaio_pesi">
         <item>12+4</item>
         <item>12+5</item>

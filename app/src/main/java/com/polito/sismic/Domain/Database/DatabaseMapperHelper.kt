@@ -64,8 +64,20 @@ class DatabaseMapperHelper {
         return caractPillarDbParams?.let {
             PillarState(it.classe_calcestruzzo,
                     it.conoscenza_calcestruzzo,
+                    it.eps2,
+                    it.epsu,
+                    it.rck,
+                    it.fck,
+                    it.fcm,
+                    it.fcd,
+                    it.ecm,
                     it.classe_acciaio,
                     it.conoscenza_acciaio,
+                    it.epsy,
+                    it.epsuy,
+                    it.e,
+                    it.fyk,
+                    it.fyd,
                     it.bx,
                     it.hy,
                     it.c,
@@ -210,7 +222,7 @@ class DatabaseMapperHelper {
     }
 
     private fun createPillarForDb(reportId: Int, pillarState: PillarState): DatabaseCaratteristichePilastri?  = with(pillarState){
-        DatabaseCaratteristichePilastri(classe_calcestruzzo,conoscenza_calcestruzzo, classe_acciaio, conoscenza_acciaio, bx, hy, c, longitudine_armatura, fi, reportId)
+        DatabaseCaratteristichePilastri(classe_calcestruzzo,conoscenza_calcestruzzo, eps2, epsu, rck, fck, ecm, fcd, fcm, classe_acciaio, conoscenza_acciaio, epsy, epsyu, E, fyk, fyd, bx, hy, c, longitudine_armatura, fi, reportId)
     }
 
     private fun createTakeoverForDb(reportId: Int, takeoverState: TakeoverState): DatabaseSection = with(takeoverState){
