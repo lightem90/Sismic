@@ -31,7 +31,7 @@
 
         <ToggleButton
             android:id="@+id/calc_classe_res_parameter_lc1"
-            android:checked="true"
+            android:checked="false"
             android:textOn="@string/calc_classe_res_parameter_lc1"
             android:textOff="@string/calc_classe_res_parameter_lc1"
             android:layout_marginRight="@dimen/grid_vertical_margin"
@@ -98,36 +98,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-    <com.polito.sismic.Presenters.CustomLayout.LabelReportLayout
-        android:id="@+id/epsy"
-        app:report_label_title="@string/Epsy_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-    <com.polito.sismic.Presenters.CustomLayout.LabelReportLayout
-        android:id="@+id/epsuAcc"
-        app:report_label_title="@string/EpsuAcc_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-    <com.polito.sismic.Presenters.CustomLayout.LabelReportLayout
-        android:id="@+id/E"
-        app:report_label_title="@string/E_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-    <com.polito.sismic.Presenters.CustomLayout.LabelReportLayout
-        android:id="@+id/fyk"
-        app:report_label_title="@string/fyk_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-    <com.polito.sismic.Presenters.CustomLayout.LabelReportLayout
-        android:id="@+id/fyd"
-        app:report_label_title="@string/fyd_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
     <TextView
         style="@style/sectionButtonTitle"
         android:layout_marginBottom="4dp"
@@ -162,7 +132,7 @@
 
         <ToggleButton
             android:id="@+id/acc_classe_res_parameter_lc1"
-            android:checked="true"
+            android:checked="false"
             android:textOn="@string/calc_classe_res_parameter_lc1"
             android:textOff="@string/calc_classe_res_parameter_lc1"
             android:layout_marginRight="@dimen/grid_vertical_margin"
@@ -184,6 +154,36 @@
             style="@style/CustomToggleButton"/>
 
     </LinearLayout>
+
+    <com.polito.sismic.Presenters.CustomLayout.LabelReportLayout
+        android:id="@+id/epsy"
+        app:report_label_title="@string/Epsy_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.LabelReportLayout
+        android:id="@+id/epsuAcc"
+        app:report_label_title="@string/EpsuAcc_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.LabelReportLayout
+        android:id="@+id/E"
+        app:report_label_title="@string/E_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.LabelReportLayout
+        android:id="@+id/fyk"
+        app:report_label_title="@string/fyk_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.polito.sismic.Presenters.CustomLayout.LabelReportLayout
+        android:id="@+id/fyd"
+        app:report_label_title="@string/fyd_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
     <TextView
         style="@style/sectionTitle"

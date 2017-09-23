@@ -231,9 +231,9 @@ class UiMapper {
                 {
                     reportState.buildingState.pillarState.let{
                         setCalcestruzzoClasseByValue(it.classe_calcestruzzo)
-                        setConoscenzaCalcestruzzo(LivelloConoscenza.values().first { con -> con.multiplier == it.conoscenza_calcestruzzo })
+                        setConoscenzaCalcestruzzo(LivelloConoscenza.values().firstOrNull { con -> con.multiplier == it.conoscenza_calcestruzzo })
                         if (acc_classe_parameter_C.textOn == it.classe_acciaio) acc_classe_parameter_C.isChecked = true else acc_classe_parameter_A.isChecked = true
-                        setConoscenzaAcciaio(LivelloConoscenza.values().first { con -> con.multiplier == it.conoscenza_acciaio })
+                        setConoscenzaAcciaio(LivelloConoscenza.values().firstOrNull { con -> con.multiplier == it.conoscenza_acciaio })
                         sezione_bx_parameter.setParameterValue(it.bx.toStringOrEmpty())
                         sezione_hy_parameter.setParameterValue(it.bx.toStringOrEmpty())
                         sezione_c_parameter.setParameterValue(it.bx.toStringOrEmpty())

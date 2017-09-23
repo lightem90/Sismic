@@ -3,6 +3,7 @@ package com.polito.sismic.Domain
 import android.os.Parcel
 import android.os.Parcelable
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
+import com.polito.sismic.Interactors.Helpers.LivelloConoscenza
 import com.polito.sismic.Interactors.Helpers.StatiLimite
 import java.util.*
 
@@ -744,7 +745,7 @@ data class StructuralState(var tipo_fondazioni: String,
 
 
 data class PillarState(var classe_calcestruzzo: String,
-                       var conoscenza_calcestruzzo: Double,
+                       var conoscenza_calcestruzzo: Double = LivelloConoscenza.III.multiplier,
                        var eps2: Double = 2.0,
                        var epsu: Double = 3.5,
                        var rck: Double,
@@ -753,7 +754,7 @@ data class PillarState(var classe_calcestruzzo: String,
                        var fcd: Double,
                        var ecm: Double,
                        var classe_acciaio: String,
-                       var conoscenza_acciaio: Double,
+                       var conoscenza_acciaio: Double = LivelloConoscenza.III.multiplier,
                        var epsy: Double = 10.0,
                        var epsyu: Double = 67.5,
                        var E: Double = 210000.0,
@@ -764,7 +765,7 @@ data class PillarState(var classe_calcestruzzo: String,
                        var c: Double,
                        var longitudine_armatura: Double,
                        var fi: Double) : Parcelable {
-    constructor() : this("", 0.0, 2.0, 3.5, 0.0, 0.0, 0.0, 0.0, 0.0, "", 0.0, 10.0, 67.5,
+    constructor() : this("", LivelloConoscenza.III.multiplier, 2.0, 3.5, 0.0, 0.0, 0.0, 0.0, 0.0, "", LivelloConoscenza.III.multiplier, 10.0, 67.5,
             210000.0, 450.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
 
     constructor(source: Parcel) : this(

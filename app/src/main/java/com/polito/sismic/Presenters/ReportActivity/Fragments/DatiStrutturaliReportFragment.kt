@@ -138,10 +138,11 @@ class DatiStrutturaliReportFragment : BaseReportFragment() {
         fondazioni_type_trave.isChecked  = false
         fondazioni_type_plinti.isChecked  = false
 
-        when {
-            fondazioni_type_platea.textOn.equals(tipo) -> fondazioni_type_platea.isChecked = true
-            fondazioni_type_trave.textOn.equals(tipo) -> fondazioni_type_trave.isChecked = true
-            fondazioni_type_plinti.textOn.equals(tipo) -> fondazioni_type_plinti.isChecked = true
+        when (tipo) {
+            fondazioni_type_platea.textOn -> fondazioni_type_platea.isChecked = true
+            fondazioni_type_trave.textOn -> fondazioni_type_trave.isChecked = true
+            fondazioni_type_plinti.textOn -> fondazioni_type_plinti.isChecked = true
+            else -> fondazioni_type_platea.isChecked = true
         }
     }
 

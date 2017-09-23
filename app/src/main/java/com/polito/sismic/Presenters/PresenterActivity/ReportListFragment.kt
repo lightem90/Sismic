@@ -1,6 +1,7 @@
 package com.polito.sismic.Presenters.PresenterActivity
 
 import android.app.Fragment
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -20,7 +21,7 @@ import kotlinx.android.synthetic.main.report_list_fragment.*
 class ReportListFragment : Fragment() {
 
     val mDatabaseInteractor = DatabaseInteractor()
-    var mReportHistoryInteractor = HistoryItemInteractor(activity, mDatabaseInteractor)
+    lateinit var mReportHistoryInteractor : HistoryItemInteractor
 
     fun getFragmentTag() : String
     {
@@ -30,6 +31,11 @@ class ReportListFragment : Fragment() {
     interface HistoryReload
     {
         fun onHistoryReloadRequest()
+    }
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        mReportHistoryInteractor = HistoryItemInteractor(context!!, mDatabaseInteractor)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -71,7 +77,7 @@ class ReportListFragment : Fragment() {
     fun invalidateAndReload()
     {
         mReportHistoryInteractor.reloadList()
-        history_container.adapter.notifyDataSetChanged()
+        history_container?.adapter?.notifyDataSetChanged()
     }
 
     private fun startReportEditing(reportDetails: ReportItemHistory): Boolean {

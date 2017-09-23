@@ -26,14 +26,15 @@ class PilastriReportFragment : BaseReportFragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val r_calc_intArray = context.resources.getIntArray(R.array.classi_calcestruzzo_r)
-        val f_calc_intArray = context.resources.getIntArray(R.array.classi_calcestruzzo_f)
+        val r_calc_intArray = context.resources.getStringArray(R.array.classi_calcestruzzo_r)
+        val f_calc_intArray = context.resources.getStringArray(R.array.classi_calcestruzzo_f)
 
-        eps2.setValue(String.format(context.getString(R.string.eps2_value), getReport().reportState.buildingState.pillarState.eps2))
-        epsu.setValue(String.format(context.getString(R.string.epsu_value), getReport().reportState.buildingState.pillarState.epsu))
-        epsy.setValue(String.format(context.getString(R.string.Epsy_value), getReport().reportState.buildingState.pillarState.epsy))
-        epsuAcc.setValue(String.format(context.getString(R.string.epsuAcc_value), getReport().reportState.buildingState.pillarState.epsyu))
-        E.setValue(String.format(context.getString(R.string.E_value), getReport().reportState.buildingState.pillarState.E))
+        val percent = context.getString(R.string.percent)
+        eps2.setValue(getReport().reportState.buildingState.pillarState.eps2.toString() + percent)
+        epsu.setValue(getReport().reportState.buildingState.pillarState.epsu.toString() + percent)
+        epsy.setValue(getReport().reportState.buildingState.pillarState.epsy.toString() + percent)
+        epsuAcc.setValue(getReport().reportState.buildingState.pillarState.epsyu.toString() + percent)
+        E.setValue(getReport().reportState.buildingState.pillarState.E.toString() + context.getString(R.string.E_value))
 
         calc_classe_parameter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 
@@ -44,120 +45,96 @@ class PilastriReportFragment : BaseReportFragment() {
                 getReport().reportState.buildingState.pillarState.rck = rkc
                 fixAndReloadDataForUi()
             }
-            override fun onNothingSelected(parent: AdapterView<out Adapter>?) {  }
+
+            override fun onNothingSelected(parent: AdapterView<out Adapter>?) {}
         }
         calc_classe_res_parameter_lc1.setOnCheckedChangeListener { _, flag ->
-            if (flag)
-            {
+            if (flag) {
                 calc_classe_res_parameter_lc2.isChecked = false
                 calc_classe_res_parameter_lc3.isChecked = false
                 calc_classe_res_parameter_lc1.isClickable = false
                 getReport().reportState.buildingState.pillarState.conoscenza_calcestruzzo = LivelloConoscenza.I.multiplier
-            }
-            else
-            {
+            } else {
                 calc_classe_res_parameter_lc1.isClickable = true
             }
             fixAndReloadDataForUi()
         }
         calc_classe_res_parameter_lc2.setOnCheckedChangeListener { _, flag ->
-            if (flag)
-            {
+            if (flag) {
                 calc_classe_res_parameter_lc1.isChecked = false
                 calc_classe_res_parameter_lc3.isChecked = false
                 calc_classe_res_parameter_lc2.isClickable = false
                 getReport().reportState.buildingState.pillarState.conoscenza_calcestruzzo = LivelloConoscenza.II.multiplier
-            }
-            else
-            {
+            } else {
                 calc_classe_res_parameter_lc2.isClickable = true
             }
             fixAndReloadDataForUi()
         }
         calc_classe_res_parameter_lc3.setOnCheckedChangeListener { _, flag ->
-            if (flag)
-            {
+            if (flag) {
                 calc_classe_res_parameter_lc2.isChecked = false
                 calc_classe_res_parameter_lc1.isChecked = false
                 calc_classe_res_parameter_lc3.isClickable = false
                 getReport().reportState.buildingState.pillarState.conoscenza_calcestruzzo = LivelloConoscenza.III.multiplier
-            }
-            else
-            {
+            } else {
                 calc_classe_res_parameter_lc3.isClickable = true
             }
             fixAndReloadDataForUi()
         }
         acc_classe_res_parameter_lc1.setOnCheckedChangeListener { _, flag ->
-            if (flag)
-            {
+            if (flag) {
                 acc_classe_res_parameter_lc2.isChecked = false
                 acc_classe_res_parameter_lc3.isChecked = false
                 acc_classe_res_parameter_lc1.isClickable = false
                 getReport().reportState.buildingState.pillarState.conoscenza_acciaio = LivelloConoscenza.I.multiplier
-            }
-            else
-            {
+            } else {
                 acc_classe_res_parameter_lc1.isClickable = true
             }
             fixAndReloadDataForUi()
         }
         acc_classe_res_parameter_lc2.setOnCheckedChangeListener { _, flag ->
-            if (flag)
-            {
+            if (flag) {
                 acc_classe_res_parameter_lc1.isChecked = false
                 acc_classe_res_parameter_lc3.isChecked = false
                 acc_classe_res_parameter_lc2.isClickable = false
                 getReport().reportState.buildingState.pillarState.conoscenza_acciaio = LivelloConoscenza.II.multiplier
-            }
-            else
-            {
+            } else {
                 acc_classe_res_parameter_lc2.isClickable = true
             }
             fixAndReloadDataForUi()
         }
         acc_classe_res_parameter_lc3.setOnCheckedChangeListener { _, flag ->
-            if (flag)
-            {
+            if (flag) {
                 acc_classe_res_parameter_lc2.isChecked = false
                 acc_classe_res_parameter_lc1.isChecked = false
                 acc_classe_res_parameter_lc3.isClickable = false
                 getReport().reportState.buildingState.pillarState.conoscenza_acciaio = LivelloConoscenza.III.multiplier
-            }
-            else
-            {
+            } else {
                 acc_classe_res_parameter_lc3.isClickable = true
             }
             fixAndReloadDataForUi()
         }
         acc_classe_parameter_A.setOnCheckedChangeListener { _, flag ->
-            if (flag)
-            {
+            if (flag) {
                 acc_classe_parameter_C.isChecked = false
                 acc_classe_parameter_A.isClickable = false
-            }
-            else
-            {
+            } else {
                 acc_classe_parameter_A.isClickable = true
             }
             fixAndReloadDataForUi()
         }
         acc_classe_parameter_C.setOnCheckedChangeListener { _, flag ->
-            if (flag)
-            {
+            if (flag) {
                 acc_classe_parameter_A.isChecked = false
                 acc_classe_parameter_C.isClickable = false
-            }
-            else
-            {
+            } else {
                 acc_classe_parameter_C.isClickable = true
             }
             fixAndReloadDataForUi()
         }
     }
 
-    fun fixAndReloadDataForUi()
-    {
+    fun fixAndReloadDataForUi() {
         //The state values are synchro with ui
         val lcCalc = getReport().reportState.buildingState.pillarState.conoscenza_calcestruzzo
         val lcAcc = getReport().reportState.buildingState.pillarState.conoscenza_acciaio
@@ -179,10 +156,8 @@ class PilastriReportFragment : BaseReportFragment() {
 
     }
 
-    fun getConoscenzaCalcestruzzo() : Double
-    {
-        return when
-        {
+    fun getConoscenzaCalcestruzzo(): Double {
+        return when {
             calc_classe_res_parameter_lc1.isChecked -> LivelloConoscenza.I.multiplier
             calc_classe_res_parameter_lc2.isChecked -> LivelloConoscenza.II.multiplier
             calc_classe_res_parameter_lc3.isChecked -> LivelloConoscenza.III.multiplier
@@ -190,10 +165,8 @@ class PilastriReportFragment : BaseReportFragment() {
         }
     }
 
-    fun getConoscenzaAcciaio() : Double
-    {
-        return when
-        {
+    fun getConoscenzaAcciaio(): Double {
+        return when {
             acc_classe_res_parameter_lc1.isChecked -> LivelloConoscenza.I.multiplier
             acc_classe_res_parameter_lc2.isChecked -> LivelloConoscenza.II.multiplier
             acc_classe_res_parameter_lc3.isChecked -> LivelloConoscenza.III.multiplier
@@ -201,25 +174,27 @@ class PilastriReportFragment : BaseReportFragment() {
         }
     }
 
-    fun setConoscenzaCalcestruzzo(con : LivelloConoscenza)
-    {
-        when (con.ordinal)
-        {
-            0 -> calc_classe_res_parameter_lc1.isChecked = true
-            1 -> calc_classe_res_parameter_lc2.isChecked = true
-            2 -> calc_classe_res_parameter_lc3.isChecked = true
-            else -> acc_classe_res_parameter_lc1.isChecked = true
+    fun setConoscenzaCalcestruzzo(con: LivelloConoscenza?) {
+        if (con == null) calc_classe_res_parameter_lc3.isChecked = true
+        else {
+            when (con.ordinal) {
+                0 -> calc_classe_res_parameter_lc1.isChecked = true
+                1 -> calc_classe_res_parameter_lc2.isChecked = true
+                2 -> calc_classe_res_parameter_lc3.isChecked = true
+                else -> calc_classe_res_parameter_lc3.isChecked = true
+            }
         }
     }
 
-    fun setConoscenzaAcciaio(con : LivelloConoscenza)
-    {
-        when (con.ordinal)
-        {
-            0 -> acc_classe_res_parameter_lc1.isChecked = true
-            1 -> acc_classe_res_parameter_lc2.isChecked = true
-            2 -> acc_classe_res_parameter_lc3.isChecked = true
-            else -> acc_classe_res_parameter_lc1.isChecked = true
+    fun setConoscenzaAcciaio(con: LivelloConoscenza?) {
+        if (con == null) acc_classe_res_parameter_lc3.isChecked = true
+        else {
+            when (con.ordinal) {
+                0 -> acc_classe_res_parameter_lc1.isChecked = true
+                1 -> acc_classe_res_parameter_lc2.isChecked = true
+                2 -> acc_classe_res_parameter_lc3.isChecked = true
+                else -> acc_classe_res_parameter_lc3.isChecked = true
+            }
         }
     }
 
@@ -229,7 +204,7 @@ class PilastriReportFragment : BaseReportFragment() {
         //iterates all spinners element looking for the category requested
         (0 until calc_classe_parameter.count)
                 .firstOrNull { calc_classe_parameter.getItemAtPosition(it) == classe_calcestruzzo }
-                ?.let { return calc_classe_parameter.setSelection(it)}
+                ?.let { return calc_classe_parameter.setSelection(it) }
     }
 
     //callback to activity updates domain instance for activity and all existing and future fragments

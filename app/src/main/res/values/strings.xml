@@ -294,12 +294,11 @@
     <string name="registration_error">Errore di registrazione. Riprovare</string>
     <string name="g1_format">G1: %s [kN/mq]</string>
     <string name="report_delete_succeded">Report %d deleted correctly</string>
+    <string name="percent">%</string>
     <string name="eps2_title">Eps2</string>
-    <string name="eps2_value">%d %</string>
     <string name="epsu_title">Epsu</string>
-    <string name="epsu_value">%.1f %</string>
     <string name="fck_title">fck</string>
-    <string name="fck_value">%d [N/mm²]</string>
+    <string name="fck_value">%.2f [N/mm²]</string>
     <string name="rck_title">rck</string>
     <string name="rck_value">%.3f [N/mm²]</string>
     <string name="fcm_title">fcm</string>
@@ -309,13 +308,11 @@
     <string name="fcd_title">fcd</string>
     <string name="fcd_value">%.3f [N/mm²]</string>
     <string name="Epsy_title">Epsy</string>
-    <string name="Epsy_value">%d %</string>
     <string name="EpsuAcc_title">Epsu</string>
-    <string name="epsuAcc_value">%d %</string>
-    <string name="E_title">E = %d [N/mm²]%</string>
-    <string name="E_value">%d [N/mm²]%</string>
+    <string name="E_title">E</string>
+    <string name="E_value">[N/mm²]</string>
     <string name="fyk_title">fck</string>
-    <string name="fyk_value">%d [N/mm²]</string>
+    <string name="fyk_value">%.3f [N/mm²]</string>
     <string name="fyd_title">fcd</string>
     <string name="fyd_value">%.3f [N/mm²]</string>
 
