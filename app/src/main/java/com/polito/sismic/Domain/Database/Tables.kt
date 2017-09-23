@@ -202,5 +202,11 @@ object MagliaStrutturaleInfoTable
 {
     val NAME = "MagliaStrutturale"
     val ID                  = "_id"
+    val NUM_X               = "num_x"
+    val NUM_Y               = "num_y"
+    val DIST_X              = "dist_x"
+    val DIST_Y              = "dist_y"
+    val AREA                = "area"
+    val NUM_TOT             = "num_tot"
     val REPORT_ID           = "report_id"
 }

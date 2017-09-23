@@ -56,7 +56,7 @@ class DatabaseMapperHelper {
 
     private fun convertMagliaStrutturaleToDomain(pillarLayDbParams: DatabaseMagliaStrutturale?): PillarLayoutState? {
         return pillarLayDbParams?.let {
-            PillarLayoutState(it.report_id)
+            PillarLayoutState(it.num_x, it.num_y, it.dist_x, it.dist_y, it.area, it.num_tot)
         }
     }
 
@@ -218,7 +218,7 @@ class DatabaseMapperHelper {
     }
 
     private fun createPillarLayoutForDb(reportId: Int, pillarLayoutState: PillarLayoutState): DatabaseMagliaStrutturale = with(pillarLayoutState) {
-        return DatabaseMagliaStrutturale(reportId)
+        return DatabaseMagliaStrutturale(pillarX, pillarY, distX, distY, area, pillarCount, reportId)
     }
 
     private fun createPillarForDb(reportId: Int, pillarState: PillarState): DatabaseCaratteristichePilastri?  = with(pillarState){

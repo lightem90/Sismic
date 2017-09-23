@@ -187,6 +187,12 @@ class ReportDatabaseHelper(ctx: Context = App.instance) : ManagedSQLiteOpenHelpe
 
         db.createTable(MagliaStrutturaleInfoTable.NAME, ifNotExists = true,
                 columns = *arrayOf(MagliaStrutturaleInfoTable.ID to SqlType.create("INTEGER PRIMARY KEY AUTOINCREMENT"),
+                        MagliaStrutturaleInfoTable.NUM_X to INTEGER,
+                        MagliaStrutturaleInfoTable.NUM_Y to INTEGER,
+                        MagliaStrutturaleInfoTable.DIST_X to REAL,
+                        MagliaStrutturaleInfoTable.DIST_Y to REAL,
+                        MagliaStrutturaleInfoTable.AREA to REAL,
+                        MagliaStrutturaleInfoTable.NUM_TOT to INTEGER,
                         MagliaStrutturaleInfoTable.REPORT_ID to INTEGER))
 
         db.createTable(ResultsInfoTable.NAME, ifNotExists = true,

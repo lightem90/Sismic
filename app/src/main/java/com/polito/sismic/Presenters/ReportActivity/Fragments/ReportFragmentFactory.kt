@@ -34,8 +34,8 @@ class ReportFragmentFactory(private val reportManager: ReportManager) {
             5 -> return pushFragment(mDatiGeneraliReportFragment)
             6 -> return pushFragment(mRilieviReportFragment)
             7 -> return pushFragment(mDatiStrutturaliReportFragment)
-            8 -> return pushFragment(mPilastriReportFragment)
-            9 -> return pushFragment(mMagliaStruttReportFragment)
+            8 -> return pushFragment(mMagliaStruttReportFragment)
+            9 -> return pushFragment(mPilastriReportFragment)
             10 -> return pushFragment(mRiepilogoReportFragment)
             11 -> return pushFragment(mRisultatiReportFragment)
         }
@@ -65,8 +65,8 @@ class ReportFragmentFactory(private val reportManager: ReportManager) {
             5 -> return DecorStep(R.string.dati_generali_report_title, context)
             6 -> return DecorStep(R.string.rilievi_report_title, context)
             7 -> return DecorStep(R.string.dati_strutturali_report_title, context)
-            8 -> return DecorStep(R.string.pilastri_report_title, context)
-            9 -> return DecorStep(R.string.maglia_strutt_title, context)
+            8 -> return DecorStep(R.string.maglia_strutt_title, context)
+            9 -> return DecorStep(R.string.pilastri_report_title, context)
             10 -> return DecorStep(R.string.riepilogo_report_title, context)
             11 -> return DecorStep(R.string.risultati_report_title, context, nextStrId = R.string.report_complete)
         }

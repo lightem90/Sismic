@@ -827,19 +827,32 @@ data class PillarState(var classe_calcestruzzo: String,
     }
 }
 
-//TODO
-data class PillarLayoutState(var pillar: Int) : Parcelable {
-
-    constructor() : this(0)
+data class PillarLayoutState(var pillarX: Int,
+                             var pillarY: Int,
+                             var distX: Double,
+                             var distY: Double,
+                             var area: Double,
+                             var pillarCount: Int) : Parcelable {
+    constructor() : this(0, 0, 0.0, 0.0, 0.0, 0)
 
     constructor(source: Parcel) : this(
+            source.readInt(),
+            source.readInt(),
+            source.readDouble(),
+            source.readDouble(),
+            source.readDouble(),
             source.readInt()
     )
 
     override fun describeContents() = 0
 
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
-        writeInt(pillar)
+        writeInt(pillarX)
+        writeInt(pillarY)
+        writeDouble(distX)
+        writeDouble(distY)
+        writeDouble(area)
+        writeInt(pillarCount)
     }
 
     companion object {

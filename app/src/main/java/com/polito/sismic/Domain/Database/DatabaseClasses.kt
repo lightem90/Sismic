@@ -430,9 +430,27 @@ data class DatabaseCaratteristichePilastri(var map: MutableMap<String, Any?>) : 
 
 data class DatabaseMagliaStrutturale(var map: MutableMap<String, Any?>) : DatabaseSection {
     var _id: Int by map
+    var num_x : Int by map
+    var num_y : Int by map
+    var dist_x : Double by map
+    var dist_y : Double by map
+    var area : Double by map
+    var num_tot : Int by map
     var report_id: Int by map
 
-    constructor(report_id: Int) : this(HashMap()) {
+    constructor(num_x : Int,
+            num_y : Int,
+            dist_x : Double,
+            dist_y : Double,
+            area : Double,
+            num_tot : Int,
+            report_id: Int)
+            : this(HashMap()) {
+        this.num_x = num_x
+        this.num_y = num_y
+        this.dist_x = dist_x
+        this.dist_y = dist_y
+        this.area = area
         this.report_id = report_id
     }
 }

@@ -10,6 +10,7 @@ import kotlinx.android.synthetic.main.catasto_report_layout.*
 import kotlinx.android.synthetic.main.dati_generali_report_layout.*
 import kotlinx.android.synthetic.main.dati_strutturali_report_layout.*
 import kotlinx.android.synthetic.main.info_loc_report_layout.*
+import kotlinx.android.synthetic.main.maglia_strutt_report_layout.*
 import kotlinx.android.synthetic.main.parametri_sismici_report_layout.*
 import kotlinx.android.synthetic.main.pilastri_report_layout.*
 import kotlinx.android.synthetic.main.rilievi_report_layout.*
@@ -128,9 +129,12 @@ class UiMapper {
                     copertura_q.text.toString().toDoubleOrZero(),
                     SismicBuildingInteractor.calculateBuildWeigth(buildingState, pesoSolaio, pesoCopertura))
         }
-        //TODO
+
         fun createPillarLayoutStateForDomain(magliaStrutturaleReportFragment: MagliaStrutturaleReportFragment): PillarLayoutState = with(magliaStrutturaleReportFragment){
-            return PillarLayoutState()
+            return PillarLayoutState(num_x.getParameterValue().toInt(), num_y.getParameterValue().toInt(),
+                    dist_x.getParameterValue().toDouble(), dist_y.getParameterValue().toDouble(),
+                    dist_x.getParameterValue().toDouble() * dist_y.getParameterValue().toDouble(),
+                    num_x.getParameterValue().toInt() + num_y.getParameterValue().toInt())
         }
 
         fun bindToDomain(fragment: BaseReportFragment, reportState: ReportState) = with(fragment){
