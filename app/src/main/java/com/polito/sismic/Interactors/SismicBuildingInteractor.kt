@@ -1,15 +1,20 @@
 package com.polito.sismic.Interactors
 
 import android.content.Context
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.polito.sismic.Domain.BuildingState
+import com.polito.sismic.Domain.ReportState
+import com.polito.sismic.Interactors.Helpers.SismicBuildingCalculatorHelper
 
 /**
  * Created by it0003971 on 15/09/2017.
  */
 class SismicBuildingInteractor(val mReportManager: ReportManager,
-                               val mContext: Context)
-{
+                               val mContext: Context){
 
+    private val mSismicBuildingCalculatorHelper : SismicBuildingCalculatorHelper = SismicBuildingCalculatorHelper()
     companion object {
 
         fun calculateT1(hTot : Double) : Double
@@ -27,6 +32,11 @@ class SismicBuildingInteractor(val mReportManager: ReportManager,
                 pesoSolaio
             }
         }
+    }
+
+    fun getPillarDomainForGraph(state : ReportState) : List<ILineDataSet>
+    {
+        return listOf(mSismicBuildingCalculatorHelper.getPillarDomainForGraph(state))
     }
 
 

@@ -315,6 +315,7 @@
     <string name="fyk_value">%.3f [N/mm²]</string>
     <string name="fyd_title">fcd</string>
     <string name="fyd_value">%.3f [N/mm²]</string>
+    <string name="calculate">Calcola dominio</string>
 
 
 </resources>

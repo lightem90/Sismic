@@ -11,6 +11,7 @@ import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.places.Places
 import com.polito.sismic.Domain.ProjectSpectrumState
 import com.polito.sismic.Domain.Report
+import com.polito.sismic.Domain.ReportState
 import com.polito.sismic.Domain.SismicParametersState
 import com.polito.sismic.Extensions.getCustomAdapter
 import com.polito.sismic.Extensions.toast
@@ -31,12 +32,14 @@ class ReportActivity : AppCompatActivity(),
         DatiSismoGeneticiReportFragment.DefaultReturnTimeRequest,
         ParametriSismiciReportFragment.LimitStateRequest,
         SpettriDiProgettoReportFragment.SpectrumReturnTimeRequest,
+        PilastriReportFragment.PillarDomainGraphRequest,
         GoogleApiClient.OnConnectionFailedListener
 {
 
     private lateinit var mGoogleApiClient: GoogleApiClient
     private lateinit var mUserActionInteractor: UserActionInteractor
     private lateinit var mSismicParameterInteractor: SismicActionInteractor
+    private lateinit var mSismicBuildingInteractor : SismicBuildingInteractor
     private var mReportManager: ReportManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -100,6 +103,10 @@ class ReportActivity : AppCompatActivity(),
         getSpectrumLines(mReportManager.report.reportState, data)
     }
 
+    override fun onPillarDomainGraphRequest(data: ReportState): List<ILineDataSet> = with (mSismicBuildingInteractor){
+        return getPillarDomainForGraph(data)
+    }
+
     //Updates the state for all fragments
     override fun onParametersConfirmed(report: Report) {
         mReportManager?.updateReportState(report)
@@ -153,6 +160,7 @@ class ReportActivity : AppCompatActivity(),
         mReportManager = reportManager
         mUserActionInteractor = UserActionInteractor(reportManager, this)
         mSismicParameterInteractor = SismicActionInteractor(reportManager, this)
+        mSismicBuildingInteractor = SismicBuildingInteractor(reportManager, this)
         stepperLayout.adapter = ReportFragmentsAdapter(supportFragmentManager, this, reportManager)
         fabtoolbar_fab.setOnClickListener { fabtoolbar.show() }
         pic.setOnClickListener { mUserActionInteractor.onActionRequested(UserActionType.PicRequest) }

@@ -8,6 +8,7 @@ import com.polito.sismic.Domain.SismicParametersState
 import com.polito.sismic.Extensions.toList
 import com.polito.sismic.Interactors.Helpers.ParametersForCoordinateHelper
 import com.polito.sismic.Interactors.Helpers.SismicActionCalculatorHelper
+import com.polito.sismic.Interactors.Helpers.SismicBuildingCalculatorHelper
 
 /**
  * Created by Matteo on 05/09/2017.

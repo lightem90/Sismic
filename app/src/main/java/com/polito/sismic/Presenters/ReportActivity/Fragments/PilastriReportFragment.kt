@@ -1,5 +1,6 @@
 package com.polito.sismic.Presenters.ReportActivity.Fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.support.annotation.Nullable
 import android.view.LayoutInflater
@@ -7,6 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Adapter
 import android.widget.AdapterView
+import com.github.mikephil.charting.components.Legend
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.components.YAxis
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
+import com.polito.sismic.Domain.ReportState
 import com.polito.sismic.Extensions.toDoubleOrZero
 import com.polito.sismic.Interactors.Helpers.LivelloConoscenza
 import com.polito.sismic.Interactors.Helpers.SismicBuildingCalculatorHelper
@@ -19,6 +26,20 @@ import kotlinx.android.synthetic.main.pilastri_report_layout.*
  */
 class PilastriReportFragment : BaseReportFragment() {
 
+    interface PillarDomainGraphRequest {
+        fun onPillarDomainGraphRequest(data: ReportState): List<ILineDataSet>
+    }
+
+    private var mPillarDomainGraphRequest: PillarDomainGraphRequest? = null
+    override fun onAttach(context: Context?) {
+
+        super.onAttach(context)
+        try {
+            mPillarDomainGraphRequest = context as PillarDomainGraphRequest?
+        } catch (e: ClassCastException) {
+            throw ClassCastException(context!!.toString() + " must implement OnPillarDomainGraphRequest")
+        }
+    }
     override fun onCreateView(inflater: LayoutInflater?, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View? {
         return inflateFragment(R.layout.pilastri_report_layout, inflater, container)
     }
@@ -131,6 +152,25 @@ class PilastriReportFragment : BaseReportFragment() {
                 acc_classe_parameter_C.isClickable = true
             }
             fixAndReloadDataForUi()
+        }
+
+        calculate.setOnClickListener {
+            mPillarDomainGraphRequest?.onPillarDomainGraphRequest(getReport().reportState).let {
+                with(pillar_domain_chart)
+                {
+                    data = LineData(it)
+                    invalidate()
+                }
+            }
+        }
+        with(pillar_domain_chart)
+        {
+            xAxis.position = XAxis.XAxisPosition.BOTTOM
+            xAxis.axisMaximum = 4.0f
+            xAxis.axisMinimum = 0.0f
+            legend.form = Legend.LegendForm.NONE
+            description.isEnabled = false
+            getAxis(YAxis.AxisDependency.RIGHT).isEnabled = false
         }
     }
 

@@ -229,8 +229,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
+    <TextView
+        style="@style/sectionTitle"
+        android:text="@string/dominio_resistenza_title"/>
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/pillar_domain_chart"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"/>
+
     <Button
-        android:id="@+id/ok"
+        android:id="@+id/calculate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/white"
@@ -239,10 +248,6 @@
         android:layout_marginBottom="@dimen/grid_vertical_margin"
         android:layout_marginTop="@dimen/grid_vertical_margin"
         android:background="@color/colorAccent"
-        android:text="@string/ok"/>
-
-    <TextView
-        style="@style/sectionTitle"
-        android:text="@string/dominio_resistenza_title"/>
+        android:text="@string/calculate"/>
 
 </LinearLayout>
