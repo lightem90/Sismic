@@ -154,6 +154,16 @@ class PilastriReportFragment : BaseReportFragment() {
             fixAndReloadDataForUi()
         }
 
+        num_armatura.attachDataConfirmedCallback {
+            fixAs()
+        }
+        armatura_fi.attachDataConfirmedCallback {
+            fixAs()
+        }
+        sezione_bx_parameter.attachDataConfirmedCallback { fixPillarData() }
+        sezione_hy_parameter.attachDataConfirmedCallback { fixPillarData() }
+        sezione_c_parameter.attachDataConfirmedCallback { fixPillarData() }
+
         calculate.setOnClickListener {
             mPillarDomainGraphRequest?.onPillarDomainGraphRequest(getReport().reportState).let {
                 with(pillar_domain_chart)
@@ -166,12 +176,18 @@ class PilastriReportFragment : BaseReportFragment() {
         with(pillar_domain_chart)
         {
             xAxis.position = XAxis.XAxisPosition.BOTTOM
-            xAxis.axisMaximum = 4.0f
-            xAxis.axisMinimum = 0.0f
             legend.form = Legend.LegendForm.NONE
             description.isEnabled = false
             getAxis(YAxis.AxisDependency.RIGHT).isEnabled = false
         }
+    }
+
+    private fun fixAs() {
+        val numFerri = num_armatura.getParameterValue().toDoubleOrZero().toInt()
+        val diamFerri = armatura_fi.getParameterValue().toDoubleOrZero()
+        getReport().reportState.buildingState.pillarState.num_ferri = numFerri
+        getReport().reportState.buildingState.pillarState.diametro_ferri = diamFerri
+        getReport().reportState.buildingState.pillarState.As = SismicBuildingCalculatorHelper.calculateAs(numFerri, diamFerri)
     }
 
     fun fixAndReloadDataForUi() {
@@ -194,6 +210,14 @@ class PilastriReportFragment : BaseReportFragment() {
         fyk.setValue(String.format(context.getString(R.string.fyk_value), getReport().reportState.buildingState.pillarState.fyk))
         fyd.setValue(String.format(context.getString(R.string.fyd_value), getReport().reportState.buildingState.pillarState.fyd))
 
+        fixAs()
+        fixPillarData()
+    }
+
+    private fun fixPillarData() {
+        getReport().reportState.buildingState.pillarState.bx = sezione_bx_parameter.getParameterValue().toDoubleOrZero() * 10
+        getReport().reportState.buildingState.pillarState.hy = sezione_hy_parameter.getParameterValue().toDoubleOrZero() * 10
+        getReport().reportState.buildingState.pillarState.c = sezione_c_parameter.getParameterValue().toDoubleOrZero() * 10
     }
 
     fun getConoscenzaCalcestruzzo(): Double {
@@ -255,11 +279,10 @@ class PilastriReportFragment : BaseReportFragment() {
         getReport().reportState.buildingState.pillarState.conoscenza_calcestruzzo = getConoscenzaCalcestruzzo()
         getReport().reportState.buildingState.pillarState.classe_acciaio = if (acc_classe_parameter_A.isChecked) acc_classe_parameter_A.textOn.toString() else acc_classe_parameter_C.textOn.toString()
         getReport().reportState.buildingState.pillarState.conoscenza_acciaio = getConoscenzaAcciaio()
-        getReport().reportState.buildingState.pillarState.bx = sezione_bx_parameter.getParameterValue().toDoubleOrZero()
-        getReport().reportState.buildingState.pillarState.hy = sezione_hy_parameter.getParameterValue().toDoubleOrZero()
-        getReport().reportState.buildingState.pillarState.c = sezione_c_parameter.getParameterValue().toDoubleOrZero()
-        getReport().reportState.buildingState.pillarState.longitudine_armatura = armatura_longitudine.getParameterValue().toDoubleOrZero()
-        getReport().reportState.buildingState.pillarState.fi = armatura_fi.getParameterValue().toDoubleOrZero()
+
+        //from cm to mm
+        fixAs()
+        fixPillarData()
 
         super.onNextClicked(callback)
     }

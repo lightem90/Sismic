@@ -375,8 +375,8 @@ data class DatabaseCaratteristichePilastri(var map: MutableMap<String, Any?>) : 
     var bx: Double by map
     var hy: Double by map
     var c: Double by map
-    var longitudine_armatura: Double by map
-    var fi: Double by map
+    var num_ferri: Int by map
+    var diametro_ferri: Double by map
     var As: Double by map
     var report_id: Int by map
 
@@ -399,8 +399,8 @@ data class DatabaseCaratteristichePilastri(var map: MutableMap<String, Any?>) : 
                 bx: Double,
                 hy: Double,
                 c: Double,
-                longitudine_armatura: Double,
-                fi: Double,
+                num_ferri: Int,
+                diametro_ferri: Double,
                 As: Double,
                 report_id: Int
 
@@ -424,8 +424,8 @@ data class DatabaseCaratteristichePilastri(var map: MutableMap<String, Any?>) : 
         this.bx = bx
         this.hy = hy
         this.c = c
-        this.longitudine_armatura = longitudine_armatura
-        this.fi = fi
+        this.num_ferri = num_ferri
+        this.diametro_ferri = diametro_ferri
         this.As = As
         this.report_id = report_id
     }
@@ -454,6 +454,7 @@ data class DatabaseMagliaStrutturale(var map: MutableMap<String, Any?>) : Databa
         this.dist_x = dist_x
         this.dist_y = dist_y
         this.area = area
+        this.num_tot = num_tot
         this.report_id = report_id
     }
 }

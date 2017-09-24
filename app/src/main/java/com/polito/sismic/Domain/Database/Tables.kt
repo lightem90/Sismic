@@ -193,10 +193,10 @@ object CaratteristichePilastriInfoTable
     val BX                          = "bx"
     val HY                          = "hy"
     val C                           = "c"
-    val LONG_ARMATURA               = "longitudine_armatura"
-    val FI                          = "fi"
-    val AS                          = "As"
-    val REPORT_ID           = "report_id"
+    val NUM_FERRI                   = "num_ferri"
+    val DIAM_FERRI                  = "diametro_ferri"
+    val AS                          = "area_ferri"
+    val REPORT_ID                   = "report_id"
 }
 
 object MagliaStrutturaleInfoTable

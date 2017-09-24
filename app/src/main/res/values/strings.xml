@@ -194,11 +194,11 @@
     <string name="acc_classe_parameter">Classe acciaio</string>
     <string name="dominio_resistenza_title">DOMINIO DI RESISTENZA</string>
     <string name="sezione_bx_parameter">SEZIONE: B(x)</string>
-    <string name="sezione_bx_parameter_hint">B(x)</string>
+    <string name="sezione_bx_parameter_hint">B(x) [cm]</string>
     <string name="sezione_hy_parameter">SEZIONE: H(y)</string>
-    <string name="sezione_hy_parameter_hint">H(y)</string>
+    <string name="sezione_hy_parameter_hint">H(y) [cm]</string>
     <string name="sezione_c_parameter">SEZIONE: c</string>
-    <string name="sezione_c_parameter_hint">c</string>
+    <string name="sezione_c_parameter_hint">c [cm]</string>
     <string name="armatura_1">Armatura 1</string>
     <string name="armatura_1_hint">TODO</string>
     <string name="armatura_2">Armatura 2</string>
@@ -273,7 +273,7 @@
     <string name="error_media_audio">Impossibile salvare nota audio</string>
     <string name="categoria_moltiplicatore_parameter">αu/α1</string>
     <string name="armatura_fi">ϕ</string>
-    <string name="armatura_fi_hint">Inserire phi</string>
+    <string name="armatura_fi_hint">Inserire diametro ferri [mm]</string>
     <string name="armatura_longitudine">Longitudine armatura</string>
     <string name="armatura_longitudine_hint">Inserire longitudine</string>
     <string name="report_filename_dialog">Nome file</string>
@@ -311,11 +311,13 @@
     <string name="EpsuAcc_title">Epsu</string>
     <string name="E_title">E</string>
     <string name="E_value">[N/mm²]</string>
-    <string name="fyk_title">fck</string>
+    <string name="fyk_title">fyk</string>
     <string name="fyk_value">%.3f [N/mm²]</string>
-    <string name="fyd_title">fcd</string>
+    <string name="fyd_title">fyd</string>
     <string name="fyd_value">%.3f [N/mm²]</string>
     <string name="calculate">Calcola dominio</string>
+    <string name="num_armatura">Numero ferri</string>
+    <string name="num_armatura_hint">Inserire numero ferri armatura</string>
 
 
 </resources>

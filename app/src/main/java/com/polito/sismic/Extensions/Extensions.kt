@@ -216,9 +216,19 @@ fun String.toDoubleOrZero() : Double
     return if (isEmpty()) 0.0 else toDouble()
 }
 
+fun String.toIntOrZero() : Int
+{
+    return if (isEmpty()) 0 else toInt()
+}
+
 fun Double.toStringOrEmpty() : String
 {
     return if (this == 0.0) "" else toString()
+}
+
+fun Int.toStringOrEmpty() : String
+{
+    return if (this == 0) "" else toString()
 }
 
 class MathUti

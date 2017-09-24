@@ -763,11 +763,11 @@ data class PillarState(var classe_calcestruzzo: String,
                        var bx: Double,
                        var hy: Double,
                        var c: Double,
-                       var longitudine_armatura: Double,
-                       var fi: Double,
+                       var num_ferri: Int,
+                       var diametro_ferri: Double,
                        var As : Double) : Parcelable {
     constructor() : this("", LivelloConoscenza.III.multiplier, 2.0, 3.5, 0.0, 0.0, 0.0, 0.0, 0.0, "", LivelloConoscenza.III.multiplier, 10.0, 67.5,
-            210000.0, 450.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+            210000.0, 450.0, 0.0, 0.0, 0.0, 0.0, 0, 0.0, 0.0)
 
     constructor(source: Parcel) : this(
             source.readString(),
@@ -789,7 +789,7 @@ data class PillarState(var classe_calcestruzzo: String,
             source.readDouble(),
             source.readDouble(),
             source.readDouble(),
-            source.readDouble(),
+            source.readInt(),
             source.readDouble(),
             source.readDouble()
     )
@@ -816,8 +816,8 @@ data class PillarState(var classe_calcestruzzo: String,
         writeDouble(bx)
         writeDouble(hy)
         writeDouble(c)
-        writeDouble(longitudine_armatura)
-        writeDouble(fi)
+        writeInt(num_ferri)
+        writeDouble(diametro_ferri)
         writeDouble(As)
     }
 

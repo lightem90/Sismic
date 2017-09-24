@@ -1,5 +1,7 @@
 package com.polito.sismic.Interactors.Helpers
 
+import android.graphics.Color
+import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
@@ -35,6 +37,12 @@ class SismicBuildingCalculatorHelper {
         {
             return fyk / 1.15
         }
+
+        fun calculateAs(numFerri : Int, diamFerri : Double) : Double
+        {
+            val r = diamFerri / 2
+            return numFerri * (Math.PI * r * r) //mm * mm
+        }
     }
 
     // AND Denis data
@@ -51,6 +59,23 @@ class SismicBuildingCalculatorHelper {
         //the lines are simmetric
         val topMost = LineDataSet(entries, "top")
         val bottomMost = LineDataSet(entries.map { Entry(it.x, -it.y) }, "bottom")
+        with (topMost)
+        {
+            color = Color.BLUE
+            setDrawCircles(false)
+            lineWidth = 3f
+            axisDependency = YAxis.AxisDependency.LEFT
+
+        }
+
+        with (bottomMost)
+        {
+            color = Color.BLUE
+            setDrawCircles(false)
+            lineWidth = 3f
+            axisDependency = YAxis.AxisDependency.LEFT
+        }
+
         return mutableListOf(topMost, bottomMost)
     }
 
@@ -77,7 +102,7 @@ class SismicBuildingCalculatorHelper {
 
     private fun calculatePointOne(fyd : Double, As : Double): Entry {
 
-        val nTrd = 2 * fyd * As
+        val nTrd = -(2 * fyd * As)
         return Entry(nTrd.toFloat(), 0f)
     }
 
@@ -86,7 +111,7 @@ class SismicBuildingCalculatorHelper {
         return Entry(nCrd.toFloat(), 0f)
     }
 
-    //If this point is inside domain... all good
+    //If this point is inside domain... all good TODO
     fun getPointInDomainForPillar(state: ReportState, mSismicParameterInteractor: SismicActionInteractor): ILineDataSet {
 
         return LineDataSet(listOf(Entry(1f, 1f)), "point")

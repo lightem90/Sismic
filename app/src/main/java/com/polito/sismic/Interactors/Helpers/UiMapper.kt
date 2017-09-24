@@ -2,6 +2,7 @@ package com.polito.sismic.Interactors.Helpers
 
 import com.polito.sismic.Domain.*
 import com.polito.sismic.Extensions.toDoubleOrZero
+import com.polito.sismic.Extensions.toIntOrZero
 import com.polito.sismic.Extensions.toStringOrEmpty
 import com.polito.sismic.Interactors.SismicBuildingInteractor
 import com.polito.sismic.Presenters.ReportActivity.Fragments.*
@@ -93,7 +94,7 @@ class UiMapper {
             val hTot = tot_high.text.toString().toDoubleOrZero()
             val t1 = SismicBuildingInteractor.calculateT1(hTot)
 
-            return TakeoverState(piani_numero_parameter.selectedItem.toString().toInt(),
+            return TakeoverState(piani_numero_parameter.selectedItem.toString().toIntOrZero(),
                    altezza_piano_tr_parameter.getParameterValue().toDoubleOrZero(),
                    altezza_piani_sup_parameter.getParameterValue().toDoubleOrZero(),
                     hTot,
@@ -110,8 +111,8 @@ class UiMapper {
             val context = datiStrutturaliReportFragment.context
             val pesiSolaiArray = context.resources.getStringArray(R.array.solaio_int_pesi)
             val pesiCopertureArray = context.resources.getStringArray(R.array.copertura_int_pesi)
-            val pesoSolaio = pesiSolaiArray[solaio_peso.selectedItemPosition].toDouble()
-            val pesoCopertura = pesiCopertureArray[copertura_peso.selectedItemPosition].toDouble()
+            val pesoSolaio = pesiSolaiArray[solaio_peso.selectedItemPosition].toDoubleOrZero()
+            val pesoCopertura = pesiCopertureArray[copertura_peso.selectedItemPosition].toDoubleOrZero()
 
             return StructuralState(getTipoFondazioni(),
                     fondazioni_h.getParameterValue().toDoubleOrZero(),
@@ -131,10 +132,10 @@ class UiMapper {
         }
 
         fun createPillarLayoutStateForDomain(magliaStrutturaleReportFragment: MagliaStrutturaleReportFragment): PillarLayoutState = with(magliaStrutturaleReportFragment){
-            return PillarLayoutState(num_x.getParameterValue().toInt(), num_y.getParameterValue().toInt(),
-                    dist_x.getParameterValue().toDouble(), dist_y.getParameterValue().toDouble(),
-                    dist_x.getParameterValue().toDouble() * dist_y.getParameterValue().toDouble(),
-                    num_x.getParameterValue().toInt() + num_y.getParameterValue().toInt())
+            return PillarLayoutState(num_x.getParameterValue().toIntOrZero(), num_y.getParameterValue().toIntOrZero(),
+                    dist_x.getParameterValue().toDoubleOrZero(), dist_y.getParameterValue().toDoubleOrZero(),
+                    dist_x.getParameterValue().toDoubleOrZero() * dist_y.getParameterValue().toDoubleOrZero(),
+                    num_x.getParameterValue().toIntOrZero() + num_y.getParameterValue().toIntOrZero())
         }
 
         fun bindToDomain(fragment: BaseReportFragment, reportState: ReportState) = with(fragment){
@@ -239,10 +240,10 @@ class UiMapper {
                         if (acc_classe_parameter_C.textOn == it.classe_acciaio) acc_classe_parameter_C.isChecked = true else acc_classe_parameter_A.isChecked = true
                         setConoscenzaAcciaio(LivelloConoscenza.values().firstOrNull { con -> con.multiplier == it.conoscenza_acciaio })
                         sezione_bx_parameter.setParameterValue(it.bx.toStringOrEmpty())
-                        sezione_hy_parameter.setParameterValue(it.bx.toStringOrEmpty())
-                        sezione_c_parameter.setParameterValue(it.bx.toStringOrEmpty())
-                        armatura_longitudine.setParameterValue(it.bx.toStringOrEmpty())
-                        armatura_fi.setParameterValue(it.bx.toStringOrEmpty())
+                        sezione_hy_parameter.setParameterValue(it.hy.toStringOrEmpty())
+                        sezione_c_parameter.setParameterValue(it.c.toStringOrEmpty())
+                        num_armatura.setParameterValue(it.num_ferri.toString())
+                        armatura_fi.setParameterValue(it.diametro_ferri.toStringOrEmpty())
                     }
                     //sync with domain
                     fixAndReloadDataForUi()
