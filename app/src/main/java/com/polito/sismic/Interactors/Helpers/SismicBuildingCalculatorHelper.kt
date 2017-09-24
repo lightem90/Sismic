@@ -42,20 +42,20 @@ class SismicBuildingCalculatorHelper {
 
         val pillarState = state.buildingState.pillarState
         val entries = mutableListOf<Entry>()
-        entries.add(calculatePointOne())
-        entries.addAll(calculateFromThreeToFour())
-        entries.add(calculatePointTwo())
+        entries.add(calculatePointOne(pillarState.fyd, pillarState.As))
+        entries.addAll(calculateFromThreeToFour(pillarState.fcd, pillarState.bx, pillarState.As, pillarState.fyd, pillarState.c, pillarState.hy))
+        entries.add(calculatePointTwo(pillarState.fyd, pillarState.As, pillarState.bx, pillarState.hy, pillarState.fcd))
         return LineDataSet(entries, "")
     }
 
-    private fun calculateFromThreeToFour(h: Double, fcd : Double, b : Double, As : Double, fyd : Double, dFirst : Double, H : Double): List<Entry> {
+    private fun calculateFromThreeToFour(fcd : Double, b : Double, As : Double, fyd : Double, dFirst : Double, H : Double): List<Entry> {
 
         val points = mutableListOf<Entry>()
         var h = 0.0
         val step = H / 10
         while(h <= H)
         {
-            points.add(innerCalculatePointFromThreeToFour(h))
+            points.add(innerCalculatePointFromThreeToFour(h, fcd, b, As, fyd, dFirst, H))
             h += step
         }
         return points.toList()

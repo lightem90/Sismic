@@ -82,7 +82,8 @@ class DatabaseMapperHelper {
                     it.hy,
                     it.c,
                     it.longitudine_armatura,
-                    it.fi)
+                    it.fi,
+                    it.As)
         }
     }
 
@@ -222,7 +223,7 @@ class DatabaseMapperHelper {
     }
 
     private fun createPillarForDb(reportId: Int, pillarState: PillarState): DatabaseCaratteristichePilastri?  = with(pillarState){
-        DatabaseCaratteristichePilastri(classe_calcestruzzo,conoscenza_calcestruzzo, eps2, epsu, rck, fck, ecm, fcd, fcm, classe_acciaio, conoscenza_acciaio, epsy, epsyu, E, fyk, fyd, bx, hy, c, longitudine_armatura, fi, reportId)
+        DatabaseCaratteristichePilastri(classe_calcestruzzo,conoscenza_calcestruzzo, eps2, epsu, rck, fck, ecm, fcd, fcm, classe_acciaio, conoscenza_acciaio, epsy, epsyu, E, fyk, fyd, bx, hy, c, longitudine_armatura, fi, As, reportId)
     }
 
     private fun createTakeoverForDb(reportId: Int, takeoverState: TakeoverState): DatabaseSection = with(takeoverState){

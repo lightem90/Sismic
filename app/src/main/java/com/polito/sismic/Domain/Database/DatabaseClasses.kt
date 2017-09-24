@@ -377,6 +377,7 @@ data class DatabaseCaratteristichePilastri(var map: MutableMap<String, Any?>) : 
     var c: Double by map
     var longitudine_armatura: Double by map
     var fi: Double by map
+    var As: Double by map
     var report_id: Int by map
 
     constructor(classe_calcestruzzo: String,
@@ -400,6 +401,7 @@ data class DatabaseCaratteristichePilastri(var map: MutableMap<String, Any?>) : 
                 c: Double,
                 longitudine_armatura: Double,
                 fi: Double,
+                As: Double,
                 report_id: Int
 
     ) : this(HashMap()) {
@@ -424,6 +426,7 @@ data class DatabaseCaratteristichePilastri(var map: MutableMap<String, Any?>) : 
         this.c = c
         this.longitudine_armatura = longitudine_armatura
         this.fi = fi
+        this.As = As
         this.report_id = report_id
     }
 }

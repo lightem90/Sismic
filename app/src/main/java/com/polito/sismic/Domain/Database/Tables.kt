@@ -195,6 +195,7 @@ object CaratteristichePilastriInfoTable
     val C                           = "c"
     val LONG_ARMATURA               = "longitudine_armatura"
     val FI                          = "fi"
+    val AS                          = "As"
     val REPORT_ID           = "report_id"
 }
 
