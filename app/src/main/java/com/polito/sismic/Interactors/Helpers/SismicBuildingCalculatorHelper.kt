@@ -96,7 +96,7 @@ class SismicBuildingCalculatorHelper {
     private fun innerCalculatePointFromThreeToFour(h: Double, fcd : Double, b : Double, As : Double, fyd : Double, dFirst : Double, H : Double): Entry {
 
         val n = fcd * b * h
-        val m = As * fyd * (H - 2 * dFirst) + fcd * b * H * ((H - h)/2)
+        val m = (As * fyd) * (H - (2 * dFirst)) + (n * ((H/2) - (h/2)) )
         return Entry(n.toFloat(), m.toFloat())
     }
 
