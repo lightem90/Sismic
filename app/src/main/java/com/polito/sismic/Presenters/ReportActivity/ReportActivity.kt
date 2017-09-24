@@ -160,7 +160,7 @@ class ReportActivity : AppCompatActivity(),
         mReportManager = reportManager
         mUserActionInteractor = UserActionInteractor(reportManager, this)
         mSismicParameterInteractor = SismicActionInteractor(reportManager, this)
-        mSismicBuildingInteractor = SismicBuildingInteractor(reportManager, this)
+        mSismicBuildingInteractor = SismicBuildingInteractor(reportManager, this, mSismicParameterInteractor)
         stepperLayout.adapter = ReportFragmentsAdapter(supportFragmentManager, this, reportManager)
         fabtoolbar_fab.setOnClickListener { fabtoolbar.show() }
         pic.setOnClickListener { mUserActionInteractor.onActionRequested(UserActionType.PicRequest) }
