@@ -140,13 +140,13 @@ class SismicBuildingCalculatorHelper(val mContext : Context) {
             val forcePoint = spectrum.pointList.firstOrNull { it.x >=  t1}
             if (forcePoint != null)
             {
-                //val lambda = if (state.buildingState.takeoverState.numero_piani < 3) 1.0 else 0.85
-                //val force = forcePoint.y * state.buildingState.structuralState.peso_totale * lambda / 9.8
-                val mPoint = forcePoint.y * state.buildingState.pillarLayoutState.pillarCount * (state.buildingState.takeoverState.altezza_totale / 2)
+                val lambda = if (state.buildingState.takeoverState.numero_piani < 3) 1.0 else 0.85
+                val force = forcePoint.y * state.buildingState.structuralState.peso_totale * lambda / 9.8
+                val mPoint = force * state.buildingState.pillarLayoutState.pillarCount * (state.buildingState.takeoverState.altezza_totale / 2)
                 val lds = LineDataSet(listOf(Entry(nPoint.toFloat(), mPoint.toFloat())), spectrum.name)
                 lds.color = mContext.resources.getColor(spectrum.color)
                 lds.setDrawCircles(true)
-                lds.circleRadius = 4f
+                lds.circleRadius = 10f
                 lds.axisDependency = YAxis.AxisDependency.LEFT
                 lds
             } else
