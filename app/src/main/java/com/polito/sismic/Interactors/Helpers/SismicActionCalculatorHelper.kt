@@ -1,15 +1,9 @@
 package com.polito.sismic.Interactors.Helpers
 
-import android.content.Context
-import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.data.LineDataSet
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.polito.sismic.Domain.*
 import com.polito.sismic.Extensions.interpolateWith
 import com.polito.sismic.Extensions.toSpectrumPointList
-import com.polito.sismic.Extensions.toEntryList
-import com.polito.sismic.R
 
 /**
  * Created by Matteo on 04/09/2017.
@@ -80,7 +74,7 @@ class SismicActionCalculatorHelper(val mCoordinateHelper: ParametersForCoordinat
     }
 
     //Sismogenetic data: shows default period data straight read from database
-    fun getDefaultSpectrum(context: Context, sismicState: ReportState): List<ILineDataSet> {
+    fun getDefaultSpectrum(sismicState: ReportState): List<SpectrumDTO> {
 
         val st = ZonaSismica.values()[sismicState.localizationState.zone_int - 1].multiplier
         val spectrums: List<SpectrumDTO> = sismicState.sismicState.sismogenticState.default_periods.map {
@@ -89,20 +83,12 @@ class SismicActionCalculatorHelper(val mCoordinateHelper: ParametersForCoordinat
             calculateSpectrumPointListFor(period.years.toString(), period.years, tr.color, period.ag, period.f0, period.tcstar, st)
         }
 
-        sismicState.sismicState.sismogenticState.default_spectrum  = spectrums
-        return spectrums.map {
-            val lds = LineDataSet(it.pointList.toEntryList(), String.format(context.getString(R.string.label_year_format), it.name))
-            lds.color = context.resources.getColor(it.color)
-            lds.setDrawCircles(false)
-            lds.lineWidth = 2f
-            lds.axisDependency = YAxis.AxisDependency.LEFT
-            lds
-        }
+        return spectrums
     }
 
     //Sismicparameters data: shows periods based on life
     //TODO: correct: bag for parameters, class for limit state
-    fun getLimitStateSpectrum(context: Context, sismicState: ReportState, currentSismicState: SismicParametersState? = null, currentProjectSpectrumState: ProjectSpectrumState? = null): List<ILineDataSet> {
+    fun getLimitStateSpectrum(sismicState: ReportState, currentSismicState: SismicParametersState? = null, currentProjectSpectrumState: ProjectSpectrumState? = null): MutableList<SpectrumDTO> {
 
         val st = ZonaSismica.values()[sismicState.localizationState.zone_int - 1].multiplier
         val vr = if (currentSismicState != null) currentSismicState.vitaReale else sismicState.sismicState.sismicParametersState.vitaReale
@@ -153,16 +139,7 @@ class SismicActionCalculatorHelper(val mCoordinateHelper: ParametersForCoordinat
             }
         }
 
-        sismicState.sismicState.sismicParametersState.spectrums = spectrums
-        sismicState.sismicState.projectSpectrumState.spectrums = spectrums
-        return spectrums.map {
-            val lds = LineDataSet(it.pointList.toEntryList(), String.format(context.getString(R.string.label_limit_state_format), it.name, it.year))
-            lds.color = context.resources.getColor(it.color)
-            lds.lineWidth = 2f
-            lds.setDrawCircles(false)
-            lds.axisDependency = YAxis.AxisDependency.LEFT
-            lds
-        }
+        return spectrums
     }
 
     private fun interpolatePeriodDataForYear(name : String, default_periods: List<PeriodData>, year: Int, color: Int, st: Double, q: Double, categoria_sottosuolo: CategoriaSottosuolo): SpectrumDTO {

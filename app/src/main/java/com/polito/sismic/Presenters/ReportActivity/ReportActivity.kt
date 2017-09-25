@@ -9,10 +9,7 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.places.Places
-import com.polito.sismic.Domain.ProjectSpectrumState
-import com.polito.sismic.Domain.Report
-import com.polito.sismic.Domain.ReportState
-import com.polito.sismic.Domain.SismicParametersState
+import com.polito.sismic.Domain.*
 import com.polito.sismic.Extensions.getCustomAdapter
 import com.polito.sismic.Extensions.toast
 import com.polito.sismic.Interactors.*
@@ -89,22 +86,22 @@ class ReportActivity : AppCompatActivity(),
     }
 
     //the next 3 methods act on the current fragment, they dont need to call "reload"
-    override fun onDefaultReturnTimesRequested(): List<ILineDataSet> = with(mSismicParameterInteractor){
+    override fun onDefaultReturnTimesRequested(): List<SpectrumDTO> = with(mSismicParameterInteractor){
         getDefaultSpectrumLines(mReportManager.report.reportState)
     }
 
     //data is not aligned until confirmation, so i have to pass it
-    override fun onReturnTimesRequested(data: ProjectSpectrumState): List<ILineDataSet> = with(mSismicParameterInteractor){
+    override fun onReturnTimesRequested(data: ProjectSpectrumState): List<SpectrumDTO> = with(mSismicParameterInteractor){
         getLimitStateLines(mReportManager.report.reportState, data)
     }
 
     //data is not aligned until confirmation, so i have to pass it
-    override fun onLimitStatesRequested(data: SismicParametersState): List<ILineDataSet> = with(mSismicParameterInteractor){
+    override fun onLimitStatesRequested(data: SismicParametersState): List<SpectrumDTO> = with(mSismicParameterInteractor){
         getSpectrumLines(mReportManager.report.reportState, data)
     }
 
-    override fun onPillarDomainGraphRequest(data: ReportState): List<ILineDataSet> = with (mSismicBuildingInteractor){
-        return getPillarDomainForGraph(data)
+    override fun onPillarDomainGraphRequest(pillarState: PillarState, reportState: ReportState?): List<ILineDataSet> = with (mSismicBuildingInteractor){
+        return getPillarDomainForGraph(mReportManager.report.reportState, pillarState)
     }
 
     //Updates the state for all fragments
@@ -160,7 +157,7 @@ class ReportActivity : AppCompatActivity(),
         mReportManager = reportManager
         mUserActionInteractor = UserActionInteractor(reportManager, this)
         mSismicParameterInteractor = SismicActionInteractor(reportManager, this)
-        mSismicBuildingInteractor = SismicBuildingInteractor(reportManager, this, mSismicParameterInteractor)
+        mSismicBuildingInteractor = SismicBuildingInteractor(reportManager, this)
         stepperLayout.adapter = ReportFragmentsAdapter(supportFragmentManager, this, reportManager)
         fabtoolbar_fab.setOnClickListener { fabtoolbar.show() }
         pic.setOnClickListener { mUserActionInteractor.onActionRequested(UserActionType.PicRequest) }

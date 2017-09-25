@@ -20,15 +20,17 @@ import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.LineData
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
+import com.github.mikephil.charting.data.LineDataSet
 import com.polito.sismic.Domain.ProjectSpectrumState
+import com.polito.sismic.Domain.SpectrumDTO
+import com.polito.sismic.Extensions.toEntryList
 import com.polito.sismic.Interactors.Helpers.CategoriaTopografica
 
 
 class SpettriDiProgettoReportFragment : BaseReportFragment() {
 
     interface SpectrumReturnTimeRequest {
-        fun onReturnTimesRequested(data: ProjectSpectrumState): List<ILineDataSet>
+        fun onReturnTimesRequested(data: ProjectSpectrumState): List<SpectrumDTO>
     }
 
     private var mReturnTimeRequest: SpectrumReturnTimeRequest? = null
@@ -125,10 +127,21 @@ class SpettriDiProgettoReportFragment : BaseReportFragment() {
 
     private fun updateGraph()
     {
-        mReturnTimeRequest?.onReturnTimesRequested(UiMapper.createSpectrumStateForDomain(this)).let {
+        val spectrumsDomain = mReturnTimeRequest?.onReturnTimesRequested(UiMapper.createSpectrumStateForDomain(this, getReport().reportState.sismicState.projectSpectrumState.spectrums))
+        val spectrumsUi = spectrumsDomain?.map {
+            val lds = LineDataSet(it.pointList.toEntryList(), String.format(context.getString(R.string.label_limit_state_format), it.name, it.year))
+            lds.color = context.resources.getColor(it.color)
+            lds.lineWidth = 2f
+            lds.setDrawCircles(false)
+            lds.axisDependency = YAxis.AxisDependency.LEFT
+            lds
+        }
+
+        spectrumsDomain?.let {
+            getReport().reportState.sismicState.projectSpectrumState.spectrums = it
             with(report_spettrodirisposta_chart)
             {
-                data = LineData(it)
+                data = LineData(spectrumsUi)
                 invalidate()
             }
         }
@@ -185,7 +198,8 @@ class SpettriDiProgettoReportFragment : BaseReportFragment() {
 
     //callback to activity updates domain instance for activity and all existing and future fragments
     override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback?) {
-        getReport().reportState.sismicState.projectSpectrumState = UiMapper.createSpectrumStateForDomain(this)
+        getReport().reportState.sismicState.projectSpectrumState = UiMapper.createSpectrumStateForDomain(this, getReport().reportState.sismicState.projectSpectrumState.spectrums)
+
         super.onNextClicked(callback)
     }
 }

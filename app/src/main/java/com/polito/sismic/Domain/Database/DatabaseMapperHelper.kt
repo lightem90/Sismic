@@ -164,7 +164,6 @@ class DatabaseMapperHelper {
             SismicParametersState(it.vita_nominale,
                     it.classe_uso,
                     it.vita_reale,
-                    listOf(),
                     listOf())
         }
     }

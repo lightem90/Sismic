@@ -13,6 +13,7 @@ import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
+import com.polito.sismic.Domain.PillarState
 import com.polito.sismic.Domain.ReportState
 import com.polito.sismic.Extensions.toDoubleOrZero
 import com.polito.sismic.Interactors.Helpers.LivelloConoscenza
@@ -27,7 +28,7 @@ import kotlinx.android.synthetic.main.pilastri_report_layout.*
 class PilastriReportFragment : BaseReportFragment() {
 
     interface PillarDomainGraphRequest {
-        fun onPillarDomainGraphRequest(data: ReportState): List<ILineDataSet>
+        fun onPillarDomainGraphRequest(pillarState: PillarState, reportState: ReportState? = null): List<ILineDataSet>
     }
 
     private var mPillarDomainGraphRequest: PillarDomainGraphRequest? = null
@@ -165,7 +166,7 @@ class PilastriReportFragment : BaseReportFragment() {
         sezione_c_parameter.attachDataConfirmedCallback { fixPillarData() }
 
         calculate.setOnClickListener {
-            mPillarDomainGraphRequest?.onPillarDomainGraphRequest(getReport().reportState).let {
+            mPillarDomainGraphRequest?.onPillarDomainGraphRequest(getReport().reportState.buildingState.pillarState).let {
                 with(pillar_domain_chart)
                 {
                     data = LineData(it)

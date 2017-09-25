@@ -12,9 +12,10 @@ import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.polito.sismic.Domain.NeighboursNodeData
 import com.polito.sismic.Domain.PeriodData
+import com.polito.sismic.Domain.SpectrumDTO
+import com.polito.sismic.Extensions.toEntryList
 import com.polito.sismic.Interactors.Helpers.UiMapper
 import com.polito.sismic.Presenters.Adapters.NodeListAdapter
 import com.polito.sismic.Presenters.Adapters.PeriodListAdapter
@@ -28,7 +29,7 @@ import kotlinx.android.synthetic.main.dati_sismogenetici_report_layout.*
 class DatiSismoGeneticiReportFragment : BaseReportFragment() {
 
     interface DefaultReturnTimeRequest {
-        fun onDefaultReturnTimesRequested() : List<ILineDataSet>
+        fun onDefaultReturnTimesRequested() : List<SpectrumDTO>
     }
 
     private var mDefaultReturnTimeRequest: DefaultReturnTimeRequest? = null
@@ -114,10 +115,22 @@ class DatiSismoGeneticiReportFragment : BaseReportFragment() {
                     zone)
         }
 
-        with (report_spettrodirisposta_chart)
-        {
-            mDefaultReturnTimeRequest?.onDefaultReturnTimesRequested().let {
-                data = LineData(it)
+
+        val spectrumsDomain = mDefaultReturnTimeRequest?.onDefaultReturnTimesRequested()
+        val spectrumsUi = spectrumsDomain?.map {
+            val lds = LineDataSet(it.pointList.toEntryList(), String.format(context.getString(R.string.label_year_format), it.name))
+            lds.color = context.resources.getColor(it.color)
+            lds.setDrawCircles(false)
+            lds.lineWidth = 2f
+            lds.axisDependency = YAxis.AxisDependency.LEFT
+            lds
+        }
+
+        spectrumsDomain?.let {
+            getReport().reportState.sismicState.sismogenticState.default_spectrum = it
+            with(report_spettrodirisposta_chart)
+            {
+                data = LineData(spectrumsUi)
                 invalidate()
             }
         }
@@ -132,7 +145,7 @@ class DatiSismoGeneticiReportFragment : BaseReportFragment() {
 
     //callback to activity updates domain instance for activity and all existing and future fragments
     override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback?) {
-        getReport().reportState.sismicState.sismogenticState = UiMapper.createSismogeneticStateForDomain(this)
+        getReport().reportState.sismicState.sismogenticState = UiMapper.createSismogeneticStateForDomain(this, getReport().reportState.sismicState.sismogenticState.default_spectrum)
         super.onNextClicked(callback)
     }
 }

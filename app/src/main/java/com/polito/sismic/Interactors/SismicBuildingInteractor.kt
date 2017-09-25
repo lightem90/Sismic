@@ -3,6 +3,7 @@ package com.polito.sismic.Interactors
 import android.content.Context
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.polito.sismic.Domain.BuildingState
+import com.polito.sismic.Domain.PillarState
 import com.polito.sismic.Domain.ReportState
 import com.polito.sismic.Interactors.Helpers.SismicBuildingCalculatorHelper
 
@@ -13,10 +14,9 @@ import com.polito.sismic.Interactors.Helpers.SismicBuildingCalculatorHelper
 //it uses the other interactor for retrieving the force for a generic t of the pillar
 //Interactor to calculate the sismic action on the building / pillar
 class SismicBuildingInteractor(val mReportManager: ReportManager,
-                               val mContext: Context,
-                               val mSismicParameterInteractor: SismicActionInteractor){
+                               val mContext: Context){
 
-    private val mSismicBuildingCalculatorHelper : SismicBuildingCalculatorHelper = SismicBuildingCalculatorHelper()
+    private val mSismicBuildingCalculatorHelper : SismicBuildingCalculatorHelper = SismicBuildingCalculatorHelper(mContext)
     //Static function to call from mappers / binding to UI layer
     companion object {
 
@@ -38,10 +38,11 @@ class SismicBuildingInteractor(val mReportManager: ReportManager,
     }
 
     //calculate the pillar domain and the point inside it
-    fun getPillarDomainForGraph(state : ReportState) : List<ILineDataSet>
+    fun getPillarDomainForGraph(state: ReportState, data: PillarState) : List<ILineDataSet>
     {
-        val domain = mSismicBuildingCalculatorHelper.getPillarDomainForGraph(state)
-        domain.add(mSismicBuildingCalculatorHelper.getPointInDomainForPillar(state, mSismicParameterInteractor))
+        val domain = mSismicBuildingCalculatorHelper.getPillarDomainForGraph(state, data)
+        //add 4 points, one foreach limit state
+        domain.addAll(mSismicBuildingCalculatorHelper.getLimitStatePointsInDomainForPillar(state))
         return domain
     }
 }

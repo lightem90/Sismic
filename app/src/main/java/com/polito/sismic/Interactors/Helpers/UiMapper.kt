@@ -53,18 +53,18 @@ class UiMapper {
                     vincoli_urb_parameter.getParameterValue())
         }
 
-        fun createSismogeneticStateForDomain(datiSismoGeneticiReportFragment: DatiSismoGeneticiReportFragment): SismogeneticState = with(datiSismoGeneticiReportFragment) {
-            return SismogeneticState(mNodeList, mPeriodList)
+        fun createSismogeneticStateForDomain(datiSismoGeneticiReportFragment: DatiSismoGeneticiReportFragment, default_spectrum: List<SpectrumDTO>): SismogeneticState = with(datiSismoGeneticiReportFragment) {
+            return SismogeneticState(mNodeList, mPeriodList, default_spectrum)
         }
-        //TODO
-        fun createSismicStateForDomain(parametriSismiciReportFragment: ParametriSismiciReportFragment): SismicParametersState = with(parametriSismiciReportFragment) {
+
+        fun createSismicStateForDomain(parametriSismiciReportFragment: ParametriSismiciReportFragment, spectrums: List<SpectrumDTO>): SismicParametersState = with(parametriSismiciReportFragment) {
             return SismicParametersState(getVitaNominale(),
                     getClasseUsoForIndex(classe_parameter.selectedItemPosition),
                     vita_reale.getValue().toDoubleOrZero(),
-                    listOf())
+                    spectrums)
         }
 
-        fun createSpectrumStateForDomain(spettriDiProgettoReportFragment: SpettriDiProgettoReportFragment): ProjectSpectrumState = with(spettriDiProgettoReportFragment) {
+        fun createSpectrumStateForDomain(spettriDiProgettoReportFragment: SpettriDiProgettoReportFragment, spectrums: List<SpectrumDTO>): ProjectSpectrumState = with(spettriDiProgettoReportFragment) {
 
             return ProjectSpectrumState(CategoriaSottosuolo.values()[categoria_suolo_parameter.selectedItemPosition].name,
                     CategoriaTopografica.values()[categoria_topografica_parameter.selectedItemPosition].multiplier,
@@ -72,7 +72,8 @@ class UiMapper {
                     categoria_tipologia_parameter.selectedItem.toString(),
                     SismicActionCalculatorHelper.calculateQ0(categoria_tipologia_parameter.selectedItemPosition, Alfa.values()[categoria_moltiplicatore_parameter.selectedItemPosition].multiplier,categoria_classe_duttilita_parameter_cda.isChecked),
                     Alfa.values()[categoria_moltiplicatore_parameter.selectedItemPosition].multiplier,
-                    1.0)
+                    1.0,
+                    spectrums)
         }
 
         fun createBuildingGeneralStateForDomain(datiGeneraliReportFragment: DatiGeneraliReportFragment): BuildingGeneralState = with(datiGeneraliReportFragment){
@@ -91,7 +92,7 @@ class UiMapper {
             val perimetro = (lunghezza + larghezza) * 2
             val area = lunghezza * larghezza
             val gravity_center = SpectrumPoint(lunghezza/2, larghezza/2)
-            val hTot = tot_high.text.toString().toDoubleOrZero()
+            val hTot = altezza_tot.text.toString().toDoubleOrZero()
             val t1 = SismicBuildingInteractor.calculateT1(hTot)
 
             return TakeoverState(piani_numero_parameter.selectedItem.toString().toIntOrZero(),
@@ -213,7 +214,7 @@ class UiMapper {
                         piani_numero_parameter.setSelection(it.numero_piani-1)
                         altezza_piano_tr_parameter.setParameterValue(it.altezza_piano_terra.toStringOrEmpty())
                         altezza_piani_sup_parameter.setParameterValue(it.altezza_piani_superiori.toStringOrEmpty())
-                        tot_high.text = it.altezza_totale.toStringOrEmpty()
+                        altezza_tot.text = it.altezza_totale.toStringOrEmpty()
                         lunghezza_piano_parameter.setParameterValue(it.lunghezza_esterna.toStringOrEmpty())
                         larghezza_piano_parameter.setParameterValue(it.larghezza_esterna.toStringOrEmpty())
                     }

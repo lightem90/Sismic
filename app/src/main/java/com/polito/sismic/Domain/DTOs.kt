@@ -201,15 +201,14 @@ data class LocalizationState(var latitude: Double,
 data class SismicParametersState(var vitaNominale: Int,
                                  var classeUso: Double,
                                  var vitaReale: Double,
-                                 var limit_states: List<LimitState>,
-                                 var spectrums : List<SpectrumDTO> = listOf()) : Parcelable {
+                                 var spectrums: List<SpectrumDTO>) : Parcelable {
     constructor() : this(0, 0.0, 0.0, listOf())
 
     constructor(source: Parcel) : this(
             source.readInt(),
             source.readDouble(),
             source.readDouble(),
-            ArrayList<LimitState>().apply { source.readList(this, LimitState::class.java.classLoader) }
+            source.createTypedArrayList(SpectrumDTO.CREATOR)
     )
 
     override fun describeContents() = 0
@@ -218,7 +217,7 @@ data class SismicParametersState(var vitaNominale: Int,
         writeInt(vitaNominale)
         writeDouble(classeUso)
         writeDouble(vitaReale)
-        writeList(limit_states)
+        writeTypedList(spectrums)
     }
 
     companion object {

@@ -5,10 +5,10 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.polito.sismic.Domain.ProjectSpectrumState
 import com.polito.sismic.Domain.ReportState
 import com.polito.sismic.Domain.SismicParametersState
+import com.polito.sismic.Domain.SpectrumDTO
 import com.polito.sismic.Extensions.toList
 import com.polito.sismic.Interactors.Helpers.ParametersForCoordinateHelper
 import com.polito.sismic.Interactors.Helpers.SismicActionCalculatorHelper
-import com.polito.sismic.Interactors.Helpers.SismicBuildingCalculatorHelper
 
 /**
  * Created by Matteo on 05/09/2017.
@@ -46,23 +46,17 @@ class SismicActionInteractor(val mReportManager: ReportManager,
     }
 
     //chart in sismogenetic fragment
-    fun getDefaultSpectrumLines(reportState: ReportState): List<ILineDataSet> {
-
-        reportState.sismicState.defaultReturnTimes = mSismicActionCalculatorHelper.getDefaultSpectrum(mContext, reportState)
-        return reportState.sismicState.defaultReturnTimes
+    fun getDefaultSpectrumLines(reportState: ReportState): List<SpectrumDTO> = with(mSismicActionCalculatorHelper) {
+        getDefaultSpectrum(reportState)
     }
 
     //chart in sismicstate fragment
-    fun getLimitStateLines(reportState: ReportState, data: ProjectSpectrumState): List<ILineDataSet> {
-
-        reportState.sismicState.limitStateTimes = mSismicActionCalculatorHelper.getLimitStateSpectrum(mContext, reportState, null, data)
-        return reportState.sismicState.limitStateTimes
+    fun getLimitStateLines(reportState: ReportState, data: ProjectSpectrumState): List<SpectrumDTO> = with(mSismicActionCalculatorHelper) {
+        getLimitStateSpectrum(reportState, null, data)
     }
 
     //chart in spectrum fragment
-    fun getSpectrumLines(reportState: ReportState, data: SismicParametersState): List<ILineDataSet> {
-
-        reportState.sismicState.spectrumReturnTimes = mSismicActionCalculatorHelper.getLimitStateSpectrum(mContext, reportState, data)
-        return reportState.sismicState.spectrumReturnTimes
+    fun getSpectrumLines(reportState: ReportState, data: SismicParametersState): List<SpectrumDTO> = with(mSismicActionCalculatorHelper) {
+       getLimitStateSpectrum(reportState, data)
     }
 }

@@ -12,8 +12,11 @@ import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.polito.sismic.Domain.SismicParametersState
+import com.polito.sismic.Domain.SpectrumDTO
+import com.polito.sismic.Extensions.toEntryList
 import com.polito.sismic.Interactors.Helpers.ClasseUso
 import com.polito.sismic.Interactors.Helpers.UiMapper
 import com.polito.sismic.R
@@ -26,7 +29,7 @@ import kotlinx.android.synthetic.main.parametri_sismici_report_layout.*
 class ParametriSismiciReportFragment : BaseReportFragment() {
 
     interface LimitStateRequest {
-        fun onLimitStatesRequested(data : SismicParametersState) : List<ILineDataSet>
+        fun onLimitStatesRequested(data : SismicParametersState) : List<SpectrumDTO>
     }
 
     private var mLimitStateRequest: LimitStateRequest? = null
@@ -115,13 +118,25 @@ class ParametriSismiciReportFragment : BaseReportFragment() {
 
     private fun updateGraph()
     {
-        mLimitStateRequest?.onLimitStatesRequested(UiMapper.createSismicStateForDomain(this)).let {
+        val spectrumsDomain = mLimitStateRequest?.onLimitStatesRequested(UiMapper.createSismicStateForDomain(this, listOf()))
+        val spectrumsUi = spectrumsDomain?.map {
+            val lds = LineDataSet(it.pointList.toEntryList(), String.format(context.getString(R.string.label_limit_state_format), it.name, it.year))
+            lds.color = context.resources.getColor(it.color)
+            lds.lineWidth = 2f
+            lds.setDrawCircles(false)
+            lds.axisDependency = YAxis.AxisDependency.LEFT
+            lds
+        }
+
+        spectrumsDomain?.let {
+            getReport().reportState.sismicState.sismicParametersState.spectrums = it
             with(report_spettrodirisposta_chart)
             {
-                data = LineData(it)
+                data = LineData(spectrumsUi)
                 invalidate()
             }
         }
+
     }
 
     private fun setVitaReale(classeUso : Int)
@@ -162,7 +177,7 @@ class ParametriSismiciReportFragment : BaseReportFragment() {
     }
 
     override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback?) {
-        getReport().reportState.sismicState.sismicParametersState = UiMapper.createSismicStateForDomain(this)
+        getReport().reportState.sismicState.sismicParametersState = UiMapper.createSismicStateForDomain(this, getReport().reportState.sismicState.sismicParametersState.spectrums)
         super.onNextClicked(callback)
     }
 }

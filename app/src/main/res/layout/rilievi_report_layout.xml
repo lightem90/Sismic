@@ -37,12 +37,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-    <!-- To visualize the result -->
-    <TextView
-        android:id="@+id/tot_high"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
     <TextView
         style="@style/sectionTitle"
         android:text="@string/report_rilievo_interno_title"/>

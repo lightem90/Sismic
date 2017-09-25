@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Adapter
 import android.widget.AdapterView
+import com.polito.sismic.Extensions.toDoubleOrZero
 import com.polito.sismic.Extensions.toast
 import com.polito.sismic.Interactors.Helpers.UiMapper
 import com.polito.sismic.R
@@ -50,7 +51,7 @@ class RilieviReportFragment : BaseReportFragment() {
     private fun updateAltezzaTotale()
     {
         altezza_tot.text  = if (piani_numero_parameter.selectedItemPosition > 0)
-            (altezza_piano_tr_parameter.getParameterValue().toDouble() + piani_numero_parameter.selectedItemPosition * altezza_piani_sup_parameter.getParameterValue().toDouble()).toString()
+            (altezza_piano_tr_parameter.getParameterValue().toDoubleOrZero() + piani_numero_parameter.selectedItemPosition * altezza_piani_sup_parameter.getParameterValue().toDoubleOrZero()).toString()
             else altezza_piano_tr_parameter.getParameterValue()
     }
 
