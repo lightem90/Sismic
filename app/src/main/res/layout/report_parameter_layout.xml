@@ -22,9 +22,10 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/report_parameter_title_height"
             android:layout_toRightOf="@id/section_parameter_title"
+            android:layout_toEndOf="@id/section_parameter_title"
             android:scaleType="fitEnd"
             android:background="@android:color/transparent"
-            app:srcCompat="@drawable/ic_help_black_24dp"/>
+            app:srcCompat="@drawable/ic_help_black_24dp" />
         
     </RelativeLayout>
 
