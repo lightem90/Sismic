@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.support.annotation.Nullable
+import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -175,33 +176,39 @@ class PilastriReportFragment : BaseReportFragment() {
                 {
                     val UiPoints = it.points.map {
                         val lds = LineDataSet(listOf(Entry(it.n.toFloat(), it.m.toFloat())), it.label)
-                        lds.color = context.resources.getColor(it.color)
+                        lds.color = ContextCompat.getColor(context, it.color)
                         lds.setDrawCircles(true)
                         lds.circleRadius = 10f
+                        lds.circleColors = listOf(ContextCompat.getColor(context, it.color))
                         lds.axisDependency = YAxis.AxisDependency.LEFT
                         lds
                     }.toMutableList()
-                    
-                    val UiDomainUp = it.positive.map {
-                        val lds = LineDataSet(listOf(Entry(it.n.toFloat(), it.m.toFloat())), "")
-                        lds.color = Color.BLUE
-                        lds.setDrawCircles(false)
-                        lds.lineWidth = 3f
-                        lds.axisDependency = YAxis.AxisDependency.LEFT
-                        lds
-                    }.toList()
 
-                    val UiDomainDown = it.negative.map {
-                        val lds = LineDataSet(listOf(Entry(it.n.toFloat(), it.m.toFloat())), "")
-                        lds.color = Color.BLUE
-                        lds.setDrawCircles(false)
-                        lds.lineWidth = 3f
-                        lds.axisDependency = YAxis.AxisDependency.LEFT
-                        lds
-                    }.toList()
+                    val upPointList = mutableListOf<Entry>()
+                    it.positive.forEach {point ->
+                        upPointList.add(Entry(point.n.toFloat(), point.m.toFloat()))
+                    }
 
-                    UiDomainUp.let { upPoint -> UiPoints.addAll(upPoint) }
-                    UiDomainDown.let { downPoint -> UiPoints.addAll(downPoint) }
+                    val UiDomainUp = LineDataSet(upPointList, "")
+                    UiDomainUp.color = Color.BLUE
+                    UiDomainUp.setDrawCircles(false)
+                    UiDomainUp.lineWidth = 3f
+                    UiDomainUp.axisDependency = YAxis.AxisDependency.LEFT
+
+
+                    val downList = mutableListOf<Entry>()
+                    it.negative.forEach {point ->
+                        downList.add(Entry(point.n.toFloat(), point.m.toFloat()))
+                    }
+
+                    val UiDomainDown = LineDataSet(downList, "")
+                    UiDomainDown.color = Color.BLUE
+                    UiDomainDown.setDrawCircles(false)
+                    UiDomainDown.lineWidth = 3f
+                    UiDomainDown.axisDependency = YAxis.AxisDependency.LEFT
+
+                    UiPoints.add(UiDomainUp)
+                    UiPoints.add(UiDomainDown)
                     
                     data = LineData(UiPoints.toList())
                     invalidate()
@@ -211,7 +218,7 @@ class PilastriReportFragment : BaseReportFragment() {
         with(pillar_domain_chart)
         {
             xAxis.position = XAxis.XAxisPosition.BOTTOM
-            legend.form = Legend.LegendForm.NONE
+            legend.form = Legend.LegendForm.DEFAULT
             description.isEnabled = false
             getAxis(YAxis.AxisDependency.RIGHT).isEnabled = false
         }

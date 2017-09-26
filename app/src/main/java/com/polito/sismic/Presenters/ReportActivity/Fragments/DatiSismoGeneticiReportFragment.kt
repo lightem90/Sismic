@@ -3,6 +3,7 @@ package com.polito.sismic.Presenters.ReportActivity.Fragments
 import android.content.Context
 import android.os.Bundle
 import android.support.annotation.Nullable
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
@@ -119,7 +120,7 @@ class DatiSismoGeneticiReportFragment : BaseReportFragment() {
         val spectrumsDomain = mDefaultReturnTimeRequest?.onDefaultReturnTimesRequested()
         val spectrumsUi = spectrumsDomain?.map {
             val lds = LineDataSet(it.pointList.toEntryList(), String.format(context.getString(R.string.label_year_format), it.name))
-            lds.color = context.resources.getColor(it.color)
+            lds.color = ContextCompat.getColor(context, it.color)
             lds.setDrawCircles(false)
             lds.lineWidth = 2f
             lds.axisDependency = YAxis.AxisDependency.LEFT
