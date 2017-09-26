@@ -125,6 +125,11 @@ class SpettriDiProgettoReportFragment : BaseReportFragment() {
         }
     }
 
+    override fun onReload() {
+        super.onReload()
+        updateGraph()
+    }
+
     private fun updateGraph()
     {
         val spectrumsDomain = mReturnTimeRequest?.onReturnTimesRequested(UiMapper.createSpectrumStateForDomain(this, getReport().reportState.sismicState.projectSpectrumState.spectrums))

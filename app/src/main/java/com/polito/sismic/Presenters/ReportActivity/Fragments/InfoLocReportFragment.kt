@@ -145,18 +145,18 @@ class InfoLocReportFragment : BaseReportFragment() {
         }
     }
 
-    //TODO: remove
     fun updateByLocation(location: Location) {
         lat_parameter.setParameterValue("%.3f".format(location.latitude))
         long_parameter.setParameterValue("%.3f".format(location.longitude))
-        country_parameter.setParameterValue("italia")
-        region_parameter.setParameterValue("marche")
-        province_parameter.setParameterValue("pesaro")
-        comune_parameter.setParameterValue("pesaro")
-        address_parameter.setParameterValue("via achilli")
-        zona_sismica_parameter.setParameterValue("1")
-        codice_istat_parameter.setParameterValue("2")
-        cap_parameter.setParameterValue("61122")
+        //DEBUG CODE
+        //country_parameter.setParameterValue("italia")
+        //region_parameter.setParameterValue("marche")
+        //province_parameter.setParameterValue("pesaro")
+        //comune_parameter.setParameterValue("pesaro")
+        //address_parameter.setParameterValue("via achilli")
+        //zona_sismica_parameter.setParameterValue("1")
+        //codice_istat_parameter.setParameterValue("2")
+        //cap_parameter.setParameterValue("61122")
     }
 
     private fun askGoogleForPlaceId(place: Place) {

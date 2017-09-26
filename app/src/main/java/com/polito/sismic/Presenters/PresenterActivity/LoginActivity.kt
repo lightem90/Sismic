@@ -151,8 +151,12 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true)
-            mAuthTask = UserLoginTask(emailStr, passwordStr, this)
-            mAuthTask!!.execute(null as Void?)
+            LoginSharedPreferences.demoLogin(applicationContext)
+            startActivity(Intent(this, PresenterActivity::class.java))
+            finish()
+
+            //mAuthTask = UserLoginTask(emailStr, passwordStr, this)
+            //mAuthTask!!.execute(null as Void?)
         }
     }
 
@@ -261,7 +265,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
         private val SERVER_ADDR_lOGIN = "https://polito/sismic/login?"
         override fun doInBackground(vararg params: Void): JSONObject? {
             // TODO: attempt authentication against a network service.
-            LoginSharedPreferences.demoLogin(applicationContext)
+
             try {
                 val sb = StringBuilder(SERVER_ADDR_lOGIN)
                 sb.append("username=")
