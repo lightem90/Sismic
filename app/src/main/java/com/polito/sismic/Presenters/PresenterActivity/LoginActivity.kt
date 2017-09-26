@@ -33,6 +33,7 @@ import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.Console
 import java.io.InputStreamReader
+import java.io.Reader
 import java.net.HttpURLConnection
 import java.net.URL
 
@@ -282,7 +283,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
 
                 when (status) {
                     200, 201 -> {
-                        val br = BufferedReader(InputStreamReader(conn.inputStream))
+                        val br = BufferedReader(InputStreamReader(conn.inputStream) as Reader?)
                         val sb2 = StringBuilder()
                         var line: String? = null
                         while ({ line = br.readLine(); line }() != null) {
