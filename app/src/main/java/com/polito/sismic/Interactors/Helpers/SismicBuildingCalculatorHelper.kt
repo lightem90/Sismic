@@ -6,8 +6,7 @@ import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
-import com.polito.sismic.Domain.PillarState
-import com.polito.sismic.Domain.ReportState
+import com.polito.sismic.Domain.*
 
 /**
  * Created by it0003971 on 15/09/2017.
@@ -54,10 +53,10 @@ class SismicBuildingCalculatorHelper(val mContext : Context) {
     }
 
     // AND Denis data
-    fun getPillarDomainForGraph(state: ReportState, data: PillarState) : MutableList<ILineDataSet> {
+    fun getPillarDomainForGraph(data: PillarState) : Pair<List<PillarDomainGraphPoint>, List<PillarDomainGraphPoint>> {
 
         val pillarState = data
-        val entries = mutableListOf<Entry>()
+        val entries = mutableListOf<PillarDomainGraphPoint>()
 
         //first and last point consider a linear interval, parabolic in between
         entries.add(calculatePointOne(pillarState.fyd, pillarState.As))
@@ -66,38 +65,20 @@ class SismicBuildingCalculatorHelper(val mContext : Context) {
 
         entries.forEach {
             //from n to kn
-            it.x = (it.x / 1000.0).toFloat()
+            it.n = (it.n / 1000.0)
             //from nmm to kNm
-            it.y = (it.y /  1000000.0).toFloat()
+            it.m = (it.m /  1000000.0)
         }
 
         //the lines are simmetric
-        val topMost = LineDataSet(entries, "")
-        val bottomMost = LineDataSet(entries.map { Entry(it.x, -it.y) }, "")
-        with (topMost)
-        {
-            color = Color.BLUE
-            setDrawCircles(false)
-            lineWidth = 3f
-            axisDependency = YAxis.AxisDependency.LEFT
-
-        }
-
-        with (bottomMost)
-        {
-            color = Color.BLUE
-            setDrawCircles(false)
-            lineWidth = 3f
-            axisDependency = YAxis.AxisDependency.LEFT
-        }
-
-        return mutableListOf(topMost, bottomMost)
+        val bottomMost = entries.map { PillarDomainGraphPoint(it.n, -it.m) }
+        return entries to bottomMost
     }
 
     //Based on http://www.federica.unina.it/architettura/laboratorio-di-tecnica-delle-costruzioni/slu-pressoflessione/
-    private fun calculateFromThreeToFour(fcd : Double, b : Double, As : Double, fyd : Double, dFirst : Double, H : Double): List<Entry> {
+    private fun calculateFromThreeToFour(fcd : Double, b : Double, As : Double, fyd : Double, dFirst : Double, H : Double): List<PillarDomainGraphPoint> {
 
-        val points = mutableListOf<Entry>()
+        val points = mutableListOf<PillarDomainGraphPoint>()
         var h = 0.0
         val step = H / 10
         while(h <= H)
@@ -108,26 +89,26 @@ class SismicBuildingCalculatorHelper(val mContext : Context) {
         return points.toList()
     }
 
-    private fun innerCalculatePointFromThreeToFour(h: Double, fcd : Double, b : Double, As : Double, fyd : Double, dFirst : Double, H : Double): Entry {
+    private fun innerCalculatePointFromThreeToFour(h: Double, fcd : Double, b : Double, As : Double, fyd : Double, dFirst : Double, H : Double): PillarDomainGraphPoint {
 
         val n = fcd * b * h
         val m = (As * fyd) * (H - (2 * dFirst)) + (n * ((H/2) - (h/2)) )
-        return Entry(n.toFloat(), m.toFloat())
+        return PillarDomainGraphPoint(n, m)
     }
 
-    private fun calculatePointOne(fyd : Double, As : Double): Entry {
+    private fun calculatePointOne(fyd : Double, As : Double): PillarDomainGraphPoint {
 
         val nTrd = -(2 * fyd * As)
-        return Entry(nTrd.toFloat(), 0f)
+        return PillarDomainGraphPoint(nTrd, 0.0)
     }
 
-    private fun calculatePointTwo(fyd : Double, As : Double, b : Double, H : Double, fcd : Double): Entry {
+    private fun calculatePointTwo(fyd : Double, As : Double, b : Double, H : Double, fcd : Double): PillarDomainGraphPoint {
         val nCrd = (2 * fyd * As) + (fcd * b * H)
-        return Entry(nCrd.toFloat(), 0f)
+        return PillarDomainGraphPoint(nCrd, 0.0)
     }
 
     //If this point is inside domain... all good
-    fun getLimitStatePointsInDomainForPillar(state: ReportState): List<ILineDataSet> {
+    fun getLimitStatePointsInDomainForPillar(state: ReportState): List<PillarDomainPoint> {
 
         //N is the component on X axis
         val nPoint = state.buildingState.takeoverState.numero_piani *
@@ -146,15 +127,10 @@ class SismicBuildingCalculatorHelper(val mContext : Context) {
                 val lambda = if (state.buildingState.takeoverState.numero_piani < 3) 1.0 else 0.85
                 val force = forcePoint.y * state.buildingState.structuralState.peso_totale * lambda / 9.8
                 val mPoint = force * state.buildingState.pillarLayoutState.pillarCount * (state.buildingState.takeoverState.altezza_totale / 2)
-                val lds = LineDataSet(listOf(Entry(nPoint.toFloat(), mPoint.toFloat())), spectrum.name)
-                lds.color = mContext.resources.getColor(spectrum.color)
-                lds.setDrawCircles(true)
-                lds.circleRadius = 10f
-                lds.axisDependency = YAxis.AxisDependency.LEFT
-                lds
+                PillarDomainPoint(nPoint, mPoint, spectrum.name, spectrum.color)
             } else
             {
-                LineDataSet(listOf(Entry(-99999f, -99999f)), "Invalid")
+                PillarDomainPoint(-99999.0, -99999.0, "Error", -1)
             }
 
         }

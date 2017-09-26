@@ -1,6 +1,7 @@
 package com.polito.sismic.Presenters.ReportActivity.Fragments
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.support.annotation.Nullable
 import android.view.LayoutInflater
@@ -11,8 +12,11 @@ import android.widget.AdapterView
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
+import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
+import com.polito.sismic.Domain.PillarDomain
 import com.polito.sismic.Domain.PillarState
 import com.polito.sismic.Domain.ReportState
 import com.polito.sismic.Extensions.toDoubleOrZero
@@ -28,7 +32,7 @@ import kotlinx.android.synthetic.main.pilastri_report_layout.*
 class PilastriReportFragment : BaseReportFragment() {
 
     interface PillarDomainGraphRequest {
-        fun onPillarDomainGraphRequest(pillarState: PillarState, reportState: ReportState? = null): List<ILineDataSet>
+        fun onPillarDomainGraphRequest(pillarState: PillarState, reportState: ReportState? = null): PillarDomain
     }
 
     private var mPillarDomainGraphRequest: PillarDomainGraphRequest? = null
@@ -166,10 +170,40 @@ class PilastriReportFragment : BaseReportFragment() {
         sezione_c_parameter.attachDataConfirmedCallback { fixPillarData() }
 
         calculate.setOnClickListener {
-            mPillarDomainGraphRequest?.onPillarDomainGraphRequest(getReport().reportState.buildingState.pillarState).let {
+            mPillarDomainGraphRequest?.onPillarDomainGraphRequest(getReport().reportState.buildingState.pillarState)?.let {
                 with(pillar_domain_chart)
                 {
-                    data = LineData(it)
+                    val UiPoints = it.points.map {
+                        val lds = LineDataSet(listOf(Entry(it.n.toFloat(), it.m.toFloat())), it.label)
+                        lds.color = context.resources.getColor(it.color)
+                        lds.setDrawCircles(true)
+                        lds.circleRadius = 10f
+                        lds.axisDependency = YAxis.AxisDependency.LEFT
+                        lds
+                    }.toMutableList()
+                    
+                    val UiDomainUp = it.positive.map {
+                        val lds = LineDataSet(listOf(Entry(it.n.toFloat(), it.m.toFloat())), "")
+                        lds.color = Color.BLUE
+                        lds.setDrawCircles(false)
+                        lds.lineWidth = 3f
+                        lds.axisDependency = YAxis.AxisDependency.LEFT
+                        lds
+                    }.toList()
+
+                    val UiDomainDown = it.negative.map {
+                        val lds = LineDataSet(listOf(Entry(it.n.toFloat(), it.m.toFloat())), "")
+                        lds.color = Color.BLUE
+                        lds.setDrawCircles(false)
+                        lds.lineWidth = 3f
+                        lds.axisDependency = YAxis.AxisDependency.LEFT
+                        lds
+                    }.toList()
+
+                    UiDomainUp.let { upPoint -> UiPoints.addAll(upPoint) }
+                    UiDomainDown.let { downPoint -> UiPoints.addAll(downPoint) }
+                    
+                    data = LineData(UiPoints.toList())
                     invalidate()
                 }
             }

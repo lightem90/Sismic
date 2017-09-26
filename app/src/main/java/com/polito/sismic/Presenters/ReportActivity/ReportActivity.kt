@@ -100,7 +100,7 @@ class ReportActivity : AppCompatActivity(),
         getSpectrumLines(mReportManager.report.reportState, data)
     }
 
-    override fun onPillarDomainGraphRequest(pillarState: PillarState, reportState: ReportState?): List<ILineDataSet> = with (mSismicBuildingInteractor){
+    override fun onPillarDomainGraphRequest(pillarState: PillarState, reportState: ReportState?): PillarDomain = with (mSismicBuildingInteractor){
         return getPillarDomainForGraph(mReportManager.report.reportState, pillarState)
     }
 
