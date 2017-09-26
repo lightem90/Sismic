@@ -182,7 +182,7 @@ class ReportDatabaseHelper(ctx: Context = App.instance) : ManagedSQLiteOpenHelpe
                         CaratteristichePilastriInfoTable.C to REAL,
                         CaratteristichePilastriInfoTable.NUM_FERRI to INTEGER,
                         CaratteristichePilastriInfoTable.DIAM_FERRI to REAL,
-                        CaratteristichePilastriInfoTable.AS to REAL,
+                        CaratteristichePilastriInfoTable.AREA_FERRI to REAL,
                         CaratteristichePilastriInfoTable.REPORT_ID to INTEGER)
         )
 
