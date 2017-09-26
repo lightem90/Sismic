@@ -64,13 +64,18 @@ class SismicBuildingCalculatorHelper(val mContext : Context) {
         entries.addAll(calculateFromThreeToFour(pillarState.fcd, pillarState.bx, pillarState.As, pillarState.fyd, pillarState.c, pillarState.hy))
         entries.add(calculatePointTwo(pillarState.fyd, pillarState.As, pillarState.bx, pillarState.hy, pillarState.fcd))
 
+        entries.forEach {
+            //from n to kn
+            it.x = (it.x / 1000.0).toFloat()
+            //from nmm to kNm
+            it.y = (it.y /  1000000.0).toFloat()
+        }
+
         //the lines are simmetric
         val topMost = LineDataSet(entries, "")
         val bottomMost = LineDataSet(entries.map { Entry(it.x, -it.y) }, "")
         with (topMost)
         {
-            //from nmm to kNm
-            //entries.forEach { it.x /= 1000000; it.y /= 1000000 }
             color = Color.BLUE
             setDrawCircles(false)
             lineWidth = 3f
@@ -80,8 +85,6 @@ class SismicBuildingCalculatorHelper(val mContext : Context) {
 
         with (bottomMost)
         {
-            //from nmm to kNm
-            //entries.forEach { it.x /= 1000000; it.y /= 1000000 }
             color = Color.BLUE
             setDrawCircles(false)
             lineWidth = 3f
