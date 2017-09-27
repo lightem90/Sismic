@@ -51,12 +51,12 @@ class SismicActionInteractor(val mReportManager: ReportManager,
     }
 
     //chart in sismicstate fragment
-    fun getLimitStateLines(reportState: ReportState, data: ProjectSpectrumState): List<SpectrumDTO> = with(mSismicActionCalculatorHelper) {
-        getLimitStateSpectrum(reportState, null, data)
+    fun getLimitStateLines(reportState: ReportState, data: SismicParametersState): List<SpectrumDTO> = with(mSismicActionCalculatorHelper) {
+        getLimitStateSpectrum(reportState, data)
     }
 
     //chart in spectrum fragment
-    fun getSpectrumLines(reportState: ReportState, data: SismicParametersState): List<SpectrumDTO> = with(mSismicActionCalculatorHelper) {
-       getLimitStateSpectrum(reportState, data)
+    fun getSpectrumLines(reportState: ReportState, data: ProjectSpectrumState): List<SpectrumDTO> = with(mSismicActionCalculatorHelper) {
+       getLimitStateSpectrum(reportState, null, data)
     }
 }

@@ -91,12 +91,12 @@ class ReportActivity : AppCompatActivity(),
 
     //data is not aligned until confirmation, so i have to pass it
     override fun onReturnTimesRequested(data: ProjectSpectrumState): List<SpectrumDTO> = with(mSismicParameterInteractor){
-        getLimitStateLines(mReportManager.report.reportState, data)
+        getSpectrumLines(mReportManager.report.reportState, data)
     }
 
     //data is not aligned until confirmation, so i have to pass it
     override fun onLimitStatesRequested(data: SismicParametersState): List<SpectrumDTO> = with(mSismicParameterInteractor){
-        getSpectrumLines(mReportManager.report.reportState, data)
+        getLimitStateLines(mReportManager.report.reportState, data)
     }
 
     override fun onPillarDomainGraphRequest(pillarState: PillarState, reportState: ReportState?): PillarDomain = with (mSismicBuildingInteractor){
@@ -104,9 +104,9 @@ class ReportActivity : AppCompatActivity(),
     }
 
     //Updates the state for all fragments
-    override fun onParametersConfirmed(report: Report) {
+    override fun onParametersConfirmed(report: Report, needReload : Boolean) {
         mReportManager?.updateReportState(report)
-        updateStateForFragments(false)
+        updateStateForFragments(needReload)
     }
 
     //creates a new fragment state foreach active fragment, so everyone is updated

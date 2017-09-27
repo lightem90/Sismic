@@ -1,6 +1,7 @@
 package com.polito.sismic.Extensions
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
 import android.database.sqlite.SQLiteDatabase
@@ -19,6 +20,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.reflect.KProperty
 import android.provider.OpenableColumns
+import android.view.WindowManager
 import com.github.mikephil.charting.data.Entry
 import com.polito.sismic.Domain.*
 
@@ -230,6 +232,12 @@ fun Int.toStringOrEmpty() : String
 {
     return if (this == 0) "" else toString()
 }
+
+fun Activity.HideSoftKeyboard()
+{
+    window.setSoftInputMode(
+            WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
+};
 
 class MathUti
 {

@@ -33,7 +33,7 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
     // parameters througth the callback when the button "next" is pressed
     //Each fragment must implement the method to get their own paramter name-value
     interface ParametersManager {
-        fun onParametersConfirmed(report: Report)
+        fun onParametersConfirmed(report: Report, needReload : Boolean)
         fun onParametersSaveRequest()
     }
 
@@ -85,8 +85,13 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
     //callback to activity updates domain instance of each fragment.
     //in this way activity and fragments work on the same data
     override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback?) {
-        mParametersCallback?.onParametersConfirmed(getReport())
+        mParametersCallback?.onParametersConfirmed(getReport(), onNeedReload())
         callback!!.goToNextStep()
+    }
+
+    protected open fun onNeedReload(): Boolean
+    {
+        return false;
     }
 
     //actions to update user interface when domain parameters change

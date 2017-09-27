@@ -177,6 +177,12 @@ class ParametriSismiciReportFragment : BaseReportFragment() {
         }
     }
 
+    //Existing fragment should be reloaded base on current input
+    override fun onNeedReload(): Boolean
+    {
+        return true
+    }
+
     override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback?) {
         getReport().reportState.sismicState.sismicParametersState = UiMapper.createSismicStateForDomain(this, getReport().reportState.sismicState.sismicParametersState.spectrums)
         super.onNextClicked(callback)
