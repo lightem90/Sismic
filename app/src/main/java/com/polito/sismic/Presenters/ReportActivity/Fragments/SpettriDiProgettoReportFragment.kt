@@ -30,8 +30,9 @@ import com.polito.sismic.Interactors.Helpers.CategoriaTopografica
 
 class SpettriDiProgettoReportFragment : BaseReportFragment() {
 
+    private var mLock : Boolean = true
     interface SpectrumReturnTimeRequest {
-        fun onReturnTimesRequested(data: ProjectSpectrumState): List<SpectrumDTO>
+        fun onSpectrumReturnTimeRequest(data: ProjectSpectrumState): List<SpectrumDTO>
     }
 
     private var mReturnTimeRequest: SpectrumReturnTimeRequest? = null
@@ -124,6 +125,8 @@ class SpettriDiProgettoReportFragment : BaseReportFragment() {
             description.isEnabled = false
             getAxis(YAxis.AxisDependency.RIGHT).isEnabled = false
         }
+
+        mLock = false
     }
 
     override fun onReload() {
@@ -133,7 +136,9 @@ class SpettriDiProgettoReportFragment : BaseReportFragment() {
 
     private fun updateGraph()
     {
-        val spectrumsDomain = mReturnTimeRequest?.onReturnTimesRequested(UiMapper.createSpectrumStateForDomain(this, getReport().reportState.sismicState.projectSpectrumState.spectrums))
+        if (mLock) return
+
+        val spectrumsDomain = mReturnTimeRequest?.onSpectrumReturnTimeRequest(UiMapper.createSpectrumStateForDomain(this, getReport().reportState.sismicState.projectSpectrumState.spectrums))
         val spectrumsUi = spectrumsDomain?.map {
             val lds = LineDataSet(it.pointList.toEntryList(), String.format(context.getString(R.string.label_limit_state_format), it.name, it.year))
             lds.color = ContextCompat.getColor(context, it.color)

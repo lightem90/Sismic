@@ -8,6 +8,7 @@ import android.support.v7.app.AlertDialog
 import com.polito.sismic.Extensions.toast
 import com.polito.sismic.Interactors.Helpers.MediaFile
 import com.polito.sismic.Interactors.Helpers.MediaType
+import com.polito.sismic.Interactors.Helpers.PermissionsHelper
 import com.polito.sismic.Interactors.Helpers.UserActionType
 import com.polito.sismic.Presenters.ReportActivity.NoteActivity
 import com.polito.sismic.Presenters.ReportActivity.SketchActivity
@@ -19,6 +20,7 @@ import kotlinx.android.synthetic.main.filename_dialog.view.*
  */
 class UserActionInteractor(private val mReportManager: ReportManager,
                            private val mCaller : Activity,
+                           private val mPermissionHelper : PermissionsHelper,
                            private val reportMediaInteractor: ReportMediaInteractor = ReportMediaInteractor(mReportManager, mCaller)) {
 
     private val USER_ACTION_PIC         = 40
@@ -65,7 +67,7 @@ class UserActionInteractor(private val mReportManager: ReportManager,
             MediaType.Video -> startVideoIntent(mediaFile)
             MediaType.Audio -> startAudioIntent(mediaFile)
             MediaType.Sketch -> startSketchIntent(mediaFile)
-            else -> {}
+            else -> { }
         }
     }
 
@@ -102,22 +104,38 @@ class UserActionInteractor(private val mReportManager: ReportManager,
 
     private fun startAudioIntent(file: MediaFile) = with(mCaller){
 
-        val audioRecordIntent = Intent(MediaStore.Audio.Media.RECORD_SOUND_ACTION)
-        if (audioRecordIntent.resolveActivity(packageManager) != null) {
+        if (!mPermissionHelper.PERMISSION_AUDIO_GRANTED)
+            mPermissionHelper.checkAndAskAudioPermissions(this)
 
-            audioRecordIntent.putExtra(MediaStore.EXTRA_OUTPUT, file.uri)
-            startActivityForResult(audioRecordIntent, USER_ACTION_AUDIO)
+        if (mPermissionHelper.PERMISSION_AUDIO_GRANTED) {
+            val audioRecordIntent = Intent(MediaStore.Audio.Media.RECORD_SOUND_ACTION)
+            if (audioRecordIntent.resolveActivity(packageManager) != null) {
+
+                audioRecordIntent.putExtra(MediaStore.EXTRA_OUTPUT, file.uri)
+                startActivityForResult(audioRecordIntent, USER_ACTION_AUDIO)
+            }
         }
+        else
+            toast(R.string.permission_audio_denied)
     }
 
     private fun startVideoIntent(file: MediaFile) = with(mCaller){
-        val takeVideoIntent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
-        if (takeVideoIntent.resolveActivity(packageManager) != null) {
 
-            takeVideoIntent.putExtra(MediaStore.EXTRA_OUTPUT, file.uri)
-            startActivityForResult(takeVideoIntent, USER_ACTION_VIDEO)
-
+        if (!mPermissionHelper.PERMISSION_VIDEO_GRANTED)
+        {
+            mPermissionHelper.checkAndAskVideoPermissions(this)
         }
+
+        if (mPermissionHelper.PERMISSION_VIDEO_GRANTED){
+            val takeVideoIntent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
+            if (takeVideoIntent.resolveActivity(packageManager) != null) {
+
+                takeVideoIntent.putExtra(MediaStore.EXTRA_OUTPUT, file.uri)
+                startActivityForResult(takeVideoIntent, USER_ACTION_VIDEO)
+            }
+        }
+        else
+            toast(R.string.permission_video_denied)
     }
 
     private fun startPictureIntent(file: MediaFile) = with(mCaller){
@@ -148,31 +166,29 @@ class UserActionInteractor(private val mReportManager: ReportManager,
 
     private fun fixUri(data: Intent?) {
 
-        if (data == null ||  data.data == null)
-        {
-            mCaller.toast(R.string.error_saving_file)
-            return
+        data?.let {
+            it.data?.let { d ->
+                //The audio could be saved into custom location, in this way I reposition the file in the expected Uri
+                reportMediaInteractor.fixUriForAudio(d)
+            }
         }
-
-        //The audio could be saved into custom location, in this way I reposition the file in the expected Uri
-        reportMediaInteractor.fixUriForAudio(data.data)
     }
 
 
-    private fun noOtherActionsRequired(resultCode: Int, data: Intent?) {
+    private fun noOtherActionsRequired(resultCode: Int, data: Intent?) = with(mCaller){
         if (resultCode == Activity.RESULT_OK)
         {
             reportMediaInteractor.finalizeLastMedia(data?.getStringExtra("note"))
-            mCaller.toast(R.string.correctly_saving_file)
+            toast(R.string.correctly_saving_file)
         }
         else
         {
             reportMediaInteractor.deleteLastMedia()
-            mCaller.toast(R.string.error_saving_file)
+            toast(R.string.error_saving_file)
         }
     }
 
-    fun saveReport() {
-        mReportManager.saveReportToDb()
+    fun saveReport() = with(mReportManager){
+        saveReportToDb()
     }
 }

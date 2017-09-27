@@ -5,9 +5,11 @@ import android.database.sqlite.SQLiteException
 import android.support.v7.app.AlertDialog
 import com.polito.sismic.Domain.Report
 import com.polito.sismic.Domain.ReportState
+import com.polito.sismic.Extensions.hideSoftKeyboard
 import com.polito.sismic.Extensions.toast
 import com.polito.sismic.Presenters.ReportActivity.ReportActivity
 import com.polito.sismic.R
+import com.polito.sismic.R.id.report_description
 import kotlinx.android.synthetic.main.report_wizard.view.*
 
 
@@ -44,15 +46,17 @@ class ReportProvider(val caller: ReportActivity) {
             //creating new report, I need to do it now so I can have the report Id and other infos.. if the user cancels the operation
             //I will delete the tmp report as well
             val customDialog = caller.layoutInflater.inflate(R.layout.report_wizard, null)
+            customDialog.report_title.attachDataConfirmedCallback { customDialog.report_description.requestFocus() }
+            customDialog.report_description.attachDataConfirmedCallback { caller.hideSoftKeyboard() }
             AlertDialog.Builder(caller)
-                    .setTitle(R.string.report_wizard_title)
-                    .setView(customDialog)
-                    .setPositiveButton(R.string.confirm_report_details,
-                            {_, _ -> caller.onNewReportConfirmed(createFromNew(userName,
-                                    customDialog.report_title.getParameterValue(),
-                                    customDialog.report_description.getParameterValue()))})
-                    .setNegativeButton(R.string.discard_report_details, { _, _ -> caller.finish()})
-                    .show()
+                .setTitle(R.string.report_wizard_title)
+                .setView(customDialog)
+                .setPositiveButton(R.string.confirm_report_details,
+                    {_, _ -> caller.onNewReportConfirmed(createFromNew(userName,
+                        customDialog.report_title.getParameterValue(),
+                        customDialog.report_description.getParameterValue()))})
+                .setNegativeButton(R.string.discard_report_details, { _, _ -> caller.finish()})
+                .show()
         }
         return null
     }

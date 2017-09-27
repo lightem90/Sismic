@@ -65,7 +65,6 @@ class ParametriSismiciReportFragment : BaseReportFragment() {
             }
             updateGraph()
         }
-
         vita_nominale_50.setOnCheckedChangeListener { _, flag ->
             if (flag)
             {
@@ -80,7 +79,6 @@ class ParametriSismiciReportFragment : BaseReportFragment() {
             }
             updateGraph()
         }
-
         vita_nominale_100.setOnCheckedChangeListener { _, flag ->
             if (flag)
             {
@@ -96,6 +94,7 @@ class ParametriSismiciReportFragment : BaseReportFragment() {
             updateGraph()
         }
 
+
         classe_parameter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 
             override fun onItemSelected(parent: AdapterView<*>, mView: View?, pos: Int, id: Long) {
@@ -104,7 +103,6 @@ class ParametriSismiciReportFragment : BaseReportFragment() {
             }
             override fun onNothingSelected(parent: AdapterView<out Adapter>?) {  }
         }
-
         with (report_spettrodirisposta_chart)
         {
             xAxis.position = XAxis.XAxisPosition.BOTTOM
@@ -175,12 +173,6 @@ class ParametriSismiciReportFragment : BaseReportFragment() {
             100 -> vita_nominale_100.isChecked = true
             else -> vita_nominale_30.isChecked = true
         }
-    }
-
-    //Existing fragment should be reloaded base on current input
-    override fun onNeedReload(): Boolean
-    {
-        return true
     }
 
     override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback?) {

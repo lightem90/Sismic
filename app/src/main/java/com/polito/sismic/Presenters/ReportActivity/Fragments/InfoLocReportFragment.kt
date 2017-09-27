@@ -8,6 +8,8 @@ import android.support.annotation.Nullable
 import android.view.*
 import com.google.android.gms.location.places.Place
 import com.polito.sismic.AsyncTasks.PlaceDetailsTask
+import com.polito.sismic.Extensions.hideSoftKeyboard
+import com.polito.sismic.Extensions.showSoftKeyboard
 import com.polito.sismic.Extensions.toFormattedString
 import com.polito.sismic.Extensions.toast
 import com.polito.sismic.Interactors.Helpers.*
@@ -69,36 +71,34 @@ class InfoLocReportFragment : BaseReportFragment() {
         long_parameter.attachDataConfirmedCallback {
             mLocationCallback?.onCoordinatesUpdated()
             country_parameter.requestFocus()
+            activity.showSoftKeyboard()
         }
-
         country_parameter.attachDataConfirmedCallback {
             region_parameter.requestFocus()
         }
-
         region_parameter.attachDataConfirmedCallback { newRegion ->
             mLocaliationInfoHelper.setProvinceSuggestionForRegion(province_parameter, newRegion)
             province_parameter.requestFocus()
         }
-
         province_parameter.attachDataConfirmedCallback { newProvince ->
             mLocaliationInfoHelper.setComuniSuggestionForProvince(comune_parameter, newProvince)
             comune_parameter.requestFocus()
         }
-
         comune_parameter.attachDataConfirmedCallback { newComune ->
             mLocaliationInfoHelper.setZoneCodeForComune(zona_sismica_parameter, codice_istat_parameter, newComune)
             address_parameter.requestFocus()
         }
-
         address_parameter.attachDataConfirmedCallback {
             cap_parameter.requestFocus()
         }
-
         cap_parameter.attachDataConfirmedCallback {
             zona_sismica_parameter.requestFocus()
         }
         zona_sismica_parameter.attachDataConfirmedCallback {
             codice_istat_parameter.requestFocus()
+        }
+        codice_istat_parameter.attachDataConfirmedCallback {
+            activity.hideSoftKeyboard()
         }
     }
 

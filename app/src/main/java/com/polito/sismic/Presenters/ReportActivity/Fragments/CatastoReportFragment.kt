@@ -7,9 +7,11 @@ import android.support.annotation.Nullable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.polito.sismic.Extensions.hideSoftKeyboard
 import com.polito.sismic.Interactors.Helpers.UiMapper
 import com.polito.sismic.R
 import com.stepstone.stepper.StepperLayout
+import kotlinx.android.synthetic.main.catasto_report_layout.*
 
 /**
  * Created by Matteo on 29/07/2017.
@@ -36,6 +38,38 @@ class CatastoReportFragment : BaseReportFragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View? {
         return inflateFragment(R.layout.catasto_report_layout, inflater, container)
+    }
+
+    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        foglio_parameter.attachDataConfirmedCallback {
+            mappale_parameter.requestFocus()
+        }
+        mappale_parameter.attachDataConfirmedCallback {
+            particella_parameter.requestFocus()
+        }
+        particella_parameter.attachDataConfirmedCallback {
+            foglio_cart_parameter.requestFocus()
+        }
+        foglio_cart_parameter.attachDataConfirmedCallback {
+            edificio_parameter.requestFocus()
+        }
+        edificio_parameter.attachDataConfirmedCallback {
+            aggr_str_parameter.requestFocus()
+        }
+        aggr_str_parameter.attachDataConfirmedCallback {
+            zona_urb_parameter.requestFocus()
+        }
+        zona_urb_parameter.attachDataConfirmedCallback {
+            piano_urb_parameter.requestFocus()
+        }
+        piano_urb_parameter.attachDataConfirmedCallback {
+            vincoli_urb_parameter.requestFocus()
+        }
+        vincoli_urb_parameter.attachDataConfirmedCallback {
+            activity.hideSoftKeyboard()
+        }
     }
 
     override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback?) {

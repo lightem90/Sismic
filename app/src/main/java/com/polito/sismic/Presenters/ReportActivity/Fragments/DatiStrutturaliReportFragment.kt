@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Adapter
 import android.widget.AdapterView
+import com.polito.sismic.Extensions.hideSoftKeyboard
 import com.polito.sismic.Extensions.toDoubleOrZero
 import com.polito.sismic.Extensions.toast
 import com.polito.sismic.Interactors.Helpers.UiMapper
@@ -32,7 +33,6 @@ class DatiStrutturaliReportFragment : BaseReportFragment() {
         mPesiSolaio = context.resources.getStringArray(R.array.solaio_int_pesi)
         mPesiCopertura = context.resources.getStringArray(R.array.copertura_int_pesi)
 
-        //TODO logic to hide container when piani <= 1
         fondazioni_type_platea.setOnCheckedChangeListener { _, flag ->
             if (flag)
             {
@@ -45,7 +45,6 @@ class DatiStrutturaliReportFragment : BaseReportFragment() {
                 fondazioni_type_platea.isClickable = true
             }
         }
-
         fondazioni_type_plinti.setOnCheckedChangeListener { _, flag ->
             if (flag)
             {
@@ -58,7 +57,6 @@ class DatiStrutturaliReportFragment : BaseReportFragment() {
                 fondazioni_type_plinti.isClickable = true
             }
         }
-
         fondazioni_type_trave.setOnCheckedChangeListener { _, flag ->
             if (flag)
             {
@@ -80,7 +78,6 @@ class DatiStrutturaliReportFragment : BaseReportFragment() {
             }
             override fun onNothingSelected(parent: AdapterView<out Adapter>?) {  }
         }
-
         copertura_peso.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 
             override fun onItemSelected(parent: AdapterView<*>, mView: View?, pos: Int, id: Long) {
@@ -89,7 +86,6 @@ class DatiStrutturaliReportFragment : BaseReportFragment() {
             }
             override fun onNothingSelected(parent: AdapterView<out Adapter>?) {  }
         }
-
         solaio_peso.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 
             override fun onItemSelected(parent: AdapterView<*>, mView: View?, pos: Int, id: Long) {
@@ -99,11 +95,24 @@ class DatiStrutturaliReportFragment : BaseReportFragment() {
             }
             override fun onNothingSelected(parent: AdapterView<out Adapter>?) {  }
         }
-        solaio_g2.attachDataConfirmedCallback { updateSolaioQ() }
-        solaio_qk.attachDataConfirmedCallback { updateSolaioQ() }
 
-        copertura_g2.attachDataConfirmedCallback { updateCoperturaQ() }
-        copertura_qk.attachDataConfirmedCallback { updateCoperturaQ() }
+        fondazioni_h.attachDataConfirmedCallback { solaio_g2.requestFocus() }
+        solaio_g2.attachDataConfirmedCallback {
+            updateSolaioQ()
+            solaio_qk.requestFocus()
+        }
+        solaio_qk.attachDataConfirmedCallback {
+            updateSolaioQ()
+            copertura_g2.requestFocus()
+        }
+        copertura_g2.attachDataConfirmedCallback {
+            updateCoperturaQ()
+            copertura_qk.requestFocus()
+        }
+        copertura_qk.attachDataConfirmedCallback {
+            updateCoperturaQ()
+            activity.hideSoftKeyboard()
+        }
 
         copertura_type.setOnClickListener {
             context.toast(R.string.error_not_supported)

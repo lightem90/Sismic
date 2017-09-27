@@ -103,6 +103,8 @@
     <string name="report_vincoli_urb_parameter">Vincoli</string>
     <string name="report_vincoli_urb_parameter_hint">Inserire vincoli urbani</string>
     <string name="permission_denied">Permesso alla localizzazione negato</string>
+    <string name="permission_video_denied">Permesso all\'acquisizione video negato</string>
+    <string name="permission_audio_denied">Permesso all\'acquisizione audio negato</string>
     <string name="report_datisismogenetici_title">DATI SISMOGENETICI</string>
     <string name="report_datisimogenetici_coordinate_label">Coordinate</string>
     <string name="report_datisimogenetici_indirizzo_label">Indirizzo</string>

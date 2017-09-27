@@ -21,8 +21,12 @@ import java.util.*
 import kotlin.reflect.KProperty
 import android.provider.OpenableColumns
 import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import com.github.mikephil.charting.data.Entry
 import com.polito.sismic.Domain.*
+import android.view.inputmethod.InputMethodManager.HIDE_NOT_ALWAYS
+
+
 
 
 /**
@@ -233,11 +237,22 @@ fun Int.toStringOrEmpty() : String
     return if (this == 0) "" else toString()
 }
 
-fun Activity.HideSoftKeyboard()
+//better safe than sorry
+fun Activity.hideSoftKeyboard()
 {
-    window.setSoftInputMode(
-            WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
-};
+    val inputManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    inputManager.let {
+     it.hideSoftInputFromWindow(currentFocus.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+    }
+}
+
+fun Activity.showSoftKeyboard()
+{
+    val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    imm?.let {
+        it.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0)
+    }
+}
 
 class MathUti
 {

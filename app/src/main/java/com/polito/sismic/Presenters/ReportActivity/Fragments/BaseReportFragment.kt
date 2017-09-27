@@ -91,7 +91,7 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
 
     protected open fun onNeedReload(): Boolean
     {
-        return false;
+        return false
     }
 
     //actions to update user interface when domain parameters change

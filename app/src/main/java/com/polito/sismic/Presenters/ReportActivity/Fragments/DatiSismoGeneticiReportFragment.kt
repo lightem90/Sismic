@@ -92,28 +92,27 @@ class DatiSismoGeneticiReportFragment : BaseReportFragment() {
 
     override fun onReload()
     {
-        with(getReport().reportState.sismicState.sismogenticState.closedNodeData)
-        {
+        getReport().reportState.sismicState.sismogenticState.closedNodeData.let {
             mNodeList.clear()
-            mNodeList.addAll(toList())
+            mNodeList.addAll(it)
             mNodeAdapter.notifyDataSetChanged()
         }
 
         //Log.d("PeriodList", "Period list updating: " + getReport().reportState.sismicState.sismogenticState.default_periods.toString())
         //if (getReport().reportState.sismicState.sismogenticState.default_periods.isEmpty()) Log.e("PeriodList", "EMPTY!")
 
-        with(getReport().reportState.sismicState.sismogenticState.default_periods){
+        getReport().reportState.sismicState.sismogenticState.default_periods.let {
             mPeriodList.clear()
-            mPeriodList.addAll(toList())
+            mPeriodList.addAll(it)
             mPeriodAdapter.notifyDataSetChanged()
         }
 
-        with(getReport().reportState.localizationState) {
+        getReport().reportState.localizationState.let{
 
-            updateLabelsByCoordinate(latitude.toString(),
-                    longitude.toString(),
-                    address,
-                    zone)
+            updateLabelsByCoordinate(it.latitude.toString(),
+                    it.longitude.toString(),
+                    it.address,
+                    it.zone)
         }
 
 

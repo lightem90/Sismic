@@ -12,6 +12,7 @@ import com.polito.sismic.Domain.*
 import com.polito.sismic.Extensions.getCustomAdapter
 import com.polito.sismic.Extensions.toast
 import com.polito.sismic.Interactors.*
+import com.polito.sismic.Interactors.Helpers.PermissionsHelper
 import com.polito.sismic.Interactors.SismicActionInteractor
 import com.polito.sismic.Interactors.Helpers.UserActionType
 import com.polito.sismic.Presenters.Adapters.ReportFragmentsAdapter
@@ -32,6 +33,7 @@ class ReportActivity : AppCompatActivity(),
         GoogleApiClient.OnConnectionFailedListener
 {
 
+    private val mPermissionHelper : PermissionsHelper = PermissionsHelper()
     private lateinit var mGoogleApiClient: GoogleApiClient
     private lateinit var mUserActionInteractor: UserActionInteractor
     private lateinit var mSismicParameterInteractor: SismicActionInteractor
@@ -90,7 +92,7 @@ class ReportActivity : AppCompatActivity(),
     }
 
     //data is not aligned until confirmation, so i have to pass it
-    override fun onReturnTimesRequested(data: ProjectSpectrumState): List<SpectrumDTO> = with(mSismicParameterInteractor){
+    override fun onSpectrumReturnTimeRequest(data: ProjectSpectrumState): List<SpectrumDTO> = with(mSismicParameterInteractor){
         getSpectrumLines(mReportManager.report.reportState, data)
     }
 
@@ -151,10 +153,15 @@ class ReportActivity : AppCompatActivity(),
         return createFromNew
     }
 
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        mPermissionHelper.handlePermissionResult(requestCode, grantResults)
+    }
+
     private fun initializeFromManager(reportManager: ReportManager) {
         //To handle user action, it uses other interactor to pilot the ui changes to the domain
         mReportManager = reportManager
-        mUserActionInteractor = UserActionInteractor(reportManager, this)
+        mUserActionInteractor = UserActionInteractor(reportManager,this, mPermissionHelper)
         mSismicParameterInteractor = SismicActionInteractor(reportManager, this)
         mSismicBuildingInteractor = SismicBuildingInteractor(reportManager, this)
         stepperLayout.adapter = ReportFragmentsAdapter(supportFragmentManager, this, reportManager)

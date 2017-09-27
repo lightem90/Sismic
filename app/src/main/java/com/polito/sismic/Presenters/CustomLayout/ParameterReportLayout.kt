@@ -97,32 +97,14 @@ class ParameterReportLayout : LinearLayout {
                 else
                     section_parameter_help.visibility = View.INVISIBLE
             }
-/*
-            section_parameter_value.addTextChangedListener(object : TextWatcher {
-                var beforeString: String = getParameterValue()
-                override fun afterTextChanged(p0: Editable?) {
-                    if (beforeString != getParameterValue())
-                        dataConfirmedCallback?.invoke(getParameterValue())
-                }
 
-                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                    beforeString = getParameterValue()
-                }
-
-                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                }
-            })
-*/
             section_parameter_value.setOnEditorActionListener { _, actionId, event ->
-                val beforeString: String = getParameterValue()
                 if(actionId == EditorInfo.IME_ACTION_SEARCH ||
                         actionId == EditorInfo.IME_ACTION_DONE ||
                         event?.action == KeyEvent.ACTION_DOWN &&
-                                event?.keyCode == KeyEvent.KEYCODE_ENTER){
-
-                    val afterString = getParameterValue()
-                    if (beforeString != afterString)
-                        dataConfirmedCallback?.invoke(afterString)
+                                event?.keyCode == KeyEvent.KEYCODE_ENTER)
+                {
+                        dataConfirmedCallback?.invoke(getParameterValue())
                     true
                 } else
                 {
@@ -156,9 +138,10 @@ class ParameterReportLayout : LinearLayout {
         dataConfirmedCallback = callback
     }
 
-    fun setParameterValue(newValue: String) {
+    fun setParameterValue(newValue: String, trigger : Boolean = true) {
         section_parameter_value.setText(newValue, TextView.BufferType.EDITABLE)
-        dataConfirmedCallback?.invoke(getParameterValue())
+        if (trigger)
+            dataConfirmedCallback?.invoke(getParameterValue())
     }
 
     fun getParameterValue(): String {
@@ -187,11 +170,6 @@ class ParameterReportLayout : LinearLayout {
         }
         super.onRestoreInstanceState(customState)
     }
-
-}
-
-interface DataConfirmedCallback {
-    fun onDataConfirmed(newValue: String)
 }
 
 

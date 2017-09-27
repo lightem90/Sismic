@@ -92,7 +92,7 @@ class LocationInfoHelper(mContext : Context){
     fun setZoneCodeForComune(zona_sismica_parameter: ParameterReportLayout, codice_istat_parameter: ParameterReportLayout, newComune: String) {
 
         val pair = getZoneCodeForComune(newComune)
-        if (!pair.first.isEmpty()) codice_istat_parameter.setParameterValue(pair.first)
+        if (!pair.first.isEmpty()) codice_istat_parameter.setParameterValue(pair.first, false)
         if (!pair.second.isEmpty()) zona_sismica_parameter.setParameterValue(pair.second)
     }
 

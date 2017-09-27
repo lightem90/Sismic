@@ -16,10 +16,10 @@ import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.polito.sismic.Domain.PillarDomain
 import com.polito.sismic.Domain.PillarState
 import com.polito.sismic.Domain.ReportState
+import com.polito.sismic.Extensions.hideSoftKeyboard
 import com.polito.sismic.Extensions.toDoubleOrZero
 import com.polito.sismic.Interactors.Helpers.LivelloConoscenza
 import com.polito.sismic.Interactors.Helpers.SismicBuildingCalculatorHelper
@@ -62,6 +62,12 @@ class PilastriReportFragment : BaseReportFragment() {
         epsy.setValue(getReport().reportState.buildingState.pillarState.epsy.toString() + percent)
         epsuAcc.setValue(getReport().reportState.buildingState.pillarState.epsyu.toString() + percent)
         E.setValue(getReport().reportState.buildingState.pillarState.E.toString() + context.getString(R.string.E_value))
+
+        sezione_bx_parameter.attachDataConfirmedCallback { sezione_hy_parameter.requestFocus() }
+        sezione_hy_parameter.attachDataConfirmedCallback { sezione_c_parameter.requestFocus() }
+        sezione_c_parameter.attachDataConfirmedCallback { num_armatura.requestFocus() }
+        num_armatura.attachDataConfirmedCallback { armatura_fi.requestFocus() }
+        armatura_fi.attachDataConfirmedCallback { activity.hideSoftKeyboard() }
 
         calc_classe_parameter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 
