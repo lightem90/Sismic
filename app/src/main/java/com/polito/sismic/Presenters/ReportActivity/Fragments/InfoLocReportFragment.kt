@@ -61,16 +61,6 @@ class InfoLocReportFragment : BaseReportFragment() {
             report_info_date_label.setValue(it.reportDetails.date.toFormattedString())
         }
 
-        comune_parameter.attachDataConfirmedCallback { newComune ->
-            mLocaliationInfoHelper.setZoneCodeForComune(zona_sismica_parameter, codice_istat_parameter, newComune)
-        }
-        province_parameter.attachDataConfirmedCallback { newProvince ->
-            mLocaliationInfoHelper.setComuniSuggestionForProvince(comune_parameter, newProvince)
-        }
-        region_parameter.attachDataConfirmedCallback { newRegion ->
-            mLocaliationInfoHelper.setProvinceSuggestionForRegion(province_parameter, newRegion)
-        }
-
         //Signal to the activity that latitude and longitude changed, so certain data should be recalculated
         lat_parameter.attachDataConfirmedCallback {
             mLocationCallback?.onCoordinatesUpdated()
@@ -85,15 +75,18 @@ class InfoLocReportFragment : BaseReportFragment() {
             region_parameter.requestFocus()
         }
 
-        region_parameter.attachDataConfirmedCallback {
+        region_parameter.attachDataConfirmedCallback { newRegion ->
+            mLocaliationInfoHelper.setProvinceSuggestionForRegion(province_parameter, newRegion)
             province_parameter.requestFocus()
         }
 
-        province_parameter.attachDataConfirmedCallback {
+        province_parameter.attachDataConfirmedCallback { newProvince ->
+            mLocaliationInfoHelper.setComuniSuggestionForProvince(comune_parameter, newProvince)
             comune_parameter.requestFocus()
         }
 
-        comune_parameter.attachDataConfirmedCallback {
+        comune_parameter.attachDataConfirmedCallback { newComune ->
+            mLocaliationInfoHelper.setZoneCodeForComune(zona_sismica_parameter, codice_istat_parameter, newComune)
             address_parameter.requestFocus()
         }
 
