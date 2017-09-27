@@ -17,6 +17,8 @@ import android.os.Parcelable
 import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
+import android.view.KeyEvent
+import android.view.inputmethod.EditorInfo
 
 
 /**
@@ -95,7 +97,7 @@ class ParameterReportLayout : LinearLayout {
                 else
                     section_parameter_help.visibility = View.INVISIBLE
             }
-
+/*
             section_parameter_value.addTextChangedListener(object : TextWatcher {
                 var beforeString: String = getParameterValue()
                 override fun afterTextChanged(p0: Editable?) {
@@ -110,6 +112,25 @@ class ParameterReportLayout : LinearLayout {
                 override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 }
             })
+*/
+            section_parameter_value.setOnEditorActionListener { _, actionId, event ->
+                val beforeString: String = getParameterValue()
+                if(actionId == EditorInfo.IME_ACTION_SEARCH ||
+                        actionId == EditorInfo.IME_ACTION_DONE ||
+                        event?.action == KeyEvent.ACTION_DOWN &&
+                                event?.keyCode == KeyEvent.KEYCODE_ENTER){
+
+                    val afterString = getParameterValue()
+                    if (beforeString != afterString)
+                        dataConfirmedCallback?.invoke(afterString)
+                    true
+                } else
+                {
+                    false
+                }
+
+            }
+
             typedArray.recycle()
         }
     }

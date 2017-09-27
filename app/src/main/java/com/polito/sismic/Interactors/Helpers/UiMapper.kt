@@ -133,8 +133,10 @@ class UiMapper {
         }
 
         fun createPillarLayoutStateForDomain(magliaStrutturaleReportFragment: MagliaStrutturaleReportFragment): PillarLayoutState = with(magliaStrutturaleReportFragment){
-            return PillarLayoutState(num_x.getParameterValue().toIntOrZero(), num_y.getParameterValue().toIntOrZero(),
-                    dist_x.getParameterValue().toDoubleOrZero(), dist_y.getParameterValue().toDoubleOrZero(),
+            return PillarLayoutState(num_x.getParameterValue().toIntOrZero(),
+                    num_y.getParameterValue().toIntOrZero(),
+                    dist_x.getParameterValue().toDoubleOrZero(),
+                    dist_y.getParameterValue().toDoubleOrZero(),
                     dist_x.getParameterValue().toDoubleOrZero() * dist_y.getParameterValue().toDoubleOrZero(),
                     num_x.getParameterValue().toIntOrZero() + num_y.getParameterValue().toIntOrZero())
         }
@@ -185,8 +187,6 @@ class UiMapper {
                         setVitaNominale(it.vitaNominale)
                         classe_parameter.setSelection(getClasseUsoIndexByValue(it.classeUso))
                         vita_reale.setValue(it.vitaReale.toStringOrEmpty())
-
-                        //TODO ??
                     }
                 }
                 is SpettriDiProgettoReportFragment ->
@@ -252,9 +252,11 @@ class UiMapper {
                 }
                 is MagliaStrutturaleReportFragment ->
                 {
-                    //TODO
                     reportState.buildingState.pillarLayoutState.let {
-
+                        num_x.setParameterValue(it.pillarX.toString())
+                        num_y.setParameterValue(it.pillarY.toString())
+                        dist_x.setParameterValue(it.distX.toString())
+                        dist_y.setParameterValue(it.distY.toString())
                     }
                 }
 

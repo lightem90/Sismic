@@ -140,22 +140,14 @@ class DatabaseInteractor(private val reportDatabaseHelper: ReportDatabaseHelper 
     fun save(report: Report, editing: Boolean) = reportDatabaseHelper.use {
 
         //delete if exists (in the case I'm editing I delete the old one)
-        delete(report.reportDetails)
-        if (!editing) {
-            with(dataMapper.convertReportFromDomain(report))
-            {
-                insert(ReportTable.NAME, *reportDetails.map.toVarargArray())
-                insertEachSectionIntoCorrectTable(sections)
-                mediaList.forEach { (map) -> insert(ReportMediaTable.NAME, *map.toVarargArray()) }
-            }
-        } else {
-            with(dataMapper.convertReportFromDomain(report))
-            {
-                update(ReportTable.NAME, *reportDetails.map.toVarargArray())
-                updateEachSectionIntoCorrectTable(sections)
-                mediaList.forEach { (map) -> update(ReportMediaTable.NAME, *map.toVarargArray()) }
-            }
+        if (editing) delete(report.reportDetails)
+        with(dataMapper.convertReportFromDomain(report))
+        {
+            insert(ReportTable.NAME, *reportDetails.map.toVarargArray())
+            insertEachSectionIntoCorrectTable(sections)
+            mediaList.forEach { (map) -> insert(ReportMediaTable.NAME, *map.toVarargArray()) }
         }
+
     }
 
     fun delete(reportDetails: ReportDetails)
@@ -208,11 +200,11 @@ class DatabaseInteractor(private val reportDatabaseHelper: ReportDatabaseHelper 
                 is DatabaseDatiStrutturali ->{
                     insert(DatiStrutturaliInfoTable.NAME, *section.map.toVarargArray())
                 }
-                is DatabaseCaratteristichePilastri -> {
-                    insert(CaratteristichePilastriInfoTable.NAME, *section.map.toVarargArray())
-                }
                 is DatabaseMagliaStrutturale -> {
                     insert(MagliaStrutturaleInfoTable.NAME, *section.map.toVarargArray())
+                }
+                is DatabaseCaratteristichePilastri -> {
+                    insert(CaratteristichePilastriInfoTable.NAME, *section.map.toVarargArray())
                 }
                 is DatabaseResults -> {
                     insert(ResultsInfoTable.NAME, *section.map.toVarargArray())

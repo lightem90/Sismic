@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.polito.sismic.Domain.ReportItemHistory
 import com.polito.sismic.Extensions.inflate
+import com.polito.sismic.Extensions.toFormattedString
 import com.polito.sismic.Interactors.DangerStateProvider
 import com.polito.sismic.Interactors.HistoryItemInteractor
 import com.polito.sismic.R
@@ -47,7 +48,7 @@ class ReportAdapter(val mContext: Context,
             {
                 itemView.isDuplicateParentStateEnabled = true
                 itemView.history_item_title.text = reportDetails.title
-                itemView.history_item_description.text = reportDetails.description
+                itemView.history_item_description.text = reportDetails.date.toFormattedString()
                 itemView.history_item_size.text = String.format(mContext.getString(R.string.size_string), reportDetails.size)
                 val dangerState = DangerStateProvider.getDangerStateByValue(reportDetails.value)
 

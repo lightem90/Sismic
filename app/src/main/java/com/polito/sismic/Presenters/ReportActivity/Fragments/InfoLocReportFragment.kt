@@ -72,9 +72,41 @@ class InfoLocReportFragment : BaseReportFragment() {
         }
 
         //Signal to the activity that latitude and longitude changed, so certain data should be recalculated
-        //TODO, dont trigger if data doesnt't change
-        lat_parameter.attachDataConfirmedCallback { mLocationCallback?.onCoordinatesUpdated() }
-        long_parameter.attachDataConfirmedCallback { mLocationCallback?.onCoordinatesUpdated() }
+        lat_parameter.attachDataConfirmedCallback {
+            mLocationCallback?.onCoordinatesUpdated()
+            long_parameter.requestFocus()
+        }
+        long_parameter.attachDataConfirmedCallback {
+            mLocationCallback?.onCoordinatesUpdated()
+            country_parameter.requestFocus()
+        }
+
+        country_parameter.attachDataConfirmedCallback {
+            region_parameter.requestFocus()
+        }
+
+        region_parameter.attachDataConfirmedCallback {
+            province_parameter.requestFocus()
+        }
+
+        province_parameter.attachDataConfirmedCallback {
+            comune_parameter.requestFocus()
+        }
+
+        comune_parameter.attachDataConfirmedCallback {
+            address_parameter.requestFocus()
+        }
+
+        address_parameter.attachDataConfirmedCallback {
+            cap_parameter.requestFocus()
+        }
+
+        cap_parameter.attachDataConfirmedCallback {
+            zona_sismica_parameter.requestFocus()
+        }
+        zona_sismica_parameter.attachDataConfirmedCallback {
+            codice_istat_parameter.requestFocus()
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater?, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View? {
