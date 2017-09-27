@@ -193,16 +193,14 @@
     <string name="calc_classe_parameter">Classe calcestruzzo</string>
     <string name="acc_classe_parameter">Classe acciaio</string>
     <string name="dominio_resistenza_title">DOMINIO DI RESISTENZA</string>
-    <string name="sezione_bx_parameter">SEZIONE: B(x)</string>
+    <string name="sezione_bx_parameter">SEZIONE: B(x) [cm]</string>
     <string name="sezione_bx_parameter_hint">B(x) [cm]</string>
-    <string name="sezione_hy_parameter">SEZIONE: H(y)</string>
+    <string name="sezione_hy_parameter">SEZIONE: H(y) [cm]</string>
     <string name="sezione_hy_parameter_hint">H(y) [cm]</string>
-    <string name="sezione_c_parameter">SEZIONE: c</string>
+    <string name="sezione_c_parameter">SEZIONE: c [cm]</string>
     <string name="sezione_c_parameter_hint">c [cm]</string>
     <string name="armatura_1">Armatura 1</string>
-    <string name="armatura_1_hint">TODO</string>
     <string name="armatura_2">Armatura 2</string>
-    <string name="armatura_2_hint">TODO</string>
     <string name="ok">OK</string>
     <string name="direzione_x">DIREZIONE X</string>
     <string name="direzione_y">DIREZIONE Y</string>
@@ -272,7 +270,7 @@
     <string name="copertura_type_title">Tipo copertura</string>
     <string name="error_media_audio">Impossibile salvare nota audio</string>
     <string name="categoria_moltiplicatore_parameter">αu/α1</string>
-    <string name="armatura_fi">ϕ</string>
+    <string name="armatura_fi">ϕ [mm]</string>
     <string name="armatura_fi_hint">Inserire diametro ferri [mm]</string>
     <string name="armatura_longitudine">Longitudine armatura</string>
     <string name="armatura_longitudine_hint">Inserire longitudine</string>
@@ -293,7 +291,7 @@
     <string name="et_password_hint">Password</string>
     <string name="registration_error">Errore di registrazione. Riprovare</string>
     <string name="g1_format">G1: %s [kN/mq]</string>
-    <string name="report_delete_succeded">Report %d deleted correctly</string>
+    <string name="report_delete_succeded">Report %d cancellato correttamente</string>
     <string name="percent">%</string>
     <string name="eps2_title">Eps2</string>
     <string name="epsu_title">Epsu</string>

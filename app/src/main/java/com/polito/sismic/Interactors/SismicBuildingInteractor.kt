@@ -1,8 +1,8 @@
 package com.polito.sismic.Interactors
 
 import android.content.Context
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.polito.sismic.Domain.BuildingState
+import com.polito.sismic.Domain.PillarDomain
 import com.polito.sismic.Domain.PillarState
 import com.polito.sismic.Domain.ReportState
 import com.polito.sismic.Interactors.Helpers.SismicBuildingCalculatorHelper
@@ -38,11 +38,11 @@ class SismicBuildingInteractor(val mReportManager: ReportManager,
     }
 
     //calculate the pillar domain and the point inside it
-    fun getPillarDomainForGraph(state: ReportState, data: PillarState) : List<ILineDataSet>
+    fun getPillarDomainForGraph(state: ReportState, data: PillarState) : PillarDomain
     {
-        val domain = mSismicBuildingCalculatorHelper.getPillarDomainForGraph(state, data)
+        val domainPoints = mSismicBuildingCalculatorHelper.getPillarDomainForGraph(data)
         //add 4 points, one foreach limit state
-        domain.addAll(mSismicBuildingCalculatorHelper.getLimitStatePointsInDomainForPillar(state))
-        return domain
+        val points = mSismicBuildingCalculatorHelper.getLimitStatePointsInDomainForPillar(state)
+        return PillarDomain(domainPoints.first, domainPoints.second, points)
     }
 }

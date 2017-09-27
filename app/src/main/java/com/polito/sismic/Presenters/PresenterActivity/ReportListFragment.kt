@@ -21,7 +21,9 @@ import kotlinx.android.synthetic.main.report_list_fragment.*
 class ReportListFragment : Fragment() {
 
     val mDatabaseInteractor = DatabaseInteractor()
-    lateinit var mReportHistoryInteractor : HistoryItemInteractor
+    val mReportHistoryInteractor : HistoryItemInteractor by lazy {
+        HistoryItemInteractor(activity, mDatabaseInteractor)
+    }
 
     fun getFragmentTag() : String
     {
@@ -31,11 +33,6 @@ class ReportListFragment : Fragment() {
     interface HistoryReload
     {
         fun onHistoryReloadRequest()
-    }
-
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-        mReportHistoryInteractor = HistoryItemInteractor(context!!, mDatabaseInteractor)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

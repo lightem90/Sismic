@@ -105,8 +105,14 @@ class DatiStrutturaliReportFragment : BaseReportFragment() {
         copertura_g2.attachDataConfirmedCallback { updateCoperturaQ() }
         copertura_qk.attachDataConfirmedCallback { updateCoperturaQ() }
 
-        copertura_type.setOnClickListener { context.toast(R.string.error_not_supported) }
-        solaio_type.setOnClickListener { context.toast(R.string.error_not_supported) }
+        copertura_type.setOnClickListener {
+            context.toast(R.string.error_not_supported)
+            copertura_type.isChecked = true
+        }
+        solaio_type.setOnClickListener {
+            context.toast(R.string.error_not_supported)
+            copertura_type.isChecked = true
+        }
     }
 
     private fun updateSolaioQ()

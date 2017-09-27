@@ -54,14 +54,13 @@ class LocalizationActionHelper {
     @SuppressLint("MissingPermission")
     private fun launchLocalization(caller: Activity, mLocationCallback: InfoLocReportFragment.CurrentLocationProvided?) {
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(caller)
-        if(mFusedLocationClient != null)
-        {
-            mFusedLocationClient!!.requestLocationUpdates(LocationRequest(), LocationCallback(), Looper.getMainLooper())
-            mFusedLocationClient!!.lastLocation?.addOnSuccessListener(caller, { location ->
+        mFusedLocationClient?.let {
+            it.requestLocationUpdates(LocationRequest(), LocationCallback(), Looper.getMainLooper())
+            it.lastLocation?.addOnSuccessListener(caller, { location ->
                 // Got last known location. In some rare situations this can be null.
                 mLocationCallback?.onLocationAcquired(location)
             })
-            mFusedLocationClient!!.removeLocationUpdates(LocationCallback())
+            it.removeLocationUpdates(LocationCallback())
         }
     }
 

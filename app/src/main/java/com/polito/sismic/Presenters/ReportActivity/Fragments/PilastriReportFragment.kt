@@ -1,8 +1,10 @@
 package com.polito.sismic.Presenters.ReportActivity.Fragments
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.support.annotation.Nullable
+import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,8 +13,11 @@ import android.widget.AdapterView
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
+import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
+import com.polito.sismic.Domain.PillarDomain
 import com.polito.sismic.Domain.PillarState
 import com.polito.sismic.Domain.ReportState
 import com.polito.sismic.Extensions.toDoubleOrZero
@@ -28,7 +33,7 @@ import kotlinx.android.synthetic.main.pilastri_report_layout.*
 class PilastriReportFragment : BaseReportFragment() {
 
     interface PillarDomainGraphRequest {
-        fun onPillarDomainGraphRequest(pillarState: PillarState, reportState: ReportState? = null): List<ILineDataSet>
+        fun onPillarDomainGraphRequest(pillarState: PillarState, reportState: ReportState? = null): PillarDomain
     }
 
     private var mPillarDomainGraphRequest: PillarDomainGraphRequest? = null
@@ -166,10 +171,46 @@ class PilastriReportFragment : BaseReportFragment() {
         sezione_c_parameter.attachDataConfirmedCallback { fixPillarData() }
 
         calculate.setOnClickListener {
-            mPillarDomainGraphRequest?.onPillarDomainGraphRequest(getReport().reportState.buildingState.pillarState).let {
+            mPillarDomainGraphRequest?.onPillarDomainGraphRequest(getReport().reportState.buildingState.pillarState)?.let {
                 with(pillar_domain_chart)
                 {
-                    data = LineData(it)
+                    val UiPoints = it.points.map {
+                        val lds = LineDataSet(listOf(Entry(it.n.toFloat(), it.m.toFloat())), it.label)
+                        lds.color = ContextCompat.getColor(context, it.color)
+                        lds.setDrawCircles(true)
+                        lds.circleRadius = 10f
+                        lds.circleColors = listOf(ContextCompat.getColor(context, it.color))
+                        lds.axisDependency = YAxis.AxisDependency.LEFT
+                        lds
+                    }.toMutableList()
+
+                    val upPointList = mutableListOf<Entry>()
+                    it.positive.forEach {point ->
+                        upPointList.add(Entry(point.n.toFloat(), point.m.toFloat()))
+                    }
+
+                    val UiDomainUp = LineDataSet(upPointList, "")
+                    UiDomainUp.color = Color.BLUE
+                    UiDomainUp.setDrawCircles(false)
+                    UiDomainUp.lineWidth = 3f
+                    UiDomainUp.axisDependency = YAxis.AxisDependency.LEFT
+
+
+                    val downList = mutableListOf<Entry>()
+                    it.negative.forEach {point ->
+                        downList.add(Entry(point.n.toFloat(), point.m.toFloat()))
+                    }
+
+                    val UiDomainDown = LineDataSet(downList, "")
+                    UiDomainDown.color = Color.BLUE
+                    UiDomainDown.setDrawCircles(false)
+                    UiDomainDown.lineWidth = 3f
+                    UiDomainDown.axisDependency = YAxis.AxisDependency.LEFT
+
+                    UiPoints.add(UiDomainUp)
+                    UiPoints.add(UiDomainDown)
+                    
+                    data = LineData(UiPoints.toList())
                     invalidate()
                 }
             }
@@ -177,7 +218,7 @@ class PilastriReportFragment : BaseReportFragment() {
         with(pillar_domain_chart)
         {
             xAxis.position = XAxis.XAxisPosition.BOTTOM
-            legend.form = Legend.LegendForm.NONE
+            legend.form = Legend.LegendForm.DEFAULT
             description.isEnabled = false
             getAxis(YAxis.AxisDependency.RIGHT).isEnabled = false
         }

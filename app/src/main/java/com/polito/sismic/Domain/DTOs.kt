@@ -829,6 +829,80 @@ data class PillarState(var classe_calcestruzzo: String,
     }
 }
 
+data class PillarDomain(var positive: List<PillarDomainGraphPoint>,
+                        var negative: List<PillarDomainGraphPoint>,
+                        var points: List<PillarDomainPoint>) : Parcelable {
+    constructor(source: Parcel) : this(
+            source.createTypedArrayList(PillarDomainGraphPoint.CREATOR),
+            source.createTypedArrayList(PillarDomainGraphPoint.CREATOR),
+            source.createTypedArrayList(PillarDomainPoint.CREATOR)
+    )
+
+    override fun describeContents() = 0
+
+    override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
+        writeTypedList(positive)
+        writeTypedList(negative)
+        writeTypedList(points)
+    }
+
+    companion object {
+        @JvmField
+        val CREATOR: Parcelable.Creator<PillarDomain> = object : Parcelable.Creator<PillarDomain> {
+            override fun createFromParcel(source: Parcel): PillarDomain = PillarDomain(source)
+            override fun newArray(size: Int): Array<PillarDomain?> = arrayOfNulls(size)
+        }
+    }
+}
+
+data class PillarDomainGraphPoint(var n: Double, var m: Double) : Parcelable {
+    constructor(source: Parcel) : this(
+            source.readDouble(),
+            source.readDouble()
+    )
+
+    override fun describeContents() = 0
+
+    override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
+        writeDouble(n)
+        writeDouble(m)
+    }
+
+    companion object {
+        @JvmField
+        val CREATOR: Parcelable.Creator<PillarDomainGraphPoint> = object : Parcelable.Creator<PillarDomainGraphPoint> {
+            override fun createFromParcel(source: Parcel): PillarDomainGraphPoint = PillarDomainGraphPoint(source)
+            override fun newArray(size: Int): Array<PillarDomainGraphPoint?> = arrayOfNulls(size)
+        }
+    }
+}
+
+data class PillarDomainPoint(var n: Double, var m: Double, var label: String, var color: Int) : Parcelable {
+    constructor(source: Parcel) : this(
+            source.readDouble(),
+            source.readDouble(),
+            source.readString(),
+            source.readInt()
+    )
+
+    override fun describeContents() = 0
+
+    override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
+        writeDouble(n)
+        writeDouble(m)
+        writeString(label)
+        writeInt(color)
+    }
+
+    companion object {
+        @JvmField
+        val CREATOR: Parcelable.Creator<PillarDomainPoint> = object : Parcelable.Creator<PillarDomainPoint> {
+            override fun createFromParcel(source: Parcel): PillarDomainPoint = PillarDomainPoint(source)
+            override fun newArray(size: Int): Array<PillarDomainPoint?> = arrayOfNulls(size)
+        }
+    }
+}
+
 data class PillarLayoutState(var pillarX: Int,
                              var pillarY: Int,
                              var distX: Double,

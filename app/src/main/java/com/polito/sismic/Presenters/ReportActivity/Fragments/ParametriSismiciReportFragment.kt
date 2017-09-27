@@ -3,6 +3,7 @@ package com.polito.sismic.Presenters.ReportActivity.Fragments
 import android.content.Context
 import android.os.Bundle
 import android.support.annotation.Nullable
+import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -121,7 +122,7 @@ class ParametriSismiciReportFragment : BaseReportFragment() {
         val spectrumsDomain = mLimitStateRequest?.onLimitStatesRequested(UiMapper.createSismicStateForDomain(this, listOf()))
         val spectrumsUi = spectrumsDomain?.map {
             val lds = LineDataSet(it.pointList.toEntryList(), String.format(context.getString(R.string.label_limit_state_format), it.name, it.year))
-            lds.color = context.resources.getColor(it.color)
+            lds.color = ContextCompat.getColor(context, it.color)
             lds.lineWidth = 2f
             lds.setDrawCircles(false)
             lds.axisDependency = YAxis.AxisDependency.LEFT

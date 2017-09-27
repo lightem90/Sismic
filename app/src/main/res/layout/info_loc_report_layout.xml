@@ -96,6 +96,7 @@
         android:id="@+id/cap_parameter"
         app:report_parameter_title="@string/report_cap_parameter"
         app:report_parameter_hint="@string/report_cap_parameter_hint"
+        app:report_parameter_isNumber="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
