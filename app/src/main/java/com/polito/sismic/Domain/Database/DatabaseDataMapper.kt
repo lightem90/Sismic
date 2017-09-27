@@ -12,11 +12,11 @@ class DatabaseDataMapper {
     private val helper : DatabaseMapperHelper = DatabaseMapperHelper()
 
     fun convertReportDetailsToDomain(databaseReport: DatabaseReportDetails): ReportDetails = with (databaseReport){
-        return ReportDetails(_id, title, description, userID, date.toFormattedDate())
+        return ReportDetails(_id, title, description, userID, date.toFormattedDate(), committed)
     }
 
     fun convertReportDetailsFromDomain(reportDetails: ReportDetails) : DatabaseReportDetails = with (reportDetails) {
-        return DatabaseReportDetails(id, title, description, userIdentifier, date.toFormattedString())
+        return DatabaseReportDetails(id, title, description, userIdentifier, date.toFormattedString(), committed)
     }
 
     fun convertMediaToDomain(databaseReportMedia: DatabaseReportMedia): ReportMedia = with(databaseReportMedia)

@@ -13,6 +13,7 @@ object ReportTable
     val DESCRIPTION = "description"
     val USERID = "userID"
     val DATE = "date"
+    val COMMITTED = "committed"
 }
 
 object ReportMediaTable

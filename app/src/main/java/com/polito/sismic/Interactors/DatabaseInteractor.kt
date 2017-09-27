@@ -1,5 +1,6 @@
 package com.polito.sismic.Interactors
 
+import android.net.Uri
 import com.polito.sismic.Domain.Database.*
 import com.polito.sismic.Domain.Report
 import com.polito.sismic.Domain.ReportDetails
@@ -9,6 +10,7 @@ import org.jetbrains.anko.db.SqlOrderDirection
 import org.jetbrains.anko.db.insert
 import org.jetbrains.anko.db.select
 import org.jetbrains.anko.db.update
+import java.io.File
 import java.util.*
 import javax.xml.transform.Result
 import kotlin.collections.HashMap
@@ -31,7 +33,8 @@ class DatabaseInteractor(private val reportDatabaseHelper: ReportDatabaseHelper 
                 ReportTable.USERID to userID,
                 ReportTable.TITLE to title,
                 ReportTable.DESCRIPTION to description,
-                ReportTable.DATE to date.toFormattedString())
+                ReportTable.DATE to date.toFormattedString(),
+                ReportTable.COMMITTED to -1)
 
         val reportRequest = "${ReportTable.USERID} = ? "
         val databaseReportDetails = select(ReportTable.NAME)
@@ -143,6 +146,7 @@ class DatabaseInteractor(private val reportDatabaseHelper: ReportDatabaseHelper 
         if (editing) delete(report.reportDetails)
         with(dataMapper.convertReportFromDomain(report))
         {
+            reportDetails.committed = 1
             insert(ReportTable.NAME, *reportDetails.map.toVarargArray())
             insertEachSectionIntoCorrectTable(sections)
             mediaList.forEach { (map) -> insert(ReportMediaTable.NAME, *map.toVarargArray()) }
@@ -150,12 +154,11 @@ class DatabaseInteractor(private val reportDatabaseHelper: ReportDatabaseHelper 
 
     }
 
-    fun delete(reportDetails: ReportDetails)
-    {
+    fun delete(reportDetails: ReportDetails) {
         delete(reportDetails.id)
     }
 
-    fun delete(_id : Int) = reportDatabaseHelper.use {
+    fun delete(_id: Int) = reportDatabaseHelper.use {
 
         delete(ReportTable.NAME, "${ReportTable.ID} = ?", arrayOf(_id.toString()))
         delete(ReportMediaTable.NAME, "${ReportMediaTable.REPORT_ID} = ?", arrayOf(_id.toString()))
@@ -182,7 +185,7 @@ class DatabaseInteractor(private val reportDatabaseHelper: ReportDatabaseHelper 
                 is DatabaseCatastoSection -> {
                     insert(CatastoInfoTable.NAME, *section.map.toVarargArray())
                 }
-                is DatabaseDatiSismogenetici ->{
+                is DatabaseDatiSismogenetici -> {
                     insert(DatiSismogeneticiInfoTable.NAME, *section.map.toVarargArray())
                 }
                 is DatabaseParametriSismici -> {
@@ -197,7 +200,7 @@ class DatabaseInteractor(private val reportDatabaseHelper: ReportDatabaseHelper 
                 is DatabaseRilievi -> {
                     insert(RilieviInfoTable.NAME, *section.map.toVarargArray())
                 }
-                is DatabaseDatiStrutturali ->{
+                is DatabaseDatiStrutturali -> {
                     insert(DatiStrutturaliInfoTable.NAME, *section.map.toVarargArray())
                 }
                 is DatabaseMagliaStrutturale -> {
@@ -213,47 +216,6 @@ class DatabaseInteractor(private val reportDatabaseHelper: ReportDatabaseHelper 
         }
     }
 
-    private fun updateEachSectionIntoCorrectTable(sections: List<DatabaseSection>) = reportDatabaseHelper.use {
-        sections.forEach { section ->
-            when (section) {
-
-                is DatabaseLocalizationSection -> {
-                    update(LocalizationInfoTable.NAME, *section.map.toVarargArray())
-                }
-                is DatabaseCatastoSection -> {
-                    update(CatastoInfoTable.NAME, *section.map.toVarargArray())
-                }
-                is DatabaseDatiSismogenetici -> {
-                    update(DatiSismogeneticiInfoTable.NAME, *section.map.toVarargArray())
-                }
-                is DatabaseParametriSismici -> {
-                    update(ParametriSismiciInfoTable.NAME, *section.map.toVarargArray())
-                }
-                is DatabaseParametriSpettri -> {
-                    update(SpettriDiProgettoInfoTable.NAME, *section.map.toVarargArray())
-                }
-                is DatabaseCaratteristicheGenerali -> {
-                    update(CaratteristicheGeneraliInfoTable.NAME, *section.map.toVarargArray())
-                }
-                is DatabaseRilievi -> {
-                    update(RilieviInfoTable.NAME, *section.map.toVarargArray())
-                }
-                is DatabaseDatiStrutturali -> {
-                    update(DatiStrutturaliInfoTable.NAME, *section.map.toVarargArray())
-                }
-                is DatabaseCaratteristichePilastri -> {
-                    update(CaratteristichePilastriInfoTable.NAME, *section.map.toVarargArray())
-                }
-                is DatabaseMagliaStrutturale -> {
-                    update(MagliaStrutturaleInfoTable.NAME, *section.map.toVarargArray())
-                }
-                is DatabaseResults -> {
-                    update(ResultsInfoTable.NAME, *section.map.toVarargArray())
-                }
-            }
-        }
-    }
-
     fun getDetailsForHistory(): MutableList<ReportItemHistory> = reportDatabaseHelper.use {
 
         val reports = select(ReportTable.NAME)
@@ -264,8 +226,34 @@ class DatabaseInteractor(private val reportDatabaseHelper: ReportDatabaseHelper 
                 .orderBy(ResultsInfoTable.ID)
                 .parseList { DatabaseResults(HashMap(it)) }
 
-        //there's a smarter way to do this
-
         reports.map { dataMapper.convertReportDataForHistory(it, results) }.toMutableList()
+    }
+
+    fun deleteNotCommittedReports() = reportDatabaseHelper.use {
+        val invalidReportsDetailsRequest = "${ReportTable.COMMITTED} = -1"
+        val invalidReportsDetails = select(ReportTable.NAME)
+                .whereSimple(invalidReportsDetailsRequest)
+                .parseList { DatabaseReportDetails(HashMap(it)) }
+
+        //All reports saved with crash (committed = -1)
+        invalidReportsDetails.forEach { invalidReports ->
+
+            //Get all invalid medias
+            val invalidReportMedias = select(ReportMediaTable.NAME)
+                    .byReportId(invalidReports._id.toString())
+                    .parseList { DatabaseReportMedia(HashMap(it)) }
+
+            //delete file from path
+            invalidReportMedias.forEach { media ->
+                val uri = Uri.parse(media.filepath)
+                if (uri != null) {
+                    File(uri.path).delete()
+                }
+            }
+
+            //delete all tables
+            delete(invalidReports._id)
+        }
+
     }
 }

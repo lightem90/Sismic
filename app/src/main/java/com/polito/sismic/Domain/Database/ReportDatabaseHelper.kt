@@ -22,7 +22,8 @@ class ReportDatabaseHelper(ctx: Context = App.instance) : ManagedSQLiteOpenHelpe
                 ReportTable.TITLE to TEXT,
                 ReportTable.DESCRIPTION to TEXT,
                 ReportTable.USERID to TEXT,
-                ReportTable.DATE to TEXT
+                ReportTable.DATE to TEXT,
+                ReportTable.COMMITTED to INTEGER
             )
         )
 

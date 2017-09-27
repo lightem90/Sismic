@@ -19,18 +19,22 @@ data class DatabaseReportDetails(var map: MutableMap<String, Any?>) {
     var description: String by map
     var userID: String by map
     var date: String by map
+    var committed : Int by map
 
     constructor(id: Int,
                 title: String
                 , description: String
                 , userID: String
-                , date: String)
+                , date: String,
+                committed : Int
+    )
             : this(HashMap()) {
         this._id = id
         this.title = title
         this.description = description
         this.userID = userID
         this.date = date
+        this.committed = committed
     }
 }
 

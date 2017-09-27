@@ -7,12 +7,14 @@ import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import com.polito.sismic.Interactors.DatabaseInteractor
 import com.polito.sismic.R
 import kotlinx.android.synthetic.main.activity_presenter.*
 
 class PresenterActivity : AppCompatActivity(),
         ReportListFragment.HistoryReload {
 
+    private val mDatabaseInteractor : DatabaseInteractor = DatabaseInteractor()
     private val fragmentFactory : PresenterFragmentFactory = PresenterFragmentFactory()
     companion object {
         val REPORT_ACTIVITY = 50
@@ -78,6 +80,7 @@ class PresenterActivity : AppCompatActivity(),
         val initialFrag = fragmentFactory.GetHomeFragment()
         pushFragment(initialFrag, initialFrag.getFragmentTag())
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+        mDatabaseInteractor.deleteNotCommittedReports()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

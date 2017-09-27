@@ -4,6 +4,7 @@ import android.content.Intent
 import android.location.Location
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.view.KeyEvent
 import android.view.MenuItem
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
@@ -156,6 +157,10 @@ class ReportActivity : AppCompatActivity(),
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         mPermissionHelper.handlePermissionResult(requestCode, grantResults)
+    }
+
+    override fun onBackPressed() {
+        mUserActionInteractor.onActionRequested(UserActionType.BackRequest)
     }
 
     private fun initializeFromManager(reportManager: ReportManager) {
