@@ -56,7 +56,9 @@ class ReportAdapter(val mContext: Context,
                 itemView.history_item_value.text = reportDetails.value.toString()
                 setTextColorByDanger(reportDetails.value, itemView.history_item_value)
                 itemView.setOnLongClickListener { longClick(this) }
-                itemView.btn_delete_item_history.setOnClickListener { mHistoryInteractor.deleteItemById(reportDetails.id) }
+                itemView.btn_delete_item_history.setOnClickListener {
+                    mHistoryInteractor.deleteItemById(reportDetails.id)
+                }
                 itemView.btn_print_item_history.setOnClickListener { mHistoryInteractor.printItem(reportDetails.id, reportDetails.userIdentifier) }
                 itemView.btn_upload_item_history.setOnClickListener { mHistoryInteractor.uploadItem(reportDetails.id, reportDetails.userIdentifier) }
             }

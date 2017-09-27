@@ -1,7 +1,6 @@
 package com.polito.sismic.Presenters.PresenterActivity
 
 import android.app.Fragment
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -24,6 +23,9 @@ class ReportListFragment : Fragment() {
     val mDatabaseInteractor = DatabaseInteractor()
     val mReportHistoryInteractor : HistoryItemInteractor by lazy {
         HistoryItemInteractor(activity, mDatabaseInteractor)
+        {
+            invalidate()
+        }
     }
 
     fun getFragmentTag() : String
@@ -91,6 +93,11 @@ class ReportListFragment : Fragment() {
     fun invalidateAndReload()
     {
         mReportHistoryInteractor.reloadList()
+        invalidate()
+    }
+
+    fun invalidate()
+    {
         history_container?.adapter?.notifyDataSetChanged()
     }
 

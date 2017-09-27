@@ -19,8 +19,9 @@ enum class ReorderType
 }
 
 
-class HistoryItemInteractor (val mContext : Context,
-        val mDatabaseInteractor: DatabaseInteractor) {
+class HistoryItemInteractor (val mContext: Context,
+                             val mDatabaseInteractor: DatabaseInteractor,
+                             val reloadCallback: () -> Unit) {
 
     val mReportHistoryItems = mDatabaseInteractor.getDetailsForHistory()
     val mUploadHelper = UploadHelper()
@@ -30,6 +31,7 @@ class HistoryItemInteractor (val mContext : Context,
     {
         mReportHistoryItems.clear()
         mReportHistoryItems.addAll(mDatabaseInteractor.getDetailsForHistory())
+        reloadCallback.invoke()
     }
 
     fun reorder(type : ReorderType)
@@ -48,6 +50,7 @@ class HistoryItemInteractor (val mContext : Context,
 
     fun deleteItemById(id: Int) = with(mDatabaseInteractor){
         delete(id)
+        reloadList()
         mContext.toast(String.format(mContext.getString(R.string.report_delete_succeded), id))
     }
 

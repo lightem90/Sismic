@@ -57,7 +57,6 @@ class PresenterActivity : AppCompatActivity(),
             val ft = fragmentManager.beginTransaction()
             if (ft != null) {
                 ft.replace(R.id.frame_canvas, fragment, tag)
-                ft.addToBackStack(null)
                 ft.commit()
             }
         }
