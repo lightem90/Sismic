@@ -219,6 +219,7 @@ fun PeriodData.interpolateWith(next : PeriodData, newYear : Int) : PeriodData
 
 fun String.toDoubleOrZero() : Double
 {
+    replace(",", ".")
     return if (isEmpty()) 0.0 else toDouble()
 }
 
