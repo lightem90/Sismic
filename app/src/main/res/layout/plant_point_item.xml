@@ -12,6 +12,8 @@
         android:layout_marginLeft = "@dimen/activity_horizontal_margin"
         android:nextFocusForward="@id/plant_y"
         android:nextFocusRight="@id/plant_y"
+        android:singleLine="true"
+        android:maxLines="1"
         style="@style/PlantItem"/>
 
     <EditText
@@ -19,6 +21,8 @@
         android:hint="@string/plant_y_hint"
         android:layout_marginStart="@dimen/grid_vertical_margin"
         android:layout_marginLeft = "@dimen/grid_vertical_margin"
+        android:singleLine="true"
+        android:maxLines="1"
         style="@style/PlantItem" />
 
     <ImageButton

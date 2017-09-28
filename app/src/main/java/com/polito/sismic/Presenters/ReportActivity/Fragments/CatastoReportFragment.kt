@@ -67,9 +67,7 @@ class CatastoReportFragment : BaseReportFragment() {
         piano_urb_parameter.attachDataConfirmedCallback {
             vincoli_urb_parameter.requestFocus()
         }
-        vincoli_urb_parameter.attachDataConfirmedCallback {
-            activity.hideSoftKeyboard()
-        }
+        vincoli_urb_parameter.attachDataConfirmedCallback { if (!it.isEmpty()) activity.hideSoftKeyboard() }
     }
 
     override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback?) {

@@ -226,15 +226,15 @@ fun Int.toStringOrEmpty(): String {
 //better safe than sorry
 fun Activity.hideSoftKeyboard() {
     val inputManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-    inputManager.let {
-        it.hideSoftInputFromWindow(currentFocus.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+    inputManager?.let {
+        if (currentFocus != null && currentFocus.windowToken != null && window != null) it.hideSoftInputFromWindow(currentFocus.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
     }
 }
 
 fun Activity.showSoftKeyboard() {
     val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     imm?.let {
-        it.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0)
+        if (currentFocus != null && window != null) it.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0)
     }
 }
 

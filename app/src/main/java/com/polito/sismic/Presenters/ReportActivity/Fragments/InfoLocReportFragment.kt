@@ -97,9 +97,7 @@ class InfoLocReportFragment : BaseReportFragment() {
         zona_sismica_parameter.attachDataConfirmedCallback {
             codice_istat_parameter.requestFocus()
         }
-        codice_istat_parameter.attachDataConfirmedCallback {
-            activity.hideSoftKeyboard()
-        }
+        codice_istat_parameter.attachDataConfirmedCallback { if (!it.isEmpty()) activity.hideSoftKeyboard() }
     }
 
     override fun onCreateView(inflater: LayoutInflater?, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View? {

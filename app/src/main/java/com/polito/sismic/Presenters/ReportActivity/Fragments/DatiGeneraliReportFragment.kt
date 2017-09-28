@@ -35,9 +35,7 @@ class DatiGeneraliReportFragment : BaseReportFragment() {
             totale_unita_parameter.requestFocus()
         }
 
-        totale_unita_parameter.attachDataConfirmedCallback {
-            activity.hideSoftKeyboard()
-        }
+        totale_unita_parameter.attachDataConfirmedCallback { if (!it.isEmpty()) activity.hideSoftKeyboard() }
     }
 
     //callback to activity updates domain instance for activity and all existing and future fragments

@@ -7,50 +7,59 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.polito.sismic.Domain.PlantPoint
+import com.polito.sismic.Extensions.toast
 import com.polito.sismic.R
 
 /**
  * Created by it0003971 on 28/09/2017.
  */
-class SismicPlantBuildingInteractor(private val mContext : Context) {
+class SismicPlantBuildingInteractor(private val mContext: Context) {
 
-    val pointList: MutableList<PlantPoint> = mutableListOf(PlantPoint(0.0, 0.0))
-    fun convertListForGraph(): LineData? {
+    private val pointList: MutableList<PlantPoint> by lazy {
+        mutableListOf(PlantPoint(0.0, 0.0))
+    }
+
+    fun getPlantPointList(): MutableList<PlantPoint> {
+        return pointList
+    }
+
+    fun convertListForGraph(): LineData {
+
+        if (pointList.size < 1) pointList.add(PlantPoint(0.0, 0.0))
 
         val entryList = pointList.map {
             Entry(it.x.toFloat(), it.y.toFloat())
         }
 
-        return with(LineDataSet(entryList, mContext.getString(R.string.rilievo_esterno)))
-        {
-            color = Color.BLACK
-            setDrawCircles(true)
-            circleRadius = 2f
-            lineWidth = 3f
-            axisDependency = YAxis.AxisDependency.LEFT
-            LineData(this)
-        }
+        val lds = LineDataSet(entryList, mContext.getString(R.string.rilievo_esterno))
+        lds.color = Color.BLACK
+        lds.setDrawCircles(true)
+        lds.circleRadius = 2f
+        lds.lineWidth = 3f
+        lds.axisDependency = YAxis.AxisDependency.LEFT
+
+        return LineData(lds)
     }
 
     fun addGenericPointAfter(plantPoint: PlantPoint) {
-        val index = pointList.indexOf(plantPoint) +1
+        val index = pointList.indexOf(plantPoint) + 1
         pointList.add(index, PlantPoint(0.0, 0.0))
     }
 
     fun deletePoint(plantPoint: PlantPoint) {
+        //Always leave one active
+        if (pointList.size == 1) return
         pointList.remove(plantPoint)
     }
 
-    fun addPointOnXAfter(plantPoint: PlantPoint)
-    {
-        val index = pointList.indexOf(plantPoint) +1
+    fun addPointOnXAfter(plantPoint: PlantPoint) {
+        val index = pointList.indexOf(plantPoint) + 1
         pointList.add(index, PlantPoint(plantPoint.x, 0.0))
     }
 
-    fun addPointOnYAfter(plantPoint: PlantPoint)
-    {
-        val index = pointList.indexOf(plantPoint) +1
+    fun addPointOnYAfter(plantPoint: PlantPoint) {
+        val index = pointList.indexOf(plantPoint) + 1
         pointList.add(index, PlantPoint(0.0, plantPoint.y))
     }
-
 }
+

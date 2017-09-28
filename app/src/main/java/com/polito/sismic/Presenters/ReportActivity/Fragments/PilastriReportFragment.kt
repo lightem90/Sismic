@@ -67,7 +67,7 @@ class PilastriReportFragment : BaseReportFragment() {
         sezione_hy_parameter.attachDataConfirmedCallback { sezione_c_parameter.requestFocus() }
         sezione_c_parameter.attachDataConfirmedCallback { num_armatura.requestFocus() }
         num_armatura.attachDataConfirmedCallback { armatura_fi.requestFocus() }
-        armatura_fi.attachDataConfirmedCallback { activity.hideSoftKeyboard() }
+        armatura_fi.attachDataConfirmedCallback { if (!it.isEmpty()) activity.hideSoftKeyboard() }
 
         calc_classe_parameter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 

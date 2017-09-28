@@ -109,10 +109,7 @@ class DatiStrutturaliReportFragment : BaseReportFragment() {
             updateCoperturaQ()
             copertura_qk.requestFocus()
         }
-        copertura_qk.attachDataConfirmedCallback {
-            updateCoperturaQ()
-            activity.hideSoftKeyboard()
-        }
+        copertura_qk.attachDataConfirmedCallback { if (!it.isEmpty()) activity.hideSoftKeyboard() }
 
         copertura_type.setOnClickListener {
             context.toast(R.string.error_not_supported)

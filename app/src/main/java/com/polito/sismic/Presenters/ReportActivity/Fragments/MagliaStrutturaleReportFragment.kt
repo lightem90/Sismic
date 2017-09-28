@@ -23,7 +23,7 @@ class MagliaStrutturaleReportFragment : BaseReportFragment() {
         num_x.attachDataConfirmedCallback { num_y.requestFocus() }
         num_y.attachDataConfirmedCallback { dist_x.requestFocus() }
         dist_x.attachDataConfirmedCallback { dist_y.requestFocus() }
-        dist_y.attachDataConfirmedCallback { activity.hideSoftKeyboard() }
+        dist_y.attachDataConfirmedCallback { if (!it.isEmpty()) activity.hideSoftKeyboard() }
     }
 
     //callback to activity updates domain instance for activity and all existing and future fragments

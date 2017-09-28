@@ -11,6 +11,7 @@ import android.widget.AdapterView
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
+import com.polito.sismic.Domain.PlantPoint
 import com.polito.sismic.Extensions.toDoubleOrZero
 import com.polito.sismic.Interactors.Helpers.UiMapper
 import com.polito.sismic.Interactors.SismicPlantBuildingInteractor
@@ -25,7 +26,11 @@ import kotlinx.android.synthetic.main.rilievi_report_layout.*
 class RilieviReportFragment : BaseReportFragment() {
 
     val mSismicPlantBuildingInteractor : SismicPlantBuildingInteractor by lazy {
-        SismicPlantBuildingInteractor(activity)
+        SismicPlantBuildingInteractor(context)
+    }
+
+    val mPointList : MutableList<PlantPoint> by lazy {
+        mSismicPlantBuildingInteractor.getPlantPointList()
     }
 
     override fun onCreateView(inflater: LayoutInflater?, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View? {
@@ -52,12 +57,11 @@ class RilieviReportFragment : BaseReportFragment() {
 
 
         plant_point_list.layoutManager = LinearLayoutManager(activity)
-        val adapter = PlantPointsAdapter(activity, mSismicPlantBuildingInteractor){
+        val adapter = PlantPointsAdapter(activity, mSismicPlantBuildingInteractor, mPointList){
             invalidateAndReload()
         }
-        adapter.somethingChanged()
         plant_point_list.adapter = adapter
-        invalidateAndReload()
+        adapter.somethingChanged()
 
         with(plant_graph)
         {
@@ -82,6 +86,8 @@ class RilieviReportFragment : BaseReportFragment() {
 
     fun invalidate()
     {
+        mPointList.clear()
+        mPointList.addAll(mSismicPlantBuildingInteractor.getPlantPointList())
         plant_point_list?.adapter?.notifyDataSetChanged()
     }
 

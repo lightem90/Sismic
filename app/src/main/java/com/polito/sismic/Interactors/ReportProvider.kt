@@ -47,7 +47,7 @@ class ReportProvider(val caller: ReportActivity) {
             //I will delete the tmp report as well
             val customDialog = caller.layoutInflater.inflate(R.layout.report_wizard, null)
             customDialog.report_title.attachDataConfirmedCallback { customDialog.report_description.requestFocus() }
-            customDialog.report_description.attachDataConfirmedCallback { caller.hideSoftKeyboard() }
+            customDialog.report_description.attachDataConfirmedCallback { if (!it.isEmpty()) caller.hideSoftKeyboard() }
             AlertDialog.Builder(caller)
                 .setTitle(R.string.report_wizard_title)
                 .setView(customDialog)
