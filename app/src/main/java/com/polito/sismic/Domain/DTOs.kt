@@ -630,17 +630,38 @@ data class BuildingGeneralState(var anno_costruzione: String,
     }
 }
 
+data class PlantPoint(var x: Double, var y: Double) : Parcelable {
+    constructor(source: Parcel) : this(
+            source.readDouble(),
+            source.readDouble()
+    )
+
+    override fun describeContents() = 0
+
+    override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
+        writeDouble(x)
+        writeDouble(y)
+    }
+
+    companion object {
+        @JvmField
+        val CREATOR: Parcelable.Creator<PlantPoint> = object : Parcelable.Creator<PlantPoint> {
+            override fun createFromParcel(source: Parcel): PlantPoint = PlantPoint(source)
+            override fun newArray(size: Int): Array<PlantPoint?> = arrayOfNulls(size)
+        }
+    }
+}
+
 data class TakeoverState(var numero_piani: Int,
                          var altezza_piano_terra: Double,
                          var altezza_piani_superiori: Double,
                          var altezza_totale: Double,
-                         var lunghezza_esterna: Double,
-                         var larghezza_esterna: Double,
-                         var t1 : Double,
+                         var t1: Double,
                          var area: Double,
                          var perimetro: Double,
-                         var gravity_center: SpectrumPoint) : Parcelable {
-    constructor() : this(0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, SpectrumPoint(0.0, 0.0))
+                         var gravity_center: PlantPoint,
+                         var plant_points: List<PlantPoint>) : Parcelable {
+    constructor() : this(0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, PlantPoint(0.0,0.0), listOf<PlantPoint>())
 
     constructor(source: Parcel) : this(
             source.readInt(),
@@ -650,9 +671,8 @@ data class TakeoverState(var numero_piani: Int,
             source.readDouble(),
             source.readDouble(),
             source.readDouble(),
-            source.readDouble(),
-            source.readDouble(),
-            source.readParcelable<SpectrumPoint>(SpectrumPoint::class.java.classLoader)
+            source.readParcelable<PlantPoint>(PlantPoint::class.java.classLoader),
+            source.createTypedArrayList(PlantPoint.CREATOR)
     )
 
     override fun describeContents() = 0
@@ -662,12 +682,11 @@ data class TakeoverState(var numero_piani: Int,
         writeDouble(altezza_piano_terra)
         writeDouble(altezza_piani_superiori)
         writeDouble(altezza_totale)
-        writeDouble(lunghezza_esterna)
-        writeDouble(larghezza_esterna)
         writeDouble(t1)
         writeDouble(area)
         writeDouble(perimetro)
         writeParcelable(gravity_center, 0)
+        writeTypedList(plant_points)
     }
 
     companion object {

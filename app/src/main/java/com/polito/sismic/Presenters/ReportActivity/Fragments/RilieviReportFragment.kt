@@ -2,14 +2,16 @@ package com.polito.sismic.Presenters.ReportActivity.Fragments
 
 import android.os.Bundle
 import android.support.annotation.Nullable
+import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Adapter
 import android.widget.AdapterView
 import com.polito.sismic.Extensions.toDoubleOrZero
-import com.polito.sismic.Extensions.toast
 import com.polito.sismic.Interactors.Helpers.UiMapper
+import com.polito.sismic.Interactors.SismicPlantBuildingInteractor
+import com.polito.sismic.Presenters.Adapters.PlantPointsAdapter
 import com.polito.sismic.R
 import com.stepstone.stepper.StepperLayout
 import kotlinx.android.synthetic.main.rilievi_report_layout.*
@@ -19,16 +21,12 @@ import kotlinx.android.synthetic.main.rilievi_report_layout.*
  */
 class RilieviReportFragment : BaseReportFragment() {
 
+    private val mSismicPlantBuildingInteractor : SismicPlantBuildingInteractor = SismicPlantBuildingInteractor()
     override fun onCreateView(inflater: LayoutInflater?, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View? {
         return inflateFragment(R.layout.rilievi_report_layout, inflater, container)
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
-
-        regolare_in_altezza.setOnClickListener {
-            context.toast(R.string.error_not_supported)
-            regolare_in_altezza.isChecked = true
-        }
 
         piani_numero_parameter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 
@@ -46,6 +44,29 @@ class RilieviReportFragment : BaseReportFragment() {
         altezza_piano_tr_parameter.attachDataConfirmedCallback { updateAltezzaTotale() }
         altezza_piani_sup_parameter.attachDataConfirmedCallback { updateAltezzaTotale() }
 
+
+        plant_point_list.layoutManager = LinearLayoutManager(activity)
+        val adapter = PlantPointsAdapter(activity, mSismicPlantBuildingInteractor)
+        adapter.somethingChanged{ invalidateAndReload()}
+        plant_point_list.adapter = adapter
+        invalidateAndReload()
+    }
+
+    fun invalidateAndReload()
+    {
+        invalidate()
+        updateGraph()
+    }
+
+    private fun updateGraph() = with(plant_graph)
+    {
+        data = mSismicPlantBuildingInteractor.convertListForGraph()
+        invalidate()
+    }
+
+    fun invalidate()
+    {
+        plant_point_list?.adapter?.notifyDataSetChanged()
     }
 
     private fun updateAltezzaTotale()

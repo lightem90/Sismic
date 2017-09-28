@@ -38,44 +38,24 @@
         android:layout_height="wrap_content"/>
 
     <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:id="@+id/altezza_tot"
+        android:text="@string/altezza_tot"
+        android:visibility="gone"/>
+
+    <TextView
         style="@style/sectionTitle"
         android:text="@string/report_rilievo_interno_title"/>
 
-    <!-- TODO BETTER !-->
-    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
-        android:id="@+id/lunghezza_piano_parameter"
-        app:report_parameter_title="@string/lunghezza_piano_parameter"
-        app:report_parameter_hint="@string/lunghezza_piano_parameter_hint"
-        app:report_parameter_isNumber="true"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/plant_point_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
-        android:id="@+id/larghezza_piano_parameter"
-        app:report_parameter_title="@string/larghezza_piano_parameter"
-        app:report_parameter_hint="@string/larghezza_piano_parameter_hint"
-        app:report_parameter_isNumber="true"
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/plant_graph"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-    <TextView
-        android:id="@+id/altezza_tot"
-        android:text="@string/altezza_tot"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:layout_gravity="center_horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-
-    <CheckBox
-        style="@style/checkBoxStyle"
-        android:id="@+id/regolare_in_altezza"
-        android:text="@string/report_regolare_altezza" />
-
-    <TextView
-        android:id="@+id/results"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="500dp"/>
 
 </LinearLayout>

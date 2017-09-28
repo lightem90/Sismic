@@ -19,6 +19,7 @@ import android.text.InputType
 import android.text.TextWatcher
 import android.view.KeyEvent
 import android.view.inputmethod.EditorInfo
+import com.polito.sismic.Extensions.onConfirm
 
 
 /**
@@ -98,21 +99,7 @@ class ParameterReportLayout : LinearLayout {
                     section_parameter_help.visibility = View.INVISIBLE
             }
 
-            section_parameter_value.setOnEditorActionListener { _, actionId, event ->
-                if(actionId == EditorInfo.IME_ACTION_SEARCH ||
-                        actionId == EditorInfo.IME_ACTION_DONE ||
-                        event?.action == KeyEvent.ACTION_DOWN &&
-                                event?.keyCode == KeyEvent.KEYCODE_ENTER)
-                {
-                        dataConfirmedCallback?.invoke(getParameterValue())
-                    true
-                } else
-                {
-                    false
-                }
-
-            }
-
+            section_parameter_value.onConfirm { dataConfirmedCallback?.invoke(getParameterValue()) }
             typedArray.recycle()
         }
     }

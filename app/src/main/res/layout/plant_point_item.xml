@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/plant_item">
+    
+    <EditText
+        android:id="@+id/plant_x"
+        android:hint="@string/plant_x_hint"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginLeft = "@dimen/activity_horizontal_margin"
+        android:nextFocusForward="@id/plant_y"
+        android:nextFocusRight="@id/plant_y"
+        style="@style/PlantItem"/>
+
+    <EditText
+        android:id="@+id/plant_y"
+        android:hint="@string/plant_y_hint"
+        android:layout_marginStart="@dimen/grid_vertical_margin"
+        android:layout_marginLeft = "@dimen/grid_vertical_margin"
+        style="@style/PlantItem" />
+
+    <ImageButton
+        android:id="@+id/up_point"
+        style="@style/PlantButton"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:srcCompat="@drawable/ic_delete_black_24dp"/>
+
+    <ImageButton
+        android:id="@+id/right_point"
+        style="@style/PlantButton"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:srcCompat="@drawable/ic_delete_black_24dp"/>
+
+    <ImageButton
+        android:id="@+id/down_point"
+        style="@style/PlantButton"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:srcCompat="@drawable/ic_delete_black_24dp"/>
+
+    <ImageButton
+        android:id="@+id/left_point"
+        style="@style/PlantButton"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:srcCompat="@drawable/ic_delete_black_24dp" />
+
+    <ImageButton
+        android:id="@+id/add"
+        style="@style/PlantButton"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:srcCompat="@drawable/ic_notifications_black_24dp"/>
+
+    <ImageButton
+        android:id="@+id/delete"
+        style="@style/PlantButton"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:srcCompat="@drawable/ic_delete_black_24dp"/>
+
+</LinearLayout>

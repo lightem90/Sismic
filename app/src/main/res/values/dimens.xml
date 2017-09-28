@@ -8,4 +8,5 @@
     <dimen name="report_parameter_value_height">48dp</dimen>
     <dimen name="grid_vertical_margin">8dp</dimen>
     <dimen name="spinner_padding_horizontal">48dp</dimen>
+    <dimen name="plant_item">48dp</dimen>
 </resources>

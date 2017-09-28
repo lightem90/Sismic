@@ -8,9 +8,6 @@ import android.database.sqlite.SQLiteDatabase
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import com.polito.sismic.Presenters.Adapters.ReportFragmentsAdapter
 import com.stepstone.stepper.adapter.StepAdapter
@@ -20,13 +17,13 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.reflect.KProperty
 import android.provider.OpenableColumns
-import android.view.WindowManager
+import android.view.*
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import com.github.mikephil.charting.data.Entry
 import com.polito.sismic.Domain.*
 import android.view.inputmethod.InputMethodManager.HIDE_NOT_ALWAYS
-
-
+import android.widget.EditText
 
 
 /**
@@ -35,6 +32,7 @@ import android.view.inputmethod.InputMethodManager.HIDE_NOT_ALWAYS
 
 //Context extensions
 fun Context.toast(resourceId: Int) = toast(getString(resourceId))
+
 fun Context.toast(message: CharSequence) =
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
 
@@ -120,26 +118,22 @@ class Preference<T>(val context: Context, val name: String, val default: T) {
     }
 }
 
-fun String.toFormattedDate() : Date
-{
+fun String.toFormattedDate(): Date {
     return SimpleDateFormat("yyyy-MM-dd HH:mm:ss ").parse(this)
 }
 
-fun Date.toFormattedString() : String
-{
+fun Date.toFormattedString(): String {
     return SimpleDateFormat("yyyy-MM-dd HH:mm:ss ").format(this)
 }
 
 fun <K, V : Any> Map<K, V?>.toVarargArray(): Array<out Pair<K, V>> =
         map({ Pair(it.key, it.value!!) }).toTypedArray()
 
-fun Bundle.putReport(state : Report)
-{
+fun Bundle.putReport(state: Report) {
     putParcelable("report_state", state)
 }
 
-fun Bundle.getReport() : Report?
-{
+fun Bundle.getReport(): Report? {
     return getParcelable<Report>("report_state")
 }
 
@@ -147,8 +141,7 @@ fun ViewGroup.inflate(layoutRes: Int): View {
     return LayoutInflater.from(context).inflate(layoutRes, this, false)
 }
 
-fun Double.getPowerOfTwoForSampleRatio(): Int
-{
+fun Double.getPowerOfTwoForSampleRatio(): Int {
     val k = Integer.highestOneBit(Math.floor(this).toInt())
     if (k == 0)
         return 1
@@ -156,8 +149,7 @@ fun Double.getPowerOfTwoForSampleRatio(): Int
         return k
 }
 
-fun StepAdapter.getCustomAdapter() : ReportFragmentsAdapter
-{
+fun StepAdapter.getCustomAdapter(): ReportFragmentsAdapter {
     return this as ReportFragmentsAdapter
 }
 
@@ -194,78 +186,81 @@ fun Uri.getMediaPath(mContext: Context): String {
     return toReturn
 }
 
-fun String.toUri() : Uri {
+fun String.toUri(): Uri {
     return Uri.parse(this)
 }
 
-fun List<Entry>.toSpectrumPointList() : List<SpectrumPoint>
-{
+fun List<Entry>.toSpectrumPointList(): List<SpectrumPoint> {
     return map { SpectrumPoint(it.x.toDouble(), it.y.toDouble()) }
 }
 
 
-fun List<SpectrumPoint>.toEntryList() : List<Entry>
-{
+fun List<SpectrumPoint>.toEntryList(): List<Entry> {
     return map { Entry(it.x.toFloat(), it.y.toFloat()) }
 }
 
-fun PeriodData.interpolateWith(next : PeriodData, newYear : Int) : PeriodData
-{
+fun PeriodData.interpolateWith(next: PeriodData, newYear: Int): PeriodData {
     val newAg = MathUti.periodDataInterpolation(ag, next.ag, years, next.years, newYear)
     val newF0 = MathUti.periodDataInterpolation(f0, next.f0, years, next.years, newYear)
     val newTcStar = MathUti.periodDataInterpolation(tcstar, next.tcstar, years, next.years, newYear)
     return PeriodData(newYear, newAg, newF0, newTcStar)
 }
 
-fun String.toDoubleOrZero() : Double
-{
+fun String.toDoubleOrZero(): Double {
     replace(",", ".")
     return if (isEmpty()) 0.0 else toDouble()
 }
 
-fun String.toIntOrZero() : Int
-{
+fun String.toIntOrZero(): Int {
     return if (isEmpty()) 0 else toInt()
 }
 
-fun Double.toStringOrEmpty() : String
-{
+fun Double.toStringOrEmpty(): String {
     return if (this == 0.0) "" else toString()
 }
 
-fun Int.toStringOrEmpty() : String
-{
+fun Int.toStringOrEmpty(): String {
     return if (this == 0) "" else toString()
 }
 
 //better safe than sorry
-fun Activity.hideSoftKeyboard()
-{
+fun Activity.hideSoftKeyboard() {
     val inputManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     inputManager.let {
-     it.hideSoftInputFromWindow(currentFocus.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+        it.hideSoftInputFromWindow(currentFocus.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
     }
 }
 
-fun Activity.showSoftKeyboard()
-{
+fun Activity.showSoftKeyboard() {
     val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     imm?.let {
         it.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0)
     }
 }
 
-class MathUti
-{
+fun EditText.onConfirm(callback: () -> Unit) {
+    setOnEditorActionListener { _, actionId, event ->
+        if (actionId == EditorInfo.IME_ACTION_SEARCH ||
+                actionId == EditorInfo.IME_ACTION_DONE ||
+                event?.action == KeyEvent.ACTION_DOWN &&
+                        event?.keyCode == KeyEvent.KEYCODE_ENTER) {
+            callback.invoke()
+            true
+        } else {
+            false
+        }
+    }
+}
+
+class MathUti {
     companion object {
 
-        fun periodDataInterpolation(p1 : Double, p2 : Double, tr1 : Int, tr2 : Int, tr : Int) : Double
-        {
+        fun periodDataInterpolation(p1: Double, p2: Double, tr1: Int, tr2: Int, tr: Int): Double {
             val first = Math.log(p1)
-            val second = Math.log((p2/p1))
-            val third = Math.log(tr.toDouble()/tr1.toDouble())
-            val fourth = Math.log(tr2.toDouble()/tr1.toDouble())
-            val lnp = first + (second*third*(1/fourth))
+            val second = Math.log((p2 / p1))
+            val third = Math.log(tr.toDouble() / tr1.toDouble())
+            val fourth = Math.log(tr2.toDouble() / tr1.toDouble())
+            val lnp = first + (second * third * (1 / fourth))
             return Math.pow(Math.E, lnp)
         }
     }
