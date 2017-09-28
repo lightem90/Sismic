@@ -211,7 +211,10 @@ class ParametersForCoordinateHelper(val mContext : Context) {
         var innerIndex = index
         if (innerIndex < 0 || innerIndex >= mCoordinateArray.size) return tmpList
 
-        if (level > 10) Log.d("Level", "Max depth reached " + level)
+        if (level > 10) {
+            Log.d("Level", "Max depth reached " + level)
+            return tmpList
+        }
 
         Log.d("Distance", "Limit distance is: " + limitDistance)
 
