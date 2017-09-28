@@ -23,7 +23,7 @@ class PlantPointsAdapter(val activity: Activity,
 
 
     override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
-        holder?.bindReport(mSismicPlantBuildingInteractor.pointList[position])
+        holder?.bindReport(mSismicPlantBuildingInteractor.pointList[position], position == 0)
     }
 
     override fun getItemCount(): Int {
@@ -36,20 +36,40 @@ class PlantPointsAdapter(val activity: Activity,
     }
 
     class ViewHolder(itemView: View, val mSismicPlantBuildingInteractor: SismicPlantBuildingInteractor, val invalidateAndReload: () -> Unit) : RecyclerView.ViewHolder(itemView) {
-        fun bindReport(plantPoint: PlantPoint) = with(itemView) {
+
+        fun bindReport(plantPoint: PlantPoint, locked: Boolean) = with(itemView) {
+
             plant_x.setText(plantPoint.x.toStringOrEmpty())
             plant_x.inputType = InputType.TYPE_NUMBER_FLAG_DECIMAL or InputType.TYPE_CLASS_NUMBER
-            plant_x.onConfirm {
-                plantPoint.x = plant_x.text.toString().toDoubleOrZero()
-                plant_y.requestFocus()
-                invalidateAndReload.invoke()
+
+            //Special behaviour for first item
+            if (!locked)
+            {
+                plant_x.onConfirm {
+                    plantPoint.x = plant_x.text.toString().toDoubleOrZero()
+                    plant_y.requestFocus()
+                    invalidateAndReload.invoke()
+                }
+            }
+            else
+            {
+                plant_x.setText(0.0.toString())
+                plant_x.isFocusable = false
             }
 
             plant_y.setText(plantPoint.y.toStringOrEmpty())
             plant_y.inputType = InputType.TYPE_NUMBER_FLAG_DECIMAL or InputType.TYPE_CLASS_NUMBER
-            plant_y.onConfirm {
-                plantPoint.y = plant_y.text.toString().toDoubleOrZero()
-                invalidateAndReload.invoke()
+            if (!locked)
+            {
+                plant_y.onConfirm {
+                    plantPoint.y = plant_y.text.toString().toDoubleOrZero()
+                    invalidateAndReload.invoke()
+                }
+            }
+            else
+            {
+                plant_y.setText(0.0.toString())
+                plant_y.isFocusable = false
             }
 
             add.setOnClickListener {

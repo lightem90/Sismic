@@ -16,8 +16,9 @@ import com.polito.sismic.R
  */
 class SismicPlantBuildingInteractor(private val mContext: Context) {
 
+    //First cant be modified
     val pointList: MutableList<PlantPoint> by lazy {
-        mutableListOf(PlantPoint(0.0, 0.0))
+        mutableListOf(PlantPoint(0.0, 0.0), PlantPoint(0.0, 0.0))
     }
 
     var center : PlantPoint = PlantPoint(0.0, 0.0)
@@ -36,7 +37,6 @@ class SismicPlantBuildingInteractor(private val mContext: Context) {
         lds.circleRadius = 2f
         lds.lineWidth = 3f
         lds.axisDependency = YAxis.AxisDependency.LEFT
-
 
         val ldsCenter = LineDataSet(listOf(Entry(center.x.toFloat(), center.y.toFloat())), mContext.getString(R.string.centro_di_massa))
         ldsCenter.color = Color.RED

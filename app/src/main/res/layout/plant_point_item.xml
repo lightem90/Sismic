@@ -36,7 +36,7 @@
         android:id="@+id/right_point"
         style="@style/PlantButton"
         android:background="?attr/selectableItemBackgroundBorderless"
-        app:srcCompat="@drawable/ic_arrow_forward_black_24dp"
+        app:srcCompat="@drawable/ic_chevron_right_black_24dp"
         android:contentDescription="@string/plant_point_action"/>
 
     <ImageButton

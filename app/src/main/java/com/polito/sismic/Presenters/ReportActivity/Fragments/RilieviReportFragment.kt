@@ -48,7 +48,11 @@ class RilieviReportFragment : BaseReportFragment() {
             override fun onNothingSelected(parent: AdapterView<out Adapter>?) {  }
         }
 
-        altezza_piano_tr_parameter.attachDataConfirmedCallback { updateAltezzaTotale() }
+        altezza_piano_tr_parameter.attachDataConfirmedCallback {
+            updateAltezzaTotale()
+            if (altezza_piani_sup_parameter.visibility == View.VISIBLE)
+                altezza_piani_sup_parameter.requestFocus()
+        }
         altezza_piani_sup_parameter.attachDataConfirmedCallback { updateAltezzaTotale() }
 
 
