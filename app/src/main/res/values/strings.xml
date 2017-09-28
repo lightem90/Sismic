@@ -320,6 +320,7 @@
     <string name="num_armatura_hint">Inserire numero ferri armatura</string>
     <string name="plant_x_hint">x : [m]</string>
     <string name="plant_y_hint">y : [m]</string>
+    <string name="rilievo_esterno">Perimetro esterno</string>
 
 
 </resources>

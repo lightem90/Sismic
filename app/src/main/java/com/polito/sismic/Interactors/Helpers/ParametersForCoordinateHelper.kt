@@ -5,7 +5,6 @@ import android.util.Log
 import com.polito.sismic.Domain.NeighboursNodeData
 import com.polito.sismic.Domain.NeighboursNodeSquare
 import com.polito.sismic.R
-import java.math.BigDecimal
 
 //Could work with classes but with indexes is faster
 class ParametersForCoordinateHelper(val mContext : Context) {
@@ -67,8 +66,8 @@ class ParametersForCoordinateHelper(val mContext : Context) {
 
         //search left and right from initial index. it stops when the distance from a point is greater than the sum of the closest one
         //the return lists have an index for the map to the point and the distance from the input point
-        val leftValues =  innerGetClosestPoint(x, y, true, initIndex, Double.MAX_VALUE, mutableListOf())
-        val rightValues =  innerGetClosestPoint(x, y, false, initIndex, Double.MAX_VALUE, mutableListOf())
+        val leftValues =  innerGetClosestPoint(x, y, true, initIndex, Double.MAX_VALUE, mutableListOf(), 0)
+        val rightValues =  innerGetClosestPoint(x, y, false, initIndex, Double.MAX_VALUE, mutableListOf(), 0)
 
         Log.d("End of recursion", "Left list:" + leftValues.toString() + " Right list: " + rightValues.toString())
         result.addAll(leftValues)
@@ -206,10 +205,13 @@ class ParametersForCoordinateHelper(val mContext : Context) {
                                      left: Boolean,    //direction
                                      index: Int,
                                      limitDistance: Double,
-                                     tmpList: MutableList<Triple<String, Double, Int>>) : List<Triple<String, Double, Int>>
+                                     tmpList: MutableList<Triple<String, Double, Int>>,
+                                     level: Int) : List<Triple<String, Double, Int>>
     {
         var innerIndex = index
         if (innerIndex < 0 || innerIndex >= mCoordinateArray.size) return tmpList
+
+        if (level > 10) Log.d("Level", "Max depth reached " + level)
 
         Log.d("Distance", "Limit distance is: " + limitDistance)
 
@@ -240,7 +242,7 @@ class ParametersForCoordinateHelper(val mContext : Context) {
         Log.d("SmallerList", "Reduced list is: " + smallerList.toString())
 
         //pass to recursion: input point, new index, new sum, new points
-        return innerGetClosestPoint(x, y, left, innerIndex, smallerList.sumByDouble { it.second }, smallerList)
+        return innerGetClosestPoint(x, y, left, innerIndex, smallerList.sumByDouble { it.second }, smallerList, level+1)
     }
 
     private fun calulateDistance(pair1 : Pair<Double, Double>, pair2 : Pair<Double, Double>) : Pair<Double, Int>

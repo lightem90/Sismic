@@ -26,7 +26,7 @@
         app:ms_stepperType="tabs"
         app:ms_backButtonColor="@color/ms_material_blue_500"
         app:ms_nextButtonColor="@color/ms_material_blue_500"
-        app:ms_completeButtonBackground="@color/colorAccent"
+        app:ms_completeButtonColor="@color/colorAccent"
         app:ms_stepperFeedbackType="tabs|content_overlay|disabled_bottom_navigation|disabled_content_interaction" />
 
     <RelativeLayout
