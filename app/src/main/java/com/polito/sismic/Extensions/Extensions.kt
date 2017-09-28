@@ -252,6 +252,27 @@ fun EditText.onConfirm(callback: () -> Unit) {
     }
 }
 
+fun String.toPlantPointList(): List<PlantPoint> {
+    val pointList = split(" ")
+    return pointList.map { it ->
+        val pair = it.split(" ")
+
+        PlantPoint(pair[0].toDouble(), pair[1].toDouble())
+    }
+}
+
+
+fun List<PlantPoint>.toParsableString(): String {
+    val sb = StringBuilder()
+    forEach {
+        sb.append(it.x.toString())
+        sb.append(",")
+        sb.append(it.y.toString())
+        sb.append(" ")
+    }
+    return sb.toString()
+}
+
 class MathUti {
     companion object {
 

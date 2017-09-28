@@ -130,13 +130,12 @@ class ReportDatabaseHelper(ctx: Context = App.instance) : ManagedSQLiteOpenHelpe
                         RilieviInfoTable.ALTEZZA_PIANO_TERRA to REAL,
                         RilieviInfoTable.ALTEZZA_PIANI_SUPERIORI to REAL,
                         RilieviInfoTable.ALTEZZA_TOT to REAL,
-                        RilieviInfoTable.LUNGHEZZA_EST to REAL,
-                        RilieviInfoTable.LARGHEZZA_EST to REAL,
                         RilieviInfoTable.AREA to REAL,
                         RilieviInfoTable.PERIMETRO to REAL,
                         RilieviInfoTable.CENTRO_GRAVITA_X to REAL,
                         RilieviInfoTable.CENTRO_GRAVITA_Y to REAL,
                         RilieviInfoTable.T1 to REAL,
+                        RilieviInfoTable.PUNTI_PIANTA to TEXT,
                         RilieviInfoTable.REPORT_ID to INTEGER)
         )
 

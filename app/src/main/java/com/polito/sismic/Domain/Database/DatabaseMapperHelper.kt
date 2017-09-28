@@ -1,6 +1,8 @@
 package com.polito.sismic.Domain.Database
 
 import com.polito.sismic.Domain.*
+import com.polito.sismic.Extensions.toParsableString
+import com.polito.sismic.Extensions.toPlantPointList
 
 /**
  * Created by Matteo on 17/08/2017.
@@ -109,17 +111,17 @@ class DatabaseMapperHelper {
 
     private fun convertRilieviToDomain(takeoverDbParams: DatabaseRilievi?): TakeoverState? {
         return takeoverDbParams?.let {
-            val gravCent = SpectrumPoint(it.centro_gravita_x, it.centro_gravita_y)
+            val gravCent = PlantPoint(it.centro_gravita_x, it.centro_gravita_y)
+            val plant_list = it.point_list.toPlantPointList()
             TakeoverState(it.numero_piani,
                     it.altezza_piano_terra,
                     it.altezza_piani_superiori,
                     it.altezza_totale,
-                    it.lunghezza_esterna,
-                    it.larghezza_esterna,
                     it.t1,
                     it.area,
                     it.perimetro,
-                    gravCent)
+                    gravCent,
+                    plant_list)
         }
     }
 
@@ -226,7 +228,7 @@ class DatabaseMapperHelper {
     }
 
     private fun createTakeoverForDb(reportId: Int, takeoverState: TakeoverState): DatabaseSection = with(takeoverState){
-        return DatabaseRilievi(numero_piani,altezza_piano_terra, altezza_piani_superiori, altezza_totale, lunghezza_esterna, larghezza_esterna, area, t1, perimetro, gravity_center.x, gravity_center.y, reportId)
+        return DatabaseRilievi(numero_piani,altezza_piano_terra, altezza_piani_superiori, altezza_totale, area, t1, perimetro, gravity_center.x, gravity_center.y, plant_points.toParsableString(), reportId)
 
     }
 
