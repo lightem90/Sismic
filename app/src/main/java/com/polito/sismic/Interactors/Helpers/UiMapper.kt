@@ -87,24 +87,21 @@ class UiMapper {
         fun createTakeoverStateForDomain(rilieviReportFragment: RilieviReportFragment): TakeoverState  = with(rilieviReportFragment){
 
             //For now we assume a ractangle / square
-            val lunghezza = lunghezza_piano_parameter.getParameterValue().toDoubleOrZero()
-            val larghezza = larghezza_piano_parameter.getParameterValue().toDoubleOrZero()
-            val perimetro = (lunghezza + larghezza) * 2
-            val area = lunghezza * larghezza
-            val gravity_center = SpectrumPoint(lunghezza/2, larghezza/2)
+            val perimetro = SismicBuildingCalculatorHelper.calculatePerimeter(rilieviReportFragment.mSismicPlantBuildingInteractor)
+            val area = SismicBuildingCalculatorHelper.calculateArea(rilieviReportFragment.mSismicPlantBuildingInteractor)
+            val gravity_center = SismicBuildingCalculatorHelper.calculateGravityCenter(rilieviReportFragment.mSismicPlantBuildingInteractor)
             val hTot = altezza_tot.text.toString().toDoubleOrZero()
-            val t1 = SismicBuildingInteractor.calculateT1(hTot)
+            val t1 = SismicBuildingCalculatorHelper.calculateT1(hTot)
 
             return TakeoverState(piani_numero_parameter.selectedItem.toString().toIntOrZero(),
                    altezza_piano_tr_parameter.getParameterValue().toDoubleOrZero(),
                    altezza_piani_sup_parameter.getParameterValue().toDoubleOrZero(),
                     hTot,
-                    lunghezza,
-                    larghezza,
                     area,
                     t1,
                     perimetro,
-                    gravity_center)
+                    gravity_center,
+                    rilieviReportFragment.mSismicPlantBuildingInteractor.pointList)
         }
 
         fun createStructuralStateForDomain(datiStrutturaliReportFragment: DatiStrutturaliReportFragment, buildingState: BuildingState): StructuralState  = with(datiStrutturaliReportFragment){
@@ -129,7 +126,7 @@ class UiMapper {
                     copertura_g2.getParameterValue().toDoubleOrZero(),
                     copertura_qk.getParameterValue().toDoubleOrZero(),
                     copertura_q.text.toString().toDoubleOrZero(),
-                    SismicBuildingInteractor.calculateBuildWeigth(buildingState, pesoSolaio, pesoCopertura))
+                    SismicBuildingCalculatorHelper.calculateBuildWeigth(buildingState, pesoSolaio, pesoCopertura))
         }
 
         fun createPillarLayoutStateForDomain(magliaStrutturaleReportFragment: MagliaStrutturaleReportFragment): PillarLayoutState = with(magliaStrutturaleReportFragment){
@@ -210,13 +207,12 @@ class UiMapper {
 
                 is RilieviReportFragment ->
                 {
+                    //TODO
                     reportState.buildingState.takeoverState.let {
                         piani_numero_parameter.setSelection(it.numero_piani-1)
                         altezza_piano_tr_parameter.setParameterValue(it.altezza_piano_terra.toStringOrEmpty())
                         altezza_piani_sup_parameter.setParameterValue(it.altezza_piani_superiori.toStringOrEmpty())
                         altezza_tot.text = it.altezza_totale.toStringOrEmpty()
-                        lunghezza_piano_parameter.setParameterValue(it.lunghezza_esterna.toStringOrEmpty())
-                        larghezza_piano_parameter.setParameterValue(it.larghezza_esterna.toStringOrEmpty())
                     }
                 }
                 is DatiStrutturaliReportFragment ->

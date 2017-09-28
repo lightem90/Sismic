@@ -1,10 +1,7 @@
 package com.polito.sismic.Interactors
 
 import android.content.Context
-import com.polito.sismic.Domain.BuildingState
-import com.polito.sismic.Domain.PillarDomain
-import com.polito.sismic.Domain.PillarState
-import com.polito.sismic.Domain.ReportState
+import com.polito.sismic.Domain.*
 import com.polito.sismic.Interactors.Helpers.SismicBuildingCalculatorHelper
 
 /**
@@ -17,25 +14,7 @@ class SismicBuildingInteractor(val mReportManager: ReportManager,
                                val mContext: Context){
 
     private val mSismicBuildingCalculatorHelper : SismicBuildingCalculatorHelper = SismicBuildingCalculatorHelper(mContext)
-    //Static function to call from mappers / binding to UI layer
-    companion object {
-
-        fun calculateT1(hTot : Double) : Double
-        {
-            return 0.075 * Math.pow(hTot, (3.0/4.0))
-        }
-
-        fun calculateBuildWeigth(buildingState: BuildingState, pesoSolaio: Double, pesoCopertura: Double): Double
-        {
-            return if (buildingState.takeoverState.numero_piani > 1)
-            {
-                buildingState.takeoverState.numero_piani*(pesoCopertura + pesoSolaio)
-            }else
-            {
-                pesoSolaio
-            }
-        }
-    }
+    //Static function to call from mappers / binding to UI laye
 
     //calculate the pillar domain and the point inside it
     fun getPillarDomainForGraph(state: ReportState, data: PillarState) : PillarDomain

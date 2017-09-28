@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.rilievi_report_layout.*
  */
 class RilieviReportFragment : BaseReportFragment() {
 
-    private val mSismicPlantBuildingInteractor : SismicPlantBuildingInteractor = SismicPlantBuildingInteractor()
+    val mSismicPlantBuildingInteractor : SismicPlantBuildingInteractor = SismicPlantBuildingInteractor()
     override fun onCreateView(inflater: LayoutInflater?, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View? {
         return inflateFragment(R.layout.rilievi_report_layout, inflater, container)
     }
