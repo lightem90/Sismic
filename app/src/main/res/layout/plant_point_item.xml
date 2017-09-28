@@ -29,7 +29,7 @@
         android:id="@+id/up_point"
         style="@style/PlantButton"
         android:background="?attr/selectableItemBackgroundBorderless"
-        app:srcCompat="@drawable/ic_arrow_upward_black_24dp"
+        app:srcCompat="@drawable/ic_expand_less_black_24dp"
         android:contentDescription="@string/plant_point_action" />
 
     <ImageButton
