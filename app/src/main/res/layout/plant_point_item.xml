@@ -29,36 +29,35 @@
         android:id="@+id/up_point"
         style="@style/PlantButton"
         android:background="?attr/selectableItemBackgroundBorderless"
-        app:srcCompat="@drawable/ic_delete_black_24dp"/>
+        app:srcCompat="@drawable/ic_arrow_upward_black_24dp"
+        android:contentDescription="@string/plant_point_action" />
 
     <ImageButton
         android:id="@+id/right_point"
         style="@style/PlantButton"
         android:background="?attr/selectableItemBackgroundBorderless"
-        app:srcCompat="@drawable/ic_delete_black_24dp"/>
+        app:srcCompat="@drawable/ic_arrow_forward_black_24dp"
+        android:contentDescription="@string/plant_point_action"/>
 
     <ImageButton
-        android:id="@+id/down_point"
+        android:id="@+id/close"
         style="@style/PlantButton"
         android:background="?attr/selectableItemBackgroundBorderless"
-        app:srcCompat="@drawable/ic_delete_black_24dp"/>
-
-    <ImageButton
-        android:id="@+id/left_point"
-        style="@style/PlantButton"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        app:srcCompat="@drawable/ic_delete_black_24dp" />
+        app:srcCompat="@drawable/ic_border_outer_black_24dp"
+        android:contentDescription="@string/plant_point_action"/>
 
     <ImageButton
         android:id="@+id/add"
         style="@style/PlantButton"
         android:background="?attr/selectableItemBackgroundBorderless"
-        app:srcCompat="@drawable/ic_notifications_black_24dp"/>
+        app:srcCompat="@drawable/ic_add_circle_outline_black_24dp"
+        android:contentDescription="@string/plant_point_action"/>
 
     <ImageButton
         android:id="@+id/delete"
         style="@style/PlantButton"
         android:background="?attr/selectableItemBackgroundBorderless"
-        app:srcCompat="@drawable/ic_delete_black_24dp"/>
+        app:srcCompat="@drawable/ic_cancel_black_24dp"
+        android:contentDescription="@string/plant_point_action"/>
 
 </LinearLayout>

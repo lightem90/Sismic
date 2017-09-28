@@ -19,25 +19,20 @@ import kotlinx.android.synthetic.main.plant_point_item.view.*
  */
 class PlantPointsAdapter(val activity: Activity,
                          val mSismicPlantBuildingInteractor: SismicPlantBuildingInteractor,
-                         val items: MutableList<PlantPoint>,
                          val invalidateAndReload: () -> Unit) : RecyclerView.Adapter<PlantPointsAdapter.ViewHolder>() {
 
 
     override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
-        holder?.bindReport(items[position])
+        holder?.bindReport(mSismicPlantBuildingInteractor.pointList[position])
     }
 
     override fun getItemCount(): Int {
-        return items.size
+        return mSismicPlantBuildingInteractor.pointList.size
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = parent.inflate(R.layout.plant_point_item)
         return ViewHolder(v, mSismicPlantBuildingInteractor, invalidateAndReload)
-    }
-
-    fun somethingChanged() {
-        invalidateAndReload.invoke()
     }
 
     class ViewHolder(itemView: View, val mSismicPlantBuildingInteractor: SismicPlantBuildingInteractor, val invalidateAndReload: () -> Unit) : RecyclerView.ViewHolder(itemView) {
@@ -61,24 +56,24 @@ class PlantPointsAdapter(val activity: Activity,
                 mSismicPlantBuildingInteractor.addGenericPointAfter(plantPoint)
                 invalidateAndReload.invoke()
             }
+
             delete.setOnClickListener {
                 mSismicPlantBuildingInteractor.deletePoint(plantPoint)
                 invalidateAndReload.invoke()
             }
+
             up_point.setOnClickListener {
                 mSismicPlantBuildingInteractor.addPointOnXAfter(plantPoint)
                 invalidateAndReload.invoke()
             }
-            down_point.setOnClickListener {
-                mSismicPlantBuildingInteractor.addPointOnXAfter(plantPoint)
-                invalidateAndReload.invoke()
-            }
-            left_point.setOnClickListener {
-                mSismicPlantBuildingInteractor.addPointOnYAfter(plantPoint)
-                invalidateAndReload.invoke()
-            }
+
             right_point.setOnClickListener {
                 mSismicPlantBuildingInteractor.addPointOnYAfter(plantPoint)
+                invalidateAndReload.invoke()
+            }
+
+            close.setOnClickListener{
+                mSismicPlantBuildingInteractor.closePlant()
                 invalidateAndReload.invoke()
             }
         }

@@ -96,7 +96,7 @@ class ReportListFragment : Fragment() {
         invalidate()
     }
 
-    fun invalidate()
+    private fun invalidate()
     {
         history_container?.adapter?.notifyDataSetChanged()
     }

@@ -1,13 +1,7 @@
 package com.polito.sismic.Interactors.Helpers
 
 import android.content.Context
-import android.graphics.Color
-import com.github.mikephil.charting.components.YAxis
-import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.data.LineDataSet
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.polito.sismic.Domain.*
-import com.polito.sismic.Interactors.SismicPlantBuildingInteractor
 
 /**
  * Created by it0003971 on 15/09/2017.
@@ -29,16 +23,18 @@ class SismicBuildingCalculatorHelper(val mContext: Context) {
 
     companion object {
 
-        fun calculateECM(fcm: Double): Double {
-            return 22000 * (Math.pow((fcm / 10), 0.3))
+        fun calculateECM(fcm: Double, lcCalc: Double): Double {
+            val newFcm = fcm / lcCalc
+            return 22000 * (Math.pow((newFcm / 10), 0.3))
         }
 
-        fun calculateFCD(fck: Double): Double {
-            return 0.85 * fck / 1.5
+        fun calculateFCD(fck: Double, lcCalc: Double): Double {
+
+            return 0.85 * (fck / lcCalc) / 1.5
         }
 
-        fun calculateFYD(fyk: Double): Double {
-            return fyk / 1.15
+        fun calculateFYD(fyk: Double, lcAcc: Double): Double {
+            return (fyk / lcAcc) / 1.15
         }
 
         fun calculateAs(numFerri: Int, diamFerri: Double): Double {
@@ -58,15 +54,16 @@ class SismicBuildingCalculatorHelper(val mContext: Context) {
             }
         }
 
-        fun calculateGravityCenter(interactor: SismicPlantBuildingInteractor): PlantPoint {
+        //TODO
+        fun calculateGravityCenter(interactor: MutableList<PlantPoint>): PlantPoint {
             return PlantPoint(0.0, 0.0)
         }
 
-        fun calculatePerimeter(interactor: SismicPlantBuildingInteractor): Double {
+        fun calculatePerimeter(interactor: MutableList<PlantPoint>): Double {
             return 0.0
         }
 
-        fun calculateArea(interactor: SismicPlantBuildingInteractor): Double {
+        fun calculateArea(interactor: MutableList<PlantPoint>): Double {
             return 0.0
         }
 

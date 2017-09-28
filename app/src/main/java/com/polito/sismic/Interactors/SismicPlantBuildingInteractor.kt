@@ -8,6 +8,7 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.polito.sismic.Domain.PlantPoint
 import com.polito.sismic.Extensions.toast
+import com.polito.sismic.Interactors.Helpers.SismicBuildingCalculatorHelper
 import com.polito.sismic.R
 
 /**
@@ -15,13 +16,11 @@ import com.polito.sismic.R
  */
 class SismicPlantBuildingInteractor(private val mContext: Context) {
 
-    private val pointList: MutableList<PlantPoint> by lazy {
+    val pointList: MutableList<PlantPoint> by lazy {
         mutableListOf(PlantPoint(0.0, 0.0))
     }
 
-    fun getPlantPointList(): MutableList<PlantPoint> {
-        return pointList
-    }
+    var center : PlantPoint = PlantPoint(0.0, 0.0)
 
     fun convertListForGraph(): LineData {
 
@@ -38,7 +37,14 @@ class SismicPlantBuildingInteractor(private val mContext: Context) {
         lds.lineWidth = 3f
         lds.axisDependency = YAxis.AxisDependency.LEFT
 
-        return LineData(lds)
+
+        val ldsCenter = LineDataSet(listOf(Entry(center.x.toFloat(), center.y.toFloat())), mContext.getString(R.string.centro_di_massa))
+        ldsCenter.color = Color.RED
+        lds.setDrawCircles(true)
+        lds.circleRadius = 5f
+        lds.axisDependency = YAxis.AxisDependency.LEFT
+
+        return LineData(listOf(lds, ldsCenter))
     }
 
     fun addGenericPointAfter(plantPoint: PlantPoint) {
@@ -60,6 +66,18 @@ class SismicPlantBuildingInteractor(private val mContext: Context) {
     fun addPointOnYAfter(plantPoint: PlantPoint) {
         val index = pointList.indexOf(plantPoint) + 1
         pointList.add(index, PlantPoint(0.0, plantPoint.y))
+    }
+
+    fun closePlant() {
+        pointList.add(pointList.first())
+        center = SismicBuildingCalculatorHelper.calculateGravityCenter(pointList)
+    }
+
+    fun checkCenter() {
+        if (pointList.first() == pointList.last())
+        {
+            center = SismicBuildingCalculatorHelper.calculateGravityCenter(pointList)
+        }
     }
 }
 

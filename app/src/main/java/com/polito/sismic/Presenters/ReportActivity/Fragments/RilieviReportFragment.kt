@@ -29,10 +29,6 @@ class RilieviReportFragment : BaseReportFragment() {
         SismicPlantBuildingInteractor(context)
     }
 
-    val mPointList : MutableList<PlantPoint> by lazy {
-        mSismicPlantBuildingInteractor.getPlantPointList()
-    }
-
     override fun onCreateView(inflater: LayoutInflater?, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View? {
         return inflateFragment(R.layout.rilievi_report_layout, inflater, container)
     }
@@ -57,11 +53,10 @@ class RilieviReportFragment : BaseReportFragment() {
 
 
         plant_point_list.layoutManager = LinearLayoutManager(activity)
-        val adapter = PlantPointsAdapter(activity, mSismicPlantBuildingInteractor, mPointList){
+        val adapter = PlantPointsAdapter(activity, mSismicPlantBuildingInteractor){
             invalidateAndReload()
         }
         plant_point_list.adapter = adapter
-        adapter.somethingChanged()
 
         with(plant_graph)
         {
@@ -72,8 +67,9 @@ class RilieviReportFragment : BaseReportFragment() {
         }
     }
 
-    fun invalidateAndReload()
+    private fun invalidateAndReload()
     {
+        mSismicPlantBuildingInteractor.checkCenter()
         invalidate()
         updateGraph()
     }
@@ -84,10 +80,8 @@ class RilieviReportFragment : BaseReportFragment() {
         invalidate()
     }
 
-    fun invalidate()
+    private fun invalidate()
     {
-        mPointList.clear()
-        mPointList.addAll(mSismicPlantBuildingInteractor.getPlantPointList())
         plant_point_list?.adapter?.notifyDataSetChanged()
     }
 

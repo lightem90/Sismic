@@ -321,6 +321,8 @@
     <string name="plant_x_hint">x : [m]</string>
     <string name="plant_y_hint">y : [m]</string>
     <string name="rilievo_esterno">Perimetro esterno</string>
+    <string name="plant_point_action">PlantPointAction</string>
+    <string name="centro_di_massa">Centro di massa</string>
 
 
 </resources>

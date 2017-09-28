@@ -4,7 +4,6 @@ import com.polito.sismic.Domain.*
 import com.polito.sismic.Extensions.toDoubleOrZero
 import com.polito.sismic.Extensions.toIntOrZero
 import com.polito.sismic.Extensions.toStringOrEmpty
-import com.polito.sismic.Interactors.SismicBuildingInteractor
 import com.polito.sismic.Presenters.ReportActivity.Fragments.*
 import com.polito.sismic.R
 import kotlinx.android.synthetic.main.catasto_report_layout.*
@@ -87,9 +86,8 @@ class UiMapper {
         fun createTakeoverStateForDomain(rilieviReportFragment: RilieviReportFragment): TakeoverState  = with(rilieviReportFragment){
 
             //For now we assume a ractangle / square
-            val perimetro = SismicBuildingCalculatorHelper.calculatePerimeter(rilieviReportFragment.mSismicPlantBuildingInteractor)
-            val area = SismicBuildingCalculatorHelper.calculateArea(rilieviReportFragment.mSismicPlantBuildingInteractor)
-            val gravity_center = SismicBuildingCalculatorHelper.calculateGravityCenter(rilieviReportFragment.mSismicPlantBuildingInteractor)
+            val perimetro = SismicBuildingCalculatorHelper.calculatePerimeter(rilieviReportFragment.mSismicPlantBuildingInteractor.pointList)
+            val area = SismicBuildingCalculatorHelper.calculateArea(rilieviReportFragment.mSismicPlantBuildingInteractor.pointList)
             val hTot = altezza_tot.text.toString().toDoubleOrZero()
             val t1 = SismicBuildingCalculatorHelper.calculateT1(hTot)
 
@@ -100,8 +98,8 @@ class UiMapper {
                     area,
                     t1,
                     perimetro,
-                    gravity_center,
-                    rilieviReportFragment.mPointList)
+                    rilieviReportFragment.mSismicPlantBuildingInteractor.center,
+                    rilieviReportFragment.mSismicPlantBuildingInteractor.pointList)
         }
 
         fun createStructuralStateForDomain(datiStrutturaliReportFragment: DatiStrutturaliReportFragment, buildingState: BuildingState): StructuralState  = with(datiStrutturaliReportFragment){
