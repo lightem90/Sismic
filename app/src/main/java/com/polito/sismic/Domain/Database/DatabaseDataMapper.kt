@@ -30,7 +30,7 @@ class DatabaseDataMapper {
         return DatabaseReportMedia(uri, type, note, size, reportId)
     }
 
-    fun convertReportFromDomain(report: Report, saving : Boolean = true): DatabaseReport = with(report){
+    fun convertReportFromDomain(report: Report): DatabaseReport = with(report){
 
         //The address is the report title
         val databaseReportDetails = convertReportDetailsFromDomain(reportDetails, report.reportState.localizationState.address)

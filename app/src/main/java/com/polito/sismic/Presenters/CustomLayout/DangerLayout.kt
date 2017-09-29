@@ -55,15 +55,17 @@ class DangerLayout : LinearLayout {
         //In the case its loaded too soon
         if (mDangerState == null) return super.onCreateDrawableState(extraSpace)
 
-        val drawableState = super.onCreateDrawableState(extraSpace + 1)
-        when(mDangerState)
-        {
-            DangerState.High -> return pushState(drawableState, STATE_REPORT_DANGER_HIGH, extraSpace)
-            DangerState.Medium -> return pushState(drawableState, STATE_REPORT_DANGER_MEDIUM, extraSpace)
-            DangerState.Normal -> return pushState(drawableState, STATE_REPORT_DANGER_NORMAL, extraSpace)
-            DangerState.Low -> return pushState(drawableState, STATE_REPORT_DANGER_LOW, extraSpace)
-            DangerState.Default -> return super.onCreateDrawableState(extraSpace)
+        mDangerState?.let {
+            val drawableState = super.onCreateDrawableState(extraSpace + 1)
+            return when(it) {
+                DangerState.High -> pushState(drawableState, STATE_REPORT_DANGER_HIGH, extraSpace)
+                DangerState.Medium -> pushState(drawableState, STATE_REPORT_DANGER_MEDIUM, extraSpace)
+                DangerState.Normal -> pushState(drawableState, STATE_REPORT_DANGER_NORMAL, extraSpace)
+                DangerState.Low -> pushState(drawableState, STATE_REPORT_DANGER_LOW, extraSpace)
+                DangerState.Default -> super.onCreateDrawableState(extraSpace)
+            }
         }
+
     }
 
     private fun pushState(drawableState: IntArray, stateToPush: IntArray?, extraSpace: Int) : IntArray

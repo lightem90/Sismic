@@ -80,7 +80,7 @@ class PresenterActivity : AppCompatActivity(),
         val initialFrag = fragmentFactory.GetHomeFragment()
         pushFragment(initialFrag, initialFrag.getFragmentTag())
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
-        mDatabaseInteractor.deleteNotCommittedReports()
+        mDatabaseInteractor.deleteNotCommittedReports(this)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

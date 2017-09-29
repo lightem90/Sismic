@@ -1,6 +1,7 @@
 package com.polito.sismic.Interactors
 
-import android.net.Uri
+import android.content.Context
+import android.os.Environment
 import com.polito.sismic.Domain.Database.*
 import com.polito.sismic.Domain.Report
 import com.polito.sismic.Domain.ReportDetails
@@ -9,10 +10,8 @@ import com.polito.sismic.Extensions.*
 import org.jetbrains.anko.db.SqlOrderDirection
 import org.jetbrains.anko.db.insert
 import org.jetbrains.anko.db.select
-import org.jetbrains.anko.db.update
 import java.io.File
 import java.util.*
-import javax.xml.transform.Result
 import kotlin.collections.HashMap
 
 /**
@@ -24,8 +23,6 @@ class DatabaseInteractor(private val reportDatabaseHelper: ReportDatabaseHelper 
     //Creates the entry in the db for the current (new) report
     fun createReportDetailsForUser(userID: String,
                                    title: String = "",
-                                   value: Int = 0,
-                                   size: Double = 0.0,
                                    date: Date = Date()): ReportDetails = reportDatabaseHelper.use {
 
         insert(ReportTable.NAME,
@@ -237,31 +234,39 @@ class DatabaseInteractor(private val reportDatabaseHelper: ReportDatabaseHelper 
         reports.map { dataMapper.convertReportDataForHistory(it, results) }.toMutableList()
     }
 
-    fun deleteNotCommittedReports() = reportDatabaseHelper.use {
+    fun deleteNotCommittedReports(context : Context) = reportDatabaseHelper.use {
+
         val invalidReportsDetailsRequest = "${ReportTable.COMMITTED} = -1"
         val invalidReportsDetails = select(ReportTable.NAME)
                 .whereSimple(invalidReportsDetailsRequest)
                 .parseList { DatabaseReportDetails(HashMap(it)) }
 
-        //All reports saved with crash (committed = -1)
-        invalidReportsDetails.forEach { invalidReports ->
+        //Delete uncommitted reports
+        invalidReportsDetails.forEach { delete(it._id) }
 
-            //Get all invalid medias
-            val invalidReportMedias = select(ReportMediaTable.NAME)
-                    .byReportId(invalidReports._id.toString())
+        val validReportsDetailsRequest = "${ReportTable.COMMITTED} = 1"
+        val validReportsDetails = select(ReportTable.NAME)
+                .whereSimple(validReportsDetailsRequest)
+                .parseList { DatabaseReportDetails(HashMap(it)) }
+
+        val savedFilePaths = mutableListOf<String>()
+        validReportsDetails.forEach { reports ->
+
+            val validReportMediaDetails = select(ReportMediaTable.NAME)
+                    .byReportId(reports._id.toString())
                     .parseList { DatabaseReportMedia(HashMap(it)) }
 
-            //delete file from path
-            invalidReportMedias.forEach { media ->
-                val uri = Uri.parse(media.filepath)
-                if (uri != null) {
-                    File(uri.path).delete()
-                }
-            }
-
-            //delete all tables
-            delete(invalidReports._id)
+            validReportMediaDetails.forEach{ media -> savedFilePaths.add(media.filepath)}
         }
+
+        val validDirs = listOf(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+                context.getExternalFilesDir(Environment.DIRECTORY_MOVIES),
+                context.getExternalFilesDir(Environment.DIRECTORY_MUSIC),
+                context.getExternalFilesDir(Environment.DIRECTORY_PICTURES))
+
+        val listValidFiles = mutableListOf<File>()
+        validDirs.forEach { dir -> dir.listFiles().forEach { file -> listValidFiles.add(file) } }
+        listValidFiles.filter { file ->  !savedFilePaths.contains(file.absolutePath)}.forEach { invalidFile -> invalidFile.delete() }
 
     }
 }

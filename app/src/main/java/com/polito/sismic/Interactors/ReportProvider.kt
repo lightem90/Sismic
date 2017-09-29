@@ -1,16 +1,11 @@
 package com.polito.sismic.Interactors
 
 import android.content.Intent
-import android.database.sqlite.SQLiteException
-import android.support.v7.app.AlertDialog
 import com.polito.sismic.Domain.Report
 import com.polito.sismic.Domain.ReportState
-import com.polito.sismic.Extensions.hideSoftKeyboard
 import com.polito.sismic.Extensions.toast
 import com.polito.sismic.Presenters.ReportActivity.ReportActivity
 import com.polito.sismic.R
-import com.polito.sismic.R.id.report_description
-import kotlinx.android.synthetic.main.report_wizard.view.*
 
 
 /**
