@@ -1,5 +1,6 @@
 package com.polito.sismic.Presenters.ReportActivity.Fragments
 
+import android.graphics.Color
 import android.os.Bundle
 import android.support.annotation.Nullable
 import android.support.v7.widget.LinearLayoutManager
@@ -9,8 +10,10 @@ import android.view.ViewGroup
 import android.widget.Adapter
 import android.widget.AdapterView
 import com.github.mikephil.charting.components.Legend
+import com.github.mikephil.charting.components.LegendEntry
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
+import com.github.mikephil.charting.utils.ColorTemplate
 import com.polito.sismic.Extensions.toDoubleOrZero
 import com.polito.sismic.Interactors.Helpers.UiMapper
 import com.polito.sismic.Interactors.SismicPlantBuildingInteractor
@@ -55,7 +58,7 @@ class RilieviReportFragment : BaseReportFragment() {
 
         plant_point_list.layoutManager = LinearLayoutManager(activity)
         val adapter = PlantPointsAdapter(activity, mSismicPlantBuildingInteractor){
-            invalidateAndReload()
+            invalidateAndReload(it)
         }
         plant_point_list.adapter = adapter
 
@@ -63,6 +66,8 @@ class RilieviReportFragment : BaseReportFragment() {
         {
             xAxis.position = XAxis.XAxisPosition.BOTTOM
             legend.form = Legend.LegendForm.DEFAULT
+            legend.setCustom(listOf(LegendEntry(context.getString(R.string.rilievo_esterno), Legend.LegendForm.DEFAULT, 1f, 1f, null, Color.BLACK),
+                    LegendEntry(context.getString(R.string.centro_di_massa), Legend.LegendForm.DEFAULT, 1f, 1f, null, Color.RED)))
             description.isEnabled = false
             getAxis(YAxis.AxisDependency.RIGHT).isEnabled = false
         }
@@ -73,17 +78,20 @@ class RilieviReportFragment : BaseReportFragment() {
         updateGraph()
     }
 
-    private fun invalidateAndReload()
+    private fun invalidateAndReload(rebuildGraph : Boolean = true)
     {
         mSismicPlantBuildingInteractor.checkCenter()
         invalidatePlantList()
-        updateGraph()
+        if (rebuildGraph) updateGraph()
     }
 
     private fun updateGraph() = with(plant_graph)
     {
-        data = mSismicPlantBuildingInteractor.convertListForGraph(context)
-        invalidate()
+        mSismicPlantBuildingInteractor.convertListForGraph(context)?.let {
+            data = it
+            notifyDataSetChanged()
+            invalidate()
+        }
     }
 
     private fun invalidatePlantList()

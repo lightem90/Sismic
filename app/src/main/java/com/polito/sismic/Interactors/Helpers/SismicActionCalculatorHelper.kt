@@ -109,6 +109,8 @@ class SismicActionCalculatorHelper(val mCoordinateHelper: ParametersForCoordinat
         val limitStateYears = StatiLimite.values().map { calculateTrFor(vr, it) }
 
         val spectrums: MutableList<SpectrumDTO> = mutableListOf()
+        if (sismicState.sismicState.sismogenticState.default_periods.isEmpty()) return mutableListOf()
+
         limitStateYears.forEach { limitState ->
             if (limitState.first <= TempiRitorno.Y30.years.toDouble())
             {

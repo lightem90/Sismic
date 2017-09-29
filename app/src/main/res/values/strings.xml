@@ -3,7 +3,7 @@
     <string name="action_home">Home</string>
     <string name="action_graph_history">Storico</string>
     <string name="action_profile">Profilo</string>
-    <string name="new_report_btn_str">Nuovo Report</string>
+    <string name="new_report_btn_str">Nuova verifica</string>
     <string name="view_history_btn_str">Storico</string>
     <string name="et_name_hint">Nome</string>
     <string name="et_surname_hint">Cognome</string>
@@ -18,7 +18,7 @@
     <string name="action_reorder_history_date_asc">data ascendente</string>
     <string name="action_reorder_history_date_desc">data discendente</string>
     <string name="action_logout">Logout</string>
-    <string name="title_activity_report">Report</string>
+    <string name="title_activity_report">Verifica</string>
     <string name="title_activity_login">Login</string>
 
     <!-- Strings related to login -->
@@ -169,9 +169,9 @@
     <string name="note_error_empty">La nota che si cerca di salvare è vuota</string>
     <string name="province_error">Nessuna provincia per questa regione</string>
     <string name="localities_error">Nessun comune per questa provincia</string>
-    <string name="no_login">E\' necessario il login per compilare un databaseReport</string>
+    <string name="no_login">E\' necessario il login per compilare un database</string>
     <string name="rilievi_report_title">Rilievi</string>
-    <string name="error_creating_report">Errore nell\'apertura del databaseReport</string>
+    <string name="error_creating_report">Errore nell\'apertura del database</string>
 
     <string name="title_activity_splash_screen">SplashScreen</string>
     <string name="dummy_button">Dummy Button</string>
@@ -182,7 +182,7 @@
     <string name="report_title">Titolo</string>
     <string name="report_title_hint">Inserire qui il titolo</string>
     <string name="report_description">Descrizione</string>
-    <string name="report_description_hint">Descrizione riassuntiva del report</string>
+    <string name="report_description_hint">Descrizione riassuntiva della verifica</string>
     <string name="size_string">%.2f MB</string>
     <string name="verification_empty_field">Il campo %s non può essere vuoto</string>
     <string name="media_images_title">IMMAGINI</string>
@@ -293,7 +293,7 @@
     <string name="et_password_hint">Password</string>
     <string name="registration_error">Errore di registrazione. Riprovare</string>
     <string name="g1_format">G1: %s [kN/mq]</string>
-    <string name="report_delete_succeded">Report %d cancellato correttamente</string>
+    <string name="report_delete_succeded">Verifica %d cancellata correttamente</string>
     <string name="percent">%</string>
     <string name="eps2_title">Eps2</string>
     <string name="epsu_title">Epsu</string>
