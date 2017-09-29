@@ -20,7 +20,6 @@ class ReportDatabaseHelper(ctx: Context = App.instance) : ManagedSQLiteOpenHelpe
         db.createTable(ReportTable.NAME, ifNotExists = true,
                 columns = *arrayOf(ReportTable.ID to SqlType.create("INTEGER PRIMARY KEY AUTOINCREMENT"),
                 ReportTable.TITLE to TEXT,
-                ReportTable.DESCRIPTION to TEXT,
                 ReportTable.USERID to TEXT,
                 ReportTable.DATE to TEXT,
                 ReportTable.COMMITTED to INTEGER

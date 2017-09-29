@@ -39,18 +39,15 @@ class ReportActivity : AppCompatActivity(),
     private lateinit var mUserActionInteractor: UserActionInteractor
     private lateinit var mSismicParameterInteractor: SismicActionInteractor
     private lateinit var mSismicBuildingInteractor : SismicBuildingInteractor
-    private var mReportManager: ReportManager? = null
+
+    //Creating row for report in db if user is logged in
+    private val mReportManager: ReportManager by lazy {
+        ReportProvider(this).getOrCreateReportManager(checkLogin(), intent)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_report)
-
-        //Creating row for report in db if user is logged in
-        mReportManager = ReportProvider(this).getOrCreateReportManager(checkLogin(), intent)
-        mReportManager?.let {
-            //means i'm editing
-            initializeFromManager(it)
-        }
     }
 
     private fun checkLogin(): String {
@@ -108,7 +105,7 @@ class ReportActivity : AppCompatActivity(),
 
     //Updates the state for all fragments
     override fun onParametersConfirmed(report: Report, needReload : Boolean) {
-        mReportManager?.updateReportState(report)
+        mReportManager.updateReportState(report)
         updateStateForFragments(needReload)
     }
 
@@ -121,7 +118,7 @@ class ReportActivity : AppCompatActivity(),
         //Needs update because is the activity who changed some data
         if (callback) supportFragmentManager.fragments
                         .filterIsInstance<BaseReportFragment>()
-                        .forEach { it.reloadFragmentFromCallback(mReportManager!!.report) }
+                        .forEach { it.reloadFragmentFromCallback(mReportManager.report) }
     }
 
     //If I pass an Uri, data will be null
@@ -149,11 +146,6 @@ class ReportActivity : AppCompatActivity(),
         finish()
     }
 
-    fun onNewReportConfirmed(createFromNew: ReportManager): ReportManager? {
-        initializeFromManager(createFromNew)
-        return createFromNew
-    }
-
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         mPermissionHelper.handlePermissionResult(requestCode, grantResults)
@@ -165,7 +157,7 @@ class ReportActivity : AppCompatActivity(),
 
     private fun initializeFromManager(reportManager: ReportManager) {
         //To handle user action, it uses other interactor to pilot the ui changes to the domain
-        mReportManager = reportManager
+
         mUserActionInteractor = UserActionInteractor(reportManager,this, mPermissionHelper)
         mSismicParameterInteractor = SismicActionInteractor(reportManager, this)
         mSismicBuildingInteractor = SismicBuildingInteractor(reportManager, this)

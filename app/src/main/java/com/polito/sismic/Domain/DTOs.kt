@@ -961,13 +961,11 @@ data class PillarLayoutState(var pillarX: Int,
 
 data class ReportDetails(val id: Int,
                          val title: String,
-                         val description: String,
                          val userIdentifier: String,
                          val date: Date,
                          val committed: Int) : Parcelable {
     constructor(source: Parcel) : this(
             source.readInt(),
-            source.readString(),
             source.readString(),
             source.readString(),
             source.readSerializable() as Date,
@@ -979,7 +977,6 @@ data class ReportDetails(val id: Int,
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
         writeInt(id)
         writeString(title)
-        writeString(description)
         writeString(userIdentifier)
         writeSerializable(date)
         writeInt(committed)
@@ -1028,14 +1025,13 @@ data class ReportMedia(val id: Int,
 
 data class ReportItemHistory(val id: Int,
                              val title: String,
-                             val description: String,
                              val value: Int,
                              val size: Double,
                              val userIdentifier: String,
                              val date : Date) {
 
     companion object {
-        val Invalid: ReportItemHistory = ReportItemHistory(-1, "", "", -1, -1.0, "", Date())
+        val Invalid: ReportItemHistory = ReportItemHistory(-1, "", -1, -1.0, "", Date())
     }
 }
 

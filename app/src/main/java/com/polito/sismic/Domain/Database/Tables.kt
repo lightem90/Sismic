@@ -10,7 +10,6 @@ object ReportTable
     val NAME = "Reports"
     val ID = "_id"
     val TITLE = "title"
-    val DESCRIPTION = "description"
     val USERID = "userID"
     val DATE = "date"
     val COMMITTED = "committed"

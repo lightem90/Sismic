@@ -24,7 +24,6 @@ class DatabaseInteractor(private val reportDatabaseHelper: ReportDatabaseHelper 
     //Creates the entry in the db for the current (new) report
     fun createReportDetailsForUser(userID: String,
                                    title: String = "",
-                                   description: String = "",
                                    value: Int = 0,
                                    size: Double = 0.0,
                                    date: Date = Date()): ReportDetails = reportDatabaseHelper.use {
@@ -32,7 +31,6 @@ class DatabaseInteractor(private val reportDatabaseHelper: ReportDatabaseHelper 
         insert(ReportTable.NAME,
                 ReportTable.USERID to userID,
                 ReportTable.TITLE to title,
-                ReportTable.DESCRIPTION to description,
                 ReportTable.DATE to date.toFormattedString(),
                 ReportTable.COMMITTED to -1)
 

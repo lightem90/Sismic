@@ -12,11 +12,11 @@ class DatabaseDataMapper {
     private val helper : DatabaseMapperHelper = DatabaseMapperHelper()
 
     fun convertReportDetailsToDomain(databaseReport: DatabaseReportDetails): ReportDetails = with (databaseReport){
-        return ReportDetails(_id, title, description, userID, date.toFormattedDate(), committed)
+        return ReportDetails(_id, title, userID, date.toFormattedDate(), committed)
     }
 
     fun convertReportDetailsFromDomain(reportDetails: ReportDetails) : DatabaseReportDetails = with (reportDetails) {
-        return DatabaseReportDetails(id, title, description, userIdentifier, date.toFormattedString(), committed)
+        return DatabaseReportDetails(id, title, userIdentifier, date.toFormattedString(), committed)
     }
 
     fun convertMediaToDomain(databaseReportMedia: DatabaseReportMedia): ReportMedia = with(databaseReportMedia)
@@ -37,7 +37,9 @@ class DatabaseDataMapper {
             map {convertMediaFromDomain(databaseReportDetails._id, it)}
         }
 
+        //l'indirizzo è il titolo del report
         val databaseSections = convertDomainSectionToDatabaseSection(databaseReportDetails._id, reportState)
+        databaseReportDetails.title = databaseSections.filterIsInstance<DatabaseLocalizationSection>().first().address
         DatabaseReport(databaseReportDetails, databaseMediaList, databaseSections.filterNotNull())
     }
 
@@ -68,7 +70,6 @@ class DatabaseDataMapper {
 
         return ReportItemHistory(details._id,
                 details.title,
-                details.description,
                 result.result,
                 result.size,
                 details.userID,
