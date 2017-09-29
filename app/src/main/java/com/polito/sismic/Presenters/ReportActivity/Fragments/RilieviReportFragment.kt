@@ -71,6 +71,11 @@ class RilieviReportFragment : BaseReportFragment() {
         }
     }
 
+    override fun onReload() {
+        super.onReload()
+        updateGraph()
+    }
+
     private fun invalidateAndReload()
     {
         mSismicPlantBuildingInteractor.checkCenter()

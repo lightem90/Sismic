@@ -4,14 +4,17 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="@dimen/plant_item">
-    
+
+    <!--
+    android:nextFocusForward="@id/plant_y"
+    android:nextFocusRight="@id/plant_y"
+    -->
+
     <EditText
         android:id="@+id/plant_x"
         android:hint="@string/plant_x_hint"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginLeft = "@dimen/activity_horizontal_margin"
-        android:nextFocusForward="@id/plant_y"
-        android:nextFocusRight="@id/plant_y"
         android:singleLine="true"
         android:maxLines="1"
         style="@style/PlantItem"/>

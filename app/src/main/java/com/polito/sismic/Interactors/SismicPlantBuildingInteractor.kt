@@ -18,18 +18,19 @@ class SismicPlantBuildingInteractor(private val mContext: Context) {
 
     //First cant be modified
     val pointList: MutableList<PlantPoint> by lazy {
-        mutableListOf(PlantPoint(0.0, 0.0), PlantPoint(0.0, 0.0))
+        mutableListOf(PlantPoint(0.0, 0.0))
     }
 
-    var center : PlantPoint = PlantPoint(0.0, 0.0)
+    var mCenter : PlantPoint = PlantPoint(0.0, 0.0)
+    var mOrigin : PlantPoint = PlantPoint(0.0, 0.0)
 
     fun convertListForGraph(): LineData {
 
-        if (pointList.size < 1) pointList.add(PlantPoint(0.0, 0.0))
+        val entryList = mutableListOf(Entry(mOrigin.x.toFloat(), mOrigin.y.toFloat()))
 
-        val entryList = pointList.map {
+        entryList.addAll(pointList.map {
             Entry(it.x.toFloat(), it.y.toFloat())
-        }
+        })
 
         val lds = LineDataSet(entryList, mContext.getString(R.string.rilievo_esterno))
         lds.color = Color.BLACK
@@ -38,7 +39,7 @@ class SismicPlantBuildingInteractor(private val mContext: Context) {
         lds.lineWidth = 3f
         lds.axisDependency = YAxis.AxisDependency.LEFT
 
-        val ldsCenter = LineDataSet(listOf(Entry(center.x.toFloat(), center.y.toFloat())), mContext.getString(R.string.centro_di_massa))
+        val ldsCenter = LineDataSet(listOf(Entry(mCenter.x.toFloat(), mCenter.y.toFloat())), mContext.getString(R.string.centro_di_massa))
         ldsCenter.color = Color.RED
         lds.setDrawCircles(true)
         lds.circleRadius = 5f
@@ -70,13 +71,13 @@ class SismicPlantBuildingInteractor(private val mContext: Context) {
 
     fun closePlant() {
         pointList.add(pointList.first())
-        center = SismicBuildingCalculatorHelper.calculateGravityCenter(pointList)
+        mCenter = SismicBuildingCalculatorHelper.calculateGravityCenter(pointList)
     }
 
     fun checkCenter() {
         if (pointList.first() == pointList.last())
         {
-            center = SismicBuildingCalculatorHelper.calculateGravityCenter(pointList)
+            mCenter = SismicBuildingCalculatorHelper.calculateGravityCenter(pointList)
         }
     }
 }

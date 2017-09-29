@@ -98,7 +98,7 @@ class UiMapper {
                     area,
                     t1,
                     perimetro,
-                    rilieviReportFragment.mSismicPlantBuildingInteractor.center,
+                    rilieviReportFragment.mSismicPlantBuildingInteractor.mCenter,
                     rilieviReportFragment.mSismicPlantBuildingInteractor.pointList)
         }
 
