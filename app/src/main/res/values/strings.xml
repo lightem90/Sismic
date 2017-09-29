@@ -323,6 +323,7 @@
     <string name="rilievo_esterno">Perimetro esterno</string>
     <string name="plant_point_action">PlantPointAction</string>
     <string name="centro_di_massa">Centro di massa</string>
+    <string name="impossibile_evaluate_closePoint">Impossibile calcolare punti vicini</string>
 
 
 </resources>

@@ -783,7 +783,7 @@ data class PillarState(var classe_calcestruzzo: String,
                        var c: Double,
                        var num_ferri: Int,
                        var diametro_ferri: Double,
-                       var As : Double) : Parcelable {
+                       var area_ferri: Double) : Parcelable {
     constructor() : this("", LivelloConoscenza.III.multiplier, 2.0, 3.5, 0.0, 0.0, 0.0, 0.0, 0.0, "", LivelloConoscenza.III.multiplier, 10.0, 67.5,
             210000.0, 450.0, 0.0, 0.0, 0.0, 0.0, 0, 0.0, 0.0)
 
@@ -836,7 +836,7 @@ data class PillarState(var classe_calcestruzzo: String,
         writeDouble(c)
         writeInt(num_ferri)
         writeDouble(diametro_ferri)
-        writeDouble(As)
+        writeDouble(area_ferri)
     }
 
     companion object {

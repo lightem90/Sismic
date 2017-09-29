@@ -235,7 +235,7 @@ class PilastriReportFragment : BaseReportFragment() {
         val diamFerri = armatura_fi.getParameterValue().toDoubleOrZero()
         getReport().reportState.buildingState.pillarState.num_ferri = numFerri
         getReport().reportState.buildingState.pillarState.diametro_ferri = diamFerri
-        getReport().reportState.buildingState.pillarState.As = SismicBuildingCalculatorHelper.calculateAs(numFerri, diamFerri)
+        getReport().reportState.buildingState.pillarState.area_ferri = SismicBuildingCalculatorHelper.calculateAs(numFerri, diamFerri)
     }
 
     fun fixAndReloadDataForUi() {

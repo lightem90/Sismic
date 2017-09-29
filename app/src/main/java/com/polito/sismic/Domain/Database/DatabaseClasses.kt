@@ -1,7 +1,5 @@
 package com.polito.sismic.Domain.Database
 
-import java.sql.DatabaseMetaData
-import java.util.*
 import kotlin.collections.HashMap
 
 /**
@@ -375,7 +373,7 @@ data class DatabaseCaratteristichePilastri(var map: MutableMap<String, Any?>) : 
     var c: Double by map
     var num_ferri: Int by map
     var diametro_ferri: Double by map
-    var As: Double by map
+    var area_ferri: Double by map
     var report_id: Int by map
 
     constructor(classe_calcestruzzo: String,
@@ -399,7 +397,7 @@ data class DatabaseCaratteristichePilastri(var map: MutableMap<String, Any?>) : 
                 c: Double,
                 num_ferri: Int,
                 diametro_ferri: Double,
-                As: Double,
+                area_ferri: Double,
                 report_id: Int
 
     ) : this(HashMap()) {
@@ -424,7 +422,7 @@ data class DatabaseCaratteristichePilastri(var map: MutableMap<String, Any?>) : 
         this.c = c
         this.num_ferri = num_ferri
         this.diametro_ferri = diametro_ferri
-        this.As = As
+        this.area_ferri = area_ferri
         this.report_id = report_id
     }
 }

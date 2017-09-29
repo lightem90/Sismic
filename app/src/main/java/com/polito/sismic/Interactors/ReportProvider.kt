@@ -35,7 +35,7 @@ class ReportProvider(val caller: ReportActivity) {
                 if (report == null) errorInCreatingReport()
                 return ReportManager(report!!, dbInteractor, true)
 
-            } catch (e : SQLiteException)   //Usually when 2 reports with same id exists
+            } catch (e : Exception)   //Usually when 2 reports with same id exists
             {
                 caller.finish()
             }

@@ -141,19 +141,27 @@ class DatabaseInteractor(private val reportDatabaseHelper: ReportDatabaseHelper 
     fun save(report: Report, editing: Boolean) = reportDatabaseHelper.use {
 
         //delete if exists (in the case I'm editing I delete the old one)
-        if (editing) delete(report.reportDetails)
+        delete(report.reportDetails, editing)
         with(dataMapper.convertReportFromDomain(report))
         {
-            reportDetails.committed = 1
             insert(ReportTable.NAME, *reportDetails.map.toVarargArray())
             insertEachSectionIntoCorrectTable(sections)
             mediaList.forEach { (map) -> insert(ReportMediaTable.NAME, *map.toVarargArray()) }
         }
-
     }
 
-    fun delete(reportDetails: ReportDetails) {
-        delete(reportDetails.id)
+    fun delete(reportDetails: ReportDetails, editing: Boolean) {
+
+        if (editing)
+        //Meaning the old one is not valid anymore
+            delete(reportDetails.id)
+        else {
+            //Delete just the uncommitted details
+            reportDatabaseHelper.use {
+                delete(ReportTable.NAME, "${ReportTable.ID} = ?", arrayOf(reportDetails.id.toString()))
+            }
+        }
+
     }
 
     fun delete(_id: Int) = reportDatabaseHelper.use {
@@ -216,7 +224,9 @@ class DatabaseInteractor(private val reportDatabaseHelper: ReportDatabaseHelper 
 
     fun getDetailsForHistory(): MutableList<ReportItemHistory> = reportDatabaseHelper.use {
 
+        val invalidReportsDetailsRequest = "${ReportTable.COMMITTED} = 1"
         val reports = select(ReportTable.NAME)
+                .whereSimple(invalidReportsDetailsRequest)
                 .orderBy(ReportTable.ID)
                 .parseList { DatabaseReportDetails(HashMap(it)) }
 

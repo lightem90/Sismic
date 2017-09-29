@@ -9,6 +9,7 @@ import com.polito.sismic.Domain.SpectrumDTO
 import com.polito.sismic.Extensions.toList
 import com.polito.sismic.Interactors.Helpers.ParametersForCoordinateHelper
 import com.polito.sismic.Interactors.Helpers.SismicActionCalculatorHelper
+import com.polito.sismic.R
 
 /**
  * Created by Matteo on 05/09/2017.
@@ -35,11 +36,16 @@ class SismicActionInteractor(val mReportManager: ReportManager,
             with(mCoordinateHelper.getClosestPointsTo(long, lat))
             {
                 //calculates ag, f0 and tc* for point
-                val periodList = mSismicActionCalculatorHelper.calculatePeriodsForSquare(this)
+                if (!isValid)
+                    mContext.getString(R.string.impossibile_evaluate_closePoint)
+                else {
 
-                mReportManager.report.reportState.sismicState.sismogenticState.closedNodeData = this.toList()
-                mReportManager.report.reportState.sismicState.sismogenticState.default_periods = periodList
+                    val periodList = mSismicActionCalculatorHelper.calculatePeriodsForSquare(this)
 
+                    mReportManager.report.reportState.sismicState.sismogenticState.closedNodeData = this.toList()
+                    mReportManager.report.reportState.sismicState.sismogenticState.default_periods = periodList
+
+                }
             }
             mustRecalcReturnTimesParameters = false
         }

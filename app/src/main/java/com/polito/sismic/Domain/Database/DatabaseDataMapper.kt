@@ -15,11 +15,12 @@ class DatabaseDataMapper {
         return ReportDetails(_id, title, userID, date.toFormattedDate(), committed)
     }
 
-    fun convertReportDetailsFromDomain(reportDetails: ReportDetails) : DatabaseReportDetails = with (reportDetails) {
-        return DatabaseReportDetails(id, title, userIdentifier, date.toFormattedString(), committed)
+    private fun convertReportDetailsFromDomain(reportDetails: ReportDetails, address: String = "") : DatabaseReportDetails = with (reportDetails) {
+        return if (!address.isEmpty()) DatabaseReportDetails(id, address, userIdentifier, date.toFormattedString(), 1)
+        else DatabaseReportDetails(id, userIdentifier + " " + date.toFormattedString(), userIdentifier, date.toFormattedString(), committed)
     }
 
-    fun convertMediaToDomain(databaseReportMedia: DatabaseReportMedia): ReportMedia = with(databaseReportMedia)
+    private fun convertMediaToDomain(databaseReportMedia: DatabaseReportMedia): ReportMedia = with(databaseReportMedia)
     {
         return ReportMedia(_id, filepath, type, note, size)
     }
@@ -29,17 +30,16 @@ class DatabaseDataMapper {
         return DatabaseReportMedia(uri, type, note, size, reportId)
     }
 
-    fun convertReportFromDomain(report: Report): DatabaseReport = with(report){
+    fun convertReportFromDomain(report: Report, saving : Boolean = true): DatabaseReport = with(report){
 
-        val databaseReportDetails = convertReportDetailsFromDomain(reportDetails)
+        //The address is the report title
+        val databaseReportDetails = convertReportDetailsFromDomain(reportDetails, report.reportState.localizationState.address)
         val databaseMediaList = with (reportState.mediaState)
         {
             map {convertMediaFromDomain(databaseReportDetails._id, it)}
         }
 
-        //l'indirizzo è il titolo del report
         val databaseSections = convertDomainSectionToDatabaseSection(databaseReportDetails._id, reportState)
-        databaseReportDetails.title = databaseSections.filterIsInstance<DatabaseLocalizationSection>().first().address
         DatabaseReport(databaseReportDetails, databaseMediaList, databaseSections.filterNotNull())
     }
 
