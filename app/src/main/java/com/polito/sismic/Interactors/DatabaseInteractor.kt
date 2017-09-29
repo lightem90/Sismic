@@ -259,14 +259,20 @@ class DatabaseInteractor(private val reportDatabaseHelper: ReportDatabaseHelper 
             validReportMediaDetails.forEach{ media -> savedFilePaths.add(media.filepath)}
         }
 
-        val validDirs = listOf(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+        val storageDir = listOf(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES),
                 context.getExternalFilesDir(Environment.DIRECTORY_MOVIES),
                 context.getExternalFilesDir(Environment.DIRECTORY_MUSIC),
                 context.getExternalFilesDir(Environment.DIRECTORY_PICTURES))
 
+        //Add all valid files read from dirs
         val listValidFiles = mutableListOf<File>()
-        validDirs.forEach { dir -> dir.listFiles().forEach { file -> listValidFiles.add(file) } }
-        listValidFiles.filter { file ->  !savedFilePaths.contains(file.absolutePath)}.forEach { invalidFile -> invalidFile.delete() }
+        storageDir.forEach { dir -> dir.listFiles().filter { file -> file.isFile }
+                .forEach { file -> listValidFiles.add(file) }
+        }
 
+        //Delete every files that has not been saved into db (checking its name in the saved paths)
+        listValidFiles
+                .filter { file ->  !savedFilePaths.contains(file.name)}
+                .forEach { invalidFile -> invalidFile.delete() }
     }
 }
