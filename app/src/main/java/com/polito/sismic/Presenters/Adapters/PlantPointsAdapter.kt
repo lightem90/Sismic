@@ -17,8 +17,8 @@ import kotlinx.android.synthetic.main.plant_point_item.view.*
  * Created by it0003971 on 28/09/2017.
  */
 class PlantPointsAdapter(val activity: Activity,
-                         val mSismicPlantBuildingInteractor: SismicPlantBuildingInteractor,
-                         val invalidateAndReload: () -> Unit) : RecyclerView.Adapter<PlantPointsAdapter.ViewHolder>() {
+                         private val mSismicPlantBuildingInteractor: SismicPlantBuildingInteractor,
+                         private val invalidateAndReload: () -> Unit) : RecyclerView.Adapter<PlantPointsAdapter.ViewHolder>() {
 
 
     override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
