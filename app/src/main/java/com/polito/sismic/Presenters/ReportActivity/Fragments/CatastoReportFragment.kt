@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.polito.sismic.Extensions.hideSoftKeyboard
+import com.polito.sismic.Extensions.toast
 import com.polito.sismic.Interactors.Helpers.UiMapper
 import com.polito.sismic.R
 import com.stepstone.stepper.StepperLayout
@@ -68,6 +69,10 @@ class CatastoReportFragment : BaseReportFragment() {
             vincoli_urb_parameter.requestFocus()
         }
         vincoli_urb_parameter.attachDataConfirmedCallback { if (!it.isEmpty()) activity.hideSoftKeyboard() }
+
+        catasto_button.setOnClickListener {
+            context.toast(R.string.error_not_supported)
+        }
     }
 
     override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback?) {

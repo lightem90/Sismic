@@ -244,7 +244,7 @@
     <string name="report_vita_parameter_30">30</string>
     <string name="report_vita_parameter_50">50</string>
     <string name="report_vita_parameter_100">100</string>
-    <string name="vita_reale_label">Vita reale (Vn * Cu) =</string>
+    <string name="vita_reale_label">Vita di riferimento (Vn * Cu) =</string>
     <string name="categoria_classe_duttilita_parameter_cda">CDA</string>
     <string name="categoria_classe_duttilita_parameter_cdb">CDB</string>
     <string name="fondazioni_type_platea">Platea</string>
@@ -287,6 +287,15 @@
     <string name="f0_header">F0 [-]</string>
     <string name="tcstar_header">Tc* [s]</string>
     <string name="params_format">%.5f</string>
+    <string name="params_spectrum_format">%.2f</string>
+    <string name="params_spectrum_state_format">%s (%d %s)</string>
+    <string name="state_header">Stato</string>/string>
+    <string name="tc_header">TC</string>
+    <string name="tb_header">TB</string>
+    <string name="td_header">TD</string>
+    <string name="cc_header">CC</string>
+    <string name="ss_header">SS</string>
+    <string name="s_header">S</string>
     <string name="spec_30_label">30 anni</string>
     <string name="label_year_format">%s anni</string>
     <string name="label_limit_state_format">%s: %d anni</string>
@@ -324,6 +333,8 @@
     <string name="plant_point_action">PlantPointAction</string>
     <string name="centro_di_massa">Centro di massa</string>
     <string name="impossibile_evaluate_closePoint">Impossibile calcolare punti vicini</string>
+    <string name="catasto_button">Richiedi al catasto</string>
+    <string name="q0_label"> Q = Q0 * Kr (1) = </string>
 
 
 </resources>

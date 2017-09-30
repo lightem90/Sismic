@@ -193,7 +193,7 @@ class ParametersForCoordinateHelper(val mContext : Context) {
             nullCounter++
         }
 
-        return NeighboursNodeSquare(candidateNE!!, candidateNO!!, candidateSO!!, candidateSE!!, nullCounter <=1 )
+        return NeighboursNodeSquare(candidateNE!!, candidateNO!!, candidateSO!!, candidateSE!!, nullCounter == 0 )
     }
 
     private fun getDataForNode(nodeId : String, param : CoordinateDatabaseParameters) : Double

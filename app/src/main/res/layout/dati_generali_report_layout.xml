@@ -1,40 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout style="@style/scrollableLayout"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/scrollableLayout">
 
     <TextView
         style="@style/sectionTitle"
-        android:text="@string/report_generali_title"/>
+        android:text="@string/report_generali_title" />
 
-    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
-        android:id="@+id/anno_costruzione_parameter"
-        app:report_parameter_title="@string/anno_costruzione_parameter"
-        app:report_parameter_hint="@string/anno_costruzione_parameter_hint"
-        app:report_parameter_isNumber="true"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+    <LinearLayout
+        android:id="@+id/anno_costruzione_parameter_container"
+        style="@style/spinnerContainer">
 
-    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
-        android:id="@+id/tipologia_strutturale_parameter"
-        app:report_parameter_title="@string/tipologia_strutturale_parameter"
-        app:report_parameter_hint="@string/tipologia_strutturale_parameter_hint"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        <TextView
+            style="@style/sectionSpinnerTitle"
+            android:text="@string/anno_costruzione_parameter" />
 
-    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
-        android:id="@+id/stato_parameter"
-        app:report_parameter_title="@string/stato_parameter"
-        app:report_parameter_hint="@string/stato_parameter_hint"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        <Spinner
+            android:id="@+id/anno_costruzione_parameter"
+            style="@style/spinnerStyle"
+            android:entries="@array/anno_costruzione" />
+    </LinearLayout>
 
-    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
-        android:id="@+id/totale_unita_parameter"
-        app:report_parameter_title="@string/totale_unita_parameter"
-        app:report_parameter_hint="@string/totale_unita_parameter_hint"
-        app:report_parameter_isNumber="true"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+    <LinearLayout
+        android:id="@+id/tipologia_strutturale_parameter_container"
+        style="@style/spinnerContainer">
+
+        <TextView
+            style="@style/sectionSpinnerTitle"
+            android:text="@string/tipologia_strutturale_parameter" />
+
+        <Spinner
+            android:id="@+id/tipologia_strutturale_parameter"
+            style="@style/spinnerStyle"
+            android:entries="@array/tipologia_strutturale" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/stato_parameter_container"
+        style="@style/spinnerContainer">
+
+        <TextView
+            style="@style/sectionSpinnerTitle"
+            android:text="@string/stato_parameter_hint" />
+
+        <Spinner
+            android:id="@+id/stato_parameter"
+            style="@style/spinnerStyle"
+            android:entries="@array/stato_edificio_parameter" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/totale_unita_parameter_container"
+        style="@style/spinnerContainer">
+
+        <TextView
+            style="@style/sectionSpinnerTitle"
+            android:text="@string/totale_unita_parameter" />
+
+        <Spinner
+            android:id="@+id/totale_unita_parameter"
+            style="@style/spinnerStyle"
+            android:entries="@array/totale_unita_parameter" />
+    </LinearLayout>
 
 </LinearLayout>

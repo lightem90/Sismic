@@ -4,14 +4,13 @@ import android.content.Context
 import android.os.Bundle
 import android.support.annotation.Nullable
 import android.support.v4.content.ContextCompat
+import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Adapter
 import android.widget.AdapterView
 import com.polito.sismic.Extensions.toast
-import com.polito.sismic.Interactors.Helpers.CategoriaSottosuolo
-import com.polito.sismic.Interactors.Helpers.UiMapper
 import com.polito.sismic.R
 import com.stepstone.stepper.StepperLayout
 import kotlinx.android.synthetic.main.spettri_progetto_report_layout.*
@@ -25,16 +24,19 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.polito.sismic.Domain.ProjectSpectrumState
 import com.polito.sismic.Domain.SpectrumDTO
 import com.polito.sismic.Extensions.toEntryList
-import com.polito.sismic.Interactors.Helpers.CategoriaTopografica
+import com.polito.sismic.Interactors.Helpers.*
+import com.polito.sismic.Presenters.Adapters.LimitStateAdapter
+import com.polito.sismic.Presenters.Adapters.SpectrumsDataAdapter
 
 
 class SpettriDiProgettoReportFragment : BaseReportFragment() {
 
-    private var mLock : Boolean = true
+    private lateinit var mSpectrumAdapter: SpectrumsDataAdapter
+    var mSpectrumList: MutableList<SpectrumDTO> = mutableListOf ()
+
     interface SpectrumReturnTimeRequest {
         fun onSpectrumReturnTimeRequest(data: ProjectSpectrumState): List<SpectrumDTO>
     }
-
     private var mReturnTimeRequest: SpectrumReturnTimeRequest? = null
     override fun onAttach(context: Context?) {
 
@@ -65,7 +67,6 @@ class SpettriDiProgettoReportFragment : BaseReportFragment() {
                 categoria_classe_duttilita_parameter_cda.isClickable = true
             }
             updateMoltiplicatoreVisibility(categoria_tipologia_parameter.selectedItemPosition)
-            updateGraph()
         }
 
         categoria_classe_duttilita_parameter_cdb.setOnCheckedChangeListener { _, flag ->
@@ -75,44 +76,24 @@ class SpettriDiProgettoReportFragment : BaseReportFragment() {
                 categoria_classe_duttilita_parameter_cdb.isClickable = true
             }
             updateMoltiplicatoreVisibility(categoria_tipologia_parameter.selectedItemPosition)
-            updateGraph()
         }
 
         categoria_tipologia_parameter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 
             override fun onItemSelected(parent: AdapterView<*>, mView: View?, pos: Int, id: Long) {
                 updateMoltiplicatoreVisibility(pos)
-                updateGraph()
             }
 
             override fun onNothingSelected(parent: AdapterView<out Adapter>?) {}
         }
 
-        categoria_moltiplicatore_parameter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 
-            override fun onItemSelected(parent: AdapterView<*>, mView: View?, pos: Int, id: Long) {
-                updateGraph()
-            }
 
-            override fun onNothingSelected(parent: AdapterView<out Adapter>?) {}
-        }
-
-        categoria_topografica_parameter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-
-            override fun onItemSelected(parent: AdapterView<*>, mView: View?, pos: Int, id: Long) {
-                updateGraph()
-            }
-
-            override fun onNothingSelected(parent: AdapterView<out Adapter>?) {}
-        }
-
-        categoria_suolo_parameter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-
-            override fun onItemSelected(parent: AdapterView<*>, mView: View?, pos: Int, id: Long) {
-                updateGraph()
-            }
-
-            override fun onNothingSelected(parent: AdapterView<out Adapter>?) {}
+        with(list_stati)
+        {
+            layoutManager = LinearLayoutManager(context)
+            mSpectrumAdapter = SpectrumsDataAdapter(context, mSpectrumList)
+            adapter = mSpectrumAdapter
         }
 
         with(report_spettrodirisposta_chart)
@@ -126,35 +107,27 @@ class SpettriDiProgettoReportFragment : BaseReportFragment() {
             getAxis(YAxis.AxisDependency.RIGHT).isEnabled = false
         }
 
-        mLock = false
-    }
+        calculate.setOnClickListener {
 
-    override fun onReload() {
-        super.onReload()
-        updateGraph()
-    }
-
-    private fun updateGraph()
-    {
-        if (mLock) return
-
-        val spectrumsDomain = mReturnTimeRequest?.onSpectrumReturnTimeRequest(UiMapper.createSpectrumStateForDomain(this, getReport().reportState.sismicState.projectSpectrumState.spectrums))
-        val spectrumsUi = spectrumsDomain?.map {
-            val lds = LineDataSet(it.pointList.toEntryList(), String.format(context.getString(R.string.label_limit_state_format), it.name, it.year))
-            lds.color = ContextCompat.getColor(context, it.color)
-            lds.lineWidth = 2f
-            lds.setDrawCircles(false)
-            lds.axisDependency = YAxis.AxisDependency.LEFT
-            lds
-        }
-
-        spectrumsDomain?.let {
-            getReport().reportState.sismicState.projectSpectrumState.spectrums = it
-            with(report_spettrodirisposta_chart)
-            {
-                data = LineData(spectrumsUi)
-                invalidate()
+            val spectrumsDomain = mReturnTimeRequest?.onSpectrumReturnTimeRequest(UiMapper.createSpectrumStateForDomain(this, getReport().reportState.sismicState.projectSpectrumState.spectrums, getReport().reportState.sismicState.projectSpectrumState.q0))
+            val spectrumsUi = spectrumsDomain?.map {
+                val lds = LineDataSet(it.pointList.toEntryList(), String.format(context.getString(R.string.label_limit_state_format), it.name, it.year))
+                lds.color = ContextCompat.getColor(context, it.color)
+                lds.lineWidth = 2f
+                lds.setDrawCircles(false)
+                lds.axisDependency = YAxis.AxisDependency.LEFT
+                lds
             }
+
+            spectrumsDomain?.let {
+                getReport().reportState.sismicState.projectSpectrumState.spectrums = it
+                with(report_spettrodirisposta_chart)
+                {
+                    data = LineData(spectrumsUi)
+                    invalidate()
+                }
+            }
+            reloadGraph()
         }
     }
 
@@ -163,21 +136,41 @@ class SpettriDiProgettoReportFragment : BaseReportFragment() {
             0 -> {
                 categoria_moltiplicatore_parameter_container.visibility = View.VISIBLE
                 updateSpinnerItemsVibility(categoria_moltiplicatore_parameter, resources.getStringArray(R.array.cat_moltiplicatore_1))
-                updateGraph()
             }
             1 -> {
                 if (categoria_classe_duttilita_parameter_cda.isChecked) {
                     updateSpinnerItemsVibility(categoria_moltiplicatore_parameter, resources.getStringArray(R.array.cat_moltiplicatore_2))
                 } else
                     categoria_moltiplicatore_parameter_container.visibility = View.GONE
-                updateGraph()
             }
             else -> {
                 categoria_moltiplicatore_parameter_container.visibility = View.GONE
-                updateGraph()
             }
         }
+        updateQ0()
+    }
 
+    override fun onReload()
+    {
+        reloadGraph()
+    }
+
+    private fun reloadGraph()
+    {
+        getReport().reportState.sismicState.projectSpectrumState.spectrums.let {
+            mSpectrumList.clear()
+            mSpectrumList.addAll(it)
+            mSpectrumAdapter.notifyDataSetChanged()
+        }
+    }
+
+    private fun updateQ0()
+    {
+        getReport().reportState.sismicState.projectSpectrumState.q0 = SismicActionCalculatorHelper.calculateQ0(categoria_tipologia_parameter.selectedItemPosition,
+                Alfa.values()[categoria_moltiplicatore_parameter.selectedItemPosition].multiplier,
+                categoria_classe_duttilita_parameter_cda.isChecked)
+
+        q0_label.setValue(getReport().reportState.sismicState.projectSpectrumState.q0.toString())
     }
 
     private fun updateSpinnerItemsVibility(spinnerToUpdate: Spinner, newStringArray: Array<out String>) {
@@ -189,7 +182,6 @@ class SpettriDiProgettoReportFragment : BaseReportFragment() {
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         // attaching data adapter to spinner
         spinnerToUpdate.adapter = dataAdapter
-        updateGraph()
     }
 
     fun selectCategoriaSuolo(categoria_suolo: String) {
@@ -209,7 +201,9 @@ class SpettriDiProgettoReportFragment : BaseReportFragment() {
 
     //callback to activity updates domain instance for activity and all existing and future fragments
     override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback?) {
-        getReport().reportState.sismicState.projectSpectrumState = UiMapper.createSpectrumStateForDomain(this, getReport().reportState.sismicState.projectSpectrumState.spectrums)
+        getReport().reportState.sismicState.projectSpectrumState = UiMapper.createSpectrumStateForDomain(this,
+                getReport().reportState.sismicState.projectSpectrumState.spectrums,
+                getReport().reportState.sismicState.projectSpectrumState.q0)
 
         super.onNextClicked(callback)
     }

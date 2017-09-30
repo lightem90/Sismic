@@ -29,6 +29,12 @@ import kotlinx.android.synthetic.main.dati_sismogenetici_report_layout.*
  */
 class DatiSismoGeneticiReportFragment : BaseReportFragment() {
 
+    private lateinit var mNodeAdapter : NodeListAdapter
+    private lateinit var mPeriodAdapter : PeriodListAdapter
+
+    var mNodeList : MutableList<NeighboursNodeData> = mutableListOf()
+    var mPeriodList : MutableList<PeriodData> = mutableListOf ()
+
     interface DefaultReturnTimeRequest {
         fun onDefaultReturnTimesRequested() : List<SpectrumDTO>
     }
@@ -43,12 +49,6 @@ class DatiSismoGeneticiReportFragment : BaseReportFragment() {
             throw ClassCastException(context!!.toString() + " must implement OnParametersConfirmed")
         }
     }
-
-    var mNodeList : MutableList<NeighboursNodeData> = mutableListOf()
-    var mPeriodList : MutableList<PeriodData> = mutableListOf ()
-
-    private lateinit var mNodeAdapter : NodeListAdapter
-    private lateinit var mPeriodAdapter : PeriodListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,7 +87,28 @@ class DatiSismoGeneticiReportFragment : BaseReportFragment() {
             getAxis(YAxis.AxisDependency.RIGHT).isEnabled = false
         }
 
-        onReload()
+        calculate.setOnClickListener {
+
+            val spectrumsDomain = mDefaultReturnTimeRequest?.onDefaultReturnTimesRequested()
+            val spectrumsUi = spectrumsDomain?.map {
+                val lds = LineDataSet(it.pointList.toEntryList(), String.format(context.getString(R.string.label_year_format), it.name))
+                lds.color = ContextCompat.getColor(context, it.color)
+                lds.setDrawCircles(false)
+                lds.lineWidth = 2f
+                lds.axisDependency = YAxis.AxisDependency.LEFT
+                lds
+            }
+
+            spectrumsDomain?.let {
+                getReport().reportState.sismicState.sismogenticState.default_spectrum = it
+                with(report_spettrodirisposta_chart)
+                {
+                    data = LineData(spectrumsUi)
+                    invalidate()
+                }
+            }
+        }
+
     }
 
     override fun onReload()
@@ -113,26 +134,6 @@ class DatiSismoGeneticiReportFragment : BaseReportFragment() {
                     it.longitude.toString(),
                     it.address,
                     it.zone)
-        }
-
-
-        val spectrumsDomain = mDefaultReturnTimeRequest?.onDefaultReturnTimesRequested()
-        val spectrumsUi = spectrumsDomain?.map {
-            val lds = LineDataSet(it.pointList.toEntryList(), String.format(context.getString(R.string.label_year_format), it.name))
-            lds.color = ContextCompat.getColor(context, it.color)
-            lds.setDrawCircles(false)
-            lds.lineWidth = 2f
-            lds.axisDependency = YAxis.AxisDependency.LEFT
-            lds
-        }
-
-        spectrumsDomain?.let {
-            getReport().reportState.sismicState.sismogenticState.default_spectrum = it
-            with(report_spettrodirisposta_chart)
-            {
-                data = LineData(spectrumsUi)
-                invalidate()
-            }
         }
     }
 

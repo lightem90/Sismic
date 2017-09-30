@@ -63,13 +63,13 @@ class UiMapper {
                     spectrums)
         }
 
-        fun createSpectrumStateForDomain(spettriDiProgettoReportFragment: SpettriDiProgettoReportFragment, spectrums: List<SpectrumDTO>): ProjectSpectrumState = with(spettriDiProgettoReportFragment) {
+        fun createSpectrumStateForDomain(spettriDiProgettoReportFragment: SpettriDiProgettoReportFragment, spectrums: List<SpectrumDTO>, q0: Double): ProjectSpectrumState = with(spettriDiProgettoReportFragment) {
 
             return ProjectSpectrumState(CategoriaSottosuolo.values()[categoria_suolo_parameter.selectedItemPosition].name,
                     CategoriaTopografica.values()[categoria_topografica_parameter.selectedItemPosition].multiplier,
                     categoria_classe_duttilita_parameter_cda.isChecked,
                     categoria_tipologia_parameter.selectedItem.toString(),
-                    SismicActionCalculatorHelper.calculateQ0(categoria_tipologia_parameter.selectedItemPosition, Alfa.values()[categoria_moltiplicatore_parameter.selectedItemPosition].multiplier,categoria_classe_duttilita_parameter_cda.isChecked),
+                    q0,
                     Alfa.values()[categoria_moltiplicatore_parameter.selectedItemPosition].multiplier,
                     1.0,
                     spectrums)
@@ -77,10 +77,10 @@ class UiMapper {
 
         fun createBuildingGeneralStateForDomain(datiGeneraliReportFragment: DatiGeneraliReportFragment): BuildingGeneralState = with(datiGeneraliReportFragment){
 
-            return BuildingGeneralState(anno_costruzione_parameter.getParameterValue(),
-                    tipologia_strutturale_parameter.getParameterValue(),
-                    stato_parameter.getParameterValue(),
-                    totale_unita_parameter.getParameterValue())
+            return BuildingGeneralState(anno_costruzione_parameter.selectedItem.toString(),
+                    tipologia_strutturale_parameter.selectedItem.toString(),
+                    stato_parameter.selectedItem.toString(),
+                    totale_unita_parameter.selectedItem.toString())
         }
 
         fun createTakeoverStateForDomain(rilieviReportFragment: RilieviReportFragment): TakeoverState  = with(rilieviReportFragment){
@@ -196,10 +196,7 @@ class UiMapper {
                 is DatiGeneraliReportFragment ->
                 {
                     reportState.buildingState.buildingGeneralState.let {
-                        anno_costruzione_parameter.setParameterValue(it.anno_costruzione)
-                        tipologia_strutturale_parameter.setParameterValue(it.tipologia_strutturale)
-                        stato_parameter.setParameterValue(it.stato_edificio)
-                        totale_unita_parameter.setParameterValue(it.totale_unita)
+                        setSpinnersByValues(it.anno_costruzione, it.tipologia_strutturale, it.stato_edificio, it.totale_unita)
                     }
                 }
 
@@ -258,6 +255,8 @@ class UiMapper {
                 }
             }
         }
+
+
 
     }
 }

@@ -95,13 +95,36 @@
             android:entries="@array/cat_moltiplicatore_1"/>
     </LinearLayout>
 
+    <com.polito.sismic.Presenters.CustomLayout.LabelReportLayout
+        android:id="@+id/q0_label"
+        app:report_label_title="@string/q0_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
     <TextView
         style="@style/sectionTitle"
         android:text="@string/report_spettrodirisposta_title"/>
+
+    <Button
+        android:id="@+id/calculate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginBottom="@dimen/grid_vertical_margin"
+        android:layout_marginTop="@dimen/grid_vertical_margin"
+        android:background="@color/colorAccent"
+        android:text="@string/update_graph_btn"/>
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/report_spettrodirisposta_chart"
         android:layout_width="match_parent"
         android:layout_height="500dp" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/list_stati"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>
