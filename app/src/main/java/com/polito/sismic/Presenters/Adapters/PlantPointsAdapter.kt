@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.plant_point_item.view.*
  */
 class PlantPointsAdapter(val activity: Activity,
                          private val mSismicPlantBuildingInteractor: SismicPlantBuildingInteractor,
-                         private val invalidateAndReload: (Boolean) -> Unit) : RecyclerView.Adapter<PlantPointsAdapter.ViewHolder>() {
+                         private val invalidateAndReload: () -> Unit) : RecyclerView.Adapter<PlantPointsAdapter.ViewHolder>() {
 
 
     override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
@@ -34,43 +34,42 @@ class PlantPointsAdapter(val activity: Activity,
         return ViewHolder(v, mSismicPlantBuildingInteractor, invalidateAndReload)
     }
 
-    class ViewHolder(itemView: View, val mSismicPlantBuildingInteractor: SismicPlantBuildingInteractor, val invalidateAndReload: (Boolean) -> Unit) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(itemView: View,
+                     val mSismicPlantBuildingInteractor: SismicPlantBuildingInteractor,
+                     val invalidateAndReload: () -> Unit) : RecyclerView.ViewHolder(itemView) {
 
         fun bindReport(plantPoint: PlantPoint) = with(itemView) {
 
             plant_x.setText(plantPoint.x.toString())
             plant_x.inputType = InputType.TYPE_NUMBER_FLAG_DECIMAL or InputType.TYPE_CLASS_NUMBER
-            plant_x.onConfirm {
+            plant_x.onFocusChangeListener = View.OnFocusChangeListener { _, _ ->
                 plantPoint.x = plant_x.text.toString().toDoubleOrZero()
-                plant_y.requestFocus()
-                invalidateAndReload(true)
             }
 
             plant_y.setText(plantPoint.y.toString())
             plant_y.inputType = InputType.TYPE_NUMBER_FLAG_DECIMAL or InputType.TYPE_CLASS_NUMBER
-            plant_y.onConfirm {
+            plant_y.onFocusChangeListener = View.OnFocusChangeListener { _, _ ->
                 plantPoint.y = plant_y.text.toString().toDoubleOrZero()
-                invalidateAndReload(true)
             }
 
             add.setOnClickListener {
                 mSismicPlantBuildingInteractor.addGenericPointAfter(plantPoint)
-                invalidateAndReload(false)
+                invalidateAndReload()
             }
 
             delete.setOnClickListener {
                 mSismicPlantBuildingInteractor.deletePoint(plantPoint)
-                invalidateAndReload(true)
+                invalidateAndReload()
             }
 
             up_point.setOnClickListener {
                 mSismicPlantBuildingInteractor.addPointOnXAfter(plantPoint)
-                invalidateAndReload(true)
+                invalidateAndReload()
             }
 
             right_point.setOnClickListener {
                 mSismicPlantBuildingInteractor.addPointOnYAfter(plantPoint)
-                invalidateAndReload(true)
+                invalidateAndReload()
             }
 
             close.setOnClickListener {

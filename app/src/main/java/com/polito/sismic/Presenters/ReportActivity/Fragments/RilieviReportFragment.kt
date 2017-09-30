@@ -13,7 +13,6 @@ import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.LegendEntry
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
-import com.github.mikephil.charting.utils.ColorTemplate
 import com.polito.sismic.Extensions.toDoubleOrZero
 import com.polito.sismic.Interactors.Helpers.UiMapper
 import com.polito.sismic.Interactors.SismicPlantBuildingInteractor
@@ -27,7 +26,9 @@ import kotlinx.android.synthetic.main.rilievi_report_layout.*
  */
 class RilieviReportFragment : BaseReportFragment() {
 
-    val mSismicPlantBuildingInteractor : SismicPlantBuildingInteractor = SismicPlantBuildingInteractor()
+    val mSismicPlantBuildingInteractor : SismicPlantBuildingInteractor by lazy {
+        SismicPlantBuildingInteractor(getReport().reportState.buildingState.takeoverState)
+    }
 
     override fun onCreateView(inflater: LayoutInflater?, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View? {
         return inflateFragment(R.layout.rilievi_report_layout, inflater, container)
@@ -58,7 +59,7 @@ class RilieviReportFragment : BaseReportFragment() {
 
         plant_point_list.layoutManager = LinearLayoutManager(activity)
         val adapter = PlantPointsAdapter(activity, mSismicPlantBuildingInteractor){
-            invalidateAndReload(it)
+            invalidatePlantList()
         }
         plant_point_list.adapter = adapter
 
@@ -66,11 +67,13 @@ class RilieviReportFragment : BaseReportFragment() {
         {
             xAxis.position = XAxis.XAxisPosition.BOTTOM
             legend.form = Legend.LegendForm.DEFAULT
-            legend.setCustom(listOf(LegendEntry(context.getString(R.string.rilievo_esterno), Legend.LegendForm.DEFAULT, 1f, 1f, null, Color.BLACK),
-                    LegendEntry(context.getString(R.string.centro_di_massa), Legend.LegendForm.DEFAULT, 1f, 1f, null, Color.RED)))
+            legend.setCustom(listOf(LegendEntry(context.getString(R.string.rilievo_esterno), Legend.LegendForm.DEFAULT, 8f, 1f, null, Color.BLACK),
+                    LegendEntry(context.getString(R.string.centro_di_massa), Legend.LegendForm.DEFAULT, 8f, 1f, null, Color.RED)))
             description.isEnabled = false
             getAxis(YAxis.AxisDependency.RIGHT).isEnabled = false
         }
+
+        calculate.setOnClickListener{ updateGraph() }
     }
 
     override fun onReload() {
@@ -78,18 +81,10 @@ class RilieviReportFragment : BaseReportFragment() {
         updateGraph()
     }
 
-    private fun invalidateAndReload(rebuildGraph : Boolean = true)
-    {
-        mSismicPlantBuildingInteractor.checkCenter()
-        invalidatePlantList()
-        if (rebuildGraph) updateGraph()
-    }
-
     private fun updateGraph() = with(plant_graph)
     {
         mSismicPlantBuildingInteractor.convertListForGraph(context)?.let {
             data = it
-            notifyDataSetChanged()
             invalidate()
         }
     }

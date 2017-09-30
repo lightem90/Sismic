@@ -7,18 +7,26 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.polito.sismic.Domain.PlantPoint
+import com.polito.sismic.Domain.TakeoverState
 import com.polito.sismic.Interactors.Helpers.SismicBuildingCalculatorHelper
 import com.polito.sismic.R
 
 /**
  * Created by it0003971 on 28/09/2017.
  */
-class SismicPlantBuildingInteractor {
+class SismicPlantBuildingInteractor(val takeoverState: TakeoverState?) {
 
     //First cant be modified
     val pointList: MutableList<PlantPoint> = mutableListOf(PlantPoint(0.0, 0.0))
     var mCenter: PlantPoint = PlantPoint(0.0, 0.0)
     private val mOrigin: PlantPoint = PlantPoint(0.0, 0.0)
+
+    init {
+        takeoverState?.let {
+            pointList.addAll(it.plant_points)
+            mCenter = it.gravity_center
+        }
+    }
 
     fun convertListForGraph(context: Context): LineData? {
 
