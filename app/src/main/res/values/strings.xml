@@ -210,7 +210,7 @@
     <string name="num_x_title_hint">N# lungo x</string>
     <string name="dist_x">Distanza [m]</string>
     <string name="dist_x_hint">Distanza lungo y [m]</string>
-    <string name="num_y_title">N# lungo x</string>
+    <string name="num_y_title">N# lungo y</string>
     <string name="num_y_title_hint">N# lungo y</string>
     <string name="dist_y">Distanza [m]</string>
     <string name="dist_y_hint">Distanza lungo y [m]</string>
@@ -348,6 +348,13 @@
     <string name="solaio_q_format">Solaio Q = %s [kN/mq]</string>
     <string name="verification_barycenter">Centro di massa sull\'origine</string>
     <string name="verification_takeover_invalid">Rilievo non valido, figura non chiusa</string>
+    <string name="already_closed_notification">Il disegno risulta già chiuso</string>
+    <string name="verification_spectrums">E\' necessario il calcolo degli spettri per continuare</string>
+    <string name="dominio_pilastro">Dominio Pilastro</string>
+    <string name="stato_slo">SLO</string>
+    <string name="stato_slc">SLC</string>
+    <string name="stato_sld">SLD</string>
+    <string name="stato_slv">SLV</string>
 
 
 </resources>

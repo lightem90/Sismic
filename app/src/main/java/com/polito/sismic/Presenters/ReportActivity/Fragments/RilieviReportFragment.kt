@@ -110,7 +110,7 @@ class RilieviReportFragment : BaseReportFragment() {
 
     override fun verifyStep(): VerificationError? {
         if (altezza_piano_tr_parameter.isEmpty()) return VerificationError(String.format(resources.getString(R.string.verification_empty_field), altezza_piano_tr_parameter.getTitle()))
-        if (altezza_piani_sup_parameter.visibility == View.VISIBLE && altezza_piani_sup_parameter.isEmpty()) return VerificationError(String.format(resources.getString(R.string.verification_empty_field), altezza_piano_tr_parameter.getTitle()))
+        if (altezza_piani_sup_parameter.visibility == View.VISIBLE && altezza_piani_sup_parameter.isEmpty()) return VerificationError(String.format(resources.getString(R.string.verification_empty_field), altezza_piani_sup_parameter.getTitle()))
         if (mSismicPlantBuildingInteractor.mCenter == mSismicPlantBuildingInteractor.mOrigin) return VerificationError(resources.getString(R.string.verification_barycenter))
         if (!mSismicPlantBuildingInteractor.isClosed()) return VerificationError(resources.getString(R.string.verification_takeover_invalid))
         return null

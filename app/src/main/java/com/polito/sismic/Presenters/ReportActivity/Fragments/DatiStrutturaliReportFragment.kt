@@ -20,6 +20,9 @@ import kotlinx.android.synthetic.main.dati_strutturali_report_layout.*
  */
 class DatiStrutturaliReportFragment : BaseReportFragment() {
 
+
+    var qCopertura: Double = 0.0
+    var qSolaio: Double = 0.0
     private lateinit var mPesiSolaio: Array<out String>
     private lateinit var mPesiCopertura: Array<out String>
 
@@ -127,15 +130,15 @@ class DatiStrutturaliReportFragment : BaseReportFragment() {
 
     private fun updateSolaioQ()
     {
-        val q = mPesiSolaio[solaio_peso.selectedItemPosition].toDoubleOrZero() + solaio_g2.getParameterValue().toDoubleOrZero() + solaio_qk.getParameterValue().toDoubleOrZero()*0.3
-        solaio_q.text = String.format(context.getString(R.string.solaio_q_format), "%.2f".format(q))
+        qSolaio = mPesiSolaio[solaio_peso.selectedItemPosition].toDoubleOrZero() + solaio_g2.getParameterValue().toDoubleOrZero() + solaio_qk.getParameterValue().toDoubleOrZero()*0.3
+        solaio_q.text = String.format(context.getString(R.string.solaio_q_format), "%.2f".format(qSolaio))
     }
 
     private fun updateCoperturaQ()
     {
-        val q = mPesiCopertura[copertura_peso.selectedItemPosition].toDoubleOrZero() + copertura_g2.getParameterValue().toDoubleOrZero() + copertura_qk.getParameterValue().toDoubleOrZero()*0.3
+        qCopertura = mPesiCopertura[copertura_peso.selectedItemPosition].toDoubleOrZero() + copertura_g2.getParameterValue().toDoubleOrZero() + copertura_qk.getParameterValue().toDoubleOrZero()*0.3
 
-        copertura_q.text = String.format(context.getString(R.string.copertura_q_format), "%.2f".format(q))
+        copertura_q.text = String.format(context.getString(R.string.copertura_q_format), "%.2f".format(qCopertura))
     }
 
     fun getTipoFondazioni(): String {

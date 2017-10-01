@@ -20,9 +20,9 @@ class MagliaStrutturaleReportFragment : BaseReportFragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        num_x.attachDataConfirmedCallback { num_y.requestFocus() }
-        num_y.attachDataConfirmedCallback { dist_x.requestFocus() }
-        dist_x.attachDataConfirmedCallback { dist_y.requestFocus() }
+        num_x.attachDataConfirmedCallback { dist_x.requestFocus() }
+        dist_x.attachDataConfirmedCallback { num_y.requestFocus() }
+        num_y.attachDataConfirmedCallback { dist_y.requestFocus() }
         dist_y.attachDataConfirmedCallback { if (!it.isEmpty()) activity.hideSoftKeyboard() }
     }
 

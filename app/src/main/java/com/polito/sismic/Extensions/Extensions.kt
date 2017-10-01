@@ -246,6 +246,7 @@ fun Activity.showSoftKeyboard() {
 fun EditText.onConfirm(callback: () -> Unit) {
     setOnEditorActionListener { _, actionId, event ->
         if (actionId == EditorInfo.IME_ACTION_SEARCH ||
+                actionId == EditorInfo.IME_ACTION_NEXT ||
                 actionId == EditorInfo.IME_ACTION_DONE ||
                 event?.action == KeyEvent.ACTION_DOWN &&
                         event?.keyCode == KeyEvent.KEYCODE_ENTER) {

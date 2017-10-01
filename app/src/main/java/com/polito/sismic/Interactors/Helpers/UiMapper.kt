@@ -113,13 +113,13 @@ class UiMapper {
                     pesoSolaio,
                     solaio_g2.getParameterValue().toDoubleOrZero(),
                     solaio_qk.getParameterValue().toDoubleOrZero(),
-                    solaio_q.text.toString().toDoubleOrZero(),
+                    qSolaio,
                     copertura_type.textOn.toString(),
                     copertura_peso.selectedItem.toString(),
                     pesoCopertura,
                     copertura_g2.getParameterValue().toDoubleOrZero(),
                     copertura_qk.getParameterValue().toDoubleOrZero(),
-                    copertura_q.text.toString().toDoubleOrZero(),
+                    qCopertura,
                     SismicBuildingCalculatorHelper.calculateBuildWeigth(buildingState, pesoSolaio, pesoCopertura))
         }
 
@@ -198,12 +198,15 @@ class UiMapper {
 
                 is RilieviReportFragment ->
                 {
-                    //TODO
                     reportState.buildingState.takeoverState.let {
                         piani_numero_parameter.setSelection(it.numero_piani-1)
                         altezza_piano_tr_parameter.setParameterValue(it.altezza_piano_terra.toStringOrEmpty())
                         altezza_piani_sup_parameter.setParameterValue(it.altezza_piani_superiori.toStringOrEmpty())
                         altezza_tot.text = it.altezza_totale.toStringOrEmpty()
+                        mSismicPlantBuildingInteractor.pointList = it.plant_points.toMutableList()
+                        mSismicPlantBuildingInteractor.mCenter = it.gravity_center
+                        mSismicPlantBuildingInteractor.area = it.area
+                        mSismicPlantBuildingInteractor.perimeter = it.perimetro
                     }
                 }
                 is DatiStrutturaliReportFragment ->

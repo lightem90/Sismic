@@ -43,6 +43,7 @@ class PlantPointsAdapter(val activity: Activity,
 
             if (position == 0) delete.visibility = View.GONE
             if (isLast) close.visibility = View.VISIBLE
+            else close.visibility = View.GONE
 
             add.setOnClickListener {
                 mSismicPlantBuildingInteractor.addGenericPointAfter(activity, plantPoint, invalidateAndReload)
@@ -54,7 +55,7 @@ class PlantPointsAdapter(val activity: Activity,
             }
 
             close.setOnClickListener {
-                mSismicPlantBuildingInteractor.closePlant()
+                mSismicPlantBuildingInteractor.closePlant(context)
                 invalidateAndReload()
             }
         }

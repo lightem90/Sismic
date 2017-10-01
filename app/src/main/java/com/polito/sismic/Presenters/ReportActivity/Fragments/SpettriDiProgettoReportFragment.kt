@@ -27,6 +27,8 @@ import com.polito.sismic.Extensions.toEntryList
 import com.polito.sismic.Interactors.Helpers.*
 import com.polito.sismic.Presenters.Adapters.LimitStateAdapter
 import com.polito.sismic.Presenters.Adapters.SpectrumsDataAdapter
+import com.stepstone.stepper.VerificationError
+import kotlinx.android.synthetic.main.info_loc_report_layout.*
 
 
 class SpettriDiProgettoReportFragment : BaseReportFragment() {
@@ -204,5 +206,9 @@ class SpettriDiProgettoReportFragment : BaseReportFragment() {
                 getReport().reportState.sismicState.projectSpectrumState.q0)
 
         super.onNextClicked(callback)
+    }
+    override fun verifyStep(): VerificationError? {
+        if (mSpectrumList.isEmpty()) return VerificationError(resources.getString(R.string.verification_spectrums))
+        return null
     }
 }

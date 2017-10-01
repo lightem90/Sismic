@@ -43,18 +43,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-    <!-- Non la visualizzo per ora
-    <Button
-        android:id="@+id/ok"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:backgroundTint="@color/colorAccent"
-        android:text="@string/ok"/>
-
-    <TextView
-        style="@style/sectionTitle"
-        android:text="@string/posizione_pilastri"/>
-    -->
 
 </LinearLayout>

@@ -16,7 +16,9 @@ import com.polito.sismic.Interactors.Helpers.SismicBuildingCalculatorHelper
 import com.polito.sismic.R
 import kotlinx.android.synthetic.main.plant_point_dialog.view.*
 import com.github.mikephil.charting.utils.EntryXComparator
-import android.R.attr.entries
+import com.polito.sismic.Extensions.showSoftKeyboard
+import com.polito.sismic.Extensions.toast
+import kotlinx.android.synthetic.main.plant_point_item.view.*
 import java.util.*
 
 
@@ -30,7 +32,7 @@ class SismicPlantBuildingInteractor(val takeoverState: TakeoverState?) {
     var mCenter: PlantPoint = PlantPoint(0.0, 0.0)
     var area: Double = 0.0
     var perimeter: Double = 0.0
-    val pointList: MutableList<PlantPoint> = mutableListOf(mOrigin)
+    var pointList: MutableList<PlantPoint> = mutableListOf(mOrigin)
 
     init {
         takeoverState?.let {
@@ -43,6 +45,7 @@ class SismicPlantBuildingInteractor(val takeoverState: TakeoverState?) {
 
         //return nothing, to be safe
         if (pointList.size <= 1) return null
+        calculateAreAndPerimeter()
 
         //List of segments, i cant do just one very long line due to limit in the graphic api
         val segmentList = mutableListOf<List<Entry>>()
@@ -72,7 +75,6 @@ class SismicPlantBuildingInteractor(val takeoverState: TakeoverState?) {
 
         val allData = mutableListOf(ldsCenter)
         allData.addAll(perimeterLds)
-        calculateAreAndPerimeter()
         return LineData(allData.filter { it.entryCount > 0 })
     }
 
@@ -104,6 +106,7 @@ class SismicPlantBuildingInteractor(val takeoverState: TakeoverState?) {
                 plant_x_dialog.setText(it.x.toString())
                 plant_y_dialog.setText(it.y.toString())
             }
+
             android.support.v7.app.AlertDialog.Builder(activity)
                     .setTitle(com.polito.sismic.R.string.plant_point_dialog_title)
                     .setView(this)
@@ -128,10 +131,14 @@ class SismicPlantBuildingInteractor(val takeoverState: TakeoverState?) {
         pointList.remove(plantPoint)
     }
 
-    fun closePlant() {
+    fun closePlant(context: Context) {
         if (!isClosed())
         {
             pointList.add(mOrigin.copy())
+        }
+        else
+        {
+            context.toast(R.string.already_closed_notification)
         }
     }
 

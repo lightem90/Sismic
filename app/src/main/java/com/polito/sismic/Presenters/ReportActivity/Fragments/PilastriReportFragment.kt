@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.Adapter
 import android.widget.AdapterView
 import com.github.mikephil.charting.components.Legend
+import com.github.mikephil.charting.components.LegendEntry
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.Entry
@@ -23,6 +24,7 @@ import com.polito.sismic.Extensions.hideSoftKeyboard
 import com.polito.sismic.Extensions.toDoubleOrZero
 import com.polito.sismic.Interactors.Helpers.LivelloConoscenza
 import com.polito.sismic.Interactors.Helpers.SismicBuildingCalculatorHelper
+import com.polito.sismic.Interactors.Helpers.StatiLimite
 import com.polito.sismic.R
 import com.stepstone.stepper.StepperLayout
 import com.stepstone.stepper.VerificationError
@@ -63,12 +65,6 @@ class PilastriReportFragment : BaseReportFragment() {
         epsy.setValue(getReport().reportState.buildingState.pillarState.epsy.toString() + percent)
         epsuAcc.setValue(getReport().reportState.buildingState.pillarState.epsyu.toString() + percent)
         E.setValue(getReport().reportState.buildingState.pillarState.E.toString() + context.getString(R.string.E_value))
-
-        sezione_bx_parameter.attachDataConfirmedCallback { sezione_hy_parameter.requestFocus() }
-        sezione_hy_parameter.attachDataConfirmedCallback { sezione_c_parameter.requestFocus() }
-        sezione_c_parameter.attachDataConfirmedCallback { num_armatura.requestFocus() }
-        num_armatura.attachDataConfirmedCallback { armatura_fi.requestFocus() }
-        armatura_fi.attachDataConfirmedCallback { if (!it.isEmpty()) activity.hideSoftKeyboard() }
 
         calc_classe_parameter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 
@@ -169,13 +165,28 @@ class PilastriReportFragment : BaseReportFragment() {
 
         num_armatura.attachDataConfirmedCallback {
             fixAs()
+            armatura_fi.requestFocus()
         }
+
         armatura_fi.attachDataConfirmedCallback {
             fixAs()
+            if (!it.isEmpty()) activity.hideSoftKeyboard()
         }
-        sezione_bx_parameter.attachDataConfirmedCallback { fixPillarData() }
-        sezione_hy_parameter.attachDataConfirmedCallback { fixPillarData() }
-        sezione_c_parameter.attachDataConfirmedCallback { fixPillarData() }
+
+        sezione_bx_parameter.attachDataConfirmedCallback {
+            fixPillarData()
+            sezione_hy_parameter.requestFocus()
+        }
+
+        sezione_hy_parameter.attachDataConfirmedCallback {
+            fixPillarData()
+            sezione_c_parameter.requestFocus()
+        }
+
+        sezione_c_parameter.attachDataConfirmedCallback {
+            fixPillarData()
+            num_armatura.requestFocus()
+        }
 
         calculate.setOnClickListener {
             mPillarDomainGraphRequest?.onPillarDomainGraphRequest(getReport().reportState.buildingState.pillarState)?.let {
@@ -226,6 +237,12 @@ class PilastriReportFragment : BaseReportFragment() {
         {
             xAxis.position = XAxis.XAxisPosition.BOTTOM
             legend.form = Legend.LegendForm.DEFAULT
+            legend.setCustom(listOf(
+                    LegendEntry(context.getString(R.string.dominio_pilastro), Legend.LegendForm.DEFAULT, 8f, 1f, null, Color.BLUE),
+                    LegendEntry(context.getString(R.string.stato_slo), Legend.LegendForm.DEFAULT, 8f, 1f, null, ContextCompat.getColor(context, StatiLimite.SLO.color)),
+                    LegendEntry(context.getString(R.string.stato_slc), Legend.LegendForm.DEFAULT, 8f, 1f, null, ContextCompat.getColor(context, StatiLimite.SLC.color)),
+                    LegendEntry(context.getString(R.string.stato_sld), Legend.LegendForm.DEFAULT, 8f, 1f, null, ContextCompat.getColor(context, StatiLimite.SLD.color)),
+                    LegendEntry(context.getString(R.string.stato_slv), Legend.LegendForm.DEFAULT, 8f, 1f, null, ContextCompat.getColor(context, StatiLimite.SLV.color))))
             description.isEnabled = false
             getAxis(YAxis.AxisDependency.RIGHT).isEnabled = false
         }
