@@ -13,6 +13,7 @@ import com.polito.sismic.Extensions.toast
 import com.polito.sismic.Interactors.Helpers.UiMapper
 import com.polito.sismic.R
 import com.stepstone.stepper.StepperLayout
+import com.stepstone.stepper.VerificationError
 import kotlinx.android.synthetic.main.dati_strutturali_report_layout.*
 
 /**
@@ -180,6 +181,16 @@ class DatiStrutturaliReportFragment : BaseReportFragment() {
         (0 until copertura_peso.count)
                 .firstOrNull { copertura_peso.getItemAtPosition(it) == peso_copertura }
                 ?.let { return copertura_peso.setSelection(it)}
+    }
+
+    //all parameters must have a value
+    override fun verifyStep(): VerificationError? {
+        if (fondazioni_h.isEmpty()) return VerificationError(String.format(resources.getString(R.string.verification_empty_field), fondazioni_h.getTitle()))
+        if (solaio_g2.isEmpty()) return VerificationError(String.format(resources.getString(R.string.verification_empty_field), solaio_g2.getTitle()))
+        if (solaio_qk.isEmpty()) return VerificationError(String.format(resources.getString(R.string.verification_empty_field), solaio_qk.getTitle()))
+        if (copertura_g2.isEmpty()) return VerificationError(String.format(resources.getString(R.string.verification_empty_field), copertura_g2.getTitle()))
+        if (copertura_qk.isEmpty()) return VerificationError(String.format(resources.getString(R.string.verification_empty_field), copertura_qk.getTitle()))
+        return super.verifyStep()
     }
 
     //callback to activity updates domain instance for activity and all existing and future fragments

@@ -19,7 +19,8 @@ class PlantPointsAdapter(val activity: Activity,
 
 
     override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
-        holder?.bindReport(mSismicPlantBuildingInteractor.pointList[position], position, position == mSismicPlantBuildingInteractor.pointList.size-1)
+        val isCloseVisible = (position == mSismicPlantBuildingInteractor.pointList.size-1) && mSismicPlantBuildingInteractor.pointList.size > 1
+        holder?.bindReport(mSismicPlantBuildingInteractor.pointList[position], position, isCloseVisible)
     }
 
     override fun getItemCount(): Int {
@@ -36,13 +37,13 @@ class PlantPointsAdapter(val activity: Activity,
                      val activity : Activity,
                      val invalidateAndReload: () -> Unit) : RecyclerView.ViewHolder(itemView) {
 
-        fun bindReport(plantPoint: PlantPoint, position: Int, isLast: Boolean) = with(itemView) {
+        fun bindReport(plantPoint: PlantPoint, position: Int, isCloseVisible: Boolean) = with(itemView) {
 
             plant_x.text = String.format(context.getString(R.string.plant_point_x), "%.2f".format(plantPoint.x))
             plant_y.text = String.format(context.getString(R.string.plant_point_y), "%.2f".format(plantPoint.y))
 
             if (position == 0) delete.visibility = View.GONE
-            if (isLast) close.visibility = View.VISIBLE
+            if (isCloseVisible) close.visibility = View.VISIBLE
             else close.visibility = View.GONE
 
             add.setOnClickListener {

@@ -233,7 +233,7 @@ class UiMapper {
                         sezione_bx_parameter.setParameterValue(it.bx.toStringOrEmpty())
                         sezione_hy_parameter.setParameterValue(it.hy.toStringOrEmpty())
                         sezione_c_parameter.setParameterValue(it.c.toStringOrEmpty())
-                        num_armatura.setParameterValue(it.num_ferri.toString())
+                        num_armatura.setParameterValue(it.num_ferri.toStringOrEmpty())
                         armatura_fi.setParameterValue(it.diametro_ferri.toStringOrEmpty())
                     }
                     //sync with domain
@@ -243,10 +243,10 @@ class UiMapper {
                 is MagliaStrutturaleReportFragment ->
                 {
                     reportState.buildingState.pillarLayoutState.let {
-                        num_x.setParameterValue(it.pillarX.toString())
-                        num_y.setParameterValue(it.pillarY.toString())
-                        dist_x.setParameterValue(it.distX.toString())
-                        dist_y.setParameterValue(it.distY.toString())
+                        num_x.setParameterValue(it.pillarX.toStringOrEmpty())
+                        num_y.setParameterValue(it.pillarY.toStringOrEmpty())
+                        dist_x.setParameterValue(it.distX.toStringOrEmpty())
+                        dist_y.setParameterValue(it.distY.toStringOrEmpty())
                     }
                 }
 

@@ -12,7 +12,7 @@ class ReportDatabaseHelper(ctx: Context = App.instance) : ManagedSQLiteOpenHelpe
 
     companion object {
         val DB_NAME = "reportdatabase.db"
-        val DB_VERSION = 18
+        val DB_VERSION = 19
         val instance by lazy { ReportDatabaseHelper() }
     }
 

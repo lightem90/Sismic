@@ -31,9 +31,10 @@ class DatabaseInteractor(private val reportDatabaseHelper: ReportDatabaseHelper 
                 ReportTable.DATE to date.toFormattedString(),
                 ReportTable.COMMITTED to -1)
 
-        val reportRequest = "${ReportTable.USERID} = ? "
+        val reportRequest = "${ReportTable.USERID} = ? AND ${ReportTable.COMMITTED} = ?"
+        //last invalid inserted value.. its this
         val databaseReportDetails = select(ReportTable.NAME)
-                .whereSimple(reportRequest, userID)
+                .whereSimple(reportRequest, userID, "-1")
                 .orderBy(ReportTable.USERID, SqlOrderDirection.DESC)
                 .limit(1)
                 .parseOpt { DatabaseReportDetails(HashMap(it)) }
@@ -176,7 +177,6 @@ class DatabaseInteractor(private val reportDatabaseHelper: ReportDatabaseHelper 
         delete(CaratteristichePilastriInfoTable.NAME, "${CaratteristichePilastriInfoTable.REPORT_ID} = ?", arrayOf(_id.toString()))
         delete(MagliaStrutturaleInfoTable.NAME, "${MagliaStrutturaleInfoTable.REPORT_ID} = ?", arrayOf(_id.toString()))
         delete(ResultsInfoTable.NAME, "${ResultsInfoTable.REPORT_ID} = ?", arrayOf(_id.toString()))
-
     }
 
     private fun insertEachSectionIntoCorrectTable(sections: List<DatabaseSection>) = reportDatabaseHelper.use {
@@ -259,14 +259,14 @@ class DatabaseInteractor(private val reportDatabaseHelper: ReportDatabaseHelper 
             validReportMediaDetails.forEach{ media -> savedFilePaths.add(media.filepath)}
         }
 
-        val storageDir = listOf(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+        val storageDirs = listOf(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES),
                 context.getExternalFilesDir(Environment.DIRECTORY_MOVIES),
                 context.getExternalFilesDir(Environment.DIRECTORY_MUSIC),
                 context.getExternalFilesDir(Environment.DIRECTORY_PICTURES))
 
         //Add all valid files read from dirs
         val listValidFiles = mutableListOf<File>()
-        storageDir.forEach { dir -> dir.listFiles().filter { file -> file.isFile }
+        storageDirs.forEach { dir -> dir.listFiles().filter { file -> file.isFile }
                 .forEach { file -> listValidFiles.add(file) }
         }
 

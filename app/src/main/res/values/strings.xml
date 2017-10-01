@@ -355,6 +355,7 @@
     <string name="stato_slc">SLC</string>
     <string name="stato_sld">SLD</string>
     <string name="stato_slv">SLV</string>
+    <string name="error_unexpected">Impossibile aprire il report</string>
 
 
 </resources>

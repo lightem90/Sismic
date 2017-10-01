@@ -90,6 +90,7 @@ class SismicPlantBuildingInteractor(val takeoverState: TakeoverState?) {
         val lds = LineDataSet(entryList, context.getString(R.string.rilievo_esterno))
         lds.color = Color.BLACK
         lds.axisDependency = YAxis.AxisDependency.LEFT
+        lds.axisDependency = YAxis.AxisDependency.RIGHT
         lds.setDrawCircles(false)
         lds.lineWidth = 3f
         return lds

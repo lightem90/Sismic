@@ -208,8 +208,7 @@ fun PeriodData.interpolateWith(next: PeriodData, newYear: Int): PeriodData {
 
 fun String.toDoubleOrZero(): Double {
 
-    return if (isEmpty()) 0.0 else
-    {
+    return if (isEmpty()) 0.0 else {
         var tmp = this
         tmp = tmp.replace(",", ".")
         return tmp.toDouble()
@@ -260,23 +259,22 @@ fun EditText.onConfirm(callback: () -> Unit) {
 
 fun String.toPlantPointList(): List<PlantPoint> {
     val pointList = split(" ")
-    return pointList.map { it ->
-        val pair = it.split(" ")
+    return pointList
+            .filter { !it.isEmpty() }
+            .map { it ->
+                val pair = it.split(",")
 
-        PlantPoint(pair[0].toDouble(), pair[1].toDouble())
-    }
+                PlantPoint(pair[0].toDouble(), pair[1].toDouble())
+            }
 }
 
-fun List<PlantPoint>.indexOfNext(point: PlantPoint) : Int
-{
-    return indexOf(point) +1
+fun List<PlantPoint>.indexOfNext(point: PlantPoint): Int {
+    return indexOf(point) + 1
 }
 
-fun PlantPoint.distanceFrom(other : PlantPoint) : Double
-{
+fun PlantPoint.distanceFrom(other: PlantPoint): Double {
     return Math.sqrt((Math.pow((x - other.x), 2.0)) + (Math.pow((y - other.y), 2.0)))
 }
-
 
 
 fun List<PlantPoint>.toParsableString(): String {

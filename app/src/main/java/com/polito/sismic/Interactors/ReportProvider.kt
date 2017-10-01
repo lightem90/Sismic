@@ -32,6 +32,7 @@ class ReportProvider(val caller: ReportActivity) {
 
             } catch (e : Exception)   //Usually when 2 reports with same id exists
             {
+                caller.toast(R.string.error_unexpected)
                 caller.finish()
             }
 

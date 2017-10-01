@@ -9,6 +9,7 @@ import com.polito.sismic.Extensions.hideSoftKeyboard
 import com.polito.sismic.Interactors.Helpers.UiMapper
 import com.polito.sismic.R
 import com.stepstone.stepper.StepperLayout
+import com.stepstone.stepper.VerificationError
 import kotlinx.android.synthetic.main.maglia_strutt_report_layout.*
 
 class MagliaStrutturaleReportFragment : BaseReportFragment() {
@@ -24,6 +25,14 @@ class MagliaStrutturaleReportFragment : BaseReportFragment() {
         dist_x.attachDataConfirmedCallback { num_y.requestFocus() }
         num_y.attachDataConfirmedCallback { dist_y.requestFocus() }
         dist_y.attachDataConfirmedCallback { if (!it.isEmpty()) activity.hideSoftKeyboard() }
+    }
+
+    override fun verifyStep(): VerificationError? {
+        if (num_x.isEmpty()) return VerificationError(String.format(resources.getString(R.string.verification_empty_field), num_x.getTitle()))
+        if (dist_x.isEmpty()) return VerificationError(String.format(resources.getString(R.string.verification_empty_field), dist_x.getTitle()))
+        if (num_y.isEmpty()) return VerificationError(String.format(resources.getString(R.string.verification_empty_field), num_y.getTitle()))
+        if (dist_y.isEmpty()) return VerificationError(String.format(resources.getString(R.string.verification_empty_field), dist_y.getTitle()))
+        return null
     }
 
     //callback to activity updates domain instance for activity and all existing and future fragments
