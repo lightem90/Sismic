@@ -58,9 +58,7 @@ class RilieviReportFragment : BaseReportFragment() {
 
 
         plant_point_list.layoutManager = LinearLayoutManager(activity)
-        val adapter = PlantPointsAdapter(activity, mSismicPlantBuildingInteractor){
-            invalidatePlantList()
-        }
+        val adapter = PlantPointsAdapter(activity, mSismicPlantBuildingInteractor){ plant_point_list?.adapter?.notifyDataSetChanged() }
         plant_point_list.adapter = adapter
 
         with(plant_graph)
@@ -83,15 +81,11 @@ class RilieviReportFragment : BaseReportFragment() {
 
     private fun updateGraph() = with(plant_graph)
     {
+        plant_point_list?.adapter?.notifyDataSetChanged()
         mSismicPlantBuildingInteractor.convertListForGraph(context)?.let {
             data = it
             invalidate()
         }
-    }
-
-    private fun invalidatePlantList()
-    {
-        plant_point_list?.adapter?.notifyDataSetChanged()
     }
 
     private fun updateAltezzaTotale()

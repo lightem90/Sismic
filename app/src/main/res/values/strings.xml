@@ -62,9 +62,9 @@
     <string name="action_reverseGeolocalization">Geolocalizzazione inversa</string>
     <string name="action_geolocalization">Geolocalizzazione</string>
     <string name="action_fromMap">Scegli su mappa</string>
-    <string name="report_info_number_label">Numero:</string>
-    <string name="report_info_name_label">Nome</string>
-    <string name="report_info_data_label">Data e ora</string>
+    <string name="report_info_number_label">ID Verifica:</string>
+    <string name="report_info_name_label">Nome: </string>
+    <string name="report_info_data_label">Data e ora: </string>
     <string name="report_state_parameter">Stato</string>
     <string name="report_state_parameter_hint">Inserisci stato</string>
     <string name="report_region_parameter">Regione</string>
@@ -327,14 +327,17 @@
     <string name="calculate">Calcola dominio</string>
     <string name="num_armatura">Numero ferri</string>
     <string name="num_armatura_hint">Inserire numero ferri armatura</string>
-    <string name="plant_x_hint">x : [m]</string>
-    <string name="plant_y_hint">y : [m]</string>
+    <string name="plant_x_hint">x[m]:</string>
+    <string name="plant_y_hint">y[m]:</string>
     <string name="rilievo_esterno">Perimetro esterno</string>
     <string name="plant_point_action">PlantPointAction</string>
     <string name="centro_di_massa">Centro di massa</string>
     <string name="impossibile_evaluate_closePoint">Impossibile calcolare punti vicini</string>
     <string name="catasto_button">Richiedi al catasto</string>
     <string name="q0_label"> Q = Q0 * Kr (1) = </string>
+    <string name="plant_point_x">X: %s</string>
+    <string name="plant_point_y">Y: %s</string>
+    <string name="plant_point_dialog_title">Inserire punto del rilievo</string>
 
 
 </resources>

@@ -266,6 +266,11 @@ fun String.toPlantPointList(): List<PlantPoint> {
     }
 }
 
+fun List<PlantPoint>.indexOfNext(point: PlantPoint) : Int
+{
+    return indexOf(point) +1
+}
+
 
 fun List<PlantPoint>.toParsableString(): String {
     val sb = StringBuilder()

@@ -87,8 +87,6 @@ class SpettriDiProgettoReportFragment : BaseReportFragment() {
             override fun onNothingSelected(parent: AdapterView<out Adapter>?) {}
         }
 
-
-
         with(list_stati)
         {
             layoutManager = LinearLayoutManager(context)
@@ -170,7 +168,7 @@ class SpettriDiProgettoReportFragment : BaseReportFragment() {
                 Alfa.values()[categoria_moltiplicatore_parameter.selectedItemPosition].multiplier,
                 categoria_classe_duttilita_parameter_cda.isChecked)
 
-        q0_label.setValue(getReport().reportState.sismicState.projectSpectrumState.q0.toString())
+        q0_label.setValue("%.2f".format(getReport().reportState.sismicState.projectSpectrumState.q0))
     }
 
     private fun updateSpinnerItemsVibility(spinnerToUpdate: Spinner, newStringArray: Array<out String>) {

@@ -7,7 +7,7 @@
     
     <RelativeLayout
         android:layout_gravity="center_vertical"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginTop="@dimen/report_parameter_vertical_margin"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:layout_width="match_parent"
@@ -24,6 +24,7 @@
             android:layout_toRightOf="@id/section_parameter_title"
             android:layout_toEndOf="@id/section_parameter_title"
             android:scaleType="fitEnd"
+            android:visibility="invisible"
             android:background="@android:color/transparent"
             app:srcCompat="@drawable/ic_help_black_24dp" />
         
@@ -32,9 +33,10 @@
     <!-- May god curse you forever Mr. "saveEnabled" -->
     <AutoCompleteTextView
         android:id="@+id/section_parameter_value"
-        android:saveEnabled="false"
+        style="@style/sectionParameterValue"
+        android:layout_height="wrap_content"
         android:maxLines="1"
-        style="@style/sectionParameterValue"/>
+        android:saveEnabled="false" />
 
     <View style="@style/Divider"/>
 
