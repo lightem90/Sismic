@@ -2,6 +2,7 @@ package com.polito.sismic.Interactors.Helpers
 
 import android.content.Context
 import com.polito.sismic.Domain.*
+import com.polito.sismic.Extensions.distanceFrom
 
 /**
  * Created by it0003971 on 15/09/2017.
@@ -54,17 +55,53 @@ class SismicBuildingCalculatorHelper(val mContext: Context) {
             }
         }
 
-        //TODO
-        fun calculateGravityCenter(interactor: MutableList<PlantPoint>): PlantPoint {
-            return PlantPoint(0.0, 0.0)
+        fun calculateGravityCenter(pointList: List<PlantPoint>): PlantPoint {
+            val triangleList = createTriangleList(pointList)
+            val tripleList = triangleList.map {
+                val xi = (it.first.x + it.second.x + it.third.x) / 3
+                val yi = (it.first.y + it.second.y + it.third.y) / 3
+                val s = deterimantOf(it)
+                Triple(xi, yi, s)
+            }
+
+            //sum of (xi * si) / sum of (s)
+            val sumOfS = tripleList.sumByDouble { it.third }
+            val xg = (tripleList.sumByDouble { it.first * it.third }) / sumOfS
+            val yg = (tripleList.sumByDouble { it.second * it.third }) / sumOfS
+
+            return PlantPoint(xg, yg)
         }
 
-        fun calculatePerimeter(interactor: MutableList<PlantPoint>): Double {
-            return 0.0
+        private fun deterimantOf(triple: Triple<PlantPoint, PlantPoint, PlantPoint>): Double = with(triple){
+            val firstQuadrant = first.x * (second.y - third.y)
+            val secondQuadrant = first.y * (second.x - third.x)
+            val thirdQuadrant = ((second.x * third.y) - (second.y * third.x))
+
+            firstQuadrant - secondQuadrant + thirdQuadrant
         }
 
-        fun calculateArea(interactor: MutableList<PlantPoint>): Double {
-            return 0.0
+        private fun createTriangleList(pointList: List<PlantPoint>): List<Triple<PlantPoint, PlantPoint, PlantPoint>> {
+            return (1 until pointList.size-1).map { Triple(pointList[0], pointList[it], pointList[it +1]) }
+        }
+
+        fun calculatePerimeter(pointList: List<PlantPoint>): Double {
+            var sum = 0.0
+            for (i in 0 until pointList.size)
+            {
+                if (i == pointList.size-1)
+                {
+                    sum += pointList[i].distanceFrom(pointList[0])
+                    continue
+                }
+                sum += pointList[i].distanceFrom(pointList[i+1])
+            }
+            return sum
+        }
+
+        fun calculateArea(pointList: List<PlantPoint>): Double {
+            val leftSum = (0 until pointList.size - 1).sumByDouble { (pointList[it].x * pointList[it + 1].y) }
+            val rightSum = (0 until pointList.size - 1).sumByDouble { (pointList[it].y * pointList[it + 1].x) }
+            return (leftSum + rightSum) / 2
         }
 
     }

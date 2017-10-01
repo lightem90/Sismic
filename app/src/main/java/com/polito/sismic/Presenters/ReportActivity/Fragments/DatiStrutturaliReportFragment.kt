@@ -83,6 +83,7 @@ class DatiStrutturaliReportFragment : BaseReportFragment() {
             override fun onItemSelected(parent: AdapterView<*>, mView: View?, pos: Int, id: Long) {
                 val peso = mPesiCopertura[pos]
                 copertura_g1.text = String.format(context.getString(R.string.g1_format), peso)
+                updateCoperturaQ()
             }
             override fun onNothingSelected(parent: AdapterView<out Adapter>?) {  }
         }
@@ -109,7 +110,10 @@ class DatiStrutturaliReportFragment : BaseReportFragment() {
             updateCoperturaQ()
             copertura_qk.requestFocus()
         }
-        copertura_qk.attachDataConfirmedCallback { if (!it.isEmpty()) activity.hideSoftKeyboard() }
+        copertura_qk.attachDataConfirmedCallback {
+            if (!it.isEmpty()) activity.hideSoftKeyboard()
+            updateCoperturaQ()
+        }
 
         copertura_type.setOnClickListener {
             context.toast(R.string.error_not_supported)
@@ -124,13 +128,14 @@ class DatiStrutturaliReportFragment : BaseReportFragment() {
     private fun updateSolaioQ()
     {
         val q = mPesiSolaio[solaio_peso.selectedItemPosition].toDoubleOrZero() + solaio_g2.getParameterValue().toDoubleOrZero() + solaio_qk.getParameterValue().toDoubleOrZero()*0.3
-        solaio_q.text = q.toString()
+        solaio_q.text = String.format(context.getString(R.string.solaio_q_format), "%.2f".format(q))
     }
 
     private fun updateCoperturaQ()
     {
         val q = mPesiCopertura[copertura_peso.selectedItemPosition].toDoubleOrZero() + copertura_g2.getParameterValue().toDoubleOrZero() + copertura_qk.getParameterValue().toDoubleOrZero()*0.3
-        copertura_q.text = q.toString()
+
+        copertura_q.text = String.format(context.getString(R.string.copertura_q_format), "%.2f".format(q))
     }
 
     fun getTipoFondazioni(): String {

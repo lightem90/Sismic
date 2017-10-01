@@ -25,6 +25,7 @@ import com.polito.sismic.Interactors.Helpers.LivelloConoscenza
 import com.polito.sismic.Interactors.Helpers.SismicBuildingCalculatorHelper
 import com.polito.sismic.R
 import com.stepstone.stepper.StepperLayout
+import com.stepstone.stepper.VerificationError
 import kotlinx.android.synthetic.main.pilastri_report_layout.*
 
 /**
@@ -330,5 +331,15 @@ class PilastriReportFragment : BaseReportFragment() {
         fixPillarData()
 
         super.onNextClicked(callback)
+    }
+
+
+    override fun verifyStep(): VerificationError? {
+        if (sezione_bx_parameter.isEmpty()) return VerificationError(String.format(resources.getString(R.string.verification_empty_field), sezione_bx_parameter.getTitle()))
+        if (sezione_hy_parameter.isEmpty()) return VerificationError(String.format(resources.getString(R.string.verification_empty_field), sezione_hy_parameter.getTitle()))
+        if (sezione_c_parameter.isEmpty()) return VerificationError(String.format(resources.getString(R.string.verification_empty_field), sezione_c_parameter.getTitle()))
+        if (num_armatura.isEmpty()) return VerificationError(String.format(resources.getString(R.string.verification_empty_field), num_armatura.getTitle()))
+        if (armatura_fi.isEmpty()) return VerificationError(String.format(resources.getString(R.string.verification_empty_field), armatura_fi.getTitle()))
+        return null
     }
 }

@@ -338,6 +338,16 @@
     <string name="plant_point_x">X: %s</string>
     <string name="plant_point_y">Y: %s</string>
     <string name="plant_point_dialog_title">Inserire punto del rilievo</string>
+    <string name="area_label">%s [m²]</string>
+    <string name="barycenter_label">X: %s Y: %s</string>
+    <string name="perimeter_label">%s [m]</string>
+    <string name="area_label_title">Area: </string>
+    <string name="barycenter_label_title">Centro di massa: </string>
+    <string name="perimeter_label_title">Perimetro: </string>
+    <string name="copertura_q_format">Copertura Q = %s [kN/mq]</string>
+    <string name="solaio_q_format">Solaio Q = %s [kN/mq]</string>
+    <string name="verification_barycenter">Centro di massa sull\'origine</string>
+    <string name="verification_takeover_invalid">Rilievo non valido, figura non chiusa</string>
 
 
 </resources>

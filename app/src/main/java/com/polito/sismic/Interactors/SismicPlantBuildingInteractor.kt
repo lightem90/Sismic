@@ -15,6 +15,10 @@ import com.polito.sismic.Extensions.toDoubleOrZero
 import com.polito.sismic.Interactors.Helpers.SismicBuildingCalculatorHelper
 import com.polito.sismic.R
 import kotlinx.android.synthetic.main.plant_point_dialog.view.*
+import com.github.mikephil.charting.utils.EntryXComparator
+import android.R.attr.entries
+import java.util.*
+
 
 /**
  * Created by it0003971 on 28/09/2017.
@@ -22,8 +26,10 @@ import kotlinx.android.synthetic.main.plant_point_dialog.view.*
 class SismicPlantBuildingInteractor(val takeoverState: TakeoverState?) {
 
     //First cant be modified
-    private val mOrigin: PlantPoint = PlantPoint(0.0, 0.0)
+    val mOrigin: PlantPoint = PlantPoint(0.0, 0.0)
     var mCenter: PlantPoint = PlantPoint(0.0, 0.0)
+    var area: Double = 0.0
+    var perimeter: Double = 0.0
     val pointList: MutableList<PlantPoint> = mutableListOf(mOrigin)
 
     init {
@@ -35,41 +41,50 @@ class SismicPlantBuildingInteractor(val takeoverState: TakeoverState?) {
 
     fun convertListForGraph(context: Context): LineData? {
 
-        //to graph use a list without 0.0 (for now), it should break the path each time it intersect with origin
-        val listToUse = pointList.filter { point -> point != mOrigin }
-        //return empty if just point on origin
-        if (listToUse.size <= 1) return null
+        //return nothing, to be safe
+        if (pointList.size <= 1) return null
 
-        val first = listToUse.first()
-        val last = listToUse.last()
-        val firstTrait = mutableListOf(Entry(mOrigin.x.toFloat(), mOrigin.y.toFloat()),
-                Entry(first.x.toFloat(), first.y.toFloat()))
+        //List of segments, i cant do just one very long line due to limit in the graphic api
+        val segmentList = mutableListOf<List<Entry>>()
+        (0 until pointList.size-1).mapTo(segmentList) {
+            listOf(Entry(pointList[it].x.toFloat(), pointList[it].y.toFloat()),
+                    Entry(pointList[it +1].x.toFloat(), pointList[it +1].y.toFloat()))
+        }
+        //last segment
+        segmentList.add(listOf(Entry(pointList[0].x.toFloat(), pointList[0].y.toFloat()),
+                Entry(pointList[pointList.size-1].x.toFloat(), pointList[pointList.size-1].y.toFloat())))
 
-        val lastTrait = mutableListOf(Entry(last.x.toFloat(), last.y.toFloat(),
-                Entry(mOrigin.x.toFloat(), mOrigin.y.toFloat())))
-
-        val firstLds = createPerimeterDataset(firstTrait, context)
-        val lastLds = createPerimeterDataset(lastTrait, context)
-
-        val intermediateEntryList = mutableListOf<Entry>()
-        if (listToUse.size > 1) {
-            intermediateEntryList.addAll(listToUse.map {
-                Entry(it.x.toFloat(), it.y.toFloat())
-            })
+        val ldsCenterList = mutableListOf<Entry>()
+        if (mCenter != mOrigin) {
+            ldsCenterList.add(Entry(mCenter.x.toFloat(), mCenter.y.toFloat()))
         }
 
-        val intermediateLds = createPerimeterDataset(intermediateEntryList, context)
+        //must be sorted on x value
+        segmentList.forEach { Collections.sort(it, EntryXComparator()) }
+        val perimeterLds = segmentList.map { createPerimeterDataset(it, context) }
 
-        val ldsCenter = LineDataSet(listOf(Entry(mCenter.x.toFloat(), mCenter.y.toFloat())), context.getString(R.string.centro_di_massa))
+        //Barycenter
+        val ldsCenter = LineDataSet(ldsCenterList, context.getString(R.string.centro_di_massa))
         ldsCenter.setDrawCircles(true)
         ldsCenter.circleRadius = 10f
         ldsCenter.circleColors = listOf(Color.RED)
         ldsCenter.axisDependency = YAxis.AxisDependency.LEFT
 
-        return LineData(listOf(ldsCenter, firstLds, intermediateLds, lastLds).filter { it.entryCount > 0 })
+        val allData = mutableListOf(ldsCenter)
+        allData.addAll(perimeterLds)
+        calculateAreAndPerimeter()
+        return LineData(allData.filter { it.entryCount > 0 })
     }
 
-    private fun createPerimeterDataset(entryList: MutableList<Entry>, context: Context): LineDataSet {
+    //The helper does the job
+    private fun calculateAreAndPerimeter() {
+        mCenter = SismicBuildingCalculatorHelper.calculateGravityCenter(pointList)
+        area = SismicBuildingCalculatorHelper.calculateArea(pointList)
+        perimeter = SismicBuildingCalculatorHelper.calculatePerimeter(pointList)
+    }
+
+    //The legend is custom in the char, but this is use to not replicate code
+    private fun createPerimeterDataset(entryList: List<Entry>, context: Context): LineDataSet {
         val lds = LineDataSet(entryList, context.getString(R.string.rilievo_esterno))
         lds.color = Color.BLACK
         lds.axisDependency = YAxis.AxisDependency.LEFT
@@ -78,18 +93,13 @@ class SismicPlantBuildingInteractor(val takeoverState: TakeoverState?) {
         return lds
     }
 
-    private fun addPoint(x: String, y: String, indexOfNewPoint: Int) {
-        pointList.add(indexOfNewPoint, PlantPoint(x.toDoubleOrZero(), y.toDoubleOrZero()))
-        checkCenter()
-    }
-
     fun addGenericPointAfter(activity: Activity, clickedItem: PlantPoint, invalidateAndReload: () -> Unit): AlertDialog = with(activity) {
 
         //index where to add item (clicked item position +1)
         val indexOfNewPoint = pointList.indexOfNext(clickedItem)
         with(layoutInflater.inflate(R.layout.plant_point_dialog, null))
         {
-            //Set eventually predefined data
+            //Set predefined data (by clicked item, usually we move perpendicularly)
             clickedItem.let {
                 plant_x_dialog.setText(it.x.toString())
                 plant_y_dialog.setText(it.y.toString())
@@ -109,21 +119,25 @@ class SismicPlantBuildingInteractor(val takeoverState: TakeoverState?) {
         }
     }
 
+    private fun addPoint(x: String, y: String, indexOfNewPoint: Int) {
+        pointList.add(indexOfNewPoint, PlantPoint(x.toDoubleOrZero(), y.toDoubleOrZero()))
+    }
+
     fun deletePoint(plantPoint: PlantPoint) {
-        //Always leave one active
-        if (pointList.size == 1) return
+        //Always leave first active
         pointList.remove(plantPoint)
     }
 
     fun closePlant() {
-        pointList.add(mOrigin.copy())
-        mCenter = SismicBuildingCalculatorHelper.calculateGravityCenter(pointList)
+        if (!isClosed())
+        {
+            pointList.add(mOrigin.copy())
+        }
     }
 
-    fun checkCenter() {
-        if (mOrigin == pointList.last()) {
-            mCenter = SismicBuildingCalculatorHelper.calculateGravityCenter(pointList)
-        }
+    fun isClosed() : Boolean
+    {
+        return pointList.last() == pointList.first()
     }
 }
 

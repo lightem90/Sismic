@@ -271,6 +271,12 @@ fun List<PlantPoint>.indexOfNext(point: PlantPoint) : Int
     return indexOf(point) +1
 }
 
+fun PlantPoint.distanceFrom(other : PlantPoint) : Double
+{
+    return Math.sqrt((Math.pow((x - other.x), 2.0)) + (Math.pow((y - other.y), 2.0)))
+}
+
+
 
 fun List<PlantPoint>.toParsableString(): String {
     val sb = StringBuilder()

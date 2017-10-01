@@ -19,6 +19,7 @@ import com.polito.sismic.Interactors.SismicPlantBuildingInteractor
 import com.polito.sismic.Presenters.Adapters.PlantPointsAdapter
 import com.polito.sismic.R
 import com.stepstone.stepper.StepperLayout
+import com.stepstone.stepper.VerificationError
 import kotlinx.android.synthetic.main.rilievi_report_layout.*
 
 /**
@@ -84,8 +85,20 @@ class RilieviReportFragment : BaseReportFragment() {
         plant_point_list?.adapter?.notifyDataSetChanged()
         mSismicPlantBuildingInteractor.convertListForGraph(context)?.let {
             data = it
+            notifyDataSetChanged()
             invalidate()
+
+            updateLabels()
         }
+    }
+
+    private fun updateLabels()
+    {
+        area_label.setValue(String.format(context.getString(R.string.area_label), "%.2f".format(mSismicPlantBuildingInteractor.area)))
+        perimeter_label.setValue(String.format(context.getString(R.string.perimeter_label), "%.2f".format(mSismicPlantBuildingInteractor.perimeter)))
+        barycenter_label.setValue(String.format(context.getString(R.string.barycenter_label),
+                "%.2f".format(mSismicPlantBuildingInteractor.mCenter.x),
+                "%.2f".format(mSismicPlantBuildingInteractor.mCenter.y)))
     }
 
     private fun updateAltezzaTotale()
@@ -93,6 +106,14 @@ class RilieviReportFragment : BaseReportFragment() {
         altezza_tot.text  = if (piani_numero_parameter.selectedItemPosition > 0)
             (altezza_piano_tr_parameter.getParameterValue().toDoubleOrZero() + piani_numero_parameter.selectedItemPosition * altezza_piani_sup_parameter.getParameterValue().toDoubleOrZero()).toString()
             else altezza_piano_tr_parameter.getParameterValue()
+    }
+
+    override fun verifyStep(): VerificationError? {
+        if (altezza_piano_tr_parameter.isEmpty()) return VerificationError(String.format(resources.getString(R.string.verification_empty_field), altezza_piano_tr_parameter.getTitle()))
+        if (altezza_piani_sup_parameter.visibility == View.VISIBLE && altezza_piani_sup_parameter.isEmpty()) return VerificationError(String.format(resources.getString(R.string.verification_empty_field), altezza_piano_tr_parameter.getTitle()))
+        if (mSismicPlantBuildingInteractor.mCenter == mSismicPlantBuildingInteractor.mOrigin) return VerificationError(resources.getString(R.string.verification_barycenter))
+        if (!mSismicPlantBuildingInteractor.isClosed()) return VerificationError(resources.getString(R.string.verification_takeover_invalid))
+        return null
     }
 
     //callback to activity updates domain instance for activity and all existing and future fragments

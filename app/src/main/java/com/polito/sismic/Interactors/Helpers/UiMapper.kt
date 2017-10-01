@@ -86,18 +86,14 @@ class UiMapper {
         fun createTakeoverStateForDomain(rilieviReportFragment: RilieviReportFragment): TakeoverState  = with(rilieviReportFragment){
 
             //For now we assume a ractangle / square
-            val perimetro = SismicBuildingCalculatorHelper.calculatePerimeter(rilieviReportFragment.mSismicPlantBuildingInteractor.pointList)
-            val area = SismicBuildingCalculatorHelper.calculateArea(rilieviReportFragment.mSismicPlantBuildingInteractor.pointList)
             val hTot = altezza_tot.text.toString().toDoubleOrZero()
             val t1 = SismicBuildingCalculatorHelper.calculateT1(hTot)
 
             return TakeoverState(piani_numero_parameter.selectedItem.toString().toIntOrZero(),
                    altezza_piano_tr_parameter.getParameterValue().toDoubleOrZero(),
-                   altezza_piani_sup_parameter.getParameterValue().toDoubleOrZero(),
-                    hTot,
-                    area,
-                    t1,
-                    perimetro,
+                   altezza_piani_sup_parameter.getParameterValue().toDoubleOrZero(), hTot,
+                    rilieviReportFragment.mSismicPlantBuildingInteractor.area, t1,
+                    rilieviReportFragment.mSismicPlantBuildingInteractor.perimeter,
                     rilieviReportFragment.mSismicPlantBuildingInteractor.mCenter,
                     rilieviReportFragment.mSismicPlantBuildingInteractor.pointList)
         }

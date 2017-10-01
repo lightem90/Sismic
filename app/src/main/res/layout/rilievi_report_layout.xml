@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout style="@style/scrollableLayout"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/scrollableLayout">
 
     <TextView
         style="@style/sectionTitle"
-        android:text="@string/report_rilievo_esterno_title"/>
+        android:text="@string/report_rilievo_esterno_title" />
 
 
-    <LinearLayout
-        style="@style/spinnerContainer">
+    <LinearLayout style="@style/spinnerContainer">
 
         <TextView
             style="@style/sectionSpinnerTitle"
@@ -18,58 +17,80 @@
         <Spinner
             android:id="@+id/piani_numero_parameter"
             style="@style/spinnerStyle"
-            android:entries="@array/piani_numero"/>
+            android:entries="@array/piani_numero" />
     </LinearLayout>
 
     <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
         android:id="@+id/altezza_piano_tr_parameter"
-        app:report_parameter_title="@string/altezza_piano_tr_parameter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:report_parameter_hint="@string/altezza_piano_tr_parameter_hint"
         app:report_parameter_isNumber="true"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        app:report_parameter_title="@string/altezza_piano_tr_parameter" />
 
     <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
         android:id="@+id/altezza_piani_sup_parameter"
-        app:report_parameter_title="@string/altezza_piani_sup_parameter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:report_parameter_hint="@string/altezza_piani_sup_parameter_hint"
         app:report_parameter_isNumber="true"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        app:report_parameter_title="@string/altezza_piani_sup_parameter" />
 
     <TextView
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
         android:id="@+id/altezza_tot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="@string/altezza_tot"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <TextView
         style="@style/sectionTitle"
-        android:text="@string/report_rilievo_interno_title"/>
+        android:text="@string/report_rilievo_interno_title" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/plant_point_list"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin" />
 
     <Button
         android:id="@+id/calculate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:layout_marginStart="@dimen/activity_horizontal_margin"
-        android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:layout_marginBottom="@dimen/grid_vertical_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginTop="@dimen/grid_vertical_margin"
         android:background="@color/colorAccent"
-        android:text="@string/update_graph_btn"/>
+        android:text="@string/update_graph_btn"
+        android:textColor="@color/white" />
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/plant_graph"
         android:layout_width="match_parent"
-        android:layout_height="500dp"/>
+        android:layout_height="500dp" />
+
+
+    <com.polito.sismic.Presenters.CustomLayout.LabelReportLayout
+        android:id="@+id/area_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:report_label_title="@string/area_label_title" />
+
+
+    <com.polito.sismic.Presenters.CustomLayout.LabelReportLayout
+        android:id="@+id/barycenter_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:report_label_title="@string/barycenter_label_title" />
+
+
+    <com.polito.sismic.Presenters.CustomLayout.LabelReportLayout
+        android:id="@+id/perimeter_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:report_label_title="@string/perimeter_label_title" />
+
 
 </LinearLayout>
