@@ -134,7 +134,7 @@ fun Bundle.putReport(state: Report) {
 }
 
 fun Bundle.getReport(): Report? {
-    return getParcelable<Report>("report_state")
+    return getParcelable("report_state")
 }
 
 fun ViewGroup.inflate(layoutRes: Int): View {

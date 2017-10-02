@@ -51,7 +51,7 @@ class ReportFragmentFactory(private val reportManager: ReportManager) {
 
     fun fragmentCount() : Int
     {
-        return 12;
+        return 12
     }
 
     fun createDecoratorForStep(pos: Int, context: Context) : StepViewModel

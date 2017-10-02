@@ -4,18 +4,19 @@ import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.location.Location
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
-import android.view.KeyEvent
 import android.view.MenuItem
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.places.Places
 import com.polito.sismic.Domain.*
 import com.polito.sismic.Extensions.getCustomAdapter
+import com.polito.sismic.Extensions.getReport
+import com.polito.sismic.Extensions.putReport
 import com.polito.sismic.Extensions.toast
 import com.polito.sismic.Interactors.*
 import com.polito.sismic.Interactors.Helpers.PermissionsHelper
-import com.polito.sismic.Interactors.SismicActionInteractor
 import com.polito.sismic.Interactors.Helpers.UserActionType
 import com.polito.sismic.Presenters.Adapters.ReportFragmentsAdapter
 import com.polito.sismic.Presenters.ReportActivity.Fragments.*
@@ -35,6 +36,7 @@ class ReportActivity : AppCompatActivity(),
         GoogleApiClient.OnConnectionFailedListener
 {
 
+
     private val mPermissionHelper : PermissionsHelper = PermissionsHelper()
     private lateinit var mGoogleApiClient: GoogleApiClient
     private lateinit var mUserActionInteractor: UserActionInteractor
@@ -50,6 +52,7 @@ class ReportActivity : AppCompatActivity(),
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_report)
         initializeFromManager(mReportManager)
+
 
         if(resources.getBoolean(R.bool.portrait_only)) requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
     }
@@ -178,6 +181,19 @@ class ReportActivity : AppCompatActivity(),
                 .addApi(Places.PLACE_DETECTION_API)
                 .enableAutoManage(this, this)
                 .build()
+    }
+
+    //Handles configuration changes
+    override fun onSaveInstanceState(outState: Bundle?) {
+        outState?.putReport(mReportManager.report)
+        super.onSaveInstanceState(outState)
+    }
+    //Reload the fragments??
+    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
+        super.onRestoreInstanceState(savedInstanceState)
+        savedInstanceState?.getReport()?.let {
+            mReportManager.report = it
+        }
     }
 }
 
