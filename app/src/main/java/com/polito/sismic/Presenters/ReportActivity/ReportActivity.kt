@@ -1,6 +1,7 @@
 package com.polito.sismic.Presenters.ReportActivity
 
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.location.Location
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -49,6 +50,8 @@ class ReportActivity : AppCompatActivity(),
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_report)
         initializeFromManager(mReportManager)
+
+        if(resources.getBoolean(R.bool.portrait_only)) requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
     }
 
     private fun checkLogin(): String {
