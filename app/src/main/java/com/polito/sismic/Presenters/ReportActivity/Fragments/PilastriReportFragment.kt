@@ -194,7 +194,6 @@ class PilastriReportFragment : BaseReportFragment() {
                 {
                     val UiPoints = it.points.map {
                         val lds = LineDataSet(listOf(Entry(it.n.toFloat(), it.m.toFloat())), it.label)
-                        lds.color = ContextCompat.getColor(context, it.color)
                         lds.setDrawCircles(true)
                         lds.circleRadius = 10f
                         lds.circleColors = listOf(ContextCompat.getColor(context, it.color))
@@ -242,7 +241,8 @@ class PilastriReportFragment : BaseReportFragment() {
                     LegendEntry(context.getString(R.string.stato_slc), Legend.LegendForm.DEFAULT, 8f, 1f, null, ContextCompat.getColor(context, StatiLimite.SLC.color)),
                     LegendEntry(context.getString(R.string.stato_slv), Legend.LegendForm.DEFAULT, 8f, 1f, null, ContextCompat.getColor(context, StatiLimite.SLV.color)),
                     LegendEntry(context.getString(R.string.stato_sld), Legend.LegendForm.DEFAULT, 8f, 1f, null, ContextCompat.getColor(context, StatiLimite.SLD.color)),
-                    LegendEntry(context.getString(R.string.stato_slo), Legend.LegendForm.DEFAULT, 8f, 1f, null, ContextCompat.getColor(context, StatiLimite.SLO.color))))
+                    LegendEntry(context.getString(R.string.stato_slo), Legend.LegendForm.DEFAULT, 8f, 1f, null, ContextCompat.getColor(context, StatiLimite.SLO.color)),
+                    LegendEntry(context.getString(R.string.stato_mrd), Legend.LegendForm.DEFAULT, 8f, 1f, null, Color.MAGENTA)))
             description.isEnabled = false
             getAxis(YAxis.AxisDependency.RIGHT).isEnabled = false
         }

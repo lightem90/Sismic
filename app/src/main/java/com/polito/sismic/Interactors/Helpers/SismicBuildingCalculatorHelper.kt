@@ -1,8 +1,10 @@
 package com.polito.sismic.Interactors.Helpers
 
 import android.content.Context
+import android.support.v4.content.ContextCompat
 import com.polito.sismic.Domain.*
 import com.polito.sismic.Extensions.distanceFrom
+import com.polito.sismic.R
 
 /**
  * Created by it0003971 on 15/09/2017.
@@ -22,8 +24,11 @@ enum class C1(val multiplier: Double) {
 
 class SismicBuildingCalculatorHelper(val mContext: Context) {
 
+    //Stati functions to help mapping from ui to domain
     companion object {
 
+        val TO_KN = 1000.0
+        val TO_KN_M = 1000000.0
         fun calculateECM(fcm: Double, lcCalc: Double): Double {
             val newFcm = fcm / lcCalc
             return 22000 * (Math.pow((newFcm / 10), 0.3))
@@ -119,9 +124,9 @@ class SismicBuildingCalculatorHelper(val mContext: Context) {
 
         entries.forEach {
             //from n to kn
-            it.n = (it.n / 1000.0)
+            it.n = (it.n / TO_KN)
             //from nmm to kNm
-            it.m = (it.m / 1000000.0)
+            it.m = (it.m / TO_KN_M)
         }
 
         //the lines are simmetric
@@ -130,6 +135,8 @@ class SismicBuildingCalculatorHelper(val mContext: Context) {
     }
 
     //Based on http://www.federica.unina.it/architettura/laboratorio-di-tecnica-delle-costruzioni/slu-pressoflessione/
+    //Point 1 is on the left (x is negative) and we got a line until point 3. Point 2 is on the other side with M = 0
+    //Point 3 to 4 form a curve.
     private fun calculateFromThreeToFour(fcd: Double, b: Double, As: Double, fyd: Double, dFirst: Double, H: Double): List<PillarDomainGraphPoint> {
 
         val points = mutableListOf<PillarDomainGraphPoint>()
@@ -145,8 +152,13 @@ class SismicBuildingCalculatorHelper(val mContext: Context) {
     private fun innerCalculatePointFromThreeToFour(h: Double, fcd: Double, b: Double, As: Double, fyd: Double, dFirst: Double, H: Double): PillarDomainGraphPoint {
 
         val n = fcd * b * h
-        val m = (As * fyd) * (H - (2 * dFirst)) + (n * ((H / 2) - (h / 2)))
+        val m = calculateMFromN(As, fyd, H, dFirst, n, h)
         return PillarDomainGraphPoint(n, m)
+    }
+
+    private fun calculateMFromN(As: Double, fyd: Double, H: Double, dFirst: Double, n: Double, h: Double): Double {
+        val m = (As * fyd) * (H - (2 * dFirst)) + (n * ((H / 2) - (h / 2)))
+        return m
     }
 
     private fun calculatePointOne(fyd: Double, As: Double): PillarDomainGraphPoint {
@@ -172,7 +184,9 @@ class SismicBuildingCalculatorHelper(val mContext: Context) {
         //Finally by multiplying by H/2 i find the force horizontal component (M)
         val h = state.buildingState.takeoverState.altezza_totale
         val t1 = C1.Calcestruzzo.multiplier * Math.pow(h, (3.0 / 4.0))
-        return state.sismicState.projectSpectrumState.spectrums.map { spectrum ->
+
+        val limitStatePoints = mutableListOf<PillarDomainPoint>()
+        state.sismicState.projectSpectrumState.spectrums.mapTo(limitStatePoints) { spectrum ->
 
             val forcePoint = spectrum.pointList.firstOrNull { it.x >= t1 }
             if (forcePoint != null) {
@@ -181,9 +195,23 @@ class SismicBuildingCalculatorHelper(val mContext: Context) {
                 val mPoint = force * state.buildingState.pillarLayoutState.pillarCount * (state.buildingState.takeoverState.altezza_totale / 2)
                 PillarDomainPoint(nPoint, mPoint, spectrum.name, spectrum.color)
             } else {
-                PillarDomainPoint(-99999.0, -99999.0, "Error", -1)
+                PillarDomainPoint(-99999.0, -99999.0, "Error", spectrum.color)
             }
-
         }
+
+        //Add mrd point (the same n, it should be on domain line)
+        calculateMrd(nPoint, state.buildingState.pillarState)?.let {
+            limitStatePoints.add(it)
+        }
+        return limitStatePoints.toList()
+    }
+
+    private fun calculateMrd(n: Double, pillarState: PillarState): PillarDomainPoint? {
+
+        if (pillarState.fcd == 0.0 || pillarState.bx == 0.0) return null
+        //I dont have h, so i calculate by inverting the formula above (its not ok if the value is not between h and H
+        val h = n / (pillarState.fcd * pillarState.bx)
+        val m = calculateMFromN(pillarState.area_ferri, pillarState.fyd, pillarState.hy, pillarState.c, n, h) / TO_KN_M
+        return PillarDomainPoint(n, m, "", R.color.mrd)
     }
 }
