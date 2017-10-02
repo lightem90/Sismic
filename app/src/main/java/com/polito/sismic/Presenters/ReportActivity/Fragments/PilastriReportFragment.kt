@@ -239,10 +239,10 @@ class PilastriReportFragment : BaseReportFragment() {
             legend.form = Legend.LegendForm.DEFAULT
             legend.setCustom(listOf(
                     LegendEntry(context.getString(R.string.dominio_pilastro), Legend.LegendForm.DEFAULT, 8f, 1f, null, Color.BLUE),
-                    LegendEntry(context.getString(R.string.stato_slo), Legend.LegendForm.DEFAULT, 8f, 1f, null, ContextCompat.getColor(context, StatiLimite.SLO.color)),
                     LegendEntry(context.getString(R.string.stato_slc), Legend.LegendForm.DEFAULT, 8f, 1f, null, ContextCompat.getColor(context, StatiLimite.SLC.color)),
+                    LegendEntry(context.getString(R.string.stato_slv), Legend.LegendForm.DEFAULT, 8f, 1f, null, ContextCompat.getColor(context, StatiLimite.SLV.color)),
                     LegendEntry(context.getString(R.string.stato_sld), Legend.LegendForm.DEFAULT, 8f, 1f, null, ContextCompat.getColor(context, StatiLimite.SLD.color)),
-                    LegendEntry(context.getString(R.string.stato_slv), Legend.LegendForm.DEFAULT, 8f, 1f, null, ContextCompat.getColor(context, StatiLimite.SLV.color))))
+                    LegendEntry(context.getString(R.string.stato_slo), Legend.LegendForm.DEFAULT, 8f, 1f, null, ContextCompat.getColor(context, StatiLimite.SLO.color))))
             description.isEnabled = false
             getAxis(YAxis.AxisDependency.RIGHT).isEnabled = false
         }

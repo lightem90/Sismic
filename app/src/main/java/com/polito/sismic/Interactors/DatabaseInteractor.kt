@@ -234,7 +234,7 @@ class DatabaseInteractor(private val reportDatabaseHelper: ReportDatabaseHelper 
         reports.map { dataMapper.convertReportDataForHistory(it, results) }.toMutableList()
     }
 
-    fun deleteNotCommittedReports(context : Context) = reportDatabaseHelper.use {
+    fun deleteNotCommittedReports(context: Context) = reportDatabaseHelper.use {
 
         val invalidReportsDetailsRequest = "${ReportTable.COMMITTED} = -1"
         val invalidReportsDetails = select(ReportTable.NAME)
@@ -256,23 +256,26 @@ class DatabaseInteractor(private val reportDatabaseHelper: ReportDatabaseHelper 
                     .byReportId(reports._id.toString())
                     .parseList { DatabaseReportMedia(HashMap(it)) }
 
-            validReportMediaDetails.forEach{ media -> savedFilePaths.add(media.filepath)}
+            validReportMediaDetails.forEach { media -> savedFilePaths.add(media.filepath) }
         }
 
         val storageDirs = listOf(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES),
                 context.getExternalFilesDir(Environment.DIRECTORY_MOVIES),
-                context.getExternalFilesDir(Environment.DIRECTORY_MUSIC),
-                context.getExternalFilesDir(Environment.DIRECTORY_PICTURES))
+                context.getExternalFilesDir(Environment.DIRECTORY_MUSIC))
 
         //Add all valid files read from dirs
         val listValidFiles = mutableListOf<File>()
-        storageDirs.forEach { dir -> dir.listFiles().filter { file -> file.isFile }
-                .forEach { file -> listValidFiles.add(file) }
+        storageDirs.forEach { dir ->
+            dir.listFiles().filter { file -> file.isFile }
+                    .forEach { file -> listValidFiles.add(file) }
         }
 
         //Delete every files that has not been saved into db (checking its name in the saved paths)
         listValidFiles
-                .filter { file ->  !savedFilePaths.contains(file.name)}
+                .filter { file ->
+                    !savedFilePaths
+                            .any { it.contains(file.name) }
+                }
                 .forEach { invalidFile -> invalidFile.delete() }
     }
 }
