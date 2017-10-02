@@ -36,6 +36,9 @@ class ReportActivity : AppCompatActivity(),
         GoogleApiClient.OnConnectionFailedListener
 {
 
+    companion object {
+        private const val CURRENT_STEP_POSITION_KEY = "position"
+    }
 
     private val mPermissionHelper : PermissionsHelper = PermissionsHelper()
     private lateinit var mGoogleApiClient: GoogleApiClient
@@ -51,8 +54,7 @@ class ReportActivity : AppCompatActivity(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_report)
-        initializeFromManager(mReportManager)
-
+        initializeFromManager(mReportManager, savedInstanceState)
 
         if(resources.getBoolean(R.bool.portrait_only)) requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
     }
@@ -162,13 +164,14 @@ class ReportActivity : AppCompatActivity(),
         mUserActionInteractor.onActionRequested(UserActionType.BackRequest)
     }
 
-    private fun initializeFromManager(reportManager: ReportManager) {
+    private fun initializeFromManager(reportManager: ReportManager, savedInstanceState: Bundle?) {
         //To handle user action, it uses other interactor to pilot the ui changes to the domain
 
         mUserActionInteractor = UserActionInteractor(reportManager,this, mPermissionHelper)
         mSismicParameterInteractor = SismicActionInteractor(reportManager, this)
         mSismicBuildingInteractor = SismicBuildingInteractor(reportManager, this)
-        stepperLayout.adapter = ReportFragmentsAdapter(supportFragmentManager, this, reportManager)
+        val startingStepPosition = savedInstanceState?.getInt(CURRENT_STEP_POSITION_KEY) ?: 0
+        stepperLayout.setAdapter(ReportFragmentsAdapter(supportFragmentManager, this, reportManager), startingStepPosition)
         fabtoolbar_fab.setOnClickListener { fabtoolbar.show() }
         pic.setOnClickListener { mUserActionInteractor.onActionRequested(UserActionType.PicRequest) }
         video.setOnClickListener { mUserActionInteractor.onActionRequested(UserActionType.VideoRequest) }
@@ -186,6 +189,7 @@ class ReportActivity : AppCompatActivity(),
     //Handles configuration changes
     override fun onSaveInstanceState(outState: Bundle?) {
         outState?.putReport(mReportManager.report)
+        outState?.putInt(CURRENT_STEP_POSITION_KEY, stepperLayout.currentStepPosition)
         super.onSaveInstanceState(outState)
     }
     //Reload the fragments??
