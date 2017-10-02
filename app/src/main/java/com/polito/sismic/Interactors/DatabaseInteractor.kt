@@ -265,17 +265,18 @@ class DatabaseInteractor(private val reportDatabaseHelper: ReportDatabaseHelper 
 
         //Add all valid files read from dirs
         val listValidFiles = mutableListOf<File>()
-        storageDirs.forEach { dir ->
+        storageDirs.filterNotNull()
+        .forEach { dir ->
             dir.listFiles().filter { file -> file.isFile }
                     .forEach { file -> listValidFiles.add(file) }
         }
 
         //Delete every files that has not been saved into db (checking its name in the saved paths)
         listValidFiles
-                .filter { file ->
-                    !savedFilePaths
-                            .any { it.contains(file.name) }
-                }
-                .forEach { invalidFile -> invalidFile.delete() }
+        .filter { file ->
+            !savedFilePaths
+                    .any { it.contains(file.name) }
+        }
+        .forEach { invalidFile -> invalidFile.delete() }
     }
 }

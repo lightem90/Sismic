@@ -1,9 +1,11 @@
 package com.polito.sismic.Presenters.PresenterActivity
 
+import android.app.Activity
 import android.app.Fragment
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
@@ -14,8 +16,9 @@ import kotlinx.android.synthetic.main.activity_presenter.*
 class PresenterActivity : AppCompatActivity(),
         ReportListFragment.HistoryReload {
 
-    private val mDatabaseInteractor : DatabaseInteractor = DatabaseInteractor()
-    private val fragmentFactory : PresenterFragmentFactory = PresenterFragmentFactory()
+    private val mDatabaseInteractor: DatabaseInteractor = DatabaseInteractor()
+    private val fragmentFactory: PresenterFragmentFactory = PresenterFragmentFactory()
+
     companion object {
         val REPORT_ACTIVITY = 50
     }
@@ -53,7 +56,7 @@ class PresenterActivity : AppCompatActivity(),
         false
     }
 
-    private fun pushFragment(fragment: Fragment?, tag : String) {
+    private fun pushFragment(fragment: Fragment?, tag: String) {
 
         if (fragmentManager != null) {
             val ft = fragmentManager.beginTransaction()
@@ -85,10 +88,27 @@ class PresenterActivity : AppCompatActivity(),
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REPORT_ACTIVITY)
-        {
+        if (requestCode == REPORT_ACTIVITY) {
             onHistoryReloadRequest()
         }
+    }
+
+    //Requested from the professor
+    override fun onBackPressed() {
+        goBack()
+    }
+
+    private fun goBack() {
+
+        AlertDialog.Builder(this)
+                .setTitle(R.string.confirm_report_back)
+                .setMessage(R.string.confirm_presenter_back_message)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setPositiveButton(android.R.string.yes, { _, _ ->
+                    finish()
+                })
+                .setNegativeButton(android.R.string.no, null)
+                .show()
     }
 
     override fun onHistoryReloadRequest() {
