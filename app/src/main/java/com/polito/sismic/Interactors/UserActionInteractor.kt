@@ -52,7 +52,12 @@ class UserActionInteractor(private val mReportManager: ReportManager,
                     .setView(this)
                     .setPositiveButton(com.polito.sismic.R.string.confirm_filename,
                             {_, _ ->
-                                startIntent(reportMediaInteractor.createFileForMedia(type, this.filename.getParameterValue()), type)
+                                if (filename.getParameterValue().length < 3)
+                                    toast(R.string.error_media_short)
+                                else
+                                {
+                                    startIntent(reportMediaInteractor.createFileForMedia(type, this.filename.getParameterValue()), type)
+                                }
                             })
                     .setNegativeButton(com.polito.sismic.R.string.discard_filename, { _, _ -> })
                     .show()
