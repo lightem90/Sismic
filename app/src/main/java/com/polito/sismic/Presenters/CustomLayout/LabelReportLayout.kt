@@ -3,6 +3,8 @@ package com.polito.sismic.Presenters.CustomLayout
 import android.annotation.TargetApi
 import android.content.Context
 import android.os.Build
+import android.os.Bundle
+import android.os.Parcelable
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.LinearLayout
@@ -60,6 +62,25 @@ class LabelReportLayout : LinearLayout {
     fun getValue() : String
     {
         return report_label_value.text.toString()
+    }
+
+    public override fun onSaveInstanceState(): Parcelable {
+        val bundle = Bundle()
+        bundle.putParcelable("superState", super.onSaveInstanceState())
+        val toSave = getValue()
+        bundle.putString("value", toSave)
+        return bundle
+    }
+
+    public override fun onRestoreInstanceState(state: Parcelable) {
+        var customState = state
+        if (customState is Bundle) {
+            val bundle = customState
+            val toRestore = bundle.getString("value")
+            setValue(toRestore)
+            customState = bundle.getParcelable<Parcelable>("superState")
+        }
+        super.onRestoreInstanceState(customState)
     }
 
 }
