@@ -23,6 +23,7 @@ import com.stepstone.stepper.VerificationError
  */
 abstract class BaseReportFragment : Fragment(), BlockingStep {
 
+    private var mPdfWriterCallback: BaseReportFragment.PdfWriterManager? = null
     private var mParametersCallback: BaseReportFragment.ParametersManager? = null
     private var mReport: Report? = null
     fun getReport(): Report {
@@ -35,6 +36,10 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
     interface ParametersManager {
         fun onParametersConfirmed(report: Report, needReload : Boolean)
         fun onParametersSaveRequest()
+    }
+
+    interface PdfWriterManager {
+        fun onSavePageRequest(fragmentView: View?, fragName: String)
     }
 
     //domain report from bundle
@@ -78,14 +83,11 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
         return baseLayout
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-    }
-
     //callback to activity updates domain instance of each fragment.
     //in this way activity and fragments work on the same data
     override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback?) {
         mParametersCallback?.onParametersConfirmed(getReport(), onNeedReload())
+        mPdfWriterCallback?.onSavePageRequest(view, javaClass.canonicalName)
         callback!!.goToNextStep()
     }
 
@@ -114,6 +116,7 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
         activity.toast(error.errorMessage)
     }
 
+
     override fun onAttach(context: Context?) {
 
         super.onAttach(context)
@@ -122,6 +125,13 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
         } catch (e: ClassCastException) {
             throw ClassCastException(context!!.toString() + " must implement OnParametersConfirmed")
         }
+
+        try {
+            mPdfWriterCallback = context as PdfWriterManager?
+        } catch (e: ClassCastException) {
+            throw ClassCastException(context!!.toString() + " must implement OnParametersConfirmed")
+        }
+
     }
 
     protected fun hideBottomActions() {

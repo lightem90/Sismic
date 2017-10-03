@@ -28,7 +28,7 @@ class ReportProvider(val caller: ReportActivity) {
 
                 val report = dbInteractor.getReportForId(reportId.toString(), userName)
                 if (report == null) errorInCreatingReport()
-                return ReportManager(report!!, dbInteractor, true)
+                return ReportManager(report!!, dbInteractor, true, caller)
 
             } catch (e : Exception)   //Usually when 2 reports with same id exists
             {
@@ -39,14 +39,14 @@ class ReportProvider(val caller: ReportActivity) {
         }
 
         //Title will be the address
-        return createFromNew(userName, "")
+        return createFromNew(userName, "", caller)
     }
 
-    private fun createFromNew(userName: String, title : String) : ReportManager {
+    private fun createFromNew(userName: String, title: String, caller: ReportActivity) : ReportManager {
 
         val reportDetails = dbInteractor.createReportDetailsForUser(userName, title)
         val report = Report(reportDetails, ReportState())
-        return ReportManager(report, dbInteractor)
+        return ReportManager(report, dbInteractor, false, caller)
     }
 
     private fun errorInCreatingReport() = with(caller)

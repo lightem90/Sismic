@@ -3,10 +3,11 @@ package com.polito.sismic.Presenters.ReportActivity
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.location.Location
+import android.os.Build
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
+import android.view.View
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.places.Places
@@ -21,27 +22,29 @@ import com.polito.sismic.Interactors.Helpers.UserActionType
 import com.polito.sismic.Presenters.Adapters.ReportFragmentsAdapter
 import com.polito.sismic.Presenters.ReportActivity.Fragments.*
 import com.polito.sismic.R
+import com.stepstone.stepper.StepperLayout
+import com.stepstone.stepper.VerificationError
 import kotlinx.android.synthetic.main.activity_report.*
 
 
 //Activity is in charge of handling all data through interactors, then it signals fragment to update their copy of domain value and its grafic
 class ReportActivity : AppCompatActivity(),
         BaseReportFragment.ParametersManager,
+        BaseReportFragment.PdfWriterManager,
         InfoLocReportFragment.CurrentLocationProvided,
         CatastoReportFragment.NodeCaluclationRequest,
         DatiSismoGeneticiReportFragment.DefaultReturnTimeRequest,
         ParametriSismiciReportFragment.LimitStateRequest,
         SpettriDiProgettoReportFragment.SpectrumReturnTimeRequest,
         PilastriReportFragment.PillarDomainGraphRequest,
-        GoogleApiClient.OnConnectionFailedListener
-{
+        GoogleApiClient.OnConnectionFailedListener,
+        StepperLayout.StepperListener {
 
-
-    private val mPermissionHelper : PermissionsHelper = PermissionsHelper()
+    private val mPermissionHelper: PermissionsHelper = PermissionsHelper()
     private lateinit var mGoogleApiClient: GoogleApiClient
     private lateinit var mUserActionInteractor: UserActionInteractor
     private lateinit var mSismicParameterInteractor: SismicActionInteractor
-    private lateinit var mSismicBuildingInteractor : SismicBuildingInteractor
+    private lateinit var mSismicBuildingInteractor: SismicBuildingInteractor
 
     //Creating row for report in db if user is logged in
     private val mReportManager: ReportManager by lazy {
@@ -52,9 +55,9 @@ class ReportActivity : AppCompatActivity(),
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_report)
         initializeFromManager(mReportManager)
+        stepperLayout.setListener(this);
 
-
-        if(resources.getBoolean(R.bool.portrait_only)) requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        if (resources.getBoolean(R.bool.portrait_only)) requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
     }
 
     private fun checkLogin(): String {
@@ -85,33 +88,32 @@ class ReportActivity : AppCompatActivity(),
     }
 
     //requested sismic data by each fragment. ui update is useless since data dont go into ui
-    //TODO: add data to "note" so the user can check
     override fun onClosedNodesCalculationRequested() {
         mSismicParameterInteractor.calculateReturnPeriodsParameters()
         updateStateFromCallback()
     }
 
     //the next 3 methods act on the current fragment, they dont need to call "reload"
-    override fun onDefaultReturnTimesRequested(): List<SpectrumDTO> = with(mSismicParameterInteractor){
+    override fun onDefaultReturnTimesRequested(): List<SpectrumDTO> = with(mSismicParameterInteractor) {
         getDefaultSpectrumLines(mReportManager.report.reportState)
     }
 
     //data is not aligned until confirmation, so i have to pass it
-    override fun onSpectrumReturnTimeRequest(data: ProjectSpectrumState): List<SpectrumDTO> = with(mSismicParameterInteractor){
+    override fun onSpectrumReturnTimeRequest(data: ProjectSpectrumState): List<SpectrumDTO> = with(mSismicParameterInteractor) {
         getSpectrumLines(mReportManager.report.reportState, data)
     }
 
     //data is not aligned until confirmation, so i have to pass it
-    override fun onLimitStatesRequested(data: SismicParametersState): List<SpectrumDTO> = with(mSismicParameterInteractor){
+    override fun onLimitStatesRequested(data: SismicParametersState): List<SpectrumDTO> = with(mSismicParameterInteractor) {
         getLimitStateLines(mReportManager.report.reportState, data)
     }
 
-    override fun onPillarDomainGraphRequest(pillarState: PillarState, reportState: ReportState?): PillarDomain = with (mSismicBuildingInteractor){
+    override fun onPillarDomainGraphRequest(pillarState: PillarState, reportState: ReportState?): PillarDomain = with(mSismicBuildingInteractor) {
         return getPillarDomainForGraph(mReportManager.report.reportState, pillarState)
     }
 
     //Updates the state for all fragments
-    override fun onParametersConfirmed(report: Report, needReload : Boolean) {
+    override fun onParametersConfirmed(report: Report, needReload: Boolean) {
         mReportManager.updateReportState(report)
         updateStateForFragments(needReload)
     }
@@ -124,8 +126,8 @@ class ReportActivity : AppCompatActivity(),
 
         //Needs update because is the activity who changed some data
         if (callback) supportFragmentManager.fragments
-                        .filterIsInstance<BaseReportFragment>()
-                        .forEach { it.reloadFragmentFromCallback(mReportManager.report) }
+                .filterIsInstance<BaseReportFragment>()
+                .forEach { it.reloadFragmentFromCallback(mReportManager.report) }
     }
 
     //If I pass an Uri, data will be null
@@ -162,10 +164,14 @@ class ReportActivity : AppCompatActivity(),
         mUserActionInteractor.onActionRequested(UserActionType.BackRequest)
     }
 
+    override fun onSavePageRequest(fragmentView: View?, fragName: String) {
+        mReportManager.addPdfPageFromView(fragmentView, fragName)
+    }
+
     private fun initializeFromManager(reportManager: ReportManager) {
         //To handle user action, it uses other interactor to pilot the ui changes to the domain
 
-        mUserActionInteractor = UserActionInteractor(reportManager,this, mPermissionHelper)
+        mUserActionInteractor = UserActionInteractor(reportManager, this, mPermissionHelper)
         mSismicParameterInteractor = SismicActionInteractor(reportManager, this)
         mSismicBuildingInteractor = SismicBuildingInteractor(reportManager, this)
         stepperLayout.adapter = ReportFragmentsAdapter(supportFragmentManager, this, reportManager)
@@ -188,12 +194,32 @@ class ReportActivity : AppCompatActivity(),
         outState?.putReport(mReportManager.report)
         super.onSaveInstanceState(outState)
     }
+
     //Reload the fragments??
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
         super.onRestoreInstanceState(savedInstanceState)
         savedInstanceState?.getReport()?.let {
             mReportManager.report = it
         }
+    }
+
+
+    override fun onCompleted(completeButton: View?) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            mReportManager.printPdf()
+        }
+    }
+
+    override fun onStepSelected(newStepPosition: Int) {
+        return
+    }
+
+    override fun onError(verificationError: VerificationError?) {
+        return
+    }
+
+    override fun onReturn() {
+        return
     }
 }
 
