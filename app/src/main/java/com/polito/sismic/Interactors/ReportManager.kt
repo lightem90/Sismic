@@ -24,10 +24,11 @@ import java.io.File
 class ReportManager(var report: Report,
                     private val database: DatabaseInteractor,
                     private val editing: Boolean = false,
-                    private val mContext : Context,
+                    private val mContext: Context,
                     private var pdfDocumentWriter: PdfDocument? = null) {
 
-    private val viewMapForPrint : HashMap<String, View?> = HashMap()
+    private val viewMapForPrint: HashMap<String, View?> = HashMap()
+
     init {
         pdfDocumentWriter = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             PdfDocument()
@@ -76,17 +77,15 @@ class ReportManager(var report: Report,
         this.report = report
     }
 
-    fun addPdfPageFromView(fragmentView : View?, name : String)
-    {
+    fun addPdfPageFromView(fragmentView: View?, name: String) {
         viewMapForPrint.put(name, fragmentView)
     }
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)
-    fun printPdf() : Uri
-    {
+    fun printPdf(): Uri {
         var counter = 0
         viewMapForPrint.values.forEach { fragmentView ->
-            fragmentView?.let{
+            fragmentView?.let {
                 val pageInfo = PdfDocument.PageInfo.Builder(it.width, it.height, counter).create()
                 counter++
                 val page = pdfDocumentWriter!!.startPage(pageInfo)
@@ -103,7 +102,7 @@ class ReportManager(var report: Report,
     @RequiresApi(Build.VERSION_CODES.KITKAT)
     private fun getPdfUri(): Uri {
         val dir = mContext.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
-        val filename = report.reportDetails.date.toFormattedString() + "_" + report.reportState.localizationState.address
+        val filename = report.reportDetails.userIdentifier + "_" + report.reportState.localizationState.address + "_ " + report.reportDetails.date.toFormattedString()
 
         val file = File.createTempFile(
                 filename,

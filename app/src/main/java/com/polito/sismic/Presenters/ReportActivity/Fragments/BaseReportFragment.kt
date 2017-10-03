@@ -88,7 +88,7 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
     //in this way activity and fragments work on the same data
     override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback?) {
         mParametersCallback?.onParametersConfirmed(getReport(), onNeedReload())
-        mPdfWriterCallback?.onSavePageRequest(view?.rootView, javaClass.canonicalName)
+        mPdfWriterCallback?.onSavePageRequest(view?.findViewById(R.id.base_fragment_scroll_view), javaClass.canonicalName)
         callback!!.goToNextStep()
     }
 
