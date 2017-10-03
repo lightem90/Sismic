@@ -17,12 +17,14 @@ data class DatabaseReportDetails(var map: MutableMap<String, Any?>) {
     var userID: String by map
     var date: String by map
     var committed : Int by map
+    var pdf_uri : String by map
 
     constructor(id: Int,
                 title: String
                 , userID: String
                 , date: String,
-                committed : Int
+                committed : Int,
+                pdf_uri : String
     )
             : this(HashMap()) {
         this._id = id
@@ -30,6 +32,7 @@ data class DatabaseReportDetails(var map: MutableMap<String, Any?>) {
         this.userID = userID
         this.date = date
         this.committed = committed
+        this.pdf_uri = pdf_uri
     }
 }
 

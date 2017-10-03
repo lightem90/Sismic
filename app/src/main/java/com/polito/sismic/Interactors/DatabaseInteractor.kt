@@ -1,6 +1,7 @@
 package com.polito.sismic.Interactors
 
 import android.content.Context
+import android.net.Uri
 import android.os.Environment
 import com.polito.sismic.Domain.Database.*
 import com.polito.sismic.Domain.Report
@@ -29,6 +30,7 @@ class DatabaseInteractor(private val reportDatabaseHelper: ReportDatabaseHelper 
                 ReportTable.USERID to userID,
                 ReportTable.TITLE to title,
                 ReportTable.DATE to date.toFormattedString(),
+                ReportTable.PDF to " ",
                 ReportTable.COMMITTED to -1)
 
         val reportRequest = "${ReportTable.USERID} = ? AND ${ReportTable.COMMITTED} = ?"
@@ -136,11 +138,11 @@ class DatabaseInteractor(private val reportDatabaseHelper: ReportDatabaseHelper 
         clear(ResultsInfoTable.NAME)
     }
 
-    fun save(report: Report, editing: Boolean) = reportDatabaseHelper.use {
+    fun save(report: Report, editing: Boolean, pdfUri: Uri?) = reportDatabaseHelper.use {
 
         //delete if exists (in the case I'm editing I delete the old one)
         delete(report.reportDetails, editing)
-        with(dataMapper.convertReportFromDomain(report))
+        with(dataMapper.convertReportFromDomain(report, pdfUri))
         {
             insert(ReportTable.NAME, *reportDetails.map.toVarargArray())
             insertEachSectionIntoCorrectTable(sections)

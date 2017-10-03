@@ -193,7 +193,7 @@ class UserActionInteractor(private val mReportManager: ReportManager,
         }
     }
 
-    fun saveReport() = with(mReportManager){
-        saveReportToDb()
+    fun saveReport(pdfUri: Uri?) = with(mReportManager){
+        saveReportToDb(pdfUri)
     }
 }

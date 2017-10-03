@@ -963,13 +963,15 @@ data class ReportDetails(val id: Int,
                          val title: String,
                          val userIdentifier: String,
                          val date: Date,
-                         val committed: Int) : Parcelable {
+                         val committed: Int,
+                         var pdf_path : String) : Parcelable {
     constructor(source: Parcel) : this(
             source.readInt(),
             source.readString(),
             source.readString(),
             source.readSerializable() as Date,
-            source.readInt()
+            source.readInt(),
+            source.readString()
     )
 
     override fun describeContents() = 0
@@ -980,6 +982,7 @@ data class ReportDetails(val id: Int,
         writeString(userIdentifier)
         writeSerializable(date)
         writeInt(committed)
+        writeString(pdf_path)
     }
 
     companion object {

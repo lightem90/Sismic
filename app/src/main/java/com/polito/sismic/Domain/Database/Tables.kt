@@ -13,6 +13,7 @@ object ReportTable
     val USERID = "userID"
     val DATE = "date"
     val COMMITTED = "committed"
+    val PDF = "pdf_uri"
 }
 
 object ReportMediaTable

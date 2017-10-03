@@ -3,6 +3,7 @@ package com.polito.sismic.Presenters.ReportActivity
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.location.Location
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -22,8 +23,6 @@ import com.polito.sismic.Interactors.Helpers.UserActionType
 import com.polito.sismic.Presenters.Adapters.ReportFragmentsAdapter
 import com.polito.sismic.Presenters.ReportActivity.Fragments.*
 import com.polito.sismic.R
-import com.stepstone.stepper.StepperLayout
-import com.stepstone.stepper.VerificationError
 import kotlinx.android.synthetic.main.activity_report.*
 
 
@@ -37,8 +36,7 @@ class ReportActivity : AppCompatActivity(),
         ParametriSismiciReportFragment.LimitStateRequest,
         SpettriDiProgettoReportFragment.SpectrumReturnTimeRequest,
         PilastriReportFragment.PillarDomainGraphRequest,
-        GoogleApiClient.OnConnectionFailedListener,
-        StepperLayout.StepperListener {
+        GoogleApiClient.OnConnectionFailedListener {
 
     private val mPermissionHelper: PermissionsHelper = PermissionsHelper()
     private lateinit var mGoogleApiClient: GoogleApiClient
@@ -55,7 +53,6 @@ class ReportActivity : AppCompatActivity(),
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_report)
         initializeFromManager(mReportManager)
-        stepperLayout.setListener(this);
 
         if (resources.getBoolean(R.bool.portrait_only)) requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
     }
@@ -150,11 +147,6 @@ class ReportActivity : AppCompatActivity(),
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onParametersSaveRequest() {
-        mUserActionInteractor.saveReport()
-        finish()
-    }
-
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         mPermissionHelper.handlePermissionResult(requestCode, grantResults)
@@ -202,24 +194,15 @@ class ReportActivity : AppCompatActivity(),
             mReportManager.report = it
         }
     }
+    override fun onParametersSaveRequest() {
 
-
-    override fun onCompleted(completeButton: View?) {
+        var pdfUri : Uri? = null
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            mReportManager.printPdf()
+            pdfUri = mReportManager.printPdf()
         }
-    }
 
-    override fun onStepSelected(newStepPosition: Int) {
-        return
-    }
-
-    override fun onError(verificationError: VerificationError?) {
-        return
-    }
-
-    override fun onReturn() {
-        return
+        mUserActionInteractor.saveReport(pdfUri)
+        finish()
     }
 }
 

@@ -17,7 +17,6 @@ import com.polito.sismic.Interactors.Helpers.MediaFile
 import com.polito.sismic.Interactors.Helpers.UiMapper
 import com.polito.sismic.R
 import java.io.File
-import java.io.OutputStream
 
 //ReportDetails if I'm editing is the domain class that refers to a row in the db,
 //if it's a new reportDetails its the temporary new reportDetails
@@ -52,10 +51,10 @@ class ReportManager(var report: Report,
 
     }
 
-    fun saveReportToDb() {
+    fun saveReportToDb(pdfUri: Uri?) {
 
         //update or insert depending on editing flag
-        database.save(report, editing)
+        database.save(report, editing, pdfUri)
     }
 
     fun getState(): Bundle {
@@ -83,7 +82,7 @@ class ReportManager(var report: Report,
     }
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)
-    fun printPdf()
+    fun printPdf() : Uri
     {
         var counter = 0
         viewMapForPrint.values.forEach { fragmentView ->
@@ -95,12 +94,14 @@ class ReportManager(var report: Report,
                 pdfDocumentWriter!!.finishPage(page)
             }
         }
-        pdfDocumentWriter!!.writeTo(getPdfOutputStream())
+        val uri = getPdfUri()
+        pdfDocumentWriter!!.writeTo(mContext.contentResolver.openOutputStream(uri))
         pdfDocumentWriter!!.close()
+        return uri
     }
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)
-    private fun getPdfOutputStream(): OutputStream {
+    private fun getPdfUri(): Uri {
         val dir = mContext.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
         val filename = report.reportDetails.date.toFormattedString() + "_" + report.reportState.localizationState.address
 
@@ -109,10 +110,8 @@ class ReportManager(var report: Report,
                 ".pdf",
                 dir
         )
-        val fileUri = FileProvider.getUriForFile(mContext,
+        return FileProvider.getUriForFile(mContext,
                 "com.polito.sismic",
                 file)
-
-        return mContext.contentResolver.openOutputStream(fileUri)
     }
 }

@@ -26,6 +26,7 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
     private var mPdfWriterCallback: BaseReportFragment.PdfWriterManager? = null
     private var mParametersCallback: BaseReportFragment.ParametersManager? = null
     private var mReport: Report? = null
+
     fun getReport(): Report {
         return mReport!!        //ALWAYS TRUE!
     }
@@ -87,7 +88,7 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
     //in this way activity and fragments work on the same data
     override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback?) {
         mParametersCallback?.onParametersConfirmed(getReport(), onNeedReload())
-        mPdfWriterCallback?.onSavePageRequest(view, javaClass.canonicalName)
+        mPdfWriterCallback?.onSavePageRequest(view?.rootView, javaClass.canonicalName)
         callback!!.goToNextStep()
     }
 
@@ -101,11 +102,6 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
     fun reloadFragmentFromCallback(newReportState: Report) {
         mReport = newReportState
         onReload()
-    }
-
-    override fun onCompleteClicked(callback: StepperLayout.OnCompleteClickedCallback?) {
-        mParametersCallback?.onParametersSaveRequest()
-        callback!!.complete()
     }
 
     override fun onBackClicked(callback: StepperLayout.OnBackClickedCallback?) {
@@ -147,6 +143,11 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
 
     override fun verifyStep(): VerificationError? {
         return null
+    }
+
+    override fun onCompleteClicked(callback: StepperLayout.OnCompleteClickedCallback?) {
+        mParametersCallback?.onParametersSaveRequest()
+        callback!!.complete()
     }
 }
 
