@@ -358,6 +358,7 @@
     <string name="error_unexpected">Impossibile aprire il report</string>
     <string name="error_media_short">Nome troppo corto</string>
     <string name="confirm_presenter_back_message">Sicuro di voler uscire?</string>
+    <string name="annulla">Annulla</string>
 
 
 </resources>

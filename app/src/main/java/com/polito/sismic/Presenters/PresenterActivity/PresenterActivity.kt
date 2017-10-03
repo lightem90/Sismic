@@ -107,7 +107,7 @@ class PresenterActivity : AppCompatActivity(),
                 .setPositiveButton(android.R.string.yes, { _, _ ->
                     finish()
                 })
-                .setNegativeButton(android.R.string.no, null)
+                .setNegativeButton(R.string.annulla, null)
                 .show()
     }
 

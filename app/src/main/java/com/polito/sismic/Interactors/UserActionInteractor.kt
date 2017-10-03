@@ -85,7 +85,7 @@ class UserActionInteractor(private val mReportManager: ReportManager,
                 .setPositiveButton(android.R.string.yes, { _, _ ->
                     mReportManager.deleteTmpReport()
                     caller.finish()})
-                .setNegativeButton(android.R.string.no, null)
+                .setNegativeButton(R.string.annulla, null)
                 .show()
     }
 
