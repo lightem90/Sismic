@@ -7,6 +7,10 @@ import com.polito.sismic.Interactors.Helpers.LivelloConoscenza
 import com.polito.sismic.Interactors.Helpers.StatiLimite
 import java.util.*
 
+import java.lang.Double.MAX_VALUE
+import java.lang.Double.MIN_VALUE
+import java.lang.Math.abs
+
 /**
  * Created by Matteo on 28/07/2017.
  */
@@ -651,6 +655,8 @@ data class PlantPoint(var x: Double, var y: Double) : Parcelable {
         }
     }
 }
+
+
 
 data class TakeoverState(var numero_piani: Int,
                          var altezza_piano_terra: Double,

@@ -26,6 +26,25 @@ import java.util.*
  */
 class SismicPlantBuildingInteractor(val takeoverState: TakeoverState?) {
 
+    class PlantFigure(val name: String, val edges: Array<PlantEdge>) {
+        operator fun contains(p: PlantPoint) = edges.count({ it(p) }) % 2 != 0
+    }
+
+    data class PlantEdge(val s: PlantPoint, val e: PlantPoint) {
+        operator fun invoke(p: PlantPoint) : Boolean = when {
+            s.y > e.y -> PlantEdge(e, s).invoke(p)
+            p.y == s.y || p.y == e.y -> invoke(PlantPoint(p.x, p.y + epsilon))
+            p.y > e.y || p.y < s.y || p.x > Math.max(s.x, e.x) -> false
+            p.x < Math.min(s.x, e.x) -> true
+            else -> {
+                val blue = if (Math.abs(s.x - p.x) > java.lang.Double.MIN_VALUE) (p.y - s.y) / (p.x - s.x) else java.lang.Double.MAX_VALUE
+                val red = if (Math.abs(s.x - e.x) > java.lang.Double.MIN_VALUE) (e.y - s.y) / (e.x - s.x) else java.lang.Double.MAX_VALUE
+                blue >= red
+            }
+        }
+        val epsilon = 0.00001
+    }
+
     //First cant be modified
     val mOrigin: PlantPoint = PlantPoint(0.0, 0.0)
     var mCenter: PlantPoint = PlantPoint(0.0, 0.0)
@@ -46,25 +65,29 @@ class SismicPlantBuildingInteractor(val takeoverState: TakeoverState?) {
         if (pointList.size <= 1) return null
         calculateAreAndPerimeter()
 
-        //List of segments, i cant do just one very long line due to limit in the graphic api
-        val segmentList = mutableListOf<List<Entry>>()
-        (0 until pointList.size-1).mapTo(segmentList) {
-            listOf(Entry(pointList[it].x.toFloat(), pointList[it].y.toFloat()),
-                    Entry(pointList[it +1].x.toFloat(), pointList[it +1].y.toFloat()))
+        //List of segments "edges", i cant do just one very long line due to limit in the graphic api
+        val edgeList = mutableListOf<PlantEdge>()
+        (0 until pointList.size-1).mapTo(edgeList) {
+            PlantEdge(pointList[it], pointList[it+1])
         }
-        //last segment
-        segmentList.add(listOf(Entry(pointList[0].x.toFloat(), pointList[0].y.toFloat()),
-                Entry(pointList[pointList.size-1].x.toFloat(), pointList[pointList.size-1].y.toFloat())))
+        //add last edge
+        edgeList.add(PlantEdge(pointList.last(), pointList.first()))
 
+        //build figure as list of edges
+        val figure = PlantFigure("plant", edgeList.toTypedArray())
+
+        //to view the barycenter
         val ldsCenterList = mutableListOf<Entry>()
         if (mCenter != mOrigin) {
             ldsCenterList.add(Entry(mCenter.x.toFloat(), mCenter.y.toFloat()))
         }
 
-        //must be sorted on x value
-        segmentList.forEach { Collections.sort(it, EntryXComparator()) }
-        val perimeterLds = segmentList.map { createPerimeterDataset(it, context) }
+        //Get pillars from the pillar layout page and filter only the one contained in the figure, then map to object to be visible
+        val internalPlantPoints = getPillarLayoutPoints(pillarLayoutState).filter { figure.contains(it) }
+        val ldsPillarPoints = internalPlantPoints.map { createPillarLayoutDataset(it) }
 
+        //Plant figure perimeter
+        val perimeterLds = edgeList.map { createPerimeterDataset(it, context) }
         //Barycenter
         val ldsCenter = LineDataSet(ldsCenterList, context.getString(R.string.centro_di_massa)).apply {
             setDrawCircles(true)
@@ -74,22 +97,21 @@ class SismicPlantBuildingInteractor(val takeoverState: TakeoverState?) {
         }
 
         val allData = mutableListOf(ldsCenter)
+        allData.addAll(ldsPillarPoints)
         allData.addAll(perimeterLds)
-        allData.addAll(getPillarLayoutPoints(pillarLayoutState))
         return LineData(allData.filter { it.entryCount > 0 })
     }
 
-    private fun getPillarLayoutPoints(pillarLayoutState: PillarLayoutState): List<LineDataSet> {
-        val pillarList = mutableListOf<Entry>()
+    private fun getPillarLayoutPoints(pillarLayoutState: PillarLayoutState): List<PlantPoint> {
+        val pillarList = mutableListOf<PlantPoint>()
         for(i in 0 until pillarLayoutState.pillarX)
         {
-            (0 until pillarLayoutState.pillarY)
-                    .mapTo(pillarList) {
-                        Entry((i*pillarLayoutState.distX).toFloat(),
-                                (it *pillarLayoutState.distY).toFloat())
-                    }
+            (0 until pillarLayoutState.pillarY).mapTo(pillarList) {
+                PlantPoint((i*pillarLayoutState.distX),
+                        (it *pillarLayoutState.distY))
+            }
         }
-        return pillarList.distinct().map { pillarPoint -> createPillarLayoutDataset(pillarPoint) }
+        return pillarList.distinct()
     }
 
     //The helper does the job
@@ -100,7 +122,12 @@ class SismicPlantBuildingInteractor(val takeoverState: TakeoverState?) {
     }
 
     //The legend is custom in the char, but this is use to not replicate code
-    private fun createPerimeterDataset(entryList: List<Entry>, context: Context): LineDataSet {
+    private fun createPerimeterDataset(edge: PlantEdge, context: Context): LineDataSet {
+
+        val entryList = listOf<Entry>(Entry(edge.s.x.toFloat(), edge.s.y.toFloat()),
+                Entry(edge.e.x.toFloat(), edge.e.y.toFloat()))
+
+        Collections.sort(entryList, EntryXComparator())
         return LineDataSet(entryList, context.getString(R.string.rilievo_esterno)).apply {
             color = Color.BLACK
             axisDependency = YAxis.AxisDependency.LEFT
@@ -111,8 +138,10 @@ class SismicPlantBuildingInteractor(val takeoverState: TakeoverState?) {
     }
 
     //to visualize a single pillar in the building layout
-    private fun createPillarLayoutDataset(pillarPoint: Entry): LineDataSet {
-        return LineDataSet(listOf(pillarPoint), "").apply {
+    private fun createPillarLayoutDataset(pillarPoint: PlantPoint): LineDataSet {
+
+        val entryPoint = Entry(pillarPoint.x.toFloat(), pillarPoint.y.toFloat())
+        return LineDataSet(listOf(entryPoint), "").apply {
             circleRadius = 4f
             circleColors = listOf(Color.GREEN)
             setDrawCircles(true)

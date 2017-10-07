@@ -363,7 +363,7 @@
     <string name="pdf_writing_disabled">Questa versione di Android non supporta la scrittura pdf</string>
     <string name="descr_registration">Utilizzare la mail per effettuare il login</string>
     <string name="maglia_strutturale">Maglia strutturale</string>
-    <string name="area_pillar_label">Area influenza pilastro:</string>
+    <string name="area_pillar_label">Area massima influenza pilastro:</string>
 
 
 </resources>
