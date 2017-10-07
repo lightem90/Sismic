@@ -64,7 +64,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
     }
 
     private fun register() {
-
+        startActivity(Intent(this, RegistrationActivity::class.java))
     }
 
     private fun populateAutoComplete() {
@@ -263,9 +263,8 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
                                                    private val mPassword: String,
                                                    private val caller : Activity) : AsyncTask<Void, Void, JSONObject?>() {
 
-        private val SERVER_ADDR_lOGIN = "https://polito/sismic/login?"
+        private val SERVER_ADDR_lOGIN = "http://192.168.0.2:5000/sismic/login_form?"
         override fun doInBackground(vararg params: Void): JSONObject? {
-            // TODO: attempt authentication against a network service.
 
             try {
                 val sb = StringBuilder(SERVER_ADDR_lOGIN)

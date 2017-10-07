@@ -8,7 +8,6 @@ import com.polito.sismic.Extensions.edit
  * Created by Matteo on 14/08/2017.
  */
 
-//TODO can be done better, in a more "kotlin" way
 class LoginSharedPreferences {
 
     companion object {

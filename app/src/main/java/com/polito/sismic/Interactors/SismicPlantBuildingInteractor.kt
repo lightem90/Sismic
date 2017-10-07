@@ -16,9 +16,8 @@ import com.polito.sismic.Interactors.Helpers.SismicBuildingCalculatorHelper
 import com.polito.sismic.R
 import kotlinx.android.synthetic.main.plant_point_dialog.view.*
 import com.github.mikephil.charting.utils.EntryXComparator
-import com.polito.sismic.Extensions.showSoftKeyboard
+import com.polito.sismic.Domain.PillarLayoutState
 import com.polito.sismic.Extensions.toast
-import kotlinx.android.synthetic.main.plant_point_item.view.*
 import java.util.*
 
 
@@ -41,7 +40,7 @@ class SismicPlantBuildingInteractor(val takeoverState: TakeoverState?) {
         }
     }
 
-    fun convertListForGraph(context: Context): LineData? {
+    fun convertListForGraph(context: Context, pillarLayoutState: PillarLayoutState): LineData? {
 
         //return nothing, to be safe
         if (pointList.size <= 1) return null
@@ -67,15 +66,30 @@ class SismicPlantBuildingInteractor(val takeoverState: TakeoverState?) {
         val perimeterLds = segmentList.map { createPerimeterDataset(it, context) }
 
         //Barycenter
-        val ldsCenter = LineDataSet(ldsCenterList, context.getString(R.string.centro_di_massa))
-        ldsCenter.setDrawCircles(true)
-        ldsCenter.circleRadius = 10f
-        ldsCenter.circleColors = listOf(Color.RED)
-        ldsCenter.axisDependency = YAxis.AxisDependency.LEFT
+        val ldsCenter = LineDataSet(ldsCenterList, context.getString(R.string.centro_di_massa)).apply {
+            setDrawCircles(true)
+            axisDependency = YAxis.AxisDependency.LEFT
+            circleRadius = 10f
+            circleColors = listOf(Color.RED)
+        }
 
         val allData = mutableListOf(ldsCenter)
         allData.addAll(perimeterLds)
+        allData.addAll(getPillarLayoutPoints(pillarLayoutState))
         return LineData(allData.filter { it.entryCount > 0 })
+    }
+
+    private fun getPillarLayoutPoints(pillarLayoutState: PillarLayoutState): List<LineDataSet> {
+        val pillarList = mutableListOf<Entry>()
+        for(i in 0 until pillarLayoutState.pillarX)
+        {
+            (0 until pillarLayoutState.pillarY)
+                    .mapTo(pillarList) {
+                        Entry((i*pillarLayoutState.distX).toFloat(),
+                                (it *pillarLayoutState.distY).toFloat())
+                    }
+        }
+        return pillarList.distinct().map { pillarPoint -> createPillarLayoutDataset(pillarPoint) }
     }
 
     //The helper does the job
@@ -87,13 +101,23 @@ class SismicPlantBuildingInteractor(val takeoverState: TakeoverState?) {
 
     //The legend is custom in the char, but this is use to not replicate code
     private fun createPerimeterDataset(entryList: List<Entry>, context: Context): LineDataSet {
-        val lds = LineDataSet(entryList, context.getString(R.string.rilievo_esterno))
-        lds.color = Color.BLACK
-        lds.axisDependency = YAxis.AxisDependency.LEFT
-        lds.axisDependency = YAxis.AxisDependency.RIGHT
-        lds.setDrawCircles(false)
-        lds.lineWidth = 3f
-        return lds
+        return LineDataSet(entryList, context.getString(R.string.rilievo_esterno)).apply {
+            color = Color.BLACK
+            axisDependency = YAxis.AxisDependency.LEFT
+            axisDependency = YAxis.AxisDependency.RIGHT
+            setDrawCircles(false)
+            lineWidth = 3f
+        }
+    }
+
+    //to visualize a single pillar in the building layout
+    private fun createPillarLayoutDataset(pillarPoint: Entry): LineDataSet {
+        return LineDataSet(listOf(pillarPoint), "").apply {
+            circleRadius = 4f
+            circleColors = listOf(Color.GREEN)
+            setDrawCircles(true)
+            axisDependency = YAxis.AxisDependency.LEFT
+        }
     }
 
     fun addGenericPointAfter(activity: Activity, clickedItem: PlantPoint, invalidateAndReload: () -> Unit): AlertDialog = with(activity) {

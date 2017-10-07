@@ -46,12 +46,12 @@ class RegistrationActivity : AppCompatActivity() {
                                                        private val mPassword: String,
                                                        private val caller : Activity) : AsyncTask<Void, Void, JSONObject?>() {
 
-        private val SERVER_ADDR_lOGIN = "https://polito/sismic/register?"
+        private val SERVER_ADDR_lOGIN = "http://192.168.0.2:5000/sismic/registration_form?"
         override fun doInBackground(vararg params: Void): JSONObject? {
             LoginSharedPreferences.demoLogin(applicationContext)
             try {
                 val sb = StringBuilder(SERVER_ADDR_lOGIN)
-                sb.append("username=")
+                sb.append("email=")
                 sb.append(mEmail)
                 sb.append("&secret=")
                 sb.append(mPassword)

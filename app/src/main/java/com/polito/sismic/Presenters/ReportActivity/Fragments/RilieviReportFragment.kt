@@ -67,7 +67,8 @@ class RilieviReportFragment : BaseReportFragment() {
             xAxis.position = XAxis.XAxisPosition.BOTTOM
             legend.form = Legend.LegendForm.DEFAULT
             legend.setCustom(listOf(LegendEntry(context.getString(R.string.rilievo_esterno), Legend.LegendForm.DEFAULT, 8f, 1f, null, Color.BLACK),
-                    LegendEntry(context.getString(R.string.centro_di_massa), Legend.LegendForm.DEFAULT, 8f, 1f, null, Color.RED)))
+                    LegendEntry(context.getString(R.string.centro_di_massa), Legend.LegendForm.DEFAULT, 8f, 1f, null, Color.RED),
+                    LegendEntry(context.getString(R.string.maglia_strutturale), Legend.LegendForm.DEFAULT, 8f, 1f, null, Color.GREEN)))
             description.isEnabled = false
             getAxis(YAxis.AxisDependency.RIGHT).isEnabled = false
         }
@@ -83,7 +84,7 @@ class RilieviReportFragment : BaseReportFragment() {
     private fun updateGraph() = with(plant_graph)
     {
         plant_point_list?.adapter?.notifyDataSetChanged()
-        mSismicPlantBuildingInteractor.convertListForGraph(context)?.let {
+        mSismicPlantBuildingInteractor.convertListForGraph(context, getReport().reportState.buildingState.pillarLayoutState)?.let {
             data = it
             notifyDataSetChanged()
             invalidate()
@@ -99,6 +100,8 @@ class RilieviReportFragment : BaseReportFragment() {
         barycenter_label.setValue(String.format(context.getString(R.string.barycenter_label),
                 "%.2f".format(mSismicPlantBuildingInteractor.mCenter.x),
                 "%.2f".format(mSismicPlantBuildingInteractor.mCenter.y)))
+        area_pillar_label.setValue(String.format(context.getString(R.string.area_label),
+                "%.2f".format(getReport().reportState.buildingState.pillarLayoutState.area)))
     }
 
     private fun updateAltezzaTotale()

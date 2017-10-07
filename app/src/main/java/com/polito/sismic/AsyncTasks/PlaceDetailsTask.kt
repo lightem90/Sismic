@@ -43,7 +43,6 @@ class PlaceDetailsTask(fragmentView: View, val context: Context) : AsyncTask<Pla
     override fun doInBackground(vararg place: Place): JSONObject? {
         val sb = StringBuilder("https://maps.googleapis.com/maps/api/place/details/json?")
         sb.append("key=")
-        //RICORDATI! LA CHIAVE WEB VA CON L'INDIRIZZO DEL SERVER! (da https://console.developers.google.com/)
         sb.append(context.getString(R.string.google_places_api_key))
         sb.append("&placeid=")
         sb.append(place[0].id)
