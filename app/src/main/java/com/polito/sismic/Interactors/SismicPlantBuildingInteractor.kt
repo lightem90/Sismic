@@ -83,6 +83,7 @@ class SismicPlantBuildingInteractor(val takeoverState: TakeoverState?) {
         }
 
         //Get pillars from the pillar layout page and filter only the one contained in the figure, then map to object to be visible
+        //Algorithm from https://rosettacode.org/wiki/Ray-casting_algorithm#Kotlin
         val internalPlantPoints = getPillarLayoutPoints(pillarLayoutState).filter { figure.contains(it) }
         val ldsPillarPoints = internalPlantPoints.map { createPillarLayoutDataset(it) }
 
