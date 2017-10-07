@@ -789,9 +789,10 @@ data class PillarState(var classe_calcestruzzo: String,
                        var c: Double,
                        var num_ferri: Int,
                        var diametro_ferri: Double,
-                       var area_ferri: Double) : Parcelable {
+                       var area_ferri: Double,
+                       var pillar_domain: PillarDomain?) : Parcelable {
     constructor() : this("", LivelloConoscenza.III.multiplier, 2.0, 3.5, 0.0, 0.0, 0.0, 0.0, 0.0, "", LivelloConoscenza.III.multiplier, 10.0, 67.5,
-            210000.0, 450.0, 0.0, 0.0, 0.0, 0.0, 0, 0.0, 0.0)
+            210000.0, 450.0, 0.0, 0.0, 0.0, 0.0, 0, 0.0, 0.0, null)
 
     constructor(source: Parcel) : this(
             source.readString(),
@@ -815,7 +816,8 @@ data class PillarState(var classe_calcestruzzo: String,
             source.readDouble(),
             source.readInt(),
             source.readDouble(),
-            source.readDouble()
+            source.readDouble(),
+            source.readParcelable<PillarDomain>(PillarDomain::class.java.classLoader)
     )
 
     override fun describeContents() = 0
@@ -843,6 +845,7 @@ data class PillarState(var classe_calcestruzzo: String,
         writeInt(num_ferri)
         writeDouble(diametro_ferri)
         writeDouble(area_ferri)
+        writeParcelable(pillar_domain, 0)
     }
 
     companion object {

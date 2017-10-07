@@ -41,11 +41,6 @@ class ReportVideoAdapter (private val videoList: List<ReportMedia>,
             convertView as ImageView
         }
 
-        //TODO, non credo funzioni
-        //val thumb = ThumbnailUtils.createVideoThumbnail(videoList[position].uri.toUri().getMediaPath(mContext),\
-        //        MediaStore.Images.Thumbnails.MINI_KIND)\
-        //imageView.setImageBitmap(thumb)\
-
         GlideApp.with(mContext)
                 .asBitmap()
                 .load(videoList[position].uri.toUri())

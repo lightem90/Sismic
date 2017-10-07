@@ -212,6 +212,6 @@ class SismicBuildingCalculatorHelper(val mContext: Context) {
         //I dont have h, so i calculate by inverting the formula above (its not ok if the value is not between h and H
         val h = n / (pillarState.fcd * pillarState.bx)
         val m = calculateMFromN(pillarState.area_ferri, pillarState.fyd, pillarState.hy, pillarState.c, n, h) / TO_KN_M
-        return PillarDomainPoint(n, m, "", R.color.mrd)
+        return PillarDomainPoint(n, m, "MRD", R.color.mrd)
     }
 }

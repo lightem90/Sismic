@@ -190,6 +190,8 @@ class PilastriReportFragment : BaseReportFragment() {
 
         calculate.setOnClickListener {
             mPillarDomainGraphRequest?.onPillarDomainGraphRequest(getReport().reportState.buildingState.pillarState)?.let {
+
+                getReport().reportState.buildingState.pillarState.pillar_domain = it
                 with(pillar_domain_chart)
                 {
                     val UiPoints = it.points.map {
@@ -335,7 +337,7 @@ class PilastriReportFragment : BaseReportFragment() {
     }
 
     //callback to activity updates domain instance for activity and all existing and future fragments
-    //this class doesn't use mappers since it modifies the state directly --> do this in every fragment
+    //this class doesn't use mappers since it modifies the state directly --> do this in every fragment?
     override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback?) {
 
         getReport().reportState.buildingState.pillarState.classe_calcestruzzo = calc_classe_parameter.selectedItem.toString()
