@@ -369,4 +369,5 @@
     <string name="result">%d %s</string>
     <string name="report_result_title">INDICI DI VULNERABILITA'</string>
     <string name="pillar_domain_error">Calcolare il dominio del pilastro</string>
+    <string name="risultati_disclaimer">Come risultato verrà considerato l\'indice di vulnerabilità maggiore</string>
 </resources>

@@ -1,8 +1,6 @@
 package com.polito.sismic.Interactors.Helpers
 
 import android.content.Context
-import android.support.v4.content.ContextCompat
-import android.util.Log
 import com.polito.sismic.Domain.*
 import com.polito.sismic.Extensions.distanceFrom
 import com.polito.sismic.R
@@ -87,7 +85,7 @@ class SismicBuildingCalculatorHelper(val mContext: Context) {
         }
 
         private fun createTriangleList(pointList: List<PlantPoint>): List<Triple<PlantPoint, PlantPoint, PlantPoint>> {
-            return (1 until pointList.size-2).map { Triple(pointList[0], pointList[it], pointList[it +1]) }
+            return (1 until pointList.size-1).map { Triple(pointList[0], pointList[it], pointList[it +1]) }
         }
 
         fun calculatePerimeter(pointList: List<PlantPoint>): Double {

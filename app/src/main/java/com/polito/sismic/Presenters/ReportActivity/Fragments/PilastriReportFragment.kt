@@ -359,7 +359,7 @@ class PilastriReportFragment : BaseReportFragment() {
         if (sezione_c_parameter.isEmpty()) return VerificationError(String.format(resources.getString(R.string.verification_empty_field), sezione_c_parameter.getTitle()))
         if (num_armatura.isEmpty()) return VerificationError(String.format(resources.getString(R.string.verification_empty_field), num_armatura.getTitle()))
         if (armatura_fi.isEmpty()) return VerificationError(String.format(resources.getString(R.string.verification_empty_field), armatura_fi.getTitle()))
-        if (pillar_domain_chart.data.dataSetCount == 0) return VerificationError(resources.getString(R.string.pillar_domain_error) )
+        if (pillar_domain_chart.data == null || pillar_domain_chart.data?.dataSetCount == 0 ) return VerificationError(resources.getString(R.string.pillar_domain_error) )
         return null
     }
 }

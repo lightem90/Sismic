@@ -144,9 +144,7 @@ class RilieviReportFragment : BaseReportFragment(), OnChartValueSelectedListener
         plant_point_list?.adapter?.notifyDataSetChanged()
         mSismicPlantBuildingInteractor.convertListForGraph(context, getReport().reportState.buildingState.pillarLayoutState)?.let {
             data = it
-            notifyDataSetChanged()
             invalidate()
-
             updateLabels()
         }
     }

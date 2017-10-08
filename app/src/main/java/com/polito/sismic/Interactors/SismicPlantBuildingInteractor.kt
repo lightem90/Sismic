@@ -33,24 +33,17 @@ class SismicPlantBuildingInteractor(takeoverState: TakeoverState?,
     }
 
     data class PlantEdge(val s: PlantPoint, val e: PlantPoint) {
-        operator fun invoke(p: PlantPoint) : Boolean {
-            val sx = s.x + tolerance
-            val sy = s.y + tolerance
-            val ex = e.x + tolerance
-            val ey = e.y + tolerance
-            return when {
-                sy > ey -> PlantEdge(e, s).invoke(p)
-                p.y == sy || p.y == ey -> invoke(PlantPoint(p.x, p.y + epsilon))
-                p.y > ey || p.y < sy || p.x > Math.max(sx, ex) -> false
-                p.x < Math.min(sx, ex) -> true
-                else -> {
-                    val blue = if (Math.abs(sx - p.x) > java.lang.Double.MIN_VALUE) (p.y - sy) / (p.x - sx) else java.lang.Double.MAX_VALUE
-                    val red = if (Math.abs(sx - ex) > java.lang.Double.MIN_VALUE) (ey - sy) / (ex - sx) else java.lang.Double.MAX_VALUE
-                    blue >= red
-                }
+        operator fun invoke(p: PlantPoint) : Boolean = when {
+            s.y > e.y -> PlantEdge(e, s).invoke(p)
+            p.y == s.y || p.y == e.y -> invoke(PlantPoint(p.x, p.y + epsilon))
+            p.y > e.y || p.y < s.y || p.x > Math.max(s.x, e.x) -> false
+            p.x < Math.min(s.x, e.x) -> true
+            else -> {
+                val blue = if (Math.abs(s.x - p.x) > java.lang.Double.MIN_VALUE) (p.y - s.y) / (p.x - s.x) else java.lang.Double.MAX_VALUE
+                val red = if (Math.abs(s.x - e.x) > java.lang.Double.MIN_VALUE) (e.y - s.y) / (e.x - s.x) else java.lang.Double.MAX_VALUE
+                blue >= red
             }
         }
-        private val tolerance = 1
         private val epsilon = 0.0000001
     }
 
@@ -143,7 +136,6 @@ class SismicPlantBuildingInteractor(takeoverState: TakeoverState?,
         return LineDataSet(entryList, context.getString(R.string.rilievo_esterno)).apply {
             color = Color.BLACK
             axisDependency = YAxis.AxisDependency.LEFT
-            axisDependency = YAxis.AxisDependency.RIGHT
             setDrawCircles(true)
             circleRadius = 1f
             circleColors = listOf(Color.BLACK)

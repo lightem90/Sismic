@@ -94,7 +94,7 @@ class SismicActionCalculatorHelper(val mCoordinateHelper: ParametersForCoordinat
         var categoria_sottosuolo = if (sismicState.sismicState.projectSpectrumState.categoria_suolo.isEmpty()) CategoriaSottosuolo.A
                 else CategoriaSottosuolo.values().first { it.toString() ==  sismicState.sismicState.projectSpectrumState.categoria_suolo}
 
-        var q = sismicState.sismicState.projectSpectrumState.q0 * sismicState.sismicState.projectSpectrumState.kr
+        var q = 1.0
         var st = 1.0
 
         if (currentProjectSpectrumState != null)

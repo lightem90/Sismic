@@ -69,10 +69,10 @@ class ReportAdapter(val mContext: Context,
         {
             when(danger)
             {
-                in 0..10 -> return textView.setTextColor(Color.parseColor("#0099FF"))
+                in Int.MIN_VALUE..10 -> return textView.setTextColor(Color.parseColor("#0099FF"))
                 in 11..35 -> return textView.setTextColor(Color.parseColor("#33CC00"))
                 in 36..50 -> return textView.setTextColor(Color.parseColor("#FF9900"))
-                in 51..100 -> return textView.setTextColor(Color.parseColor("#FF0000"))
+                in 51..Int.MAX_VALUE -> return textView.setTextColor(Color.parseColor("#FF0000"))
             }
         }
 
