@@ -85,7 +85,8 @@ class DatabaseMapperHelper {
                     it.c,
                     it.num_ferri,
                     it.diametro_ferri,
-                    it.area_ferri)
+                    it.area_ferri,
+                    null)
         }
     }
 

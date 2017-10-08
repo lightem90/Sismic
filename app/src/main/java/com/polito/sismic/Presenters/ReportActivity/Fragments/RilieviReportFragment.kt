@@ -13,6 +13,10 @@ import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.LegendEntry
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.highlight.Highlight
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.polito.sismic.Extensions.toDoubleOrZero
 import com.polito.sismic.Interactors.Helpers.UiMapper
 import com.polito.sismic.Interactors.SismicPlantBuildingInteractor
@@ -25,7 +29,53 @@ import kotlinx.android.synthetic.main.rilievi_report_layout.*
 /**
  * Created by Matteo on 10/08/2017.
  */
-class RilieviReportFragment : BaseReportFragment() {
+class RilieviReportFragment : BaseReportFragment(), OnChartValueSelectedListener {
+
+    override fun onNothingSelected() {  return   }
+    override fun onValueSelected(e: Entry?, h: Highlight?) {
+
+        e?.let { entryClicked->
+            val datasetToRemove = plant_graph.data.dataSets
+                    .filter { dataset -> dataset.entryCount == 1
+                            && dataset.label == "MS"
+                            && dataset.getCircleColor(0) == Color.GREEN}
+                    .firstOrNull { dataset -> dataset.contains(e)}
+
+            //If the entry clicked was one of a green pillar, i set a new dataset at the same position "gray", meaning the
+            //pillar wont be counted
+            datasetToRemove?.let {
+                plant_graph.data.removeDataSet(it)
+                plant_graph.data.addDataSet(LineDataSet(listOf(entryClicked), "MS").apply {
+                    circleRadius = 4f
+                    circleColors = listOf(Color.GRAY)
+                    setDrawCircles(true)
+                    axisDependency = YAxis.AxisDependency.LEFT }
+                )
+            }
+
+            val datasetToLight = plant_graph.data.dataSets
+                    .filter { dataset -> dataset.entryCount == 1
+                            && dataset.label == "MS"
+                            && dataset.getCircleColor(0) == Color.GRAY}
+                    .firstOrNull { dataset -> dataset.contains(e)}
+
+            //if the user clicks a gray pillar, the pillar will become green
+            datasetToLight?.let {
+                plant_graph.data.removeDataSet(it)
+                plant_graph.data.addDataSet(LineDataSet(listOf(entryClicked), "MS").apply {
+                    circleRadius = 4f
+                    circleColors = listOf(Color.GREEN)
+                    setDrawCircles(true)
+                    axisDependency = YAxis.AxisDependency.LEFT }
+                )
+            }
+
+            plant_graph.notifyDataSetChanged()
+            plant_graph.invalidate()
+
+            count_pillar_label.setValue(countPillars().toString())
+        }
+    }
 
     val mSismicPlantBuildingInteractor : SismicPlantBuildingInteractor by lazy {
         SismicPlantBuildingInteractor(getReport().reportState.buildingState.takeoverState)
@@ -73,6 +123,8 @@ class RilieviReportFragment : BaseReportFragment() {
             getAxis(YAxis.AxisDependency.RIGHT).isEnabled = false
         }
 
+        //To delete pillars
+        plant_graph.setOnChartValueSelectedListener(this)
         calculate.setOnClickListener{ updateGraph() }
     }
 
@@ -102,6 +154,13 @@ class RilieviReportFragment : BaseReportFragment() {
                 "%.2f".format(mSismicPlantBuildingInteractor.mCenter.y)))
         area_pillar_label.setValue(String.format(context.getString(R.string.area_label),
                 "%.2f".format(getReport().reportState.buildingState.pillarLayoutState.area)))
+
+        count_pillar_label.setValue(countPillars().toString())
+    }
+
+    //Count available pillars
+    private fun countPillars(): Int {
+        return plant_graph.data.dataSets.count { it.entryCount == 1 && it.label == "MS" && it.getCircleColor(0)== Color.GREEN}
     }
 
     private fun updateAltezzaTotale()
@@ -121,7 +180,9 @@ class RilieviReportFragment : BaseReportFragment() {
 
     //callback to activity updates domain instance for activity and all existing and future fragments
     override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback?) {
+        //Fixes the pillar count with the one that really exists in the graph
         getReport().reportState.buildingState.takeoverState = UiMapper.createTakeoverStateForDomain(this)
+        getReport().reportState.buildingState.pillarLayoutState.pillarCount = countPillars()
         super.onNextClicked(callback)
     }
 }

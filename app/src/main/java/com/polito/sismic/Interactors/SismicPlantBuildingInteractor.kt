@@ -42,7 +42,7 @@ class SismicPlantBuildingInteractor(val takeoverState: TakeoverState?) {
                 blue >= red
             }
         }
-        val epsilon = 0.00001
+        private val epsilon = 0.00001
     }
 
     //First cant be modified
@@ -142,7 +142,7 @@ class SismicPlantBuildingInteractor(val takeoverState: TakeoverState?) {
     private fun createPillarLayoutDataset(pillarPoint: PlantPoint): LineDataSet {
 
         val entryPoint = Entry(pillarPoint.x.toFloat(), pillarPoint.y.toFloat())
-        return LineDataSet(listOf(entryPoint), "").apply {
+        return LineDataSet(listOf(entryPoint), "MS").apply {
             circleRadius = 4f
             circleColors = listOf(Color.GREEN)
             setDrawCircles(true)

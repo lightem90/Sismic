@@ -206,14 +206,14 @@
     <string name="ok">OK</string>
     <string name="direzione_x">DIREZIONE X</string>
     <string name="direzione_y">DIREZIONE Y</string>
-    <string name="num_x_title">N# lungo x</string>
+    <string name="num_x_title">Numero pilastri lungo x</string>
     <string name="num_x_title_hint">N# lungo x</string>
     <string name="dist_x">Distanza [m]</string>
-    <string name="dist_x_hint">Distanza lungo y [m]</string>
-    <string name="num_y_title">N# lungo y</string>
+    <string name="dist_x_hint">Distanza tra pilastri lungo y [m]</string>
+    <string name="num_y_title">Numero pilastri lungo y</string>
     <string name="num_y_title_hint">N# lungo y</string>
     <string name="dist_y">Distanza [m]</string>
-    <string name="dist_y_hint">Distanza lungo y [m]</string>
+    <string name="dist_y_hint">Distanza tra pilastri lungo y [m]</string>
     <string name="posizione_pilastri">POSIZIONE PILASTRI</string>
     <string name="fondazioni_title">FONDAZIONI</string>
     <string name="copertura_title">COPERTURA</string>
@@ -364,6 +364,6 @@
     <string name="descr_registration">Utilizzare la mail per effettuare il login</string>
     <string name="maglia_strutturale">Maglia strutturale</string>
     <string name="area_pillar_label">Area massima influenza pilastro:</string>
-
-
+    <string name="count_pillar_label">Pilastri totali:</string>
+    <string name="result">%d %</string>
 </resources>
