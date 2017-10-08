@@ -15,7 +15,6 @@ import android.view.MenuItem
 
 
 //Custom activity to draw something
-//TODO: Make it more useful (draw lines, curves, changin color)
 class SketchActivity : AppCompatActivity() {
 
     private lateinit var mUserName : String

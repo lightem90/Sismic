@@ -109,11 +109,7 @@ data class ReportResult(var result: Int,
 
 class SismicState(var sismogenticState: SismogeneticState,
                   var sismicParametersState: SismicParametersState,
-                  var projectSpectrumState: ProjectSpectrumState,
-                    //TODO trasformarle in classi di dominio ?
-                  var defaultReturnTimes: List<ILineDataSet> = listOf(),
-                  var limitStateTimes: List<ILineDataSet> = listOf(),
-                  var spectrumReturnTimes: List<ILineDataSet> = listOf()) : FragmentState {
+                  var projectSpectrumState: ProjectSpectrumState) : FragmentState {
     constructor() : this(SismogeneticState(), SismicParametersState(), ProjectSpectrumState())
     constructor(source: Parcel) : this(
             source.readParcelable<SismogeneticState>(SismogeneticState::class.java.classLoader),

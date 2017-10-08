@@ -264,7 +264,6 @@ class ParametersForCoordinateHelper(val mContext : Context) {
         val distY = Math.abs(yDiff)
         //distance and quadrant
         var quad = -1
-        //TODO: handle limit points!
         if (xDiff >= zero && yDiff >= zero) quad = 1
         else if (xDiff <= zero && yDiff >= zero) quad = 2
         else if (xDiff <= zero && yDiff <= zero) quad = 3

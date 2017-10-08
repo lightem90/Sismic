@@ -22,7 +22,6 @@ class RegistrationActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registration)
 
-        //TODO check, registrazione server, conferma, chiude e torna al login
         btn_reg_confirm.setOnClickListener{ register() }
     }
 
@@ -82,6 +81,7 @@ class RegistrationActivity : AppCompatActivity() {
                             sb2.append(line + "\n")
                         }
                         br.close()
+                        caller.finish()
                         return JSONObject(sb2.toString())
                     }
                 }

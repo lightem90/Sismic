@@ -10,6 +10,7 @@ import com.polito.sismic.Domain.PillarDomainPoint
 import com.polito.sismic.Interactors.Helpers.StatiLimite
 import com.polito.sismic.Presenters.Adapters.ResultsAdapter
 import com.polito.sismic.R
+import com.stepstone.stepper.StepperLayout
 import kotlinx.android.synthetic.main.risultati_report_layout.*
 
 /**
@@ -43,5 +44,13 @@ class RisultatiReportFragment : BaseReportFragment() {
             mPointList.addAll(it)
         }
         results_container.adapter.notifyDataSetChanged()
+    }
+
+    override fun onCompleteClicked(callback: StepperLayout.OnCompleteClickedCallback?) {
+
+        mAdapter.results.values.max()?.let {
+            getReport().reportState.result.result = it
+        }
+        super.onCompleteClicked(callback)
     }
 }

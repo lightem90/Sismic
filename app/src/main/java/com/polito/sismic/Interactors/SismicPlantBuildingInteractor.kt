@@ -3,6 +3,7 @@ package com.polito.sismic.Interactors
 import android.app.Activity
 import android.content.Context
 import android.graphics.Color
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.Entry
@@ -24,24 +25,32 @@ import java.util.*
 /**
  * Created by it0003971 on 28/09/2017.
  */
-class SismicPlantBuildingInteractor(val takeoverState: TakeoverState?) {
+class SismicPlantBuildingInteractor(takeoverState: TakeoverState?,
+                                    val mContext: Context) {
 
     class PlantFigure(val name: String, val edges: Array<PlantEdge>) {
         operator fun contains(p: PlantPoint) = edges.count({ it(p) }) % 2 != 0
     }
 
     data class PlantEdge(val s: PlantPoint, val e: PlantPoint) {
-        operator fun invoke(p: PlantPoint) : Boolean = when {
-            s.y > e.y -> PlantEdge(e, s).invoke(p)
-            p.y == s.y || p.y == e.y -> invoke(PlantPoint(p.x, p.y + epsilon))
-            p.y > e.y || p.y < s.y || p.x > Math.max(s.x, e.x) -> false
-            p.x < Math.min(s.x, e.x) -> true
-            else -> {
-                val blue = if (Math.abs(s.x - p.x) > java.lang.Double.MIN_VALUE) (p.y - s.y) / (p.x - s.x) else java.lang.Double.MAX_VALUE
-                val red = if (Math.abs(s.x - e.x) > java.lang.Double.MIN_VALUE) (e.y - s.y) / (e.x - s.x) else java.lang.Double.MAX_VALUE
-                blue >= red
+        operator fun invoke(p: PlantPoint) : Boolean {
+            val sx = s.x + tolerance
+            val sy = s.y + tolerance
+            val ex = e.x + tolerance
+            val ey = e.y + tolerance
+            return when {
+                sy > ey -> PlantEdge(e, s).invoke(p)
+                p.y == sy || p.y == ey -> invoke(PlantPoint(p.x, p.y + epsilon))
+                p.y > ey || p.y < sy || p.x > Math.max(sx, ex) -> false
+                p.x < Math.min(sx, ex) -> true
+                else -> {
+                    val blue = if (Math.abs(sx - p.x) > java.lang.Double.MIN_VALUE) (p.y - sy) / (p.x - sx) else java.lang.Double.MAX_VALUE
+                    val red = if (Math.abs(sx - ex) > java.lang.Double.MIN_VALUE) (ey - sy) / (ex - sx) else java.lang.Double.MAX_VALUE
+                    blue >= red
+                }
             }
         }
+        private val tolerance = 1
         private val epsilon = 0.0000001
     }
 
@@ -66,13 +75,14 @@ class SismicPlantBuildingInteractor(val takeoverState: TakeoverState?) {
         calculateAreAndPerimeter()
 
         //List of segments "edges", i cant do just one very long line due to limit in the graphic api
-        val edgeList = mutableListOf<PlantEdge>()
-        (0 until pointList.size-1).mapTo(edgeList) {
-            PlantEdge(pointList[it], pointList[it+1])
+        val edgeListNull = mutableListOf<PlantEdge?>()
+        (0 until pointList.size-1).mapTo(edgeListNull) {
+            if (pointList[it] != pointList[it+1])
+                PlantEdge(pointList[it], pointList[it+1])
+            else null
         }
-        //add last edge
-        edgeList.add(PlantEdge(pointList.last(), pointList.first()))
 
+        val edgeList = edgeListNull.filterNotNull()
         //build figure as list of edges
         val figure = PlantFigure("plant", edgeList.toTypedArray())
 
@@ -84,8 +94,9 @@ class SismicPlantBuildingInteractor(val takeoverState: TakeoverState?) {
 
         //Get pillars from the pillar layout page and filter only the one contained in the figure, then map to object to be visible
         //Algorithm from https://rosettacode.org/wiki/Ray-casting_algorithm#Kotlin
-        val internalPlantPoints = getPillarLayoutPoints(pillarLayoutState).filter { figure.contains(it) }
-        val ldsPillarPoints = internalPlantPoints.map { createPillarLayoutDataset(it) }
+        val ldsPillarPoints = getPillarLayoutPoints(pillarLayoutState).map { createPillarLayoutDataset(it, figure.contains(it)) }
+        //val internalPlantPoints = getPillarLayoutPoints(pillarLayoutState).filter { figure.contains(it) }
+        //val ldsPillarPoints = internalPlantPoints.map { createPillarLayoutDataset(it) }
 
         //Plant figure perimeter
         val perimeterLds = edgeList.map { createPerimeterDataset(it, context) }
@@ -133,8 +144,29 @@ class SismicPlantBuildingInteractor(val takeoverState: TakeoverState?) {
             color = Color.BLACK
             axisDependency = YAxis.AxisDependency.LEFT
             axisDependency = YAxis.AxisDependency.RIGHT
-            setDrawCircles(false)
+            setDrawCircles(true)
+            circleRadius = 1f
+            circleColors = listOf(Color.BLACK)
             lineWidth = 3f
+        }
+    }
+
+    //to visualize all pillars, in green the good ones
+    private fun createPillarLayoutDataset(pillarPoint: PlantPoint, internal: Boolean): LineDataSet {
+
+        val entryPoint = Entry(pillarPoint.x.toFloat(), pillarPoint.y.toFloat())
+        if (internal) return LineDataSet(listOf(entryPoint), "MS").apply {
+            circleRadius = 5f
+            circleColors = listOf(ContextCompat.getColor(mContext, R.color.pillar_on))
+            setDrawCircles(true)
+            axisDependency = YAxis.AxisDependency.LEFT
+        }
+
+        return LineDataSet(listOf(entryPoint), "MS").apply {
+            circleRadius = 4f
+            circleColors = listOf(ContextCompat.getColor(mContext, R.color.pillar_off))
+            setDrawCircles(true)
+            axisDependency = YAxis.AxisDependency.LEFT
         }
     }
 
@@ -144,7 +176,7 @@ class SismicPlantBuildingInteractor(val takeoverState: TakeoverState?) {
         val entryPoint = Entry(pillarPoint.x.toFloat(), pillarPoint.y.toFloat())
         return LineDataSet(listOf(entryPoint), "MS").apply {
             circleRadius = 4f
-            circleColors = listOf(Color.GREEN)
+            circleColors = listOf(ContextCompat.getColor(mContext, R.color.pillar_on))
             setDrawCircles(true)
             axisDependency = YAxis.AxisDependency.LEFT
         }

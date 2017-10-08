@@ -205,7 +205,7 @@ class UiMapper {
                         piani_numero_parameter.setSelection(it.numero_piani-1)
                         altezza_piano_tr_parameter.setParameterValue(it.altezza_piano_terra.toStringOrEmpty())
                         altezza_piani_sup_parameter.setParameterValue(it.altezza_piani_superiori.toStringOrEmpty())
-                        mSismicPlantBuildingInteractor.pointList = it.plant_points.toMutableList()
+                        if (it.plant_points.size > 1) mSismicPlantBuildingInteractor.pointList = it.plant_points.toMutableList()
                         mSismicPlantBuildingInteractor.mCenter = it.gravity_center
                         mSismicPlantBuildingInteractor.area = it.area
                         mSismicPlantBuildingInteractor.perimeter = it.perimetro
@@ -232,9 +232,9 @@ class UiMapper {
                         setConoscenzaCalcestruzzo(LivelloConoscenza.values().firstOrNull { con -> con.multiplier == it.conoscenza_calcestruzzo })
                         if (acc_classe_parameter_C.textOn == it.classe_acciaio) acc_classe_parameter_C.isChecked = true else acc_classe_parameter_A.isChecked = true
                         setConoscenzaAcciaio(LivelloConoscenza.values().firstOrNull { con -> con.multiplier == it.conoscenza_acciaio })
-                        sezione_bx_parameter.setParameterValue(it.bx.toStringOrEmpty())
-                        sezione_hy_parameter.setParameterValue(it.hy.toStringOrEmpty())
-                        sezione_c_parameter.setParameterValue(it.c.toStringOrEmpty())
+                        sezione_bx_parameter.setParameterValue((it.bx /10).toStringOrEmpty())
+                        sezione_hy_parameter.setParameterValue((it.hy /10).toStringOrEmpty())
+                        sezione_c_parameter.setParameterValue((it.c /10).toStringOrEmpty())
                         num_armatura.setParameterValue(it.num_ferri.toStringOrEmpty())
                         armatura_fi.setParameterValue(it.diametro_ferri.toStringOrEmpty())
                     }

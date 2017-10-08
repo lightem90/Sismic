@@ -2,6 +2,10 @@
 <LinearLayout style="@style/scrollableLayout"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <TextView
+        style="@style/sectionTitle"
+        android:text="@string/report_result_title" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/results_container"
         android:layout_width="match_parent"

@@ -87,16 +87,15 @@ class SismicActionCalculatorHelper(val mCoordinateHelper: ParametersForCoordinat
     }
 
     //Sismicparameters data: shows periods based on life
-    //TODO: correct: bag for parameters, class for limit state
     fun getLimitStateSpectrum(sismicState: ReportState, currentSismicState: SismicParametersState? = null, currentProjectSpectrumState: ProjectSpectrumState? = null): MutableList<SpectrumDTO> {
 
-        val st = ZonaSismica.values()[sismicState.localizationState.zone_int - 1].multiplier
         val vr = if (currentSismicState != null) currentSismicState.vitaReale else sismicState.sismicState.sismicParametersState.vitaReale
 
         var categoria_sottosuolo = if (sismicState.sismicState.projectSpectrumState.categoria_suolo.isEmpty()) CategoriaSottosuolo.A
                 else CategoriaSottosuolo.values().first { it.toString() ==  sismicState.sismicState.projectSpectrumState.categoria_suolo}
 
         var q = sismicState.sismicState.projectSpectrumState.q0 * sismicState.sismicState.projectSpectrumState.kr
+        var st = 1.0
 
         if (currentProjectSpectrumState != null)
         {
@@ -104,6 +103,7 @@ class SismicActionCalculatorHelper(val mCoordinateHelper: ParametersForCoordinat
                     .first { it.toString() ==  currentProjectSpectrumState.categoria_suolo}
 
             q = currentProjectSpectrumState.q0 * currentProjectSpectrumState.kr
+            st = currentProjectSpectrumState.categoria_topografica
         }
         // SLO, SLD, SLV, SLC
         val limitStateYears = StatiLimite.values().map { calculateTrFor(vr, it) }

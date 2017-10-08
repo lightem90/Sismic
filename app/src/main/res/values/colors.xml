@@ -36,4 +36,6 @@
     <color name="mrd">#cc00ff</color>
     <color name="progress_start">#0099FF</color>
     <color name="progress_end">#FF0000</color>
+    <color name="pillar_on">#90ce9c</color>
+    <color name="pillar_off">#c6c6c6</color>
 </resources>

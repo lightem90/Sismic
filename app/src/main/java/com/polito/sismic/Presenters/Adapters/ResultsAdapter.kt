@@ -1,6 +1,7 @@
 package com.polito.sismic.Presenters.Adapters
 
 import android.content.Context
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
@@ -18,8 +19,9 @@ class ResultsAdapter(private val mItems: List<StatiLimite>,
                      private val pointsList: List<PillarDomainPoint>) :
         RecyclerView.Adapter<ResultsAdapter.ViewHolder>() {
 
+    val results : HashMap<StatiLimite, Int> = HashMap()
     override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
-        holder?.bind(mItems[position], pointsList, pointsList.firstOrNull{it.label == "MRD"}, context)
+        holder?.bind(mItems[position], pointsList, pointsList.firstOrNull{it.label == "MRD"}, context, results)
     }
 
     override fun getItemCount(): Int {
@@ -32,16 +34,18 @@ class ResultsAdapter(private val mItems: List<StatiLimite>,
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(statoLimite: StatiLimite, pointsList: List<PillarDomainPoint>?, mrd: PillarDomainPoint?, context: Context)
+        fun bind(statoLimite: StatiLimite, pointsList: List<PillarDomainPoint>?, mrd: PillarDomainPoint?, context: Context, results: HashMap<StatiLimite, Int>)
         {
             itemView.label.text = statoLimite.name
+            itemView.label.setTextColor(ContextCompat.getColor(context, statoLimite.color))
             if (mrd == null) return
             val pointForStato = pointsList?.firstOrNull{it.label == statoLimite.name}
             pointForStato?.let {
 
                 val result = (it.m / mrd.m).toInt()
-                itemView.value.text = String.format(context.getString(R.string.result),result.toString())
+                itemView.value.text = String.format(context.getString(R.string.result), result, context.getString(R.string.percent))
                 itemView.progress.progress = result
+                results.put(statoLimite, result)
             }
         }
     }

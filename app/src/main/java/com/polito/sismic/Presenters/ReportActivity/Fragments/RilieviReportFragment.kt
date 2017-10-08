@@ -3,6 +3,7 @@ package com.polito.sismic.Presenters.ReportActivity.Fragments
 import android.graphics.Color
 import android.os.Bundle
 import android.support.annotation.Nullable
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
@@ -44,26 +45,26 @@ class RilieviReportFragment : BaseReportFragment(), OnChartValueSelectedListener
                     .firstOrNull { dataset -> dataset.contains(e)} ?: return
 
             when {
-                selectedDataset.getCircleColor(0) == Color.GREEN ->
+                selectedDataset.getCircleColor(0) == ContextCompat.getColor(context, R.color.pillar_on) ->
                     //If the entry clicked was one of a green pillar, i set a new dataset at the same position "gray", meaning the
                     //pillar wont be counted
                     selectedDataset.let {
                         plant_graph.data.removeDataSet(it)
                         plant_graph.data.addDataSet(LineDataSet(listOf(entryClicked), "MS").apply {
                             circleRadius = 4f
-                            circleColors = listOf(Color.GRAY)
+                            circleColors = listOf(ContextCompat.getColor(context, R.color.pillar_off))
                             setDrawCircles(true)
                             axisDependency = YAxis.AxisDependency.LEFT }
                         )
                         changes = true
                     }
-                selectedDataset.getCircleColor(0) == Color.GRAY -> {
+                selectedDataset.getCircleColor(0) == ContextCompat.getColor(context, R.color.pillar_off) -> {
                     //if the user clicks a gray pillar, the pillar will become green
                     selectedDataset.let {
                         plant_graph.data.removeDataSet(it)
                         plant_graph.data.addDataSet(LineDataSet(listOf(entryClicked), "MS").apply {
-                            circleRadius = 4f
-                            circleColors = listOf(Color.GREEN)
+                            circleRadius = 5f
+                            circleColors = listOf(ContextCompat.getColor(context, R.color.pillar_on))
                             setDrawCircles(true)
                             axisDependency = YAxis.AxisDependency.LEFT }
                         )
@@ -85,7 +86,7 @@ class RilieviReportFragment : BaseReportFragment(), OnChartValueSelectedListener
     }
 
     val mSismicPlantBuildingInteractor : SismicPlantBuildingInteractor by lazy {
-        SismicPlantBuildingInteractor(getReport().reportState.buildingState.takeoverState)
+        SismicPlantBuildingInteractor(getReport().reportState.buildingState.takeoverState, context)
     }
 
     override fun onCreateView(inflater: LayoutInflater?, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View? {
@@ -122,7 +123,8 @@ class RilieviReportFragment : BaseReportFragment(), OnChartValueSelectedListener
             legend.form = Legend.LegendForm.DEFAULT
             legend.setCustom(listOf(LegendEntry(context.getString(R.string.rilievo_esterno), Legend.LegendForm.DEFAULT, 8f, 1f, null, Color.BLACK),
                     LegendEntry(context.getString(R.string.centro_di_massa), Legend.LegendForm.DEFAULT, 8f, 1f, null, Color.RED),
-                    LegendEntry(context.getString(R.string.maglia_strutturale), Legend.LegendForm.DEFAULT, 8f, 1f, null, Color.GREEN)))
+                    LegendEntry(context.getString(R.string.pilastri_validi), Legend.LegendForm.DEFAULT, 8f, 1f, null, ContextCompat.getColor(context, R.color.pillar_on)),
+                    LegendEntry(context.getString(R.string.pilastri_non_validi), Legend.LegendForm.DEFAULT, 8f, 1f, null, ContextCompat.getColor(context, R.color.pillar_off))))
             description.isEnabled = false
             getAxis(YAxis.AxisDependency.RIGHT).isEnabled = false
         }
@@ -164,7 +166,7 @@ class RilieviReportFragment : BaseReportFragment(), OnChartValueSelectedListener
 
     //Count available pillars
     private fun countPillars(): Int {
-        return plant_graph.data?.dataSets?.count { it.entryCount == 1 && it.label == "MS" && it.getCircleColor(0)== Color.GREEN} ?: 0
+        return plant_graph.data?.dataSets?.count { it.entryCount == 1 && it.label == "MS" && it.getCircleColor(0) == ContextCompat.getColor(context, R.color.pillar_on)} ?: 0
     }
 
     override fun verifyStep(): VerificationError? {

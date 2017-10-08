@@ -358,12 +358,15 @@
     <string name="error_unexpected">Impossibile aprire il report</string>
     <string name="error_media_short">Nome troppo corto</string>
     <string name="confirm_presenter_back_message">Sicuro di voler uscire?</string>
-    <string name="stato_mrd">Mrd</string>
+    <string name="stato_mrd">MRD</string>
     <string name="annulla">Annulla</string>
     <string name="pdf_writing_disabled">Questa versione di Android non supporta la scrittura pdf</string>
     <string name="descr_registration">Utilizzare la mail per effettuare il login</string>
-    <string name="maglia_strutturale">Maglia strutturale</string>
+    <string name="pilastri_validi">Pilastri</string>
+    <string name="pilastri_non_validi">Pilastri rimossi</string>
     <string name="area_pillar_label">Area massima influenza pilastro:</string>
     <string name="count_pillar_label">Pilastri totali:</string>
-    <string name="result">%d %</string>
+    <string name="result">%d %s</string>
+    <string name="report_result_title">INDICI DI VULNERABILITA'</string>
+    <string name="pillar_domain_error">Calcolare il dominio del pilastro</string>
 </resources>

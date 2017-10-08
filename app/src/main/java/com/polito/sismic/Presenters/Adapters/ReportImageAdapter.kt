@@ -49,16 +49,6 @@ class ReportImageAdapter (private val imageList : List<ReportMedia>,
                 .centerCrop()
                 .into(imageView)
 
-        //TODO: girarle!
-        //val bitmap : Bitmap = Picasso.with(mContext)
-        //        .load(uri)
-        //        .get()
-//
-        //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-//
-        //    imageView.setImageBitmap(fixRotation(uri, bitmap))
-        //}
-
         return imageView
     }
 
