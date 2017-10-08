@@ -12,7 +12,7 @@
                 />
         </shape>
     </item>
-
+<!--
     <item android:id="@android:id/secondaryProgress">
         <clip>
             <shape>
@@ -27,7 +27,7 @@
             </shape>
         </clip>
     </item>
-
+-->
     <item android:id="@android:id/progress">
         <clip>
             <shape>

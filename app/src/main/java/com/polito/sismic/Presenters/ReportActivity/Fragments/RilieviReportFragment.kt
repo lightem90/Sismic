@@ -35,45 +35,52 @@ class RilieviReportFragment : BaseReportFragment(), OnChartValueSelectedListener
     override fun onValueSelected(e: Entry?, h: Highlight?) {
 
         e?.let { entryClicked->
-            val datasetToRemove = plant_graph.data.dataSets
-                    .filter { dataset -> dataset.entryCount == 1
-                            && dataset.label == "MS"
-                            && dataset.getCircleColor(0) == Color.GREEN}
-                    .firstOrNull { dataset -> dataset.contains(e)}
 
-            //If the entry clicked was one of a green pillar, i set a new dataset at the same position "gray", meaning the
-            //pillar wont be counted
-            datasetToRemove?.let {
-                plant_graph.data.removeDataSet(it)
-                plant_graph.data.addDataSet(LineDataSet(listOf(entryClicked), "MS").apply {
-                    circleRadius = 4f
-                    circleColors = listOf(Color.GRAY)
-                    setDrawCircles(true)
-                    axisDependency = YAxis.AxisDependency.LEFT }
-                )
+            //Take the dataset that contains the clicked point
+            var changes = false
+            val selectedDataset = plant_graph.data.dataSets
+                    .filter { dataset -> dataset.entryCount == 1
+                            && dataset.label == "MS"}
+                    .firstOrNull { dataset -> dataset.contains(e)} ?: return
+
+            when {
+                selectedDataset.getCircleColor(0) == Color.GREEN ->
+                    //If the entry clicked was one of a green pillar, i set a new dataset at the same position "gray", meaning the
+                    //pillar wont be counted
+                    selectedDataset.let {
+                        plant_graph.data.removeDataSet(it)
+                        plant_graph.data.addDataSet(LineDataSet(listOf(entryClicked), "MS").apply {
+                            circleRadius = 4f
+                            circleColors = listOf(Color.GRAY)
+                            setDrawCircles(true)
+                            axisDependency = YAxis.AxisDependency.LEFT }
+                        )
+                        changes = true
+                    }
+                selectedDataset.getCircleColor(0) == Color.GRAY -> {
+                    //if the user clicks a gray pillar, the pillar will become green
+                    selectedDataset.let {
+                        plant_graph.data.removeDataSet(it)
+                        plant_graph.data.addDataSet(LineDataSet(listOf(entryClicked), "MS").apply {
+                            circleRadius = 4f
+                            circleColors = listOf(Color.GREEN)
+                            setDrawCircles(true)
+                            axisDependency = YAxis.AxisDependency.LEFT }
+                        )
+                    }
+                    changes = true
+                }
+                else -> changes = false
             }
 
-            val datasetToLight = plant_graph.data.dataSets
-                    .filter { dataset -> dataset.entryCount == 1
-                            && dataset.label == "MS"
-                            && dataset.getCircleColor(0) == Color.GRAY}
-                    .firstOrNull { dataset -> dataset.contains(e)}
+            //If changes have been made, update all the things
+            if (changes)
+            {
+                plant_graph.notifyDataSetChanged()
+                plant_graph.invalidate()
 
-            //if the user clicks a gray pillar, the pillar will become green
-            datasetToLight?.let {
-                plant_graph.data.removeDataSet(it)
-                plant_graph.data.addDataSet(LineDataSet(listOf(entryClicked), "MS").apply {
-                    circleRadius = 4f
-                    circleColors = listOf(Color.GREEN)
-                    setDrawCircles(true)
-                    axisDependency = YAxis.AxisDependency.LEFT }
-                )
+                count_pillar_label.setValue(countPillars().toString())
             }
-
-            plant_graph.notifyDataSetChanged()
-            plant_graph.invalidate()
-
-            count_pillar_label.setValue(countPillars().toString())
         }
     }
 
@@ -86,6 +93,7 @@ class RilieviReportFragment : BaseReportFragment(), OnChartValueSelectedListener
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         piani_numero_parameter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 
@@ -94,18 +102,14 @@ class RilieviReportFragment : BaseReportFragment(), OnChartValueSelectedListener
                     altezza_piani_sup_parameter.visibility = View.VISIBLE
                 else
                     altezza_piani_sup_parameter.visibility = View.GONE
-
-                updateAltezzaTotale()
             }
             override fun onNothingSelected(parent: AdapterView<out Adapter>?) {  }
         }
 
         altezza_piano_tr_parameter.attachDataConfirmedCallback {
-            updateAltezzaTotale()
             if (altezza_piani_sup_parameter.visibility == View.VISIBLE)
                 altezza_piani_sup_parameter.requestFocus()
         }
-        altezza_piani_sup_parameter.attachDataConfirmedCallback { updateAltezzaTotale() }
 
 
         plant_point_list.layoutManager = LinearLayoutManager(activity)
@@ -160,14 +164,7 @@ class RilieviReportFragment : BaseReportFragment(), OnChartValueSelectedListener
 
     //Count available pillars
     private fun countPillars(): Int {
-        return plant_graph.data.dataSets.count { it.entryCount == 1 && it.label == "MS" && it.getCircleColor(0)== Color.GREEN}
-    }
-
-    private fun updateAltezzaTotale()
-    {
-        altezza_tot.text  = if (piani_numero_parameter.selectedItemPosition > 0)
-            (altezza_piano_tr_parameter.getParameterValue().toDoubleOrZero() + piani_numero_parameter.selectedItemPosition * altezza_piani_sup_parameter.getParameterValue().toDoubleOrZero()).toString()
-            else altezza_piano_tr_parameter.getParameterValue()
+        return plant_graph.data?.dataSets?.count { it.entryCount == 1 && it.label == "MS" && it.getCircleColor(0)== Color.GREEN} ?: 0
     }
 
     override fun verifyStep(): VerificationError? {

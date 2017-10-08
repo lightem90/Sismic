@@ -37,13 +37,6 @@
         app:report_parameter_title="@string/altezza_piani_sup_parameter" />
 
     <TextView
-        android:id="@+id/altezza_tot"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/altezza_tot"
-        android:visibility="gone" />
-
-    <TextView
         style="@style/sectionTitle"
         android:text="@string/report_rilievo_interno_title" />
 

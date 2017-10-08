@@ -13,13 +13,13 @@ import kotlinx.android.synthetic.main.result_item.view.*
 /**
  * Created by Matteo on 07/10/2017.
  */
-class ResultsAdapter(val mItems: List<StatiLimite>,
+class ResultsAdapter(private val mItems: List<StatiLimite>,
                      val context: Context,
-                     val pointsList: List<PillarDomainPoint>?) :
+                     private val pointsList: List<PillarDomainPoint>) :
         RecyclerView.Adapter<ResultsAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
-        holder?.bind(mItems[position], pointsList, pointsList?.firstOrNull{it.label == "MRD"}, context)
+        holder?.bind(mItems[position], pointsList, pointsList.firstOrNull{it.label == "MRD"}, context)
     }
 
     override fun getItemCount(): Int {

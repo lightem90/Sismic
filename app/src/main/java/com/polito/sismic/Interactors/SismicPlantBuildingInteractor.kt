@@ -42,7 +42,7 @@ class SismicPlantBuildingInteractor(val takeoverState: TakeoverState?) {
                 blue >= red
             }
         }
-        private val epsilon = 0.00001
+        private val epsilon = 0.0000001
     }
 
     //First cant be modified

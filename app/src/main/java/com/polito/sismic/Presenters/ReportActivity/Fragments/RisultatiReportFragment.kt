@@ -2,6 +2,7 @@ package com.polito.sismic.Presenters.ReportActivity.Fragments
 
 import android.os.Bundle
 import android.support.annotation.Nullable
+import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,9 +17,9 @@ import kotlinx.android.synthetic.main.risultati_report_layout.*
  */
 class RisultatiReportFragment : BaseReportFragment() {
 
-    private var mPointList: List<PillarDomainPoint>? = null
+    private var mPointList: MutableList<PillarDomainPoint> = mutableListOf()
     private lateinit var mAdapter: ResultsAdapter
-    val mList = StatiLimite.values().toList()
+    private val mList = StatiLimite.values().toList()
 
     override fun onCreateView(inflater: LayoutInflater?, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View? {
         return inflateFragment(R.layout.risultati_report_layout, inflater, container)
@@ -27,14 +28,20 @@ class RisultatiReportFragment : BaseReportFragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mPointList = getReport().reportState.buildingState.pillarState.pillar_domain?.points
+        getReport().reportState.buildingState.pillarState.pillar_domain?.points?.let {
+            mPointList.addAll(it)
+        }
+        results_container.layoutManager = LinearLayoutManager(context)
         mAdapter = ResultsAdapter(mList, context, mPointList)
         results_container.adapter = mAdapter
     }
 
     override fun onReload() {
         super.onReload()
-        mPointList = getReport().reportState.buildingState.pillarState.pillar_domain?.points
+        mPointList.clear()
+        getReport().reportState.buildingState.pillarState.pillar_domain?.points?.let {
+            mPointList.addAll(it)
+        }
         results_container.adapter.notifyDataSetChanged()
     }
 }

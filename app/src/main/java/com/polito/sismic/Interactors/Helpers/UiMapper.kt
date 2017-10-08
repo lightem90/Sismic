@@ -86,7 +86,10 @@ class UiMapper {
         fun createTakeoverStateForDomain(rilieviReportFragment: RilieviReportFragment): TakeoverState  = with(rilieviReportFragment){
 
             //For now we assume a ractangle / square
-            val hTot = altezza_tot.text.toString().toDoubleOrZero()
+            val hTot = if (piani_numero_parameter.selectedItemPosition > 0)
+                            altezza_piano_tr_parameter.getParameterValue().toDoubleOrZero() +
+                                    (piani_numero_parameter.selectedItemPosition * altezza_piani_sup_parameter.getParameterValue().toDoubleOrZero())
+                        else altezza_piano_tr_parameter.getParameterValue().toDouble()
             val t1 = SismicBuildingCalculatorHelper.calculateT1(hTot)
 
             return TakeoverState(piani_numero_parameter.selectedItem.toString().toIntOrZero(),
@@ -202,7 +205,6 @@ class UiMapper {
                         piani_numero_parameter.setSelection(it.numero_piani-1)
                         altezza_piano_tr_parameter.setParameterValue(it.altezza_piano_terra.toStringOrEmpty())
                         altezza_piani_sup_parameter.setParameterValue(it.altezza_piani_superiori.toStringOrEmpty())
-                        altezza_tot.text = it.altezza_totale.toStringOrEmpty()
                         mSismicPlantBuildingInteractor.pointList = it.plant_points.toMutableList()
                         mSismicPlantBuildingInteractor.mCenter = it.gravity_center
                         mSismicPlantBuildingInteractor.area = it.area

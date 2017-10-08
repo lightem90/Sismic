@@ -2,6 +2,7 @@ package com.polito.sismic.Interactors.Helpers
 
 import android.content.Context
 import android.support.v4.content.ContextCompat
+import android.util.Log
 import com.polito.sismic.Domain.*
 import com.polito.sismic.Extensions.distanceFrom
 import com.polito.sismic.R
