@@ -183,6 +183,15 @@ class DatiStrutturaliReportFragment : BaseReportFragment() {
                 ?.let { return copertura_peso.setSelection(it)}
     }
 
+    override fun onReload() {
+        super.onReload()
+
+        if (getReport().reportState.buildingState.takeoverState.numero_piani <= 1)
+            solaio_container.visibility = View.GONE
+        else
+            solaio_container.visibility = View.VISIBLE
+    }
+
     //all parameters must have a value
     override fun verifyStep(): VerificationError? {
         if (fondazioni_h.isEmpty()) return VerificationError(String.format(resources.getString(R.string.verification_empty_field), fondazioni_h.getTitle()))

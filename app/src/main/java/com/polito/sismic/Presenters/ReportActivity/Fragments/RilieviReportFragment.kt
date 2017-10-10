@@ -156,10 +156,11 @@ class RilieviReportFragment : BaseReportFragment(), OnChartValueSelectedListener
         barycenter_label.setValue(String.format(context.getString(R.string.barycenter_label),
                 "%.2f".format(mSismicPlantBuildingInteractor.mCenter.x),
                 "%.2f".format(mSismicPlantBuildingInteractor.mCenter.y)))
+        count_pillar_label.setValue(countPillars().toString())
+
         area_pillar_label.setValue(String.format(context.getString(R.string.area_label),
                 "%.2f".format(getReport().reportState.buildingState.pillarLayoutState.area)))
 
-        count_pillar_label.setValue(countPillars().toString())
     }
 
     //Count available pillars

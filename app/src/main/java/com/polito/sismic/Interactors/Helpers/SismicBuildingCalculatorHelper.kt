@@ -53,9 +53,9 @@ class SismicBuildingCalculatorHelper(val mContext: Context) {
 
         fun calculateBuildWeigth(buildingState: BuildingState, pesoSolaio: Double, pesoCopertura: Double): Double {
             return if (buildingState.takeoverState.numero_piani > 1) {
-                buildingState.takeoverState.numero_piani * (pesoCopertura + pesoSolaio)
+                ((buildingState.takeoverState.numero_piani - 1) * (pesoSolaio)) + pesoCopertura
             } else {
-                pesoSolaio
+                pesoCopertura
             }
         }
 

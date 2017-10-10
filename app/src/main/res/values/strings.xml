@@ -283,7 +283,7 @@
     <string name="altezza_tot">Altezza totale:</string>
     <string name="report_periodi_ritorno_title">PERIODI DI RITORNO</string>
     <string name="year_header">Tr [anni]</string>
-    <string name="ag_header">ag [g]</string>
+    <string name="ag_header">ag [g/10]</string>
     <string name="f0_header">F0 [-]</string>
     <string name="tcstar_header">Tc* [s]</string>
     <string name="params_format">%.5f</string>

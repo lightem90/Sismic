@@ -48,74 +48,83 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-    <TextView
-        style="@style/sectionTitle"
-        android:text="@string/solaio_title"/>
-
-    <TextView
-        android:text="@string/solaio_type_title"
-        style="@style/sectionButtonTitle"/>
-
-    <LinearLayout style="@style/toggleButtonsContainer">
-
-        <ToggleButton
-            android:id="@+id/solaio_type"
-            style="@style/CustomToggleButton"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginEnd="@dimen/place_autocomplete_button_padding"
-            android:layout_marginRight="@dimen/place_autocomplete_button_padding"
-            android:checked="true"
-            android:textOff="@string/solaio_type"
-            android:textOn="@string/solaio_type" />
-
-    </LinearLayout>
-
     <LinearLayout
-        style="@style/spinnerContainer">
+        android:id="@+id/solaio_container"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <TextView
-            style="@style/sectionSpinnerTitle"
-            android:text="@string/solaio_peso" />
+            style="@style/sectionTitle"
+            android:text="@string/solaio_title"/>
 
-        <Spinner
-            android:id="@+id/solaio_peso"
-            style="@style/spinnerStyle"
-            android:entries="@array/solaio_pesi"/>
+        <TextView
+            android:text="@string/solaio_type_title"
+            style="@style/sectionButtonTitle"/>
+
+        <LinearLayout style="@style/toggleButtonsContainer">
+
+            <ToggleButton
+                android:id="@+id/solaio_type"
+                style="@style/CustomToggleButton"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginEnd="@dimen/place_autocomplete_button_padding"
+                android:layout_marginRight="@dimen/place_autocomplete_button_padding"
+                android:checked="true"
+                android:textOff="@string/solaio_type"
+                android:textOn="@string/solaio_type" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/spinnerContainer">
+
+            <TextView
+                style="@style/sectionSpinnerTitle"
+                android:text="@string/solaio_peso" />
+
+            <Spinner
+                android:id="@+id/solaio_peso"
+                style="@style/spinnerStyle"
+                android:entries="@array/solaio_pesi"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/solaio_g1"
+            android:text="@string/g1_default"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
+            android:id="@+id/solaio_g2"
+            app:report_parameter_title="@string/solaio_g2"
+            app:report_parameter_hint="@string/solaio_g2_hint"
+            app:report_parameter_isNumber="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
+            android:id="@+id/solaio_qk"
+            app:report_parameter_title="@string/solaio_qk"
+            app:report_parameter_hint="@string/solaio_qk_hint"
+            app:report_parameter_isNumber="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/solaio_q"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/solaio_g1"
-        android:text="@string/g1_default"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:layout_gravity="center_horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
-        android:id="@+id/solaio_g2"
-        app:report_parameter_title="@string/solaio_g2"
-        app:report_parameter_hint="@string/solaio_g2_hint"
-        app:report_parameter_isNumber="true"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-    <com.polito.sismic.Presenters.CustomLayout.ParameterReportLayout
-        android:id="@+id/solaio_qk"
-        app:report_parameter_title="@string/solaio_qk"
-        app:report_parameter_hint="@string/solaio_qk_hint"
-        app:report_parameter_isNumber="true"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-    <TextView
-        android:id="@+id/solaio_q"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:layout_gravity="center_horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
 
     <TextView
         style="@style/sectionTitle"
