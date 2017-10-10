@@ -45,15 +45,6 @@ class ResultsAdapter(private val mItems: List<StatiLimite>,
                 val result = ((it.m / mrd.m)*100).toInt()
                 itemView.value.text = String.format(context.getString(R.string.result), result, context.getString(R.string.percent))
                 itemView.progress.progress = result
-
-
-                when(result)
-                {
-                    in Int.MIN_VALUE..10 -> itemView.progress.progressDrawable.setColorFilter(ContextCompat.getColor(context, R.color.report_danger_low), android.graphics.PorterDuff.Mode.SRC_IN)
-                    in 11..35 -> itemView.progress.progressDrawable.setColorFilter(ContextCompat.getColor(context, R.color.report_danger_normal), android.graphics.PorterDuff.Mode.SRC_IN)
-                    in 36..50 -> itemView.progress.progressDrawable.setColorFilter(ContextCompat.getColor(context, R.color.report_danger_medium), android.graphics.PorterDuff.Mode.SRC_IN)
-                    in 51..Int.MAX_VALUE -> itemView.progress.progressDrawable.setColorFilter(ContextCompat.getColor(context, R.color.report_danger_high), android.graphics.PorterDuff.Mode.SRC_IN)
-                }
                 results.put(statoLimite, result)
             }
         }
