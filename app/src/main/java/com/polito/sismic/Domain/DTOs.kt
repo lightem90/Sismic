@@ -4,6 +4,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.polito.sismic.Interactors.Helpers.LivelloConoscenza
+import com.polito.sismic.Interactors.Helpers.PlantFigure
 import com.polito.sismic.Interactors.Helpers.StatiLimite
 import java.util.*
 
@@ -658,11 +659,12 @@ data class TakeoverState(var numero_piani: Int,
                          var altezza_piano_terra: Double,
                          var altezza_piani_superiori: Double,
                          var altezza_totale: Double,
-                         var t1: Double,
                          var area: Double,
+                         var t1: Double,
                          var perimetro: Double,
                          var gravity_center: PlantPoint,
-                         var plant_points: List<PlantPoint>) : Parcelable {
+                         var plant_points: List<PlantPoint>,
+                         var figure : PlantFigure? = null) : Parcelable {
     constructor() : this(0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, PlantPoint(0.0,0.0), listOf<PlantPoint>())
 
     constructor(source: Parcel) : this(

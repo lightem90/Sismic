@@ -30,60 +30,7 @@ import kotlinx.android.synthetic.main.rilievi_report_layout.*
 /**
  * Created by Matteo on 10/08/2017.
  */
-class RilieviReportFragment : BaseReportFragment(), OnChartValueSelectedListener {
-
-    override fun onNothingSelected() {  return   }
-    override fun onValueSelected(e: Entry?, h: Highlight?) {
-
-        e?.let { entryClicked->
-
-            //Take the dataset that contains the clicked point
-            var changes = false
-            val selectedDataset = plant_graph.data.dataSets
-                    .filter { dataset -> dataset.entryCount == 1
-                            && dataset.label == "MS"}
-                    .firstOrNull { dataset -> dataset.contains(e)} ?: return
-
-            when {
-                selectedDataset.getCircleColor(0) == ContextCompat.getColor(context, R.color.pillar_on) ->
-                    //If the entry clicked was one of a green pillar, i set a new dataset at the same position "gray", meaning the
-                    //pillar wont be counted
-                    selectedDataset.let {
-                        plant_graph.data.removeDataSet(it)
-                        plant_graph.data.addDataSet(LineDataSet(listOf(entryClicked), "MS").apply {
-                            circleRadius = 4f
-                            circleColors = listOf(ContextCompat.getColor(context, R.color.pillar_off))
-                            setDrawCircles(true)
-                            axisDependency = YAxis.AxisDependency.LEFT }
-                        )
-                        changes = true
-                    }
-                selectedDataset.getCircleColor(0) == ContextCompat.getColor(context, R.color.pillar_off) -> {
-                    //if the user clicks a gray pillar, the pillar will become green
-                    selectedDataset.let {
-                        plant_graph.data.removeDataSet(it)
-                        plant_graph.data.addDataSet(LineDataSet(listOf(entryClicked), "MS").apply {
-                            circleRadius = 5f
-                            circleColors = listOf(ContextCompat.getColor(context, R.color.pillar_on))
-                            setDrawCircles(true)
-                            axisDependency = YAxis.AxisDependency.LEFT }
-                        )
-                    }
-                    changes = true
-                }
-                else -> changes = false
-            }
-
-            //If changes have been made, update all the things
-            if (changes)
-            {
-                plant_graph.notifyDataSetChanged()
-                plant_graph.invalidate()
-
-                count_pillar_label.setValue(countPillars().toString())
-            }
-        }
-    }
+class RilieviReportFragment : BaseReportFragment(){
 
     val mSismicPlantBuildingInteractor : SismicPlantBuildingInteractor by lazy {
         SismicPlantBuildingInteractor(getReport().reportState.buildingState.takeoverState, context)
@@ -122,16 +69,13 @@ class RilieviReportFragment : BaseReportFragment(), OnChartValueSelectedListener
             xAxis.position = XAxis.XAxisPosition.BOTTOM
             legend.form = Legend.LegendForm.DEFAULT
             legend.setCustom(listOf(LegendEntry(context.getString(R.string.rilievo_esterno), Legend.LegendForm.DEFAULT, 8f, 1f, null, Color.BLACK),
-                    LegendEntry(context.getString(R.string.centro_di_massa), Legend.LegendForm.DEFAULT, 8f, 1f, null, Color.RED),
-                    LegendEntry(context.getString(R.string.pilastri_validi), Legend.LegendForm.DEFAULT, 8f, 1f, null, ContextCompat.getColor(context, R.color.pillar_on)),
-                    LegendEntry(context.getString(R.string.pilastri_non_validi), Legend.LegendForm.DEFAULT, 8f, 1f, null, ContextCompat.getColor(context, R.color.pillar_off))))
+                    LegendEntry(context.getString(R.string.centro_di_massa), Legend.LegendForm.DEFAULT, 8f, 1f, null, Color.RED)))
             description.isEnabled = false
             getAxis(YAxis.AxisDependency.RIGHT).isEnabled = false
+            getAxis(YAxis.AxisDependency.LEFT).axisMinimum = 0f
         }
 
-        //To delete pillars
-        plant_graph.setOnChartValueSelectedListener(this)
-        calculate.setOnClickListener{ updateGraph() }
+        calculate.setOnClickListener { updateGraph() }
     }
 
     override fun onReload() {
@@ -142,7 +86,7 @@ class RilieviReportFragment : BaseReportFragment(), OnChartValueSelectedListener
     private fun updateGraph() = with(plant_graph)
     {
         plant_point_list?.adapter?.notifyDataSetChanged()
-        mSismicPlantBuildingInteractor.convertListForGraph(context, getReport().reportState.buildingState.pillarLayoutState)?.let {
+        mSismicPlantBuildingInteractor.convertListForGraph()?.let {
             data = it
             invalidate()
             updateLabels()
@@ -156,16 +100,6 @@ class RilieviReportFragment : BaseReportFragment(), OnChartValueSelectedListener
         barycenter_label.setValue(String.format(context.getString(R.string.barycenter_label),
                 "%.2f".format(mSismicPlantBuildingInteractor.mCenter.x),
                 "%.2f".format(mSismicPlantBuildingInteractor.mCenter.y)))
-        count_pillar_label.setValue(countPillars().toString())
-
-        area_pillar_label.setValue(String.format(context.getString(R.string.area_label),
-                "%.2f".format(getReport().reportState.buildingState.pillarLayoutState.area)))
-
-    }
-
-    //Count available pillars
-    private fun countPillars(): Int {
-        return plant_graph.data?.dataSets?.count { it.entryCount == 1 && it.label == "MS" && it.getCircleColor(0) == ContextCompat.getColor(context, R.color.pillar_on)} ?: 0
     }
 
     override fun verifyStep(): VerificationError? {
@@ -180,7 +114,6 @@ class RilieviReportFragment : BaseReportFragment(), OnChartValueSelectedListener
     override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback?) {
         //Fixes the pillar count with the one that really exists in the graph
         getReport().reportState.buildingState.takeoverState = UiMapper.createTakeoverStateForDomain(this)
-        getReport().reportState.buildingState.pillarLayoutState.pillarCount = countPillars()
         super.onNextClicked(callback)
     }
 }

@@ -44,4 +44,38 @@
         android:layout_height="wrap_content"/>
 
 
+    <TextView
+        style="@style/sectionTitle"
+        android:text="@string/maglia_strutturale" />
+
+    <Button
+        android:id="@+id/calculate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/grid_vertical_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/grid_vertical_margin"
+        android:background="@color/colorAccent"
+        android:text="@string/update_graph_btn"
+        android:textColor="@color/white" />
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/plant_graph"
+        android:layout_width="match_parent"
+        android:layout_height="500dp" />
+
+    <com.polito.sismic.Presenters.CustomLayout.LabelReportLayout
+        android:id="@+id/count_pillar_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:report_label_title="@string/count_pillar_label" />
+
+    <com.polito.sismic.Presenters.CustomLayout.LabelReportLayout
+        android:id="@+id/area_pillar_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:report_label_title="@string/area_pillar_label" />
+
+
 </LinearLayout>

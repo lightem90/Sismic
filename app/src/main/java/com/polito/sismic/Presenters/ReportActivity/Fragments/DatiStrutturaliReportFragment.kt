@@ -101,7 +101,7 @@ class DatiStrutturaliReportFragment : BaseReportFragment() {
             override fun onNothingSelected(parent: AdapterView<out Adapter>?) {  }
         }
 
-        fondazioni_h.attachDataConfirmedCallback { solaio_g2.requestFocus() }
+        fondazioni_h.attachDataConfirmedCallback { if (solaio_container.visibility == View.VISIBLE) solaio_g2.requestFocus() else copertura_g2.requestFocus() }
         solaio_g2.attachDataConfirmedCallback {
             updateSolaioQ()
             solaio_qk.requestFocus()
@@ -127,6 +127,8 @@ class DatiStrutturaliReportFragment : BaseReportFragment() {
             context.toast(R.string.error_not_supported)
             copertura_type.isChecked = true
         }
+
+        setSolaioVisibility()
     }
 
     private fun updateSolaioQ()
@@ -185,7 +187,11 @@ class DatiStrutturaliReportFragment : BaseReportFragment() {
 
     override fun onReload() {
         super.onReload()
+        setSolaioVisibility()
+    }
 
+    private fun setSolaioVisibility()
+    {
         if (getReport().reportState.buildingState.takeoverState.numero_piani <= 1)
             solaio_container.visibility = View.GONE
         else
@@ -195,8 +201,8 @@ class DatiStrutturaliReportFragment : BaseReportFragment() {
     //all parameters must have a value
     override fun verifyStep(): VerificationError? {
         if (fondazioni_h.isEmpty()) return VerificationError(String.format(resources.getString(R.string.verification_empty_field), fondazioni_h.getTitle()))
-        if (solaio_g2.isEmpty()) return VerificationError(String.format(resources.getString(R.string.verification_empty_field), solaio_g2.getTitle()))
-        if (solaio_qk.isEmpty()) return VerificationError(String.format(resources.getString(R.string.verification_empty_field), solaio_qk.getTitle()))
+        if (solaio_container.visibility == View.VISIBLE && solaio_g2.isEmpty()) return VerificationError(String.format(resources.getString(R.string.verification_empty_field), solaio_g2.getTitle()))
+        if (solaio_container.visibility == View.VISIBLE  && solaio_qk.isEmpty()) return VerificationError(String.format(resources.getString(R.string.verification_empty_field), solaio_qk.getTitle()))
         if (copertura_g2.isEmpty()) return VerificationError(String.format(resources.getString(R.string.verification_empty_field), copertura_g2.getTitle()))
         if (copertura_qk.isEmpty()) return VerificationError(String.format(resources.getString(R.string.verification_empty_field), copertura_qk.getTitle()))
         return super.verifyStep()

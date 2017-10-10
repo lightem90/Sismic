@@ -85,17 +85,5 @@
         android:layout_height="wrap_content"
         app:report_label_title="@string/perimeter_label_title" />
 
-    <com.polito.sismic.Presenters.CustomLayout.LabelReportLayout
-        android:id="@+id/count_pillar_label"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:report_label_title="@string/count_pillar_label" />
-
-    <com.polito.sismic.Presenters.CustomLayout.LabelReportLayout
-        android:id="@+id/area_pillar_label"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:report_label_title="@string/area_pillar_label" />
-
 
 </LinearLayout>

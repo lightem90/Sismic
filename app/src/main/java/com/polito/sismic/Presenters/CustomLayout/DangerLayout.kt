@@ -52,7 +52,7 @@ class DangerLayout : LinearLayout {
 
     override fun onCreateDrawableState(extraSpace: Int): IntArray {
 
-        //In the case its loaded too soon
+        //In the case its loaded too soon dont remove the null checks!
         if (mDangerState == null) return super.onCreateDrawableState(extraSpace)
 
         mDangerState?.let {

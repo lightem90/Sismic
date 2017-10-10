@@ -86,6 +86,8 @@
 
     <style name="sectionButtonTitle" parent="sectionParameterTitle">
         <item name="android:paddingLeft">@dimen/ms_material_button_padding_horizontal</item>
+        <item name="android:layout_marginTop">@dimen/grid_vertical_margin</item>
+        <item name="android:layout_marginStart" tools:targetApi="jelly_bean_mr1">@dimen/grid_vertical_margin</item>
         <item name="android:layout_marginBottom">@dimen/grid_vertical_margin</item>
         <item name="android:layout_marginEnd" tools:targetApi="jelly_bean_mr1">@dimen/grid_vertical_margin</item>
     </style>

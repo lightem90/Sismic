@@ -19,6 +19,8 @@ import kotlinx.android.synthetic.main.plant_point_dialog.view.*
 import com.github.mikephil.charting.utils.EntryXComparator
 import com.polito.sismic.Domain.PillarLayoutState
 import com.polito.sismic.Extensions.toast
+import com.polito.sismic.Interactors.Helpers.PlantEdge
+import com.polito.sismic.Interactors.Helpers.PlantFigure
 import java.util.*
 
 
@@ -28,30 +30,12 @@ import java.util.*
 class SismicPlantBuildingInteractor(takeoverState: TakeoverState?,
                                     val mContext: Context) {
 
-    class PlantFigure(val name: String, val edges: Array<PlantEdge>) {
-        operator fun contains(p: PlantPoint) = edges.count({ it(p) }) % 2 != 0
-    }
-
-    data class PlantEdge(val s: PlantPoint, val e: PlantPoint) {
-        operator fun invoke(p: PlantPoint) : Boolean = when {
-            s.y > e.y -> PlantEdge(e, s).invoke(p)
-            p.y == s.y || p.y == e.y -> invoke(PlantPoint(p.x, p.y + epsilon))
-            p.y > e.y || p.y < s.y || p.x > Math.max(s.x, e.x) -> false
-            p.x < Math.min(s.x, e.x) -> true
-            else -> {
-                val blue = if (Math.abs(s.x - p.x) > java.lang.Double.MIN_VALUE) (p.y - s.y) / (p.x - s.x) else java.lang.Double.MAX_VALUE
-                val red = if (Math.abs(s.x - e.x) > java.lang.Double.MIN_VALUE) (e.y - s.y) / (e.x - s.x) else java.lang.Double.MAX_VALUE
-                blue >= red
-            }
-        }
-        private val epsilon = 0.0000001
-    }
-
     //First cant be modified
     val mOrigin: PlantPoint = PlantPoint(0.0, 0.0)
     var mCenter: PlantPoint = PlantPoint(0.0, 0.0)
     var area: Double = 0.0
     var perimeter: Double = 0.0
+    var mFigure : PlantFigure? = null
     var pointList: MutableList<PlantPoint> = mutableListOf(mOrigin)
 
     init {
@@ -61,7 +45,7 @@ class SismicPlantBuildingInteractor(takeoverState: TakeoverState?,
         }
     }
 
-    fun convertListForGraph(context: Context, pillarLayoutState: PillarLayoutState): LineData? {
+    fun convertListForGraph(): LineData? {
 
         //return nothing, to be safe
         if (pointList.size <= 1) return null
@@ -71,13 +55,13 @@ class SismicPlantBuildingInteractor(takeoverState: TakeoverState?,
         val edgeListNull = mutableListOf<PlantEdge?>()
         (0 until pointList.size-1).mapTo(edgeListNull) {
             if (pointList[it] != pointList[it+1])
-                PlantEdge(pointList[it], pointList[it+1])
+                PlantEdge(pointList[it], pointList[it + 1])
             else null
         }
 
         val edgeList = edgeListNull.filterNotNull()
         //build figure as list of edges
-        val figure = PlantFigure("plant", edgeList.toTypedArray())
+        mFigure = PlantFigure("plant", edgeList.toTypedArray())
 
         //to view the barycenter
         val ldsCenterList = mutableListOf<Entry>()
@@ -85,16 +69,10 @@ class SismicPlantBuildingInteractor(takeoverState: TakeoverState?,
             ldsCenterList.add(Entry(mCenter.x.toFloat(), mCenter.y.toFloat()))
         }
 
-        //Get pillars from the pillar layout page and filter only the one contained in the figure, then map to object to be visible
-        //Algorithm from https://rosettacode.org/wiki/Ray-casting_algorithm#Kotlin
-        val ldsPillarPoints = getPillarLayoutPoints(pillarLayoutState).map { createPillarLayoutDataset(it, figure.contains(it)) }
-        //val internalPlantPoints = getPillarLayoutPoints(pillarLayoutState).filter { figure.contains(it) }
-        //val ldsPillarPoints = internalPlantPoints.map { createPillarLayoutDataset(it) }
-
         //Plant figure perimeter
-        val perimeterLds = edgeList.map { createPerimeterDataset(it, context) }
+        val perimeterLds = edgeList.map { createPerimeterDataset(it, mContext) }
         //Barycenter
-        val ldsCenter = LineDataSet(ldsCenterList, context.getString(R.string.centro_di_massa)).apply {
+        val ldsCenter = LineDataSet(ldsCenterList, mContext.getString(R.string.centro_di_massa)).apply {
             setDrawCircles(true)
             axisDependency = YAxis.AxisDependency.LEFT
             circleRadius = 10f
@@ -102,21 +80,8 @@ class SismicPlantBuildingInteractor(takeoverState: TakeoverState?,
         }
 
         val allData = mutableListOf(ldsCenter)
-        allData.addAll(ldsPillarPoints)
         allData.addAll(perimeterLds)
         return LineData(allData.filter { it.entryCount > 0 })
-    }
-
-    private fun getPillarLayoutPoints(pillarLayoutState: PillarLayoutState): List<PlantPoint> {
-        val pillarList = mutableListOf<PlantPoint>()
-        for(i in 0 until pillarLayoutState.pillarX)
-        {
-            (0 until pillarLayoutState.pillarY).mapTo(pillarList) {
-                PlantPoint((i*pillarLayoutState.distX),
-                        (it *pillarLayoutState.distY))
-            }
-        }
-        return pillarList.distinct()
     }
 
     //The helper does the job
@@ -140,37 +105,6 @@ class SismicPlantBuildingInteractor(takeoverState: TakeoverState?,
             circleRadius = 1f
             circleColors = listOf(Color.BLACK)
             lineWidth = 3f
-        }
-    }
-
-    //to visualize all pillars, in green the good ones
-    private fun createPillarLayoutDataset(pillarPoint: PlantPoint, internal: Boolean): LineDataSet {
-
-        val entryPoint = Entry(pillarPoint.x.toFloat(), pillarPoint.y.toFloat())
-        if (internal) return LineDataSet(listOf(entryPoint), "MS").apply {
-            circleRadius = 5f
-            circleColors = listOf(ContextCompat.getColor(mContext, R.color.pillar_on))
-            setDrawCircles(true)
-            axisDependency = YAxis.AxisDependency.LEFT
-        }
-
-        return LineDataSet(listOf(entryPoint), "MS").apply {
-            circleRadius = 4f
-            circleColors = listOf(ContextCompat.getColor(mContext, R.color.pillar_off))
-            setDrawCircles(true)
-            axisDependency = YAxis.AxisDependency.LEFT
-        }
-    }
-
-    //to visualize a single pillar in the building layout
-    private fun createPillarLayoutDataset(pillarPoint: PlantPoint): LineDataSet {
-
-        val entryPoint = Entry(pillarPoint.x.toFloat(), pillarPoint.y.toFloat())
-        return LineDataSet(listOf(entryPoint), "MS").apply {
-            circleRadius = 4f
-            circleColors = listOf(ContextCompat.getColor(mContext, R.color.pillar_on))
-            setDrawCircles(true)
-            axisDependency = YAxis.AxisDependency.LEFT
         }
     }
 

@@ -7,6 +7,7 @@ import com.polito.sismic.Domain.Report
  */
 class UploadHelper {
 
+    //TODO
     fun upload(report : Report) : UploadHelperResult
     {
         return UploadHelperResult()

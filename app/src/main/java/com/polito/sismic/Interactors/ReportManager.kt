@@ -9,7 +9,7 @@ import android.os.Environment
 import android.support.annotation.RequiresApi
 import android.support.v4.content.FileProvider
 import android.view.View
-import com.google.gson.GsonBuilder
+//import com.google.gson.GsonBuilder
 import com.polito.sismic.Domain.Report
 import com.polito.sismic.Extensions.putReport
 import com.polito.sismic.Extensions.toFormattedString
@@ -25,36 +25,47 @@ import java.io.File
 class ReportManager(var report: Report,
                     private val database: DatabaseInteractor,
                     private val editing: Boolean = false,
-                    private val mContext: Context,
-                    private var pdfDocumentWriter: PdfDocument? = null) {
+                    private val mContext: Context) {
 
     private val viewMapForPrint: HashMap<String, View?> = HashMap()
 
+    @RequiresApi(Build.VERSION_CODES.KITKAT)
+    private var pdfDocumentWriter: PdfDocument? = null
+
     init {
-        pdfDocumentWriter = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            PdfDocument()
-        } else {
-            mContext.toast(R.string.pdf_writing_disabled)
-            null
-        }
-    }
-
-
-    //Delete only if its a new report
-    fun deleteTmpReport() {
-
-        database.delete(report.reportDetails, editing)
-        report.reportState.mediaState.forEach {
-            val uri = Uri.parse(it.uri)
-            if (uri != null) {
-                File(uri.path).delete()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            pdfDocumentWriter = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                PdfDocument()
+            } else {
+                mContext.toast(R.string.pdf_writing_disabled)
+                null
             }
         }
     }
 
+
+    //Delete only if its a new report! if I'm editing a report dont touch the db!
+    fun deleteTmpReport() {
+
+        //if I'm editing i won't delete anything, apart from medias different from db version
+        if (!editing)
+        {
+            database.delete(report.reportDetails, false)
+            //TODO, cercare i report che non sono nel db!
+            report.reportState.mediaState.forEach {
+                val uri = Uri.parse(it.uri)
+                if (uri != null) {
+                    File(uri.path).delete()
+                }
+            }
+        }
+
+    }
+
     fun reportToJSon(): String {
-        val gSon = GsonBuilder().setPrettyPrinting().create() // for pretty print feature
-        return gSon.toJson(report)
+        //val gSon = GsonBuilder().setPrettyPrinting().create() // for pretty print feature
+        //return gSon.toJson(report)
+        return ""
     }
 
     fun saveReportToDb(pdfUri: Uri?) {

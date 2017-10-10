@@ -59,7 +59,6 @@ class ReportAdapter(val mContext: Context,
                 itemView.btn_delete_item_history.setOnClickListener {
                     mHistoryInteractor.deleteItemById(reportDetails.id)
                 }
-                itemView.btn_print_item_history.setOnClickListener { mHistoryInteractor.printItem(reportDetails.id, reportDetails.userIdentifier) }
                 itemView.btn_upload_item_history.setOnClickListener { mHistoryInteractor.uploadItem(reportDetails.id, reportDetails.userIdentifier) }
             }
         }

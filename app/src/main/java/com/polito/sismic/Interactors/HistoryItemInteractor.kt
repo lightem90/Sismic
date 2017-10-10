@@ -2,7 +2,6 @@ package com.polito.sismic.Interactors
 
 import android.content.Context
 import com.polito.sismic.Extensions.toast
-import com.polito.sismic.Interactors.Helpers.PdfWriterHelper
 import com.polito.sismic.Interactors.Helpers.UploadHelper
 import com.polito.sismic.R
 
@@ -25,7 +24,6 @@ class HistoryItemInteractor (val mContext: Context,
 
     val mReportHistoryItems = mDatabaseInteractor.getDetailsForHistory()
     val mUploadHelper = UploadHelper()
-    val mPDFWriterHelper = PdfWriterHelper()
 
     fun reloadList()
     {
@@ -54,19 +52,10 @@ class HistoryItemInteractor (val mContext: Context,
         mContext.toast(String.format(mContext.getString(R.string.report_delete_succeded), id))
     }
 
-    fun printItem(id: Int, userName: String) = with(mDatabaseInteractor){
-        val report = getReportForId(id.toString(), userName)
-        report?.let {
-            if (mUploadHelper.upload(it).success)
-            {
-
-            }
-        }
-    }
     fun uploadItem(id: Int, userName: String) = with(mDatabaseInteractor){
         val report = getReportForId(id.toString(), userName)
         report?.let {
-            if (mPDFWriterHelper.write(it).success)
+            if (mUploadHelper.upload(it).success)
             {
 
             }

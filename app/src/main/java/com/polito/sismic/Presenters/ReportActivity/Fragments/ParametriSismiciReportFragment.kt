@@ -116,12 +116,13 @@ class ParametriSismiciReportFragment : BaseReportFragment() {
         calculate.setOnClickListener {
             val spectrumsDomain = mLimitStateRequest?.onLimitStatesRequested(UiMapper.createSismicStateForDomain(this, listOf()))
             val spectrumsUi = spectrumsDomain?.map {
-                val lds = LineDataSet(it.pointList.toEntryList(), String.format(context.getString(R.string.label_limit_state_format), it.name, it.year))
-                lds.color = ContextCompat.getColor(context, it.color)
-                lds.lineWidth = 2f
-                lds.setDrawCircles(false)
-                lds.axisDependency = YAxis.AxisDependency.LEFT
-                lds
+                LineDataSet(it.pointList.toEntryList(), String.format(context.getString(R.string.label_limit_state_format), it.name, it.year)).apply {
+                    color = ContextCompat.getColor(context, it.color)
+                    lineWidth = 2f
+                    setDrawCircles(false)
+                    axisDependency = YAxis.AxisDependency.LEFT
+                }
+
             }
 
             spectrumsDomain?.let {

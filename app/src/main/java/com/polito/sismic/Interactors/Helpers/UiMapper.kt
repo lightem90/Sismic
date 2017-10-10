@@ -98,7 +98,8 @@ class UiMapper {
                     rilieviReportFragment.mSismicPlantBuildingInteractor.area, t1,
                     rilieviReportFragment.mSismicPlantBuildingInteractor.perimeter,
                     rilieviReportFragment.mSismicPlantBuildingInteractor.mCenter,
-                    rilieviReportFragment.mSismicPlantBuildingInteractor.pointList)
+                    rilieviReportFragment.mSismicPlantBuildingInteractor.pointList,
+                    rilieviReportFragment.mSismicPlantBuildingInteractor.mFigure)
         }
 
         fun createStructuralStateForDomain(datiStrutturaliReportFragment: DatiStrutturaliReportFragment, buildingState: BuildingState): StructuralState  = with(datiStrutturaliReportFragment){
