@@ -80,6 +80,15 @@ class SpettriDiProgettoReportFragment : BaseReportFragment() {
             updateMoltiplicatoreVisibility(categoria_tipologia_parameter.selectedItemPosition)
         }
 
+        categoria_moltiplicatore_parameter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+
+            override fun onItemSelected(parent: AdapterView<*>, mView: View?, pos: Int, id: Long) {
+                updateQ0()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<out Adapter>?) {}
+        }
+
         categoria_tipologia_parameter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 
             override fun onItemSelected(parent: AdapterView<*>, mView: View?, pos: Int, id: Long) {
@@ -139,6 +148,7 @@ class SpettriDiProgettoReportFragment : BaseReportFragment() {
             }
             1 -> {
                 if (categoria_classe_duttilita_parameter_cda.isChecked) {
+                    categoria_moltiplicatore_parameter_container.visibility = View.VISIBLE
                     updateSpinnerItemsVibility(categoria_moltiplicatore_parameter, resources.getStringArray(R.array.cat_moltiplicatore_2))
                 } else
                     categoria_moltiplicatore_parameter_container.visibility = View.GONE
