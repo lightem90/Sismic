@@ -24,7 +24,9 @@ import android.Manifest.permission.READ_CONTACTS
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import com.polito.sismic.Domain.UserDetails
+import com.polito.sismic.Extensions.toast
 import com.polito.sismic.Interactors.Helpers.LoginSharedPreferences
 import com.polito.sismic.R
 
@@ -152,12 +154,13 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true)
-            LoginSharedPreferences.demoLogin(applicationContext)
-            startActivity(Intent(this, PresenterActivity::class.java))
-            finish()
+            //DEBUG
+            //LoginSharedPreferences.demoLogin(applicationContext)
+            //startActivity(Intent(this, PresenterActivity::class.java))
+            //finish()
 
-            //mAuthTask = UserLoginTask(emailStr, passwordStr, this)
-            //mAuthTask!!.execute(null as Void?)
+            mAuthTask = UserLoginTask(emailStr, passwordStr, this)
+            mAuthTask!!.execute(null as Void?)
         }
     }
 
@@ -259,14 +262,14 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
      */
     inner class UserLoginTask internal constructor(private val mEmail: String,
                                                    private val mPassword: String,
-                                                   private val caller : Activity) : AsyncTask<Void, Void, JSONObject?>() {
+                                                   private val caller: Activity) : AsyncTask<Void, Void, Pair<Int, JSONObject?>>() {
 
-        private val SERVER_ADDR_lOGIN = "http://192.168.0.2:5000/sismic/login_form?"
-        override fun doInBackground(vararg params: Void): JSONObject? {
+        private val SERVER_ADDR_lOGIN = "http://192.168.0.11:5000/sismic/login_form?"
+        override fun doInBackground(vararg params: Void): Pair<Int, JSONObject?> {
 
             try {
                 val sb = StringBuilder(SERVER_ADDR_lOGIN)
-                sb.append("username=")
+                sb.append("email=")
                 sb.append(mEmail)
                 sb.append("&secret=")
                 sb.append(mPassword)
@@ -274,11 +277,10 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
                 val urlUse = URL(sb.toString())
                 val conn: HttpURLConnection?
                 conn = urlUse.openConnection() as HttpURLConnection
-                    conn.requestMethod = "POST"
+                conn.requestMethod = "POST"
                 conn.connectTimeout = 5000
-                val status = conn.responseCode
 
-                when (status) {
+                when (conn.responseCode) {
                     200, 201 -> {
                         val br = BufferedReader(InputStreamReader(conn.inputStream) as Reader?)
                         val sb2 = StringBuilder()
@@ -287,37 +289,49 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
                             sb2.append(line + "\n")
                         }
                         br.close()
-                        return JSONObject(sb2.toString())
+                        val obj = JSONObject(sb2.toString())
+                        Log.d("json", obj.toString())
+                        return conn.responseCode to obj
                     }
+                    else -> conn.responseCode to null
                 }
             } catch (e: InterruptedException) {
-                return null
+                return 500 to null
             }
-            return null
+
+            return -1 to null
         }
 
-        override fun onPostExecute(success: JSONObject?) {
+
+        override fun onPostExecute(result: Pair<Int, JSONObject?>) {
             mAuthTask = null
             showProgress(false)
 
-            success?.let {
-                val results = it.getJSONObject("result").getJSONArray("result_data")
-                if (results[0].toString().equals("success")) {
-                    LoginSharedPreferences.login(UserDetails(
-                            results[1].toString(),
-                            results[2].toString(),
-                            results[3].toString(),
-                            results[4].toString(),
-                            results[5].toString(),
-                            results[6].toString(),
-                            results[7].toString()),
-                            caller
-                    )
-                    caller.startActivity(Intent(caller, PresenterActivity::class.java))
-                    finish()
-                } else {
-                    password.error = getString(R.string.error_incorrect_password)
+            when (result.first) {
+                200, 201 -> {
+                    result.second?.let { jSonResp ->
+                        LoginSharedPreferences.login(UserDetails(
+                                jSonResp.getString("name"),
+                                jSonResp.getString("address"),
+                                jSonResp.getString("email"),
+                                jSonResp.getString("phone"),
+                                jSonResp.getString("qualification"),
+                                jSonResp.getString("registration"),
+                                //jSonResp.getString("")),
+                                        ""),
+                                caller)
+
+                        caller.startActivity(Intent(caller, PresenterActivity::class.java))
+                        caller.finish()
+                    }
+                }
+                550, 551 -> {
+                    password.error = String.format(getString(R.string.login_error), result.first)
                     password.requestFocus()
+                }
+
+                else -> {
+                    caller.toast(String.format(getString(R.string.fatal_login_error), result.first, if (result.second == null) " " else result.second.toString()))
                 }
             }
         }

@@ -55,10 +55,7 @@ class HistoryItemInteractor (val mContext: Context,
     fun uploadItem(id: Int, userName: String) = with(mDatabaseInteractor){
         val report = getReportForId(id.toString(), userName)
         report?.let {
-            if (mUploadHelper.upload(it).success)
-            {
-
-            }
+            mUploadHelper.upload(it)
         }
     }
 

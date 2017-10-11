@@ -22,7 +22,7 @@ class RegistrationActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registration)
 
-        btn_reg_confirm.setOnClickListener{ register() }
+        btn_reg_confirm.setOnClickListener { register() }
     }
 
     private fun register() {
@@ -37,16 +37,16 @@ class RegistrationActivity : AppCompatActivity() {
     }
 
     inner class UserRegisterClass internal constructor(private val mEmail: String,
-                                                       private val mName : String,
-                                                       private val mAddress : String,
-                                                       private val mPhone : String,
-                                                       private val mQualification : String,
-                                                       private val mRegister : String,
+                                                       private val mName: String,
+                                                       private val mAddress: String,
+                                                       private val mPhone: String,
+                                                       private val mQualification: String,
+                                                       private val mRegister: String,
                                                        private val mPassword: String,
-                                                       private val caller : Activity) : AsyncTask<Void, Void, JSONObject?>() {
+                                                       private val caller: Activity) : AsyncTask<Void, Void, Int>() {
 
-        private val SERVER_ADDR_lOGIN = "http://192.168.0.2:5000/sismic/registration_form?"
-        override fun doInBackground(vararg params: Void): JSONObject? {
+        private val SERVER_ADDR_lOGIN = "http://192.168.0.11:5000/sismic/registration_form?"
+        override fun doInBackground(vararg params: Void): Int {
             LoginSharedPreferences.demoLogin(applicationContext)
             try {
                 val sb = StringBuilder(SERVER_ADDR_lOGIN)
@@ -70,32 +70,17 @@ class RegistrationActivity : AppCompatActivity() {
                 conn = urlUse.openConnection() as HttpURLConnection
                 conn.requestMethod = "POST"
                 conn.connectTimeout = 5000
-                val status = conn.responseCode
+                return conn.responseCode
 
-                when (status) {
-                    200, 201 -> {
-                        val br = BufferedReader(InputStreamReader(conn.inputStream))
-                        val sb2 = StringBuilder()
-                        var line: String? = null
-                        while ({ line = br.readLine(); line }() != null) {
-                            sb2.append(line + "\n")
-                        }
-                        br.close()
-                        caller.finish()
-                        return JSONObject(sb2.toString())
-                    }
-                }
             } catch (e: InterruptedException) {
-                return null
+                return 400
             }
-            return null
         }
 
-        override fun onPostExecute(success: JSONObject?) {
+        override fun onPostExecute(returnCode: Int) {
 
-            success?.let {
-                val results = it.getJSONObject("result").getJSONArray("result_data")
-                if (results[0].toString().equals("success")) {
+            when (returnCode) {
+                200, 201 -> {
                     LoginSharedPreferences.login(UserDetails(
                             mName,
                             mAddress,
@@ -106,13 +91,9 @@ class RegistrationActivity : AppCompatActivity() {
                             ""), caller)
                     caller.startActivity(Intent(caller, PresenterActivity::class.java))
                     finish()
-                } else {
-                    caller.toast(R.string.registration_error)
                 }
+                else -> caller.toast(String.format(caller.getString(R.string.registration_error), returnCode))
             }
-        }
-
-        override fun onCancelled() {
         }
     }
 }

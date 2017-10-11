@@ -29,7 +29,7 @@
     <string name="action_sign_in_short">Login</string>
     <string name="error_invalid_email">Indirizzo email invalido</string>
     <string name="error_invalid_password">Password troppo corta</string>
-    <string name="error_incorrect_password">Password sbagliata</string>
+    <string name="login_error">Nome utente o password sbagliati, riprovare (CodErr: %d)</string>
     <string name="error_field_required">Campo obbligatorio</string>
     <string name="permission_rationale">"Permesso di accedere ai contatti per autocompletamento indirizzi email."</string>
     <string name="remember_me">Resta connesso</string>
@@ -300,7 +300,7 @@
     <string name="label_year_format">%s anni</string>
     <string name="label_limit_state_format">%s: %d anni</string>
     <string name="et_password_hint">Password</string>
-    <string name="registration_error">Errore di registrazione. Riprovare</string>
+    <string name="registration_error">Errore di registrazione %d. Riprovare</string>
     <string name="g1_format">G1: %s [kN/mq]</string>
     <string name="report_delete_succeded">Verifica %d cancellata correttamente</string>
     <string name="percent">%</string>
@@ -372,4 +372,5 @@
     <string name="risultati_disclaimer">Come risultato verrà considerato l\'indice di vulnerabilità maggiore</string>
     <string name="maglia_strutturale">POSIZIONAMENTO PILASTRI</string>
     <string name="invalid_area">\" - \"</string>
+    <string name="fatal_login_error">Fatal error (%d) %s</string>
 </resources>

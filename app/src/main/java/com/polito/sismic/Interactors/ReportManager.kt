@@ -9,7 +9,6 @@ import android.os.Environment
 import android.support.annotation.RequiresApi
 import android.support.v4.content.FileProvider
 import android.view.View
-//import com.google.gson.GsonBuilder
 import com.polito.sismic.Domain.Report
 import com.polito.sismic.Extensions.putReport
 import com.polito.sismic.Extensions.toFormattedString
@@ -60,12 +59,6 @@ class ReportManager(var report: Report,
             }
         }
 
-    }
-
-    fun reportToJSon(): String {
-        //val gSon = GsonBuilder().setPrettyPrinting().create() // for pretty print feature
-        //return gSon.toJson(report)
-        return ""
     }
 
     fun saveReportToDb(pdfUri: Uri?) {
