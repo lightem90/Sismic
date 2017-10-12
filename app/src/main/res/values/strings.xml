@@ -373,4 +373,5 @@
     <string name="maglia_strutturale">POSIZIONAMENTO PILASTRI</string>
     <string name="invalid_area">\" - \"</string>
     <string name="fatal_login_error">Fatal error (%d) %s</string>
+    <string name="upload_notification_title">Caricamento verifica</string>
 </resources>
