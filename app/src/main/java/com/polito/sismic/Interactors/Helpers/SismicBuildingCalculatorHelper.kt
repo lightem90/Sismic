@@ -111,15 +111,14 @@ class SismicBuildingCalculatorHelper(val mContext: Context) {
     }
 
     // AND Denis data
-    fun getPillarDomainForGraph(data: PillarState): Pair<List<PillarDomainGraphPoint>, List<PillarDomainGraphPoint>> {
+    fun getPillarDomainForGraph(data: PillarState): Pair<List<PillarDomainGraphPoint>, List<PillarDomainGraphPoint>> = with(data){
 
-        val pillarState = data
         val entries = mutableListOf<PillarDomainGraphPoint>()
 
         //first and last point consider a linear interval, parabolic in between
-        entries.add(calculatePointOne(pillarState.fyd, pillarState.area_ferri))
-        entries.addAll(calculateFromThreeToFour(pillarState.fcd, pillarState.bx, pillarState.area_ferri, pillarState.fyd, pillarState.c, pillarState.hy))
-        entries.add(calculatePointTwo(pillarState.fyd, pillarState.area_ferri, pillarState.bx, pillarState.hy, pillarState.fcd))
+        entries.add(calculatePointOne(fyd, area_ferri))
+        entries.addAll(calculateFromThreeToFour(fcd, bx, area_ferri, fyd, c, hy))
+        entries.add(calculatePointTwo(fyd, area_ferri, bx, hy, fcd))
 
         entries.forEach {
             //from n to kn
