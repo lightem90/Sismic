@@ -42,10 +42,16 @@ class ResultsAdapter(private val mItems: List<StatiLimite>,
             val pointForStato = pointsList?.firstOrNull{it.label == statoLimite.name}
             pointForStato?.let {
 
-                val result = ((it.m / mrd.m)*100).toInt()
+                val result = (mrd.m / it.m).toInt()
                 itemView.value.text = String.format(context.getString(R.string.result), result, context.getString(R.string.percent))
                 itemView.progress.progress = result
                 results.put(statoLimite, result)
+                itemView.n_text.text = context.getString(R.string.n_result_format)
+                itemView.m_text.text = context.getString(R.string.m_result_format)
+                itemView.mrd_text.text = context.getString(R.string.mrd_result_format)
+                itemView.n_value.text = String.format(context.getString(R.string.result_format), it.n)
+                itemView.m_value.text = String.format(context.getString(R.string.result_format), it.m )
+                itemView.mrd_value.text = String.format(context.getString(R.string.result_format), mrd.m )
             }
         }
     }

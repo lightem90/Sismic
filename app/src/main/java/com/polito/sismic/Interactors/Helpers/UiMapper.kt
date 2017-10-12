@@ -124,16 +124,16 @@ class UiMapper {
                     copertura_g2.getParameterValue().toDoubleOrZero(),
                     copertura_qk.getParameterValue().toDoubleOrZero(),
                     qCopertura,
-                    SismicBuildingCalculatorHelper.calculateBuildWeigth(buildingState, pesoSolaio, pesoCopertura))
+                    SismicBuildingCalculatorHelper.calculateBuildWeigth(buildingState, qSolaio, qCopertura))
         }
 
-        fun createPillarLayoutStateForDomain(magliaStrutturaleReportFragment: MagliaStrutturaleReportFragment): PillarLayoutState = with(magliaStrutturaleReportFragment){
+        fun createPillarLayoutStateForDomain(magliaStrutturaleReportFragment: MagliaStrutturaleReportFragment, area : Double, pillarCount : Int): PillarLayoutState = with(magliaStrutturaleReportFragment){
             return PillarLayoutState(num_x.getParameterValue().toIntOrZero(),
                     num_y.getParameterValue().toIntOrZero(),
                     dist_x.getParameterValue().toDoubleOrZero(),
                     dist_y.getParameterValue().toDoubleOrZero(),
-                    dist_x.getParameterValue().toDoubleOrZero() * dist_y.getParameterValue().toDoubleOrZero(),
-                    num_x.getParameterValue().toIntOrZero() + num_y.getParameterValue().toIntOrZero())
+                    area,
+                    pillarCount)
         }
 
         fun bindToDomain(fragment: BaseReportFragment, reportState: ReportState) = with(fragment){
@@ -189,7 +189,14 @@ class UiMapper {
                     reportState.sismicState.projectSpectrumState.let {
                         selectCategoriaSuolo(it.categoria_suolo)
                         selectCategoriaTopografica(it.categoria_topografica)
-                        if (it.classe_duttilita) categoria_classe_duttilita_parameter_cda.isChecked = true else categoria_classe_duttilita_parameter_cdb.isChecked = true
+                        if (it.classe_duttilita)
+                        {
+                            categoria_classe_duttilita_parameter_cda.isChecked = true
+                            categoria_classe_duttilita_parameter_cdb.isChecked = false
+                        } else {
+                            categoria_classe_duttilita_parameter_cdb.isChecked = true
+                            categoria_classe_duttilita_parameter_cda.isChecked = false
+                        }
                     }
 
                 }

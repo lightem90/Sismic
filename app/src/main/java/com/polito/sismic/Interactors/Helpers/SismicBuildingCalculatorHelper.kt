@@ -26,8 +26,9 @@ class SismicBuildingCalculatorHelper(val mContext: Context) {
     //Stati functions to help mapping from ui to domain
     companion object {
 
-        val TO_KN = 1000.0
-        val TO_KN_M = 1000000.0
+        val SENSIBILITY = 20
+        val TO_FROM_KN = 1000.0
+        val TO_FROM_KN_M = 1000000.0
         fun calculateECM(fcm: Double, lcCalc: Double): Double {
             val newFcm = fcm / lcCalc
             return 22000 * (Math.pow((newFcm / 10), 0.3))
@@ -122,9 +123,9 @@ class SismicBuildingCalculatorHelper(val mContext: Context) {
 
         entries.forEach {
             //from n to kn
-            it.n = (it.n / TO_KN)
+            it.n = (it.n / TO_FROM_KN)
             //from nmm to kNm
-            it.m = (it.m / TO_KN_M)
+            it.m = (it.m / TO_FROM_KN_M)
         }
 
         //the lines are simmetric
@@ -139,7 +140,7 @@ class SismicBuildingCalculatorHelper(val mContext: Context) {
 
         val points = mutableListOf<PillarDomainGraphPoint>()
         var h = 0.0
-        val step = H / 10
+        val step = H / SENSIBILITY
         while (h <= H) {
             points.add(innerCalculatePointFromThreeToFour(h, fcd, b, As, fyd, dFirst, H))
             h += step
@@ -208,8 +209,8 @@ class SismicBuildingCalculatorHelper(val mContext: Context) {
 
         if (pillarState.fcd == 0.0 || pillarState.bx == 0.0) return null
         //I dont have h, so i calculate by inverting the formula above (its not ok if the value is not between h and H
-        val h = n / (pillarState.fcd * pillarState.bx)
-        val m = calculateMFromN(pillarState.area_ferri, pillarState.fyd, pillarState.hy, pillarState.c, n, h) / TO_KN_M
+        val h = (n * TO_FROM_KN) / (pillarState.fcd * pillarState.bx)
+        val m = calculateMFromN(pillarState.area_ferri, pillarState.fyd, pillarState.hy, pillarState.c, (n * TO_FROM_KN), h) / TO_FROM_KN_M
         return PillarDomainPoint(n, m, "MRD", R.color.mrd)
     }
 }

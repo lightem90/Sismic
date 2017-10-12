@@ -112,7 +112,9 @@ class MagliaStrutturaleReportFragment : BaseReportFragment(), OnChartValueSelect
     }
 
     private fun updateGraph(){
-        mPillarLayoutInteractor.convertListForGraph(UiMapper.createPillarLayoutStateForDomain(this),
+        val numPillars = countPillars()
+        mPillarLayoutInteractor.convertListForGraph(UiMapper.createPillarLayoutStateForDomain(this,
+                getReport().reportState.buildingState.takeoverState.area / numPillars, numPillars),
                 getReport().reportState.buildingState.takeoverState.figure)?.let {
             plant_graph.data = it
             plant_graph.invalidate()
@@ -135,7 +137,9 @@ class MagliaStrutturaleReportFragment : BaseReportFragment(), OnChartValueSelect
 
     //callback to activity updates domain instance for activity and all existing and future fragments
     override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback?) {
-        getReport().reportState.buildingState.pillarLayoutState = UiMapper.createPillarLayoutStateForDomain(this)
+        val numPillars = countPillars()
+        getReport().reportState.buildingState.pillarLayoutState = UiMapper.createPillarLayoutStateForDomain(this,
+                getReport().reportState.buildingState.takeoverState.area / numPillars, numPillars)
         super.onNextClicked(callback)
     }
 

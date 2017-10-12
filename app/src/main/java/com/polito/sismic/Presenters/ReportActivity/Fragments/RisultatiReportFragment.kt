@@ -30,6 +30,7 @@ class RisultatiReportFragment : BaseReportFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         getReport().reportState.buildingState.pillarState.pillar_domain?.points?.let {
+            mPointList.clear()
             mPointList.addAll(it)
         }
         results_container.layoutManager = LinearLayoutManager(context)
@@ -41,6 +42,7 @@ class RisultatiReportFragment : BaseReportFragment() {
         super.onReload()
         mPointList.clear()
         getReport().reportState.buildingState.pillarState.pillar_domain?.points?.let {
+            mPointList.clear()
             mPointList.addAll(it)
         }
         results_container.adapter.notifyDataSetChanged()
