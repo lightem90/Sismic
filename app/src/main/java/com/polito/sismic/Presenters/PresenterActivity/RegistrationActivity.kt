@@ -89,7 +89,6 @@ class RegistrationActivity : AppCompatActivity() {
                             mQualification,
                             mRegister,
                             ""), caller)
-                    caller.startActivity(Intent(caller, PresenterActivity::class.java))
                     finish()
                 }
                 else -> caller.toast(String.format(caller.getString(R.string.registration_error), returnCode))

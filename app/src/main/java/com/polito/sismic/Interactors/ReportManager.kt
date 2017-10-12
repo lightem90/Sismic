@@ -50,13 +50,15 @@ class ReportManager(var report: Report,
         if (!editing)
         {
             database.delete(report.reportDetails, false)
-            //TODO, cercare i report che non sono nel db!
             report.reportState.mediaState.forEach {
                 val uri = Uri.parse(it.uri)
                 if (uri != null) {
                     File(uri.path).delete()
                 }
             }
+        } else
+        {
+            //TODO, cercare i report che non sono nel db! (media che sono stati aggiunti durante l'edit ma non salvati)
         }
 
     }
@@ -95,7 +97,9 @@ class ReportManager(var report: Report,
         var counter = 0
         viewMapForPrint.values.forEach { fragmentView ->
             fragmentView?.let {
-                val pageInfo = PdfDocument.PageInfo.Builder(it.width, it.height, counter).create()
+                //a4 portrait
+                //a4 landscape 842, 595
+                val pageInfo = PdfDocument.PageInfo.Builder(595, 842, counter).create()
                 counter++
                 val page = pdfDocumentWriter!!.startPage(pageInfo)
                 it.draw(page.canvas)

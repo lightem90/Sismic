@@ -11,13 +11,10 @@ import com.polito.sismic.Domain.Report
 import com.polito.sismic.R
 import java.net.HttpURLConnection
 import java.net.URL
-import com.github.fafaldo.fabtoolbar.util.ExpandAnimationUtils.build
-import com.github.fafaldo.fabtoolbar.util.ExpandAnimationUtils.build
 import android.app.PendingIntent
 import android.content.Intent
 import android.support.v4.app.TaskStackBuilder
 import com.polito.sismic.Presenters.PresenterActivity.PresenterActivity
-import com.polito.sismic.R.mipmap.ic_launcher
 
 
 
@@ -38,7 +35,8 @@ class UploadHelper {
 
     inner class UploadReportTask internal constructor(val mContext : Context): AsyncTask<String, Double, Int>() {
 
-        private val SERVER_ADDR_lOGIN = "http://192.168.0.2:5000/sismic/upload_report?"
+        private val SERVER_ADDR_REPORT_UPLOAD = "http://192.168.0.2:5000/sismic/upload_report?"
+        private val SERVER_ADDR_REPORT_FILE_UPLOAD = "http://192.168.0.2:5000/sismic/upload_report?"
         private val NOTIFICATION_CHANNEL = "default"
         private val mId : Int = 1
         private var mBuilder: NotificationCompat.Builder = NotificationCompat.Builder(mContext, NOTIFICATION_CHANNEL)
@@ -49,7 +47,7 @@ class UploadHelper {
         override fun doInBackground(vararg reportGson: String?): Int? {
             try {
 
-                val urlUse = URL(SERVER_ADDR_lOGIN)
+                val urlUse = URL(SERVER_ADDR_REPORT_UPLOAD)
                 val conn: HttpURLConnection?
                 conn = urlUse.openConnection() as HttpURLConnection
                 conn.requestMethod = "POST"
@@ -59,7 +57,7 @@ class UploadHelper {
                 val os = conn.outputStream
                 os.write(reportGson.toString().toByteArray())
                 os.close()
-                //TODO: publishProgress(0.0)
+                //TODO: publishProgress(prog)
 
                 return (conn.responseCode)
             } catch (e: InterruptedException) {

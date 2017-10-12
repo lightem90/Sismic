@@ -61,7 +61,7 @@ data class PlantEdge(val s: PlantPoint, val e: PlantPoint) : Parcelable {
             invoke(PlantPoint(p.x - epsilon, p.y - epsilon))
 
         p.y == s.y || p.y == e.y -> if (!invoke(PlantPoint(p.x, p.y + epsilon))) invoke(PlantPoint(p.x, p.y - epsilon)) else true
-        p.x == s.x || p.x == e.x -> if (!invoke(PlantPoint(p.x+ epsilon, p.y))) invoke(PlantPoint(p.x - epsilon, p.y)) else true
+        p.x == s.x || p.x == e.x -> if (!invoke(PlantPoint(p.x + epsilon, p.y))) invoke(PlantPoint(p.x - epsilon, p.y)) else true
         p.y > e.y || p.y < s.y || p.x > Math.max(s.x, e.x) -> false
         p.x < Math.min(s.x, e.x) -> true
         else -> {
@@ -71,7 +71,7 @@ data class PlantEdge(val s: PlantPoint, val e: PlantPoint) : Parcelable {
         }
     }
 
-    private val epsilon = 0.000001
+    private val epsilon = 0.0001
 
     constructor(source: Parcel) : this(
             source.readParcelable<PlantPoint>(PlantPoint::class.java.classLoader),
