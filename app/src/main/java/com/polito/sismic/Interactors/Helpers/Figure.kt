@@ -52,7 +52,14 @@ data class PlantFigure(val name: String, val edges: Array<PlantEdge>) : Parcelab
 
 data class PlantEdge(val s: PlantPoint, val e: PlantPoint) : Parcelable {
     operator fun invoke(p: PlantPoint): Boolean = when {
+        //fuck performances...
         s.y > e.y -> PlantEdge(e, s).invoke(p)
+        (p.x == s.x && p.y == s.y) || (p.x == e.x && p.y == e.y) ->
+            invoke(PlantPoint(p.x + epsilon, p.y - epsilon)) ||
+            invoke(PlantPoint(p.x + epsilon, p.y + epsilon)) ||
+            invoke(PlantPoint(p.x - epsilon, p.y + epsilon)) ||
+            invoke(PlantPoint(p.x - epsilon, p.y - epsilon))
+
         p.y == s.y || p.y == e.y -> if (!invoke(PlantPoint(p.x, p.y + epsilon))) invoke(PlantPoint(p.x, p.y - epsilon)) else true
         p.x == s.x || p.x == e.x -> if (!invoke(PlantPoint(p.x+ epsilon, p.y))) invoke(PlantPoint(p.x - epsilon, p.y)) else true
         p.y > e.y || p.y < s.y || p.x > Math.max(s.x, e.x) -> false
