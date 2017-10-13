@@ -2,15 +2,10 @@ package com.polito.sismic.Domain
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.polito.sismic.Interactors.Helpers.LivelloConoscenza
 import com.polito.sismic.Interactors.Helpers.PlantFigure
 import com.polito.sismic.Interactors.Helpers.StatiLimite
 import java.util.*
-
-import java.lang.Double.MAX_VALUE
-import java.lang.Double.MIN_VALUE
-import java.lang.Math.abs
 
 /**
  * Created by Matteo on 28/07/2017.
@@ -903,8 +898,12 @@ data class PillarDomainGraphPoint(var n: Double, var m: Double) : Parcelable {
     }
 }
 
-data class PillarDomainPoint(var n: Double, var m: Double, var label: String, var color: Int) : Parcelable {
+data class PillarDomainPoint(var n: Double, var m: Double, var sd: Double, var lambda: Double, var fn: Double, var t1: Double, var label: String, var color: Int) : Parcelable {
     constructor(source: Parcel) : this(
+            source.readDouble(),
+            source.readDouble(),
+            source.readDouble(),
+            source.readDouble(),
             source.readDouble(),
             source.readDouble(),
             source.readString(),
@@ -916,6 +915,10 @@ data class PillarDomainPoint(var n: Double, var m: Double, var label: String, va
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
         writeDouble(n)
         writeDouble(m)
+        writeDouble(sd)
+        writeDouble(lambda)
+        writeDouble(fn)
+        writeDouble(t1)
         writeString(label)
         writeInt(color)
     }

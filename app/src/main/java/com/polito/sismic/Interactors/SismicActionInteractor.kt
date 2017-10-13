@@ -1,7 +1,6 @@
 package com.polito.sismic.Interactors
 
 import android.content.Context
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.polito.sismic.Domain.ProjectSpectrumState
 import com.polito.sismic.Domain.ReportState
 import com.polito.sismic.Domain.SismicParametersState
@@ -63,6 +62,6 @@ class SismicActionInteractor(val mReportManager: ReportManager,
 
     //chart in spectrum fragment
     fun getSpectrumLines(reportState: ReportState, data: ProjectSpectrumState): List<SpectrumDTO> = with(mSismicActionCalculatorHelper) {
-       getLimitStateSpectrum(reportState, null, data)
+       getLimitStateSpectrum(reportState, null, data, true)
     }
 }

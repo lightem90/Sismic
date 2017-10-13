@@ -157,15 +157,15 @@ class DomainPointAdapter(private val mContext: Context, private val mDomainPoint
         fun bindPillarDomainPoint(domainPoint: PillarDomainGraphPoint, index: Int) = with(domainPoint) {
 
             itemView.index.text = String.format(mContext.getString(R.string.domain_point_id_value), index)
-            itemView.index.n.text = String.format(mContext.getString(R.string.domain_point_n_value), n)
-            itemView.index.m.text = String.format(mContext.getString(R.string.domain_point_m_value), m)
+            itemView.n.text = String.format(mContext.getString(R.string.domain_point_value_format_high), n)
+            itemView.m.text = String.format(mContext.getString(R.string.domain_point_value_format_high), m)
         }
 
         fun bindHeader() {
 
             itemView.index.text = mContext.getString(R.string.domain_point_id_label)
-            itemView.index.n.text = mContext.getString(R.string.domain_point_n_label)
-            itemView.index.m.text = mContext.getString(R.string.domain_point_m_label)
+            itemView.n.text = mContext.getString(R.string.domain_point_n_label)
+            itemView.m.text = mContext.getString(R.string.domain_point_m_label)
             itemView.setBackgroundColor(ContextCompat.getColor(mContext, R.color.light_grey))
         }
     }

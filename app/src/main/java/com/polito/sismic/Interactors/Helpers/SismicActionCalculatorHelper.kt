@@ -87,7 +87,10 @@ class SismicActionCalculatorHelper(val mCoordinateHelper: ParametersForCoordinat
     }
 
     //Sismicparameters data: shows periods based on life
-    fun getLimitStateSpectrum(sismicState: ReportState, currentSismicState: SismicParametersState? = null, currentProjectSpectrumState: ProjectSpectrumState? = null): MutableList<SpectrumDTO> {
+    fun getLimitStateSpectrum(sismicState: ReportState,
+                              currentSismicState: SismicParametersState? = null,
+                              currentProjectSpectrumState: ProjectSpectrumState? = null,
+                              higherPrecision: Boolean = false): MutableList<SpectrumDTO> {
 
         val vr = if (currentSismicState != null) currentSismicState.vitaReale else sismicState.sismicState.sismicParametersState.vitaReale
 
@@ -116,13 +119,13 @@ class SismicActionCalculatorHelper(val mCoordinateHelper: ParametersForCoordinat
             {
                 //Year lesser or equal 30, I use data from db
                 sismicState.sismicState.sismogenticState.default_periods[TempiRitorno.Y30.ordinal].let {
-                    spectrums.add(calculateSpectrumPointListFor(limitState.third, it.years, limitState.second, it.ag, it.f0, it.tcstar, st, q, categoria_sottosuolo))
+                    spectrums.add(calculateSpectrumPointListFor(limitState.third, it.years, limitState.second, it.ag, it.f0, it.tcstar, st, q, categoria_sottosuolo, higherPrecision))
                 }
             }else if (limitState.first >= TempiRitorno.Y2475.years.toDouble())
             {
                 //Year greater or equal 2475, I use data from db
                 sismicState.sismicState.sismogenticState.default_periods[TempiRitorno.Y2475.ordinal].let {
-                spectrums.add(calculateSpectrumPointListFor(limitState.third, it.years, limitState.second, it.ag, it.f0, it.tcstar, st, q, categoria_sottosuolo))
+                spectrums.add(calculateSpectrumPointListFor(limitState.third, it.years, limitState.second, it.ag, it.f0, it.tcstar, st, q, categoria_sottosuolo, higherPrecision))
             }
             } else
             {
@@ -130,11 +133,11 @@ class SismicActionCalculatorHelper(val mCoordinateHelper: ParametersForCoordinat
                 val period = sismicState.sismicState.sismogenticState.default_periods.firstOrNull { it.years == limitState.first }
                 if (period != null)
                 {
-                    spectrums.add(calculateSpectrumPointListFor(limitState.third, period.years, limitState.second, period.ag, period.f0, period.tcstar, st, q, categoria_sottosuolo))
+                    spectrums.add(calculateSpectrumPointListFor(limitState.third, period.years, limitState.second, period.ag, period.f0, period.tcstar, st, q, categoria_sottosuolo, higherPrecision))
 
                 } else
                 {
-                    interpolatePeriodDataForYear(limitState.third, sismicState.sismicState.sismogenticState.default_periods, limitState.first, limitState.second, st, q, categoria_sottosuolo).let{
+                    interpolatePeriodDataForYear(limitState.third, sismicState.sismicState.sismogenticState.default_periods, limitState.first, limitState.second, st, q, categoria_sottosuolo, higherPrecision).let{
                         spectrums.add(it)
                     }
                 }
@@ -144,14 +147,14 @@ class SismicActionCalculatorHelper(val mCoordinateHelper: ParametersForCoordinat
         return spectrums
     }
 
-    private fun interpolatePeriodDataForYear(name : String, default_periods: List<PeriodData>, year: Int, color: Int, st: Double, q: Double, categoria_sottosuolo: CategoriaSottosuolo): SpectrumDTO {
+    private fun interpolatePeriodDataForYear(name: String, default_periods: List<PeriodData>, year: Int, color: Int, st: Double, q: Double, categoria_sottosuolo: CategoriaSottosuolo, higherPrecision: Boolean): SpectrumDTO {
         val yearIndex = default_periods.indexOfFirst { it.years > year }
         val interpolatedData = default_periods[yearIndex-1].interpolateWith(default_periods[yearIndex], year)
 
-        return calculateSpectrumPointListFor(name, interpolatedData.years, color, interpolatedData.ag, interpolatedData.f0, interpolatedData.tcstar, st, q, categoria_sottosuolo)
+        return calculateSpectrumPointListFor(name, interpolatedData.years, color, interpolatedData.ag, interpolatedData.f0, interpolatedData.tcstar, st, q, categoria_sottosuolo, higherPrecision)
     }
 
-    private fun calculateSpectrumPointListFor(name : String, year: Int, color : Int, ag: Double, f0: Double, tcStar: Double, st: Double, q: Double = 1.0, categoria_sottosuolo: CategoriaSottosuolo = CategoriaSottosuolo.A): SpectrumDTO {
+    private fun calculateSpectrumPointListFor(name: String, year: Int, color: Int, ag: Double, f0: Double, tcStar: Double, st: Double, q: Double = 1.0, categoria_sottosuolo: CategoriaSottosuolo = CategoriaSottosuolo.A, higherPrecision: Boolean = false): SpectrumDTO {
         val td = (4.0 * ag / 9.8) + 1.6
         val cc = if (categoria_sottosuolo == CategoriaSottosuolo.A) 1.0
                     else categoria_sottosuolo.multiplierCC * Math.pow(tcStar, categoria_sottosuolo.expCC)
@@ -167,15 +170,16 @@ class SismicActionCalculatorHelper(val mCoordinateHelper: ParametersForCoordinat
         //linear between 0 and tb
         entryPointList.addAll(calculateFirstLinearInterval(repeatingTerm, ni, f0, tb))
         entryPointList.addAll(calculateSecondCostantInterval(repeatingTerm, tc))
-        entryPointList.addAll(calculateThirdHyperbolicInterval(repeatingTerm, tc, td))
-        entryPointList.addAll(calculateFourthHyperbolicInterval(repeatingTerm, tc, td))
+        entryPointList.addAll(calculateThirdHyperbolicInterval(repeatingTerm, tc, td, higherPrecision))
+        entryPointList.addAll(calculateFourthHyperbolicInterval(repeatingTerm, tc, td, higherPrecision))
 
         return SpectrumDTO(name, year, color, ag, f0, tcStar, ss, cc, st, q, s, ni, tb, tc, td, entryPointList.toSpectrumPointList())
     }
 
-    private fun calculateFourthHyperbolicInterval(repeatingTerm: Double, tc: Double, td: Double, limit: Double = 4.0): List<Entry> {
+    private fun calculateFourthHyperbolicInterval(repeatingTerm: Double, tc: Double, td: Double, higherPrecision : Boolean, limit: Double = 4.0): List<Entry> {
         //ten steps
-        val step = (limit - td) / 10
+        val sensibility = if (higherPrecision) 20 else 10
+        val step = (limit - td) / sensibility
         var t = td
         val pointsInFourthInterval = mutableListOf<Entry>()
         while (t <= limit) {
@@ -189,9 +193,10 @@ class SismicActionCalculatorHelper(val mCoordinateHelper: ParametersForCoordinat
         return (repeatingTerm * ((tc * td) / Math.pow(t, 2.0))).toFloat()
     }
 
-    private fun calculateThirdHyperbolicInterval(repeatingTerm: Double, tc: Double, td: Double): List<Entry> {
+    private fun calculateThirdHyperbolicInterval(repeatingTerm: Double, tc: Double, td: Double, higherPrecision: Boolean): List<Entry> {
     //ten steps
-        val step = (td - tc) / 10
+        val sensibility = if (higherPrecision) 20 else 10
+        val step = (td - tc) / sensibility
         var t = tc
         val pointsInThirdInterval = mutableListOf<Entry>()
         while (t <= td) {

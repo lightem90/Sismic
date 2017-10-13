@@ -64,6 +64,7 @@ class DatabaseMapperHelper {
 
     private fun convertCaratteristichePilastriToDomain(caractPillarDbParams: DatabaseCaratteristichePilastri?): PillarState? {
         return caractPillarDbParams?.let {
+            //TODO: salvare i dati del dominio pilastri!!!!
             PillarState(it.classe_calcestruzzo,
                     it.conoscenza_calcestruzzo,
                     it.eps2,

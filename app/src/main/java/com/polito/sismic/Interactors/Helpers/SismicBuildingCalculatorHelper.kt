@@ -3,6 +3,7 @@ package com.polito.sismic.Interactors.Helpers
 import android.content.Context
 import com.polito.sismic.Domain.*
 import com.polito.sismic.Extensions.distanceFrom
+import com.polito.sismic.Extensions.verticalMiddlePoint
 import com.polito.sismic.R
 
 /**
@@ -77,7 +78,7 @@ class SismicBuildingCalculatorHelper(val mContext: Context) {
             return PlantPoint(xg, yg)
         }
 
-        private fun deterimantOf(triple: Triple<PlantPoint, PlantPoint, PlantPoint>): Double = with(triple){
+        private fun deterimantOf(triple: Triple<PlantPoint, PlantPoint, PlantPoint>): Double = with(triple) {
             val firstQuadrant = first.x * (second.y - third.y)
             val secondQuadrant = first.y * (second.x - third.x)
             val thirdQuadrant = ((second.x * third.y) - (second.y * third.x))
@@ -86,19 +87,17 @@ class SismicBuildingCalculatorHelper(val mContext: Context) {
         }
 
         private fun createTriangleList(pointList: List<PlantPoint>): List<Triple<PlantPoint, PlantPoint, PlantPoint>> {
-            return (1 until pointList.size-1).map { Triple(pointList[0], pointList[it], pointList[it +1]) }
+            return (1 until pointList.size - 1).map { Triple(pointList[0], pointList[it], pointList[it + 1]) }
         }
 
         fun calculatePerimeter(pointList: List<PlantPoint>): Double {
             var sum = 0.0
-            for (i in 0 until pointList.size)
-            {
-                if (i == pointList.size-1)
-                {
+            for (i in 0 until pointList.size) {
+                if (i == pointList.size - 1) {
                     sum += pointList[i].distanceFrom(pointList[0])
                     continue
                 }
-                sum += pointList[i].distanceFrom(pointList[i+1])
+                sum += pointList[i].distanceFrom(pointList[i + 1])
             }
             return sum
         }
@@ -112,7 +111,7 @@ class SismicBuildingCalculatorHelper(val mContext: Context) {
     }
 
     // AND Denis data
-    fun getPillarDomainForGraph(data: PillarState): Pair<List<PillarDomainGraphPoint>, List<PillarDomainGraphPoint>> = with(data){
+    fun getPillarDomainForGraph(data: PillarState): Pair<List<PillarDomainGraphPoint>, List<PillarDomainGraphPoint>> = with(data) {
 
         val entries = mutableListOf<PillarDomainGraphPoint>()
 
@@ -179,23 +178,24 @@ class SismicBuildingCalculatorHelper(val mContext: Context) {
                 state.buildingState.pillarLayoutState.area *
                 state.buildingState.structuralState.peso_totale) * (1.3)        //30% more for pillar weight
 
-        //To calculate m i find the closest t on the graph foreach spectrum, find the relative force and divide it foreach pillar
-        //Finally by multiplying by H/2 i find the force horizontal component (M)
+        //To calculate m i find the closest t on the graph foreach spectrum, find the relative fn and divide it foreach pillar
+        //Finally by multiplying by H/2 i find the fn horizontal component (M)
         val h = state.buildingState.takeoverState.altezza_totale
         val t1 = C1.Calcestruzzo.multiplier * Math.pow(h, (3.0 / 4.0))
 
         val limitStatePoints = mutableListOf<PillarDomainPoint>()
+        //get the first point on x that is greater than wanted point
         state.sismicState.projectSpectrumState.spectrums.mapTo(limitStatePoints) { spectrum ->
 
-            val forcePoint = spectrum.pointList.firstOrNull { it.x >= t1 }
-            if (forcePoint != null) {
-                val lambda = if (state.buildingState.takeoverState.numero_piani < 3) 1.0 else 0.85
-                val force = forcePoint.y * state.buildingState.structuralState.peso_totale * lambda / 9.8
-                val mPoint = force * state.buildingState.pillarLayoutState.pillarCount * (state.buildingState.takeoverState.altezza_totale / 2)
-                PillarDomainPoint(nPoint, mPoint, spectrum.name, spectrum.color)
-            } else {
-                PillarDomainPoint(-99999.0, -99999.0, "Error", spectrum.color)
-            }
+            var forcePointIndex = spectrum.pointList.indexOfFirst { it.x >= t1 }
+            if (forcePointIndex == 0) forcePointIndex++
+            //simple interpolation on y to get acceleration value
+            val forceIntensity = spectrum.pointList[forcePointIndex].verticalMiddlePoint(spectrum.pointList[forcePointIndex - 1])
+
+            val lambda = if (state.buildingState.takeoverState.numero_piani < 3) 1.0 else 0.85
+            val force = forceIntensity * state.buildingState.structuralState.peso_totale * lambda / 9.8
+            val mPoint = force * state.buildingState.pillarLayoutState.pillarCount * (state.buildingState.takeoverState.altezza_totale / 2)
+            PillarDomainPoint(nPoint, mPoint, forceIntensity, lambda, force, t1, spectrum.name, spectrum.color)
         }
 
         //Add mrd point (the same n, it should be on domain line)
@@ -211,6 +211,6 @@ class SismicBuildingCalculatorHelper(val mContext: Context) {
         //I dont have h, so i calculate by inverting the formula above (its not ok if the value is not between h and H
         val h = (n * TO_FROM_KN) / (pillarState.fcd * pillarState.bx)
         val m = calculateMFromN(pillarState.area_ferri, pillarState.fyd, pillarState.hy, pillarState.c, (n * TO_FROM_KN), h) / TO_FROM_KN_M
-        return PillarDomainPoint(n, m, "MRD", R.color.mrd)
+        return PillarDomainPoint(n, m, 0.0,0.0,0.0, 0.0, "MRD", R.color.mrd)
     }
 }

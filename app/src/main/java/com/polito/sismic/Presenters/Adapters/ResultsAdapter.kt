@@ -46,12 +46,13 @@ class ResultsAdapter(private val mItems: List<StatiLimite>,
                 itemView.value.text = String.format(context.getString(R.string.result), result, context.getString(R.string.percent))
                 itemView.progress.progress = result
                 results.put(statoLimite, result)
-                itemView.n_text.text = context.getString(R.string.n_result_format)
-                itemView.m_text.text = context.getString(R.string.m_result_format)
-                itemView.mrd_text.text = context.getString(R.string.mrd_result_format)
                 itemView.n_value.text = String.format(context.getString(R.string.result_format), it.n)
                 itemView.m_value.text = String.format(context.getString(R.string.result_format), it.m )
                 itemView.mrd_value.text = String.format(context.getString(R.string.result_format), mrd.m )
+                itemView.sd_value.text = String.format(context.getString(R.string.domain_point_value_format), it.sd)
+                itemView.fn_value.text = String.format(context.getString(R.string.domain_point_value_format), it.fn)
+                itemView.lambda_value.text = String.format(context.getString(R.string.domain_point_value_format), it.lambda)
+                itemView.t1_value.text = String.format(context.getString(R.string.domain_point_value_format), it.t1)
             }
         }
     }

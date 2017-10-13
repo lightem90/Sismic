@@ -152,8 +152,8 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
             startActivity(Intent(this, PresenterActivity::class.java))
             finish()
 
-            mAuthTask = UserLoginTask(emailStr, passwordStr, this)
-            mAuthTask!!.execute(null as Void?)
+            //mAuthTask = UserLoginTask(emailStr, passwordStr, this)
+            //mAuthTask!!.execute(null as Void?)
         }
     }
 

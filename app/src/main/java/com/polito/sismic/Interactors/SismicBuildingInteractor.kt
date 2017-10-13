@@ -8,7 +8,7 @@ import com.polito.sismic.Interactors.Helpers.SismicBuildingCalculatorHelper
  * Created by it0003971 on 15/09/2017.
  */
 
-//it uses the other interactor for retrieving the force for a generic t of the pillar
+//it uses the other interactor for retrieving the fn for a generic t of the pillar
 //Interactor to calculate the sismic action on the building / pillar
 class SismicBuildingInteractor(val mReportManager: ReportManager,
                                val mContext: Context){

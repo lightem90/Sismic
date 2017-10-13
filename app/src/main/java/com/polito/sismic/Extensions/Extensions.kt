@@ -276,6 +276,13 @@ fun PlantPoint.distanceFrom(other: PlantPoint): Double {
     return Math.sqrt((Math.pow((x - other.x), 2.0)) + (Math.pow((y - other.y), 2.0)))
 }
 
+fun SpectrumPoint.distanceFrom(other: SpectrumPoint): Double {
+    return Math.sqrt((Math.pow((x - other.x), 2.0)) + (Math.pow((y - other.y), 2.0)))
+}
+
+fun SpectrumPoint.verticalMiddlePoint(other : SpectrumPoint) : Double {
+    return (y + other.y) / 2
+}
 
 fun List<PlantPoint>.toParsableString(): String {
     val sb = StringBuilder()
