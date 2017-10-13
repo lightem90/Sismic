@@ -250,4 +250,9 @@
         android:layout_width="match_parent"
         android:layout_height="500dp"/>
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/domain_point_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
 </LinearLayout>

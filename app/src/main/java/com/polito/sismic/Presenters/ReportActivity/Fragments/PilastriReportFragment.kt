@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.support.annotation.Nullable
 import android.support.v4.content.ContextCompat
+import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +19,7 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.polito.sismic.Domain.PillarDomain
+import com.polito.sismic.Domain.PillarDomainGraphPoint
 import com.polito.sismic.Domain.PillarState
 import com.polito.sismic.Domain.ReportState
 import com.polito.sismic.Extensions.hideSoftKeyboard
@@ -25,6 +27,7 @@ import com.polito.sismic.Extensions.toDoubleOrZero
 import com.polito.sismic.Interactors.Helpers.LivelloConoscenza
 import com.polito.sismic.Interactors.Helpers.SismicBuildingCalculatorHelper
 import com.polito.sismic.Interactors.Helpers.StatiLimite
+import com.polito.sismic.Presenters.Adapters.DomainPointAdapter
 import com.polito.sismic.R
 import com.stepstone.stepper.StepperLayout
 import com.stepstone.stepper.VerificationError
@@ -52,6 +55,10 @@ class PilastriReportFragment : BaseReportFragment() {
     override fun onCreateView(inflater: LayoutInflater?, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View? {
         return inflateFragment(R.layout.pilastri_report_layout, inflater, container)
     }
+
+    private var mDomainPointList: MutableList<PillarDomainGraphPoint> = mutableListOf()
+
+    private lateinit var mDomainPointAdapter: DomainPointAdapter
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -188,6 +195,13 @@ class PilastriReportFragment : BaseReportFragment() {
             num_armatura.requestFocus()
         }
 
+        with(domain_point_list)
+        {
+            layoutManager = LinearLayoutManager(context)
+            mDomainPointAdapter = DomainPointAdapter(context, mDomainPointList)
+            adapter = mDomainPointAdapter
+        }
+
         calculate.setOnClickListener {
             mPillarDomainGraphRequest?.onPillarDomainGraphRequest(getReport().reportState.buildingState.pillarState)?.let {
 
@@ -232,6 +246,11 @@ class PilastriReportFragment : BaseReportFragment() {
                     data = LineData(UiPoints.toList())
                     invalidate()
                 }
+
+                //Update recyclerview list with positive domain points (only that one)
+                mDomainPointList.clear()
+                mDomainPointList.addAll(it.positive)
+                mDomainPointAdapter.notifyDataSetChanged()
             }
         }
         with(pillar_domain_chart)

@@ -175,9 +175,9 @@ class SismicBuildingCalculatorHelper(val mContext: Context) {
     fun getLimitStatePointsInDomainForPillar(state: ReportState): List<PillarDomainPoint> {
 
         //N is the component on X axis
-        val nPoint = state.buildingState.takeoverState.numero_piani *
+        val nPoint = (state.buildingState.takeoverState.numero_piani *
                 state.buildingState.pillarLayoutState.area *
-                state.buildingState.structuralState.peso_totale
+                state.buildingState.structuralState.peso_totale) * (1.3)        //30% more for pillar weight
 
         //To calculate m i find the closest t on the graph foreach spectrum, find the relative force and divide it foreach pillar
         //Finally by multiplying by H/2 i find the force horizontal component (M)

@@ -378,4 +378,10 @@
     <string name="m_result_format"> Msd [kNm]</string>
     <string name="mrd_result_format"> Mrd [kNm]</string>
     <string name="result_format">%.3f</string>
+    <string name="domain_point_id_label">Indice</string>
+    <string name="domain_point_n_label"> N: [kN]</string>
+    <string name="domain_point_m_label"> M: [kNm]</string>
+    <string name="domain_point_id_value">%d</string>
+    <string name="domain_point_n_value">%.2f</string>
+    <string name="domain_point_m_value">%.2f</string>
 </resources>

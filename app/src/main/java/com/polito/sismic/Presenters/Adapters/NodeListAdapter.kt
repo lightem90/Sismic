@@ -7,11 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import com.polito.sismic.Domain.NeighboursNodeData
 import com.polito.sismic.Domain.PeriodData
+import com.polito.sismic.Domain.PillarDomainGraphPoint
 import com.polito.sismic.Domain.SpectrumDTO
 import com.polito.sismic.Extensions.inflate
 import com.polito.sismic.Interactors.Helpers.StatiLimite
 import com.polito.sismic.R
 import kotlinx.android.synthetic.main.close_points_layout.view.*
+import kotlinx.android.synthetic.main.domain_point_item.view.*
 import kotlinx.android.synthetic.main.period_data_layout.view.*
 import kotlinx.android.synthetic.main.spectrum_data_layout.view.*
 
@@ -109,13 +111,13 @@ class LimitStateAdapter(private val mContext: Context, private val mLimitStateAd
         fun bindPeriodData(periodData: SpectrumDTO) = with(periodData) {
 
             val state = StatiLimite.values().first { it.name == name }
-            itemView.state.text = String.format(mContext.resources.getText(R.string.params_spectrum_state_format).toString(), state.name, (state.multiplier * 100).toInt(), "%")
-            itemView.tc.text    = String.format(mContext.resources.getText(R.string.params_spectrum_format).toString(), tc)
-            itemView.tb.text    = String.format(mContext.resources.getText(R.string.params_spectrum_format).toString(), tb)
-            itemView.td.text    = String.format(mContext.resources.getText(R.string.params_spectrum_format).toString(), td)
-            itemView.cc.text    = String.format(mContext.resources.getText(R.string.params_spectrum_format).toString(), ag)
-            itemView.ss.text    = String.format(mContext.resources.getText(R.string.params_spectrum_format).toString(), f0)
-            itemView.s.text     = String.format(mContext.resources.getText(R.string.params_spectrum_format).toString(), tcStar)
+            itemView.state.text = String.format(mContext.getString(R.string.params_spectrum_state_format), state.name, (state.multiplier * 100).toInt(), "%")
+            itemView.tc.text    = String.format(mContext.getString(R.string.params_spectrum_format), tc)
+            itemView.tb.text    = String.format(mContext.getString(R.string.params_spectrum_format), tb)
+            itemView.td.text    = String.format(mContext.getString(R.string.params_spectrum_format), td)
+            itemView.cc.text    = String.format(mContext.getString(R.string.params_spectrum_format), ag)
+            itemView.ss.text    = String.format(mContext.getString(R.string.params_spectrum_format), f0)
+            itemView.s.text     = String.format(mContext.getString(R.string.params_spectrum_format), tcStar)
         }
 
         fun bindHeader() {
@@ -130,6 +132,42 @@ class LimitStateAdapter(private val mContext: Context, private val mLimitStateAd
             itemView.setBackgroundColor(ContextCompat.getColor(mContext, R.color.light_grey))
         }
 
+    }
+}
+
+class DomainPointAdapter(private val mContext: Context, private val mDomainPointList: List<PillarDomainGraphPoint>)
+    : RecyclerView.Adapter<DomainPointAdapter.ViewHolder>() {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DomainPointAdapter.ViewHolder? {
+        val v = parent.inflate(R.layout.domain_point_item)
+        return DomainPointAdapter.ViewHolder(v, mContext)
+    }
+
+    override fun onBindViewHolder(holder: DomainPointAdapter.ViewHolder, position: Int) {
+        if (position == 0) holder.bindHeader()
+        else holder.bindPillarDomainPoint(mDomainPointList[position - 1], position)
+    }
+
+    override fun getItemCount(): Int {
+        return mDomainPointList.size + 1
+    }
+
+    class ViewHolder(itemView: View, val mContext: Context) : RecyclerView.ViewHolder(itemView) {
+
+        fun bindPillarDomainPoint(domainPoint: PillarDomainGraphPoint, index: Int) = with(domainPoint) {
+
+            itemView.index.text = String.format(mContext.getString(R.string.domain_point_id_value), index)
+            itemView.index.n.text = String.format(mContext.getString(R.string.domain_point_n_value), n)
+            itemView.index.m.text = String.format(mContext.getString(R.string.domain_point_m_value), m)
+        }
+
+        fun bindHeader() {
+
+            itemView.index.text = mContext.getString(R.string.domain_point_id_label)
+            itemView.index.n.text = mContext.getString(R.string.domain_point_n_label)
+            itemView.index.m.text = mContext.getString(R.string.domain_point_m_label)
+            itemView.setBackgroundColor(ContextCompat.getColor(mContext, R.color.light_grey))
+        }
     }
 }
 
@@ -174,7 +212,5 @@ class SpectrumsDataAdapter(private val mContext: Context, private val mSpectrums
             itemView.s.text =       mContext.resources.getText(R.string.s_header)
             itemView.setBackgroundColor(ContextCompat.getColor(mContext, R.color.light_grey))
         }
-
     }
-
 }
