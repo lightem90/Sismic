@@ -390,4 +390,5 @@
     <string name="domain_point_value_format_high">%.4f</string>
     <string name="pdf_filename_format">verifica_sismica_%s_%s.pdf</string>
     <string name="verification_takeover_points_not_present">Non sono presenti punti del rilievo</string>
+    <string name="verification_takeover_figure_not_valid">Figura non calcolata</string>
 </resources>

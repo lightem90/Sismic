@@ -108,6 +108,7 @@ class RilieviReportFragment : BaseReportFragment(){
         if (mSismicPlantBuildingInteractor.mCenter == mSismicPlantBuildingInteractor.mOrigin) return VerificationError(resources.getString(R.string.verification_barycenter))
         if (!mSismicPlantBuildingInteractor.isClosed()) return VerificationError(resources.getString(R.string.verification_takeover_invalid))
         if (mSismicPlantBuildingInteractor.pointList.isEmpty()) return VerificationError(resources.getString(R.string.verification_takeover_points_not_present))
+        if (mSismicPlantBuildingInteractor.mFigure == null) return VerificationError(resources.getString(R.string.verification_takeover_figure_not_valid))
         return null
     }
 
