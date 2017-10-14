@@ -1,7 +1,6 @@
 package com.polito.sismic.Interactors
 
 import android.content.Context
-import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.support.annotation.RequiresApi
@@ -140,11 +139,11 @@ class DatabaseInteractor(private val reportDatabaseHelper: ReportDatabaseHelper 
         clear(ResultsInfoTable.NAME)
     }
 
-    fun save(report: Report, editing: Boolean, pdfUri: Uri?) = reportDatabaseHelper.use {
+    fun save(report: Report, editing: Boolean, pdfFileName: String?) = reportDatabaseHelper.use {
 
         //delete if exists (in the case I'm editing I delete the old one)
         delete(report.reportDetails, editing)
-        with(dataMapper.convertReportFromDomain(report, pdfUri))
+        with(dataMapper.convertReportFromDomain(report, pdfFileName))
         {
             insert(ReportTable.NAME, *reportDetails.map.toVarargArray())
             insertEachSectionIntoCorrectTable(sections)
@@ -273,18 +272,18 @@ class DatabaseInteractor(private val reportDatabaseHelper: ReportDatabaseHelper 
         //Add all valid files read from dirs
         val listValidFiles = mutableListOf<File>()
         storageDirs.filterNotNull()
-        .forEach { dir ->
-            dir.listFiles().filter { file -> file.isFile }
-                    .forEach { file -> listValidFiles.add(file) }
-        }
+                .forEach { dir ->
+                    dir.listFiles().filter { file -> file.isFile }
+                            .forEach { file -> listValidFiles.add(file) }
+                }
 
         //Delete every files that has not been saved into db (checking its name in the saved paths)
         listValidFiles
-        .filter { file ->
-            !savedFilePaths
-                    .any { it.contains(file.name) }
-        }
-        .forEach { invalidFile -> invalidFile.delete() }
+                .filter { file ->
+                    !savedFilePaths
+                            .any { it.contains(file.name) }
+                }
+                .forEach { invalidFile -> invalidFile.delete() }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             deleteInvalidPdfFiles(context, pdfSavedFilePaths)
@@ -293,15 +292,22 @@ class DatabaseInteractor(private val reportDatabaseHelper: ReportDatabaseHelper 
 
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)
-    private fun deleteInvalidPdfFiles(context : Context, pdfValidFilePathsList : List<String>)
-    {
+    private fun deleteInvalidPdfFiles(context: Context, pdfValidFilePathsList: List<String>) {
         val pdfFilesDir = context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
         pdfFilesDir?.let { dir ->
             dir.listFiles()
                     .filter { file -> file.isFile }                 //all files
-                    .filter { file ->  file.extension == "pdf"}     //all pdfs
-                    .filter { file -> !pdfValidFilePathsList.any { it.contains(file.name) } } //all pdf of directory documents that are not saved into db list
-                    .forEach { file -> file.delete() }              //delete them!
+                    .filter { file -> file.extension == "pdf" }     //all pdfs
+                    .filter { file ->
+                        !pdfValidFilePathsList.any {
+                            //all pdf of directory documents that are not saved into db list
+                            it.contains(file.name)
+                        }
+                    }
+                    .forEach { file ->
+                        //delete them!
+                        file.delete()
+                    }
         }
     }
 }

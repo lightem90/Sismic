@@ -3,7 +3,6 @@ package com.polito.sismic.Presenters.ReportActivity
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.location.Location
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -196,12 +195,12 @@ class ReportActivity : AppCompatActivity(),
     }
     override fun onParametersSaveRequest() {
 
-        var pdfUri : Uri? = null
+        var pdfFileName : String? = null
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            pdfUri = mReportManager.printPdf()
+            pdfFileName = mReportManager.printPdf()
         }
 
-        mUserActionInteractor.saveReport(pdfUri)
+        mUserActionInteractor.saveReport(pdfFileName)
         finish()
     }
 }

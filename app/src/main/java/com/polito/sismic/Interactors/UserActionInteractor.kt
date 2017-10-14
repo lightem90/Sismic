@@ -2,7 +2,6 @@ package com.polito.sismic.Interactors
 
 import android.app.Activity
 import android.content.Intent
-import android.net.Uri
 import android.provider.MediaStore
 import android.support.v7.app.AlertDialog
 import com.polito.sismic.Extensions.toast
@@ -193,7 +192,7 @@ class UserActionInteractor(private val mReportManager: ReportManager,
         }
     }
 
-    fun saveReport(pdfUri: Uri?) = with(mReportManager){
-        saveReportToDb(pdfUri)
+    fun saveReport(pdfFileName: String?) = with(mReportManager){
+        saveReportToDb(pdfFileName)
     }
 }

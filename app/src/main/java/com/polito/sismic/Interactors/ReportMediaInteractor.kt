@@ -66,6 +66,7 @@ class ReportMediaInteractor(val mReportManager: ReportManager,
 
         var filenameToUse = userFilename
         if (filenameToUse.isEmpty()) filenameToUse = prefix + timeStamp
+        filenameToUse = filenameToUse.replace(" ", "")
 
         val file = File.createTempFile(
                 filenameToUse,

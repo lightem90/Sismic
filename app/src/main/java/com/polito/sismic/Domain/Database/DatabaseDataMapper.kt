@@ -1,6 +1,5 @@
 package com.polito.sismic.Domain.Database
 
-import android.net.Uri
 import com.polito.sismic.Domain.*
 import com.polito.sismic.Extensions.toFormattedDate
 import com.polito.sismic.Extensions.toFormattedString
@@ -16,9 +15,9 @@ class DatabaseDataMapper {
         return ReportDetails(_id, title, userID, date.toFormattedDate(), committed, pdf_uri)
     }
 
-    private fun convertReportDetailsFromDomain(reportDetails: ReportDetails, address: String = "", pdfUri: Uri?) : DatabaseReportDetails = with (reportDetails) {
-        return if (!address.isEmpty()) DatabaseReportDetails(id, address, userIdentifier, date.toFormattedString(), 1, pdfUri?.toString() ?: "")
-        else DatabaseReportDetails(id, userIdentifier + " " + date.toFormattedString(), userIdentifier, date.toFormattedString(), committed, pdfUri?.toString() ?: "")
+    private fun convertReportDetailsFromDomain(reportDetails: ReportDetails, address: String = "", pdfFileName: String?) : DatabaseReportDetails = with (reportDetails) {
+        return if (!address.isEmpty()) DatabaseReportDetails(id, address, userIdentifier, date.toFormattedString(), 1, pdfFileName ?: "")
+        else DatabaseReportDetails(id, userIdentifier + " " + date.toFormattedString(), userIdentifier, date.toFormattedString(), committed, pdfFileName ?: "")
     }
 
     private fun convertMediaToDomain(databaseReportMedia: DatabaseReportMedia): ReportMedia = with(databaseReportMedia)
@@ -31,10 +30,10 @@ class DatabaseDataMapper {
         return DatabaseReportMedia(uri, type, note, size, reportId)
     }
 
-    fun convertReportFromDomain(report: Report, pdfUri: Uri?): DatabaseReport = with(report){
+    fun convertReportFromDomain(report: Report, pdfFileName: String?): DatabaseReport = with(report){
 
         //The address is the report title
-        val databaseReportDetails = convertReportDetailsFromDomain(reportDetails, report.reportState.localizationState.address, pdfUri)
+        val databaseReportDetails = convertReportDetailsFromDomain(reportDetails, report.reportState.localizationState.address, pdfFileName)
         val databaseMediaList = with (reportState.mediaState)
         {
             map {convertMediaFromDomain(databaseReportDetails._id, it)}

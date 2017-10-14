@@ -61,10 +61,10 @@ class ReportManager(var report: Report,
 
     }
 
-    fun saveReportToDb(pdfUri: Uri?) {
+    fun saveReportToDb(pdfFileName: String?) {
 
         //update or insert depending on editing flag
-        database.save(report, editing, pdfUri)
+        database.save(report, editing, pdfFileName)
     }
 
     fun getState(): Bundle {
@@ -91,7 +91,7 @@ class ReportManager(var report: Report,
     }
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)
-    fun printPdf(): Uri {
+    fun printPdf(): String {
         var counter = 0
         viewMapForPrint.values.forEach { fragmentView ->
             fragmentView?.let {
@@ -105,27 +105,28 @@ class ReportManager(var report: Report,
             }
         }
         val uri = getPdfUri()
-        pdfDocumentWriter!!.writeTo(mContext.contentResolver.openOutputStream(uri))
+        pdfDocumentWriter!!.writeTo(mContext.contentResolver.openOutputStream(uri.first))
         pdfDocumentWriter!!.close()
-        return uri
+        return uri.second
     }
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)
-    private fun getPdfUri(): Uri {
+    private fun getPdfUri(): Pair<Uri,String> {
 
         val dir = mContext.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
         if (!dir.exists()) dir.mkdir()
 
         //the format string has already pdf
-        val filename = String.format(mContext.getString(R.string.pdf_filename_format),
+        var filename = String.format(mContext.getString(R.string.pdf_filename_format),
                 report.reportState.localizationState.address,
                 report.reportDetails.date.toFormattedString())
 
+        filename = filename.replace(" ","")
         val file = File(dir, filename)
         if (file.exists()) file.delete()
 
         return FileProvider.getUriForFile(mContext,
                 "com.polito.sismic",
-                file)
+                file) to filename
     }
 }
