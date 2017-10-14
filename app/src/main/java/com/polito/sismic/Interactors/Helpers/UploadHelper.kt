@@ -14,11 +14,11 @@ import java.net.URL
 import android.app.PendingIntent
 import android.content.Intent
 import android.support.v4.app.TaskStackBuilder
+import com.google.gson.GsonBuilder
+import com.polito.sismic.Extensions.toast
 import com.polito.sismic.Presenters.PresenterActivity.PresenterActivity
-
-
-
-
+import java.io.DataOutputStream
+import java.io.OutputStreamWriter
 
 
 /**
@@ -26,17 +26,17 @@ import com.polito.sismic.Presenters.PresenterActivity.PresenterActivity
  */
 class UploadHelper {
 
-    //TODO
-    fun upload(report : Report)
+    fun upload(context: Context, report : Report)
     {
-        //val gSon = GsonBuilder().setPrettyPrinting().create() // for pretty print feature
-        //UploadReportTask().execute(gSon.toJson(report))
+        //one-line string
+        val gSon = GsonBuilder().create() // for pretty print feature (the string become veeeery long with .setPrettyPrinting().
+        UploadReportTask(context, LoginSharedPreferences.getLoggedUser(context).email).execute(gSon.toJson(report))
     }
 
-    inner class UploadReportTask internal constructor(val mContext : Context): AsyncTask<String, Double, Int>() {
+    inner class UploadReportTask internal constructor(val mContext : Context, val mEmail : String): AsyncTask<String, Double, Pair<Int, String>>() {
 
-        private val SERVER_ADDR_REPORT_UPLOAD = "http://192.168.0.2:5000/sismic/upload_report?"
-        private val SERVER_ADDR_REPORT_FILE_UPLOAD = "http://192.168.0.2:5000/sismic/upload_report?"
+        private val SERVER_ADDR_REPORT_UPLOAD = "http://192.168.0.11:5000/sismic/upload_report?"
+        private val SERVER_ADDR_REPORT_FILE_UPLOAD = "http://192.168.0.11:5000/sismic/upload_report_files"
         private val NOTIFICATION_CHANNEL = "default"
         private val mId : Int = 1
         private var mBuilder: NotificationCompat.Builder = NotificationCompat.Builder(mContext, NOTIFICATION_CHANNEL)
@@ -44,31 +44,41 @@ class UploadHelper {
         private val mTitle: String = mContext.getString(R.string.upload_notification_title)
 
 
-        override fun doInBackground(vararg reportGson: String?): Int? {
+        override fun doInBackground(vararg reportGson: String): Pair<Int, String> {
             try {
-
-                val urlUse = URL(SERVER_ADDR_REPORT_UPLOAD)
+                val sb = StringBuilder(SERVER_ADDR_REPORT_UPLOAD)
+                sb.append("email=")
+                sb.append(mEmail)
+                val urlUse = URL(sb.toString())
                 val conn: HttpURLConnection?
                 conn = urlUse.openConnection() as HttpURLConnection
                 conn.requestMethod = "POST"
-                conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+                conn.setRequestProperty("Content-Type", "application/json")
+                conn.setRequestProperty("Accept", "application/json")
                 conn.connectTimeout = 5000
                 publishProgress(0.0)
                 val os = conn.outputStream
-                os.write(reportGson.toString().toByteArray())
+                val osw = DataOutputStream(os)
+                publishProgress(20.0)
+                osw.writeBytes(reportGson.first())
+                publishProgress(80.0)
+                osw.flush()
+                osw.close()
                 os.close()
-                //TODO: publishProgress(prog)
 
-                return (conn.responseCode)
-            } catch (e: InterruptedException) {
-                return 400
+                return (conn.responseCode to conn.responseMessage)
+            } catch (e: Exception) {
+                Log.d("Upload", e.toString())
+                return e.message?.let { 400 to it} ?: 400 to "Impossibile inviare il report"
             }
         }
 
-        override fun onPostExecute(result: Int) {
+        override fun onPostExecute(result: Pair<Int, String>) {
             Log.d("UploadReportTask", "onPostExecute")
             super.onPostExecute(result)
-            // createNotification("completed");
+            // createNotification("completed")
+            publishProgress(100.0)
+            if (!result.second.isEmpty()) mContext.toast(result.second)
             setCompletedNotification()
         }
 
@@ -113,7 +123,7 @@ class UploadHelper {
          */
         private fun setCompletedNotification() {
             mBuilder.setSmallIcon(R.drawable.ic_file_upload_black_24dp).setContentTitle(mTitle)
-                    .setContentText("Completed")
+                    .setContentText("Completato")
 
             // Creates an explicit intent for an Activity in your app
             val resultIntent = Intent(mContext, PresenterActivity::class.java)
@@ -142,7 +152,7 @@ class UploadHelper {
          * called only once
          */
         private fun setProgressNotification() {
-            mBuilder.setContentTitle(mTitle).setContentText("Download in progress")
+            mBuilder.setContentTitle(mTitle).setContentText("In corso...")
                     .setSmallIcon(R.drawable.ic_file_upload_black_24dp)
         }
 
@@ -174,78 +184,4 @@ class UploadHelper {
         }
     }
 
-    /*
-     // open a URL connection to the Servlet
-                   FileInputStream fileInputStream = new FileInputStream(sourceFile);
-                   URL url = new URL(upLoadServerUri);
-
-                   // Open a HTTP  connection to  the URL
-                   conn = (HttpURLConnection) url.openConnection();
-                   conn.setDoInput(true); // Allow Inputs
-                   conn.setDoOutput(true); // Allow Outputs
-                   conn.setUseCaches(false); // Don't use a Cached Copy
-                   conn.setRequestMethod("POST");
-                   conn.setRequestProperty("Connection", "Keep-Alive");
-                   conn.setRequestProperty("ENCTYPE", "multipart/form-data");
-                   conn.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
-                   conn.setRequestProperty("uploaded_file", fileName);
-
-                   dos = new DataOutputStream(conn.getOutputStream());
-
-                   dos.writeBytes(twoHyphens + boundary + lineEnd);
-                   dos.writeBytes("Content-Disposition: form-data; name="uploaded_file";filename=""
-                                             + fileName + """ + lineEnd);
-
-                   dos.writeBytes(lineEnd);
-
-                   // create a buffer of  maximum size
-                   bytesAvailable = fileInputStream.available();
-
-                   bufferSize = Math.min(bytesAvailable, maxBufferSize);
-                   buffer = new byte[bufferSize];
-
-                   // read file and write it into form...
-                   bytesRead = fileInputStream.read(buffer, 0, bufferSize);
-
-                   while (bytesRead > 0) {
-
-                     dos.write(buffer, 0, bufferSize);
-                     bytesAvailable = fileInputStream.available();
-                     bufferSize = Math.min(bytesAvailable, maxBufferSize);
-                     bytesRead = fileInputStream.read(buffer, 0, bufferSize);
-
-                    }
-
-                   // send multipart form data necesssary after file data...
-                   dos.writeBytes(lineEnd);
-                   dos.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
-
-                   // Responses from the server (code and message)
-                   serverResponseCode = conn.getResponseCode();
-                   String serverResponseMessage = conn.getResponseMessage();
-
-                   Log.i("uploadFile", "HTTP Response is : "
-                           + serverResponseMessage + ": " + serverResponseCode);
-
-                   if(serverResponseCode == 200){
-
-                       runOnUiThread(new Runnable() {
-                            public void run() {
-
-                                String msg = "File Upload Completed.\n\n See uploaded file here : \n\n"
-                                              +" http://www.androidexample.com/media/uploads/"
-                                              +uploadFileName;
-
-                                messageText.setText(msg);
-                                Toast.makeText(UploadToServer.this, "File Upload Complete.",
-                                             Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                   }
-
-                   //close the streams //
-                   fileInputStream.close();
-                   dos.flush();
-                   dos.close();
-    * */
 }

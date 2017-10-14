@@ -160,7 +160,7 @@ class DatabaseMapperHelper {
                     it.q0,
                     it.alfa,
                     it.kr,
-                    listOf())
+                    it.data_list.toSpectrumDTOList())
         }
     }
 
@@ -248,11 +248,11 @@ class DatabaseMapperHelper {
     }
 
     private fun createSpectrumForDb(reportId: Int, projectSpectrumState: ProjectSpectrumState): DatabaseSection = with(projectSpectrumState) {
-        return DatabaseParametriSpettri(categoria_suolo, categoria_topografica, if (classe_duttilita) "CDA" else "CDB", tipologia, q0, alfa, kr, spectrums.joinToString { "-" }, reportId)
+        return DatabaseParametriSpettri(categoria_suolo, categoria_topografica, if (classe_duttilita) "CDA" else "CDB", tipologia, q0, alfa, kr, spectrums.toParsableSpectrumDTOString(), reportId)
     }
 
     private fun createSismicForDb(reportId: Int, sismicParametersState: SismicParametersState): DatabaseSection = with(sismicParametersState) {
-        return DatabaseParametriSismici(vitaNominale, classeUso, vitaReale, spectrums.joinToString { "-" }, reportId)
+        return DatabaseParametriSismici(vitaNominale, classeUso, vitaReale, "", reportId)
     }
 
     private fun createLocalizationForDb(reportId: Int, localizationState: LocalizationState): DatabaseLocalizationSection {
@@ -288,7 +288,7 @@ class DatabaseMapperHelper {
                 closedNodeData[3].latitude,
                 closedNodeData[3].longitude,
                 closedNodeData[3].distance,
-                default_spectrum.joinToString { "-" },
+                "",
                 reportId)
     }
 }

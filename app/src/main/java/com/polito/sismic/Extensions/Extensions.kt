@@ -263,7 +263,6 @@ fun String.toPlantPointList(): List<PlantPoint> {
             .filter { !it.isEmpty() }
             .map { it ->
                 val pair = it.split(",")
-
                 PlantPoint(pair[0].toDouble(), pair[1].toDouble())
             }
 }
@@ -316,8 +315,7 @@ fun String.toPillarDomainLimitStateList(): List<PillarDomainPoint> {
                             values[5].toDoubleOrZero(),
                             values[6],
                             values[7].toIntOrZero())
-                }
-                null
+                } else null
     }
 }
 
@@ -344,7 +342,92 @@ fun List<PillarDomainPoint>.toParsablePillarLimitStateString(): String {
     return sb.toString()
 }
 
+fun String.toSpectrumDTOList(): List<SpectrumDTO> {
+    val pointList = split(" ")
+    return pointList
+            .filter { !it.isEmpty() }
+            .mapNotNull { it ->
+                val values = it.split(",")
+                if (values.size == 16) {
+                    SpectrumDTO(values[0],
+                            values[1].toIntOrZero(),
+                            values[2].toIntOrZero(),
+                            values[3].toDoubleOrZero(),
+                            values[4].toDoubleOrZero(),
+                            values[5].toDoubleOrZero(),
+                            values[6].toDoubleOrZero(),
+                            values[7].toDoubleOrZero(),
+                            values[8].toDoubleOrZero(),
+                            values[9].toDoubleOrZero(),
+                            values[10].toDoubleOrZero(),
+                            values[11].toDoubleOrZero(),
+                            values[12].toDoubleOrZero(),
+                            values[13].toDoubleOrZero(),
+                            values[14].toDoubleOrZero(),
+                            values[15].toSpectrumPointList())
+                } else null
+            }
+}
 
+fun List<SpectrumDTO>.toParsableSpectrumDTOString(): String {
+    val sb = StringBuilder()
+    forEach {
+        sb.append(it.name)
+        sb.append(",")
+        sb.append(it.year.toString())
+        sb.append(",")
+        sb.append(it.color.toString())
+        sb.append(",")
+        sb.append(it.ag.toString())
+        sb.append(",")
+        sb.append(it.f0.toString())
+        sb.append(",")
+        sb.append(it.tcStar.toString())
+        sb.append(",")
+        sb.append(it.ss.toString())
+        sb.append(",")
+        sb.append(it.cc.toString())
+        sb.append(",")
+        sb.append(it.st.toString())
+        sb.append(",")
+        sb.append(it.q.toString())
+        sb.append(",")
+        sb.append(it.s.toString())
+        sb.append(",")
+        sb.append(it.ni.toString())
+        sb.append(",")
+        sb.append(it.tb.toString())
+        sb.append(",")
+        sb.append(it.tc.toString())
+        sb.append(",")
+        sb.append(it.td.toString())
+        sb.append(",")
+        sb.append(it.pointList.toSpectrumPointString())
+        sb.append(" ")
+    }
+    return sb.toString()
+}
+
+fun String.toSpectrumPointList(): List<SpectrumPoint> {
+    val pointList = split("&")
+    return pointList
+            .filter { !it.isEmpty() }
+            .map { it ->
+                val pair = it.split("-")
+                SpectrumPoint(pair[0].toDouble(), pair[1].toDouble())
+            }
+}
+
+fun List<SpectrumPoint>.toSpectrumPointString(): String {
+    val sb = StringBuilder()
+    forEach {
+        sb.append(it.x.toString())
+        sb.append("-")
+        sb.append(it.y.toString())
+        sb.append("&")
+    }
+    return sb.toString()
+}
 
 fun List<PlantPoint>.indexOfNext(point: PlantPoint): Int {
     return indexOf(point) + 1
