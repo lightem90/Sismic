@@ -388,4 +388,5 @@
     <string name="result_format_t1">T1[s]</string>
     <string name="domain_point_value_format">%.2f</string>
     <string name="domain_point_value_format_high">%.4f</string>
+    <string name="pdf_filename_format">verifica_sismica_%s_%s.pdf</string>
 </resources>

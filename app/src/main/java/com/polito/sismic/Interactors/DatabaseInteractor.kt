@@ -2,7 +2,9 @@ package com.polito.sismic.Interactors
 
 import android.content.Context
 import android.net.Uri
+import android.os.Build
 import android.os.Environment
+import android.support.annotation.RequiresApi
 import com.polito.sismic.Domain.Database.*
 import com.polito.sismic.Domain.Report
 import com.polito.sismic.Domain.ReportDetails
@@ -251,13 +253,16 @@ class DatabaseInteractor(private val reportDatabaseHelper: ReportDatabaseHelper 
                 .whereSimple(validReportsDetailsRequest)
                 .parseList { DatabaseReportDetails(HashMap(it)) }
 
+        //gets all valid media and pdf file paths saved into db
         val savedFilePaths = mutableListOf<String>()
+        val pdfSavedFilePaths = mutableListOf<String>()
         validReportsDetails.forEach { reports ->
 
             val validReportMediaDetails = select(ReportMediaTable.NAME)
                     .byReportId(reports._id.toString())
                     .parseList { DatabaseReportMedia(HashMap(it)) }
 
+            pdfSavedFilePaths.add(reports.pdf_uri)
             validReportMediaDetails.forEach { media -> savedFilePaths.add(media.filepath) }
         }
 
@@ -280,5 +285,23 @@ class DatabaseInteractor(private val reportDatabaseHelper: ReportDatabaseHelper 
                     .any { it.contains(file.name) }
         }
         .forEach { invalidFile -> invalidFile.delete() }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            deleteInvalidPdfFiles(context, pdfSavedFilePaths)
+        }
+    }
+
+
+    @RequiresApi(Build.VERSION_CODES.KITKAT)
+    private fun deleteInvalidPdfFiles(context : Context, pdfValidFilePathsList : List<String>)
+    {
+        val pdfFilesDir = context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
+        pdfFilesDir?.let { dir ->
+            dir.listFiles()
+                    .filter { file -> file.isFile }                 //all files
+                    .filter { file ->  file.extension == "pdf"}     //all pdfs
+                    .filter { file -> !pdfValidFilePathsList.any { it.contains(file.name) } } //all pdf of directory documents that are not saved into db list
+                    .forEach { file -> file.delete() }              //delete them!
+        }
     }
 }

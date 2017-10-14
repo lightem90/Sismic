@@ -47,8 +47,7 @@ class ReportManager(var report: Report,
     fun deleteTmpReport() {
 
         //if I'm editing i won't delete anything, apart from medias different from db version
-        if (!editing)
-        {
+        if (!editing) {
             database.delete(report.reportDetails, false)
             report.reportState.mediaState.forEach {
                 val uri = Uri.parse(it.uri)
@@ -56,8 +55,7 @@ class ReportManager(var report: Report,
                     File(uri.path).delete()
                 }
             }
-        } else
-        {
+        } else {
             //TODO, cercare i report che non sono nel db! (media che sono stati aggiunti durante l'edit ma non salvati)
         }
 
@@ -114,14 +112,18 @@ class ReportManager(var report: Report,
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)
     private fun getPdfUri(): Uri {
-        val dir = mContext.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
-        val filename = report.reportDetails.userIdentifier + "_" + report.reportState.localizationState.address + "_ " + report.reportDetails.date.toFormattedString()
 
-        val file = File.createTempFile(
-                filename,
-                ".pdf",
-                dir
-        )
+        val dir = mContext.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
+        if (!dir.exists()) dir.mkdir()
+
+        //the format string has already pdf
+        val filename = String.format(mContext.getString(R.string.pdf_filename_format),
+                report.reportState.localizationState.address,
+                report.reportDetails.date.toFormattedString())
+
+        val file = File(dir, filename)
+        if (file.exists()) file.delete()
+
         return FileProvider.getUriForFile(mContext,
                 "com.polito.sismic",
                 file)
