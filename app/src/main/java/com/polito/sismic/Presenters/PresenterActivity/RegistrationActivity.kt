@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import com.polito.sismic.Domain.UserDetails
 import com.polito.sismic.Extensions.toast
+import com.polito.sismic.Interactors.Helpers.AESCryptHelper
 import com.polito.sismic.Interactors.Helpers.LoginSharedPreferences
 import com.polito.sismic.R
 import kotlinx.android.synthetic.main.activity_registration.*
@@ -53,7 +54,7 @@ class RegistrationActivity : AppCompatActivity() {
                 sb.append("email=")
                 sb.append(mEmail)
                 sb.append("&secret=")
-                sb.append(mPassword)
+                sb.append(AESCryptHelper.encrypt(mPassword))
                 sb.append("&name=")
                 sb.append(mName)
                 sb.append("&address=")

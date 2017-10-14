@@ -27,6 +27,7 @@ import android.content.Intent
 import android.util.Log
 import com.polito.sismic.Domain.UserDetails
 import com.polito.sismic.Extensions.toast
+import com.polito.sismic.Interactors.Helpers.AESCryptHelper
 import com.polito.sismic.Interactors.Helpers.LoginSharedPreferences
 import com.polito.sismic.R
 
@@ -257,7 +258,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
                 sb.append("email=")
                 sb.append(mEmail)
                 sb.append("&secret=")
-                sb.append(mPassword)
+                sb.append(AESCryptHelper.encrypt(mPassword))
 
                 val urlUse = URL(sb.toString())
                 val conn: HttpURLConnection?
