@@ -68,11 +68,13 @@ class ReportMediaInteractor(val mReportManager: ReportManager,
         if (filenameToUse.isEmpty()) filenameToUse = prefix + timeStamp
         filenameToUse = filenameToUse.replace(" ", "")
 
+        //careful, add stuff to filename!
         val file = File.createTempFile(
                 filenameToUse,
                 suffix,
                 storageDir
         )
+
         val fileUri = FileProvider.getUriForFile(mContext,
                 "com.polito.sismic",
                 file)

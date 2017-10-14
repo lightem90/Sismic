@@ -77,6 +77,7 @@ class PillarLayoutInteractor(val mContext: Context) {
         val entryList = listOf<Entry>(Entry(edge.s.x.toFloat(), edge.s.y.toFloat()),
                 Entry(edge.e.x.toFloat(), edge.e.y.toFloat()))
 
+        //MUST BE SORTED ON X, or crash!!
         Collections.sort(entryList, EntryXComparator())
         return LineDataSet(entryList, context.getString(R.string.rilievo_esterno)).apply {
             color = Color.BLACK

@@ -27,6 +27,9 @@ import java.util.*
 /**
  * Created by it0003971 on 28/09/2017.
  */
+
+//A good thing would be to remove mOrigin from the list (since the origin is always present, removing from the mutable list would
+//make things easier and bugless
 class SismicPlantBuildingInteractor(takeoverState: TakeoverState?,
                                     val mContext: Context) {
 

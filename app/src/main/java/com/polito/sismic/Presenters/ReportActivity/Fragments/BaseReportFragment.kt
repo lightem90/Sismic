@@ -21,6 +21,8 @@ import com.stepstone.stepper.VerificationError
 /**
  * Created by Matteo on 29/07/2017.
  */
+
+//base class for all report fragment to hide communication with activity and make every fragment scrollable
 abstract class BaseReportFragment : Fragment(), BlockingStep {
 
     private var mPdfWriterCallback: BaseReportFragment.PdfWriterManager? = null
@@ -49,6 +51,8 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
         mReport = arguments.getReport()
     }
 
+    //injects parameters to view from domain (needs some fixing, for example the user should not update or re / import data when editing,
+    //the problem is that the activity doesn't know when a value is changed and needs to update the view (could this be done just always?)
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mReport = arguments?.getReport()
@@ -92,6 +96,7 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
         callback!!.goToNextStep()
     }
 
+    //utility
     protected open fun onNeedReload(): Boolean
     {
         return false
@@ -130,10 +135,12 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
 
     }
 
+    //utility
     protected fun hideBottomActions() {
         activity.findViewById<FloatingActionButton>(R.id.fabtoolbar_fab)?.hide()
     }
 
+    //utility
     protected fun showBottomActions() {
         activity.findViewById<FloatingActionButton>(R.id.fabtoolbar_fab)?.show()
     }
@@ -141,10 +148,12 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
     //Eventually in derived classes
     override fun onSelected() {}
 
+    //every child fragment has its own
     override fun verifyStep(): VerificationError? {
         return null
     }
 
+    //save report
     override fun onCompleteClicked(callback: StepperLayout.OnCompleteClickedCallback?) {
         mParametersCallback?.onParametersSaveRequest()
         callback!!.complete()

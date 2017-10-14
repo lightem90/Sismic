@@ -27,6 +27,7 @@ class DatabaseInteractor(private val reportDatabaseHelper: ReportDatabaseHelper 
                                    title: String = "",
                                    date: Date = Date()): ReportDetails = reportDatabaseHelper.use {
 
+        //so it creates a new valid id
         insert(ReportTable.NAME,
                 ReportTable.USERID to userID,
                 ReportTable.TITLE to title,
@@ -46,6 +47,7 @@ class DatabaseInteractor(private val reportDatabaseHelper: ReportDatabaseHelper 
         databaseReportDetails!!.let { dataMapper.convertReportDetailsToDomain(it) }
     }
 
+    //read from the db tables into databaseclasses maps that will be converted into domain classes
     fun getReportForId(reportID: String, userID: String): Report? = reportDatabaseHelper.use {
 
         val reportDetailRequest = "${ReportTable.USERID} = ? AND ${ReportTable.ID} = ?"
@@ -139,6 +141,7 @@ class DatabaseInteractor(private val reportDatabaseHelper: ReportDatabaseHelper 
         clear(ResultsInfoTable.NAME)
     }
 
+    //maps domain classes into db classes with map for save into db
     fun save(report: Report, editing: Boolean, pdfFileName: String?) = reportDatabaseHelper.use {
 
         //delete if exists (in the case I'm editing I delete the old one)
@@ -182,6 +185,7 @@ class DatabaseInteractor(private val reportDatabaseHelper: ReportDatabaseHelper 
         delete(ResultsInfoTable.NAME, "${ResultsInfoTable.REPORT_ID} = ?", arrayOf(_id.toString()))
     }
 
+    //no need for visitor with pattern matching
     private fun insertEachSectionIntoCorrectTable(sections: List<DatabaseSection>) = reportDatabaseHelper.use {
         sections.forEach { section ->
             when (section) {
@@ -222,6 +226,7 @@ class DatabaseInteractor(private val reportDatabaseHelper: ReportDatabaseHelper 
         }
     }
 
+    //maps to dto for history
     fun getDetailsForHistory(): MutableList<ReportItemHistory> = reportDatabaseHelper.use {
 
         val invalidReportsDetailsRequest = "${ReportTable.COMMITTED} = 1"
@@ -237,6 +242,7 @@ class DatabaseInteractor(private val reportDatabaseHelper: ReportDatabaseHelper 
         reports.map { dataMapper.convertReportDataForHistory(it, results) }.toMutableList()
     }
 
+    //deletes invalid report (after crashes for example)
     fun deleteNotCommittedReports(context: Context) = reportDatabaseHelper.use {
 
         val invalidReportsDetailsRequest = "${ReportTable.COMMITTED} = -1"
@@ -290,7 +296,7 @@ class DatabaseInteractor(private val reportDatabaseHelper: ReportDatabaseHelper 
         }
     }
 
-
+    //deletes uncommitted pdf
     @RequiresApi(Build.VERSION_CODES.KITKAT)
     private fun deleteInvalidPdfFiles(context: Context, pdfValidFilePathsList: List<String>) {
         val pdfFilesDir = context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
