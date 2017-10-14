@@ -29,14 +29,14 @@ import kotlinx.android.synthetic.main.dati_sismogenetici_report_layout.*
  */
 class DatiSismoGeneticiReportFragment : BaseReportFragment() {
 
-    private lateinit var mNodeAdapter : NodeListAdapter
-    private lateinit var mPeriodAdapter : PeriodListAdapter
+    private lateinit var mNodeAdapter: NodeListAdapter
+    private lateinit var mPeriodAdapter: PeriodListAdapter
 
-    var mNodeList : MutableList<NeighboursNodeData> = mutableListOf()
-    var mPeriodList : MutableList<PeriodData> = mutableListOf ()
+    var mNodeList: MutableList<NeighboursNodeData> = mutableListOf()
+    var mPeriodList: MutableList<PeriodData> = mutableListOf()
 
     interface DefaultReturnTimeRequest {
-        fun onDefaultReturnTimesRequested() : List<SpectrumDTO>
+        fun onDefaultReturnTimesRequested(): List<SpectrumDTO>
     }
 
     private var mDefaultReturnTimeRequest: DefaultReturnTimeRequest? = null
@@ -75,7 +75,7 @@ class DatiSismoGeneticiReportFragment : BaseReportFragment() {
             adapter = mPeriodAdapter
         }
 
-        with (report_spettrodirisposta_chart)
+        with(report_spettrodirisposta_chart)
         {
             xAxis.position = XAxis.XAxisPosition.BOTTOM
             xAxis.axisMaximum = 4.0f
@@ -89,30 +89,35 @@ class DatiSismoGeneticiReportFragment : BaseReportFragment() {
 
         calculate.setOnClickListener {
 
-            val spectrumsDomain = mDefaultReturnTimeRequest?.onDefaultReturnTimesRequested()
-            val spectrumsUi = spectrumsDomain?.map {
-                val lds = LineDataSet(it.pointList.toEntryList(), String.format(context.getString(R.string.label_year_format), it.name))
-                lds.color = ContextCompat.getColor(context, it.color)
-                lds.setDrawCircles(false)
-                lds.lineWidth = 2f
-                lds.axisDependency = YAxis.AxisDependency.LEFT
-                lds
-            }
-
-            spectrumsDomain?.let {
+            mDefaultReturnTimeRequest?.onDefaultReturnTimesRequested()?.let {
                 getReport().reportState.sismicState.sismogenticState.default_spectrum = it
-                with(report_spettrodirisposta_chart)
-                {
-                    data = LineData(spectrumsUi)
-                    invalidate()
-                }
+                reloadGraph()
             }
         }
 
+        reloadGraph()
     }
 
-    override fun onReload()
+    fun reloadGraph()
     {
+        with(report_spettrodirisposta_chart)
+        {
+            val spectrumsUi = getReport().reportState.sismicState.sismogenticState.default_spectrum.map {
+                LineDataSet(it.pointList.toEntryList(), String.format(context.getString(R.string.label_year_format), it.name)).apply {
+                    color = ContextCompat.getColor(context, it.color)
+                    setDrawCircles(false)
+                    lineWidth = 2f
+                    axisDependency = YAxis.AxisDependency.LEFT
+                }
+            }
+
+            data = LineData(spectrumsUi)
+            invalidate()
+        }
+    }
+
+    //Called each time the existing view is updated
+    override fun onReload() {
         getReport().reportState.sismicState.sismogenticState.closedNodeData.let {
             mNodeList.clear()
             mNodeList.addAll(it)
@@ -128,17 +133,18 @@ class DatiSismoGeneticiReportFragment : BaseReportFragment() {
             mPeriodAdapter.notifyDataSetChanged()
         }
 
-        getReport().reportState.localizationState.let{
+        getReport().reportState.localizationState.let {
 
             updateLabelsByCoordinate(it.latitude.toString(),
                     it.longitude.toString(),
                     it.address,
                     it.zone)
         }
+
+        reloadGraph()
     }
 
-    private fun updateLabelsByCoordinate(latitude : String, longitude : String, address : String, zone : String)
-    {
+    private fun updateLabelsByCoordinate(latitude: String, longitude: String, address: String, zone: String) {
         report_datisimogenetici_coordinate_label.setValue(String.format(context.getString(R.string.coordinate_label), longitude, latitude))
         report_datisimogenetici_indirizzo.setValue(address)
         report_datisimogenetici_zonasismica.setValue(zone)

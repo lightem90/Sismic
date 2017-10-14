@@ -12,7 +12,7 @@ class ReportDatabaseHelper(ctx: Context = App.instance) : ManagedSQLiteOpenHelpe
 
     companion object {
         val DB_NAME = "reportdatabase.db"
-        val DB_VERSION = 20
+        val DB_VERSION = 21
         val instance by lazy { ReportDatabaseHelper() }
     }
 
@@ -184,6 +184,8 @@ class ReportDatabaseHelper(ctx: Context = App.instance) : ManagedSQLiteOpenHelpe
                         CaratteristichePilastriInfoTable.NUM_FERRI to INTEGER,
                         CaratteristichePilastriInfoTable.DIAM_FERRI to REAL,
                         CaratteristichePilastriInfoTable.AREA_FERRI to REAL,
+                        CaratteristichePilastriInfoTable.PUNTI_DOMINIO to TEXT,
+                        CaratteristichePilastriInfoTable.STATI_LIMITE to TEXT,
                         CaratteristichePilastriInfoTable.REPORT_ID to INTEGER)
         )
 

@@ -208,7 +208,7 @@ class PilastriReportFragment : BaseReportFragment() {
                 getReport().reportState.buildingState.pillarState.pillar_domain = it
                 with(pillar_domain_chart)
                 {
-                    val UiPoints = it.points.map {
+                    val UiPoints = it.limitStatePoints.map {
                         val lds = LineDataSet(listOf(Entry(it.n.toFloat(), it.m.toFloat())), it.label)
                         lds.setDrawCircles(true)
                         lds.circleRadius = 10f
@@ -218,7 +218,7 @@ class PilastriReportFragment : BaseReportFragment() {
                     }.toMutableList()
 
                     val upPointList = mutableListOf<Entry>()
-                    it.positive.forEach {point ->
+                    it.domainPoints.forEach { point ->
                         upPointList.add(Entry(point.n.toFloat(), point.m.toFloat()))
                     }
 
@@ -228,10 +228,10 @@ class PilastriReportFragment : BaseReportFragment() {
                     UiDomainUp.lineWidth = 3f
                     UiDomainUp.axisDependency = YAxis.AxisDependency.LEFT
 
-
+                    //Just ui stuff to show the simmetric
                     val downList = mutableListOf<Entry>()
-                    it.negative.forEach {point ->
-                        downList.add(Entry(point.n.toFloat(), point.m.toFloat()))
+                    it.domainPoints.forEach {point ->
+                        downList.add(Entry(point.n.toFloat(), -point.m.toFloat()))
                     }
 
                     val UiDomainDown = LineDataSet(downList, "")
@@ -247,9 +247,9 @@ class PilastriReportFragment : BaseReportFragment() {
                     invalidate()
                 }
 
-                //Update recyclerview list with positive domain points (only that one)
+                //Update recyclerview list with domainPoints domain limitStatePoints (only that one)
                 mDomainPointList.clear()
-                mDomainPointList.addAll(it.positive)
+                mDomainPointList.addAll(it.domainPoints)
                 mDomainPointAdapter.notifyDataSetChanged()
             }
         }
@@ -378,6 +378,7 @@ class PilastriReportFragment : BaseReportFragment() {
         if (sezione_c_parameter.isEmpty()) return VerificationError(String.format(resources.getString(R.string.verification_empty_field), sezione_c_parameter.getTitle()))
         if (num_armatura.isEmpty()) return VerificationError(String.format(resources.getString(R.string.verification_empty_field), num_armatura.getTitle()))
         if (armatura_fi.isEmpty()) return VerificationError(String.format(resources.getString(R.string.verification_empty_field), armatura_fi.getTitle()))
+        //? for now it check ui data, the user is forced to calculate even if he already has
         if (pillar_domain_chart.data == null || pillar_domain_chart.data?.dataSetCount == 0 ) return VerificationError(resources.getString(R.string.pillar_domain_error) )
         return null
     }

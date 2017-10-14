@@ -111,7 +111,7 @@ class SismicBuildingCalculatorHelper(val mContext: Context) {
     }
 
     // AND Denis data
-    fun getPillarDomainForGraph(data: PillarState): Pair<List<PillarDomainGraphPoint>, List<PillarDomainGraphPoint>> = with(data) {
+    fun getPillarDomainForGraph(data: PillarState): List<PillarDomainGraphPoint> = with(data) {
 
         val entries = mutableListOf<PillarDomainGraphPoint>()
 
@@ -127,9 +127,7 @@ class SismicBuildingCalculatorHelper(val mContext: Context) {
             it.m = (it.m / TO_FROM_KN_M)
         }
 
-        //the lines are simmetric
-        val bottomMost = entries.map { PillarDomainGraphPoint(it.n, -it.m) }
-        return entries to bottomMost
+        return entries
     }
 
     //Based on http://www.federica.unina.it/architettura/laboratorio-di-tecnica-delle-costruzioni/slu-pressoflessione/

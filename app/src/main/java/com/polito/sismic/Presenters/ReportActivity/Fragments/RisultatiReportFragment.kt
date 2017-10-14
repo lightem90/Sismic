@@ -29,7 +29,7 @@ class RisultatiReportFragment : BaseReportFragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        getReport().reportState.buildingState.pillarState.pillar_domain?.points?.let {
+        getReport().reportState.buildingState.pillarState.pillar_domain?.limitStatePoints?.let {
             mPointList.clear()
             mPointList.addAll(it)
         }
@@ -41,7 +41,7 @@ class RisultatiReportFragment : BaseReportFragment() {
     override fun onReload() {
         super.onReload()
         mPointList.clear()
-        getReport().reportState.buildingState.pillarState.pillar_domain?.points?.let {
+        getReport().reportState.buildingState.pillarState.pillar_domain?.limitStatePoints?.let {
             mPointList.clear()
             mPointList.addAll(it)
         }

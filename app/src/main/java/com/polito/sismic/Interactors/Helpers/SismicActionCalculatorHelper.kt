@@ -215,7 +215,7 @@ class SismicActionCalculatorHelper(val mCoordinateHelper: ParametersForCoordinat
         return listOf(Entry(tc.toFloat(), repeatingTerm.toFloat()))
     }
 
-    //linear interval, just 2 points
+    //linear interval, just 2 limitStatePoints
     private fun calculateFirstLinearInterval(repeatingTerm: Double, ni: Double, f0: Double, tb: Double): List<Entry> {
         return listOf(Entry(0.0F, calculatePointForFirstInterval(repeatingTerm, 0.0, tb, ni, f0)),
                 Entry(tb.toFloat(), calculatePointForFirstInterval(repeatingTerm, tb, tb, ni, f0)))

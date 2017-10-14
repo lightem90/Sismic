@@ -1,8 +1,7 @@
 package com.polito.sismic.Domain.Database
 
 import com.polito.sismic.Domain.*
-import com.polito.sismic.Extensions.toParsableString
-import com.polito.sismic.Extensions.toPlantPointList
+import com.polito.sismic.Extensions.*
 
 /**
  * Created by Matteo on 17/08/2017.
@@ -64,7 +63,7 @@ class DatabaseMapperHelper {
 
     private fun convertCaratteristichePilastriToDomain(caractPillarDbParams: DatabaseCaratteristichePilastri?): PillarState? {
         return caractPillarDbParams?.let {
-            //TODO: salvare i dati del dominio pilastri!!!!
+
             PillarState(it.classe_calcestruzzo,
                     it.conoscenza_calcestruzzo,
                     it.eps2,
@@ -87,7 +86,9 @@ class DatabaseMapperHelper {
                     it.num_ferri,
                     it.diametro_ferri,
                     it.area_ferri,
-                    null)
+                    PillarDomain(it.domain_points.toPillarDomainPointList(),
+                            it.limit_state_points.toPillarDomainLimitStateList()))
+
         }
     }
 
@@ -179,7 +180,7 @@ class DatabaseMapperHelper {
                     NeighboursNodeData(it.se_id.toString(), it.se_lon, it.se_lat, it.se_dist),
                     NeighboursNodeData(it.so_id.toString(), it.so_lon, it.so_lat, it.so_dist),
                     NeighboursNodeData(it.no_id.toString(), it.no_lon, it.no_lat, it.no_dist)
-                ), listOf(), listOf()
+            ), listOf(), listOf()
             )
         }
     }
@@ -217,7 +218,7 @@ class DatabaseMapperHelper {
         )
     }
 
-    private fun createResultForDb(reportId: Int, reportRes: ReportResult): DatabaseResults?  = with(reportRes){
+    private fun createResultForDb(reportId: Int, reportRes: ReportResult): DatabaseResults? = with(reportRes) {
         return DatabaseResults(result, size, reportId)
     }
 
@@ -225,12 +226,12 @@ class DatabaseMapperHelper {
         return DatabaseMagliaStrutturale(pillarX, pillarY, distX, distY, area, pillarCount, reportId)
     }
 
-    private fun createPillarForDb(reportId: Int, pillarState: PillarState): DatabaseCaratteristichePilastri?  = with(pillarState){
-        DatabaseCaratteristichePilastri(classe_calcestruzzo,conoscenza_calcestruzzo, eps2, epsu, rck, fck, ecm, fcd, fcm, classe_acciaio, conoscenza_acciaio, epsy, epsyu, E, fyk, fyd, bx, hy, c, num_ferri, diametro_ferri, area_ferri, reportId)
+    private fun createPillarForDb(reportId: Int, pillarState: PillarState): DatabaseCaratteristichePilastri? = with(pillarState) {
+        DatabaseCaratteristichePilastri(classe_calcestruzzo, conoscenza_calcestruzzo, eps2, epsu, rck, fck, ecm, fcd, fcm, classe_acciaio, conoscenza_acciaio, epsy, epsyu, E, fyk, fyd, bx, hy, c, num_ferri, diametro_ferri, area_ferri, pillar_domain.domainPoints.toParsablePillarDomainPointString(), pillar_domain.limitStatePoints.toParsablePillarLimitStateString() ,reportId)
     }
 
-    private fun createTakeoverForDb(reportId: Int, takeoverState: TakeoverState): DatabaseSection = with(takeoverState){
-        return DatabaseRilievi(numero_piani,altezza_piano_terra, altezza_piani_superiori, altezza_totale, area, t1, perimetro, gravity_center.x, gravity_center.y, plant_points.toParsableString(), reportId)
+    private fun createTakeoverForDb(reportId: Int, takeoverState: TakeoverState): DatabaseSection = with(takeoverState) {
+        return DatabaseRilievi(numero_piani, altezza_piano_terra, altezza_piani_superiori, altezza_totale, area, t1, perimetro, gravity_center.x, gravity_center.y, plant_points.toParsablePlantString(), reportId)
 
     }
 
@@ -247,7 +248,7 @@ class DatabaseMapperHelper {
     }
 
     private fun createSpectrumForDb(reportId: Int, projectSpectrumState: ProjectSpectrumState): DatabaseSection = with(projectSpectrumState) {
-        return DatabaseParametriSpettri(categoria_suolo, categoria_topografica, if(classe_duttilita) "CDA" else "CDB", tipologia, q0, alfa, kr, spectrums.joinToString { "-" }, reportId)
+        return DatabaseParametriSpettri(categoria_suolo, categoria_topografica, if (classe_duttilita) "CDA" else "CDB", tipologia, q0, alfa, kr, spectrums.joinToString { "-" }, reportId)
     }
 
     private fun createSismicForDb(reportId: Int, sismicParametersState: SismicParametersState): DatabaseSection = with(sismicParametersState) {

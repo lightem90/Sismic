@@ -196,7 +196,9 @@ object CaratteristichePilastriInfoTable
     val C                           = "c"
     val NUM_FERRI                   = "num_ferri"
     val DIAM_FERRI                  = "diametro_ferri"
-    val AREA_FERRI = "area_ferri"
+    val AREA_FERRI                  = "area_ferri"
+    val PUNTI_DOMINIO               = "domain_points"
+    val STATI_LIMITE                = "limit_state_points"
     val REPORT_ID                   = "report_id"
 }
 

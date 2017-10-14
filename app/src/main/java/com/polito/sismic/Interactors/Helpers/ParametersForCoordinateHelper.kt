@@ -116,7 +116,7 @@ class ParametersForCoordinateHelper(val mContext : Context) {
         //}
 
         //build a square if possible
-        Log.d("Input points", "Input longitude is: "+ inputLon + " Input latitude is:" + inputLat)
+        Log.d("Input limitStatePoints", "Input longitude is: "+ inputLon + " Input latitude is:" + inputLat)
         candidatesList.forEach {
             val candidateLon = getDataForNode(it.first, CoordinateDatabaseParameters.LON)
             val candidateLat = getDataForNode(it.first, CoordinateDatabaseParameters.LAT)
@@ -170,7 +170,7 @@ class ParametersForCoordinateHelper(val mContext : Context) {
             }
         }
 
-        //can interpolate on 3 points
+        //can interpolate on 3 limitStatePoints
         var nullCounter = 0
         if (candidateNE == null)
         {
@@ -218,7 +218,7 @@ class ParametersForCoordinateHelper(val mContext : Context) {
 
         Log.d("Distance", "Limit distance is: " + limitDistance)
 
-        //Stopping condition, the distance of the next point from input point is greater than sum of distances of 4 closest points
+        //Stopping condition, the distance of the next point from input point is greater than sum of distances of 4 closest limitStatePoints
         val dist_quadrant_pair = calulateDistance(x to y, mCoordinateArray[innerIndex].second to mCoordinateArray[innerIndex].third)
         Log.d("Distance", "Distance is " + dist_quadrant_pair.first + " and quadrant is " + dist_quadrant_pair.second)
         if (dist_quadrant_pair.first >= limitDistance)
@@ -226,7 +226,7 @@ class ParametersForCoordinateHelper(val mContext : Context) {
             return tmpList
         }
 
-        //Consider all very close (on x) points
+        //Consider all very close (on x) limitStatePoints
         while (Math.abs(x - mCoordinateArray[innerIndex].second) <= SENSIBILITY)
         {
             //add point id with close distance from input point
@@ -239,12 +239,12 @@ class ParametersForCoordinateHelper(val mContext : Context) {
             if (innerIndex < 0 || innerIndex >= mCoordinateArray.size) return tmpList
         }
 
-        //I just want 4 points, the one with the minimum distance
+        //I just want 4 limitStatePoints, the one with the minimum distance
         tmpList.sortBy { it.second }
         val smallerList = if (tmpList.size > 3) tmpList.subList(0, 4) else tmpList //inclusive from exclusive to
         Log.d("SmallerList", "Reduced list is: " + smallerList.toString())
 
-        //pass to recursion: input point, new index, new sum, new points
+        //pass to recursion: input point, new index, new sum, new limitStatePoints
         return innerGetClosestPoint(x, y, left, innerIndex, smallerList.sumByDouble { it.second }, smallerList, level+1)
     }
 

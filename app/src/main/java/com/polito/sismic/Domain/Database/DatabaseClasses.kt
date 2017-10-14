@@ -377,6 +377,8 @@ data class DatabaseCaratteristichePilastri(var map: MutableMap<String, Any?>) : 
     var num_ferri: Int by map
     var diametro_ferri: Double by map
     var area_ferri: Double by map
+    var domain_points: String by map
+    var limit_state_points: String by map
     var report_id: Int by map
 
     constructor(classe_calcestruzzo: String,
@@ -401,6 +403,8 @@ data class DatabaseCaratteristichePilastri(var map: MutableMap<String, Any?>) : 
                 num_ferri: Int,
                 diametro_ferri: Double,
                 area_ferri: Double,
+                domain_points: String,
+                limit_state_points: String,
                 report_id: Int
 
     ) : this(HashMap()) {
@@ -426,6 +430,8 @@ data class DatabaseCaratteristichePilastri(var map: MutableMap<String, Any?>) : 
         this.num_ferri = num_ferri
         this.diametro_ferri = diametro_ferri
         this.area_ferri = area_ferri
+        this.domain_points = domain_points
+        this.limit_state_points = limit_state_points
         this.report_id = report_id
     }
 }

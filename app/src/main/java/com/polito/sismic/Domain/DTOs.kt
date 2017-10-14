@@ -783,9 +783,9 @@ data class PillarState(var classe_calcestruzzo: String,
                        var num_ferri: Int,
                        var diametro_ferri: Double,
                        var area_ferri: Double,
-                       var pillar_domain: PillarDomain?) : Parcelable {
+                       var pillar_domain: PillarDomain) : Parcelable {
     constructor() : this("", LivelloConoscenza.III.multiplier, 2.0, 3.5, 0.0, 0.0, 0.0, 0.0, 0.0, "", LivelloConoscenza.III.multiplier, 10.0, 67.5,
-            210000.0, 450.0, 0.0, 0.0, 0.0, 0.0, 0, 0.0, 0.0, null)
+            210000.0, 450.0, 0.0, 0.0, 0.0, 0.0, 0, 0.0, 0.0, PillarDomain(listOf(), listOf()))
 
     constructor(source: Parcel) : this(
             source.readString(),
@@ -850,11 +850,9 @@ data class PillarState(var classe_calcestruzzo: String,
     }
 }
 
-data class PillarDomain(var positive: List<PillarDomainGraphPoint>,
-                        var negative: List<PillarDomainGraphPoint>,
-                        var points: List<PillarDomainPoint>) : Parcelable {
+data class PillarDomain(var domainPoints: List<PillarDomainGraphPoint>,
+                        var limitStatePoints: List<PillarDomainPoint>) : Parcelable {
     constructor(source: Parcel) : this(
-            source.createTypedArrayList(PillarDomainGraphPoint.CREATOR),
             source.createTypedArrayList(PillarDomainGraphPoint.CREATOR),
             source.createTypedArrayList(PillarDomainPoint.CREATOR)
     )
@@ -862,9 +860,8 @@ data class PillarDomain(var positive: List<PillarDomainGraphPoint>,
     override fun describeContents() = 0
 
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
-        writeTypedList(positive)
-        writeTypedList(negative)
-        writeTypedList(points)
+        writeTypedList(domainPoints)
+        writeTypedList(limitStatePoints)
     }
 
     companion object {

@@ -268,6 +268,84 @@ fun String.toPlantPointList(): List<PlantPoint> {
             }
 }
 
+fun List<PlantPoint>.toParsablePlantString(): String {
+    val sb = StringBuilder()
+    forEach {
+        sb.append(it.x.toString())
+        sb.append(",")
+        sb.append(it.y.toString())
+        sb.append(" ")
+    }
+    return sb.toString()
+}
+
+fun String.toPillarDomainPointList(): List<PillarDomainGraphPoint> {
+    val pointList = split(" ")
+    return pointList
+            .filter { !it.isEmpty() }
+            .map { it ->
+                val pair = it.split(",")
+
+                PillarDomainGraphPoint(pair[0].toDouble(), pair[1].toDouble())
+            }
+}
+
+fun List<PillarDomainGraphPoint>.toParsablePillarDomainPointString(): String {
+    val sb = StringBuilder()
+    forEach {
+        sb.append(it.n.toString())
+        sb.append(",")
+        sb.append(it.m.toString())
+        sb.append(" ")
+    }
+    return sb.toString()
+}
+
+fun String.toPillarDomainLimitStateList(): List<PillarDomainPoint> {
+    val pointList = split(" ")
+    return pointList
+            .filter { !it.isEmpty() }
+            .mapNotNull { it ->
+                val values = it.split(",")
+                if (values.size == 8) {
+                    PillarDomainPoint(values[0].toDoubleOrZero(),
+                            values[1].toDoubleOrZero(),
+                            values[2].toDoubleOrZero(),
+                            values[3].toDoubleOrZero(),
+                            values[4].toDoubleOrZero(),
+                            values[5].toDoubleOrZero(),
+                            values[6],
+                            values[7].toIntOrZero())
+                }
+                null
+    }
+}
+
+fun List<PillarDomainPoint>.toParsablePillarLimitStateString(): String {
+    val sb = StringBuilder()
+    forEach {
+        sb.append(it.n.toString())
+        sb.append(",")
+        sb.append(it.m.toString())
+        sb.append(",")
+        sb.append(it.sd.toString())
+        sb.append(",")
+        sb.append(it.lambda.toString())
+        sb.append(",")
+        sb.append(it.fn.toString())
+        sb.append(",")
+        sb.append(it.t1.toString())
+        sb.append(",")
+        sb.append(it.label)
+        sb.append(",")
+        sb.append(it.color.toString())
+        sb.append(" ")
+    }
+    return sb.toString()
+}
+
+
+
 fun List<PlantPoint>.indexOfNext(point: PlantPoint): Int {
     return indexOf(point) + 1
 }
@@ -282,17 +360,6 @@ fun SpectrumPoint.distanceFrom(other: SpectrumPoint): Double {
 
 fun SpectrumPoint.verticalMiddlePoint(other : SpectrumPoint) : Double {
     return (y + other.y) / 2
-}
-
-fun List<PlantPoint>.toParsableString(): String {
-    val sb = StringBuilder()
-    forEach {
-        sb.append(it.x.toString())
-        sb.append(",")
-        sb.append(it.y.toString())
-        sb.append(" ")
-    }
-    return sb.toString()
 }
 
 class MathUti {

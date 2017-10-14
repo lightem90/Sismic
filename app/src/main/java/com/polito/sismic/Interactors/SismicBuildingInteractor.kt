@@ -20,8 +20,8 @@ class SismicBuildingInteractor(val mReportManager: ReportManager,
     fun getPillarDomainForGraph(state: ReportState, data: PillarState) : PillarDomain
     {
         val domainPoints = mSismicBuildingCalculatorHelper.getPillarDomainForGraph(data)
-        //add 4 points, one foreach limit state
-        val points = mSismicBuildingCalculatorHelper.getLimitStatePointsInDomainForPillar(state)
-        return PillarDomain(domainPoints.first, domainPoints.second, points)
+        //add 4 limitStatePoints, one foreach limit state
+        val limitStatePoints = mSismicBuildingCalculatorHelper.getLimitStatePointsInDomainForPillar(state)
+        return PillarDomain(domainPoints, limitStatePoints)
     }
 }
