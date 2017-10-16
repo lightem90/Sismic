@@ -24,6 +24,7 @@ import com.polito.sismic.Domain.PillarState
 import com.polito.sismic.Domain.ReportState
 import com.polito.sismic.Extensions.hideSoftKeyboard
 import com.polito.sismic.Extensions.toDoubleOrZero
+import com.polito.sismic.Extensions.toast
 import com.polito.sismic.Interactors.Helpers.LivelloConoscenza
 import com.polito.sismic.Interactors.Helpers.SismicBuildingCalculatorHelper
 import com.polito.sismic.Interactors.Helpers.StatiLimite
@@ -52,6 +53,7 @@ class PilastriReportFragment : BaseReportFragment() {
             throw ClassCastException(context!!.toString() + " must implement OnPillarDomainGraphRequest")
         }
     }
+
     override fun onCreateView(inflater: LayoutInflater?, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View? {
         return inflateFragment(R.layout.pilastri_report_layout, inflater, container)
     }
@@ -203,6 +205,40 @@ class PilastriReportFragment : BaseReportFragment() {
         }
 
         calculate.setOnClickListener {
+
+            //needed because the user may have not "confirmed" data with enter
+            var isValid = true
+            if (sezione_bx_parameter.isEmpty()) {
+                context.toast(String.format(resources.getString(R.string.verification_empty_field), sezione_bx_parameter.getTitle()))
+                isValid = false
+            }
+            if (sezione_hy_parameter.isEmpty()) {
+                context.toast(String.format(resources.getString(R.string.verification_empty_field), sezione_hy_parameter.getTitle()))
+                isValid = false
+            }
+            if (sezione_c_parameter.isEmpty()) {
+                context.toast(String.format(resources.getString(R.string.verification_empty_field), sezione_c_parameter.getTitle()))
+                isValid = false
+            }
+            if (num_armatura.isEmpty()) {
+                context.toast(String.format(resources.getString(R.string.verification_empty_field), num_armatura.getTitle()))
+                isValid = false
+            }
+            if (armatura_fi.isEmpty()) {
+                context.toast(String.format(resources.getString(R.string.verification_empty_field), armatura_fi.getTitle()))
+                isValid = false
+            }
+            if (sezione_hy_parameter.getParameterValue().toDoubleOrZero() == 0.0)
+            {
+                context.toast(String.format(resources.getString(R.string.verification_zero_field), sezione_hy_parameter.getTitle()))
+                isValid = false
+            }
+
+            if (!isValid) return@setOnClickListener
+
+            fixAs()
+            fixPillarData()
+
             mPillarDomainGraphRequest?.onPillarDomainGraphRequest(getReport().reportState.buildingState.pillarState)?.let {
 
                 getReport().reportState.buildingState.pillarState.pillar_domain = it
@@ -230,7 +266,7 @@ class PilastriReportFragment : BaseReportFragment() {
 
                     //Just ui stuff to show the simmetric
                     val downList = mutableListOf<Entry>()
-                    it.domainPoints.forEach {point ->
+                    it.domainPoints.forEach { point ->
                         downList.add(Entry(point.n.toFloat(), -point.m.toFloat()))
                     }
 
@@ -242,7 +278,7 @@ class PilastriReportFragment : BaseReportFragment() {
 
                     UiPoints.add(UiDomainUp)
                     UiPoints.add(UiDomainDown)
-                    
+
                     data = LineData(UiPoints.toList())
                     invalidate()
                 }
@@ -375,11 +411,12 @@ class PilastriReportFragment : BaseReportFragment() {
     override fun verifyStep(): VerificationError? {
         if (sezione_bx_parameter.isEmpty()) return VerificationError(String.format(resources.getString(R.string.verification_empty_field), sezione_bx_parameter.getTitle()))
         if (sezione_hy_parameter.isEmpty()) return VerificationError(String.format(resources.getString(R.string.verification_empty_field), sezione_hy_parameter.getTitle()))
+        if (sezione_hy_parameter.getParameterValue().toDoubleOrZero() == 0.0) return VerificationError(String.format(resources.getString(R.string.verification_zero_field), sezione_hy_parameter.getTitle()))
         if (sezione_c_parameter.isEmpty()) return VerificationError(String.format(resources.getString(R.string.verification_empty_field), sezione_c_parameter.getTitle()))
         if (num_armatura.isEmpty()) return VerificationError(String.format(resources.getString(R.string.verification_empty_field), num_armatura.getTitle()))
         if (armatura_fi.isEmpty()) return VerificationError(String.format(resources.getString(R.string.verification_empty_field), armatura_fi.getTitle()))
         //? for now it check ui data, the user is forced to calculate even if he already has
-        if (pillar_domain_chart.data == null || pillar_domain_chart.data?.dataSetCount == 0 ) return VerificationError(resources.getString(R.string.pillar_domain_error) )
+        if (pillar_domain_chart.data == null || pillar_domain_chart.data?.dataSetCount == 0) return VerificationError(resources.getString(R.string.pillar_domain_error))
         return null
     }
 }

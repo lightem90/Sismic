@@ -185,6 +185,7 @@
     <string name="report_description_hint">Descrizione riassuntiva della verifica</string>
     <string name="size_string">%.2f MB</string>
     <string name="verification_empty_field">Il campo %s non può essere vuoto</string>
+    <string name="verification_zero_field">Il campo %s non può valere 0</string>
     <string name="media_images_title">IMMAGINI</string>
     <string name="media_video_title">VIDEO</string>
     <string name="media_note_title">NOTE</string>
