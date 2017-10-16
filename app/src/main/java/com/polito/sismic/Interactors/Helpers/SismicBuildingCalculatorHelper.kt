@@ -138,11 +138,19 @@ class SismicBuildingCalculatorHelper(val mContext: Context) {
         val points = mutableListOf<PillarDomainGraphPoint>()
         var h = 0.0
         val step = H / SENSIBILITY
+        val notHeigthDependingValue = (As * fyd) * (H - (2 * dFirst))
         while (h <= H) {
-            points.add(innerCalculatePointFromThreeToFour(h, fcd, b, As, fyd, dFirst, H))
+            points.add(innerCalculatePointFromThreeToFour(notHeigthDependingValue, h, H, fcd, b))
             h += step
         }
         return points.toList()
+    }
+
+    private fun innerCalculatePointFromThreeToFour(notHeigthDependingValue: Double, h: Double, H: Double, fcd : Double, b : Double): PillarDomainGraphPoint {
+
+        val n = fcd * b * h
+        val m = fastCalculateM(notHeigthDependingValue, h, n, H)
+        return PillarDomainGraphPoint(n, m)
     }
 
     private fun innerCalculatePointFromThreeToFour(h: Double, fcd: Double, b: Double, As: Double, fyd: Double, dFirst: Double, H: Double): PillarDomainGraphPoint {
@@ -152,9 +160,13 @@ class SismicBuildingCalculatorHelper(val mContext: Context) {
         return PillarDomainGraphPoint(n, m)
     }
 
+    private fun fastCalculateM(notHeigthDependingValue : Double, h : Double, n : Double, H : Double) : Double
+    {
+        return notHeigthDependingValue + (n * ((H / 2) - (h / 2)))
+    }
+
     private fun calculateMFromN(As: Double, fyd: Double, H: Double, dFirst: Double, n: Double, h: Double): Double {
-        val m = (As * fyd) * (H - (2 * dFirst)) + (n * ((H / 2) - (h / 2)))
-        return m
+        return (As * fyd) * (H - (2 * dFirst)) + (n * ((H / 2) - (h / 2)))
     }
 
     private fun calculatePointOne(fyd: Double, As: Double): PillarDomainGraphPoint {
