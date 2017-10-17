@@ -132,6 +132,8 @@ class MagliaStrutturaleReportFragment : BaseReportFragment(), OnChartValueSelect
         if (dist_x.isEmpty()) return VerificationError(String.format(resources.getString(R.string.verification_empty_field), dist_x.getTitle()))
         if (num_y.isEmpty()) return VerificationError(String.format(resources.getString(R.string.verification_empty_field), num_y.getTitle()))
         if (dist_y.isEmpty()) return VerificationError(String.format(resources.getString(R.string.verification_empty_field), dist_y.getTitle()))
+        if (getReport().reportState.buildingState.takeoverState.area == 0.0) return VerificationError(resources.getString(R.string.verification_empty_area))
+        if (countPillars() == 0) return VerificationError(resources.getString(R.string.verification_no_pillars))
         return null
     }
 

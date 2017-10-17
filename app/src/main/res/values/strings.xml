@@ -392,4 +392,6 @@
     <string name="pdf_filename_format">verifica_sismica_%s_%s.pdf</string>
     <string name="verification_takeover_points_not_present">Non sono presenti punti del rilievo</string>
     <string name="verification_takeover_figure_not_valid">Figura non calcolata</string>
+    <string name="verification_no_pillars">Nessun pilastro selezionato</string>
+    <string name="verification_empty_area">L'area di influenza dei pilastri è zero</string>
 </resources>
