@@ -238,7 +238,7 @@ class SismicActionCalculatorHelper(val mCoordinateHelper: ParametersForCoordinat
     //Return time in years ?
     private fun calculateTrFor(vr: Double, st: StatiLimite): Triple<Int, Int, String> {
         val tr =  -1 / (Math.log(1 - st.multiplier))
-        return Triple((tr * vr).toInt(), st.color, st.name)
+        return Triple(Math.round((tr * vr)).toInt(), st.color, st.name)
     }
 }
 

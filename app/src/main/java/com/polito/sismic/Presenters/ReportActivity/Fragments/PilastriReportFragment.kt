@@ -306,7 +306,7 @@ class PilastriReportFragment : BaseReportFragment() {
     }
 
     private fun fixAs() {
-        val numFerri = num_armatura.getParameterValue().toDoubleOrZero().toInt()
+        val numFerri = Math.round(num_armatura.getParameterValue().toDoubleOrZero()).toInt()
         val diamFerri = armatura_fi.getParameterValue().toDoubleOrZero()
         getReport().reportState.buildingState.pillarState.num_ferri = numFerri
         getReport().reportState.buildingState.pillarState.diametro_ferri = diamFerri

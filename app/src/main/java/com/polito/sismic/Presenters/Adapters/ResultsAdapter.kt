@@ -19,7 +19,7 @@ class ResultsAdapter(private val mItems: List<StatiLimite>,
                      private val pointsList: List<PillarDomainPoint>) :
         RecyclerView.Adapter<ResultsAdapter.ViewHolder>() {
 
-    val results : HashMap<StatiLimite, Int> = HashMap()
+    val results : HashMap<StatiLimite, Double> = HashMap()
     override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
         holder?.bind(mItems[position], pointsList, pointsList.firstOrNull{it.label == "MRD"}, context, results)
     }
@@ -34,7 +34,7 @@ class ResultsAdapter(private val mItems: List<StatiLimite>,
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(statoLimite: StatiLimite, pointsList: List<PillarDomainPoint>?, mrd: PillarDomainPoint?, context: Context, results: HashMap<StatiLimite, Int>)
+        fun bind(statoLimite: StatiLimite, pointsList: List<PillarDomainPoint>?, mrd: PillarDomainPoint?, context: Context, results: HashMap<StatiLimite, Double>)
         {
             itemView.label.text = statoLimite.name
             itemView.label.setTextColor(ContextCompat.getColor(context, statoLimite.color))
@@ -42,9 +42,9 @@ class ResultsAdapter(private val mItems: List<StatiLimite>,
             val pointForStato = pointsList?.firstOrNull{it.label == statoLimite.name}
             pointForStato?.let {
 
-                val result = (mrd.m / it.m).toInt()
+                val result = (mrd.m / it.m)
                 itemView.value.text = String.format(context.getString(R.string.result), result, context.getString(R.string.percent))
-                itemView.progress.progress = result
+                itemView.progress.progress = result.toInt()
                 results.put(statoLimite, result)
                 itemView.n_value.text = String.format(context.getString(R.string.result_format), it.n)
                 itemView.m_value.text = String.format(context.getString(R.string.result_format), it.m )

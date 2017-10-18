@@ -193,7 +193,7 @@ class SpectrumsDataAdapter(private val mContext: Context, private val mSpectrums
         fun bindPeriodData(periodData: SpectrumDTO) = with(periodData) {
 
             val state = StatiLimite.values().first { it.name == name }
-            itemView.state.text = String.format(mContext.resources.getText(R.string.params_spectrum_state_format).toString(), state.name, (state.multiplier * 100).toInt(), "%")
+            itemView.state.text = String.format(mContext.resources.getText(R.string.params_spectrum_state_format).toString(), state.name, Math.round((state.multiplier * 100)).toInt(), "%")
             itemView.tc.text    = String.format(mContext.resources.getText(R.string.params_spectrum_format).toString(), tc)
             itemView.tb.text    = String.format(mContext.resources.getText(R.string.params_spectrum_format).toString(), tb)
             itemView.td.text    = String.format(mContext.resources.getText(R.string.params_spectrum_format).toString(), td)

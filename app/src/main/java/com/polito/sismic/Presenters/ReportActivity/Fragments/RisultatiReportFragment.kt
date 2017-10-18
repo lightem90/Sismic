@@ -41,7 +41,7 @@ class RisultatiReportFragment : BaseReportFragment() {
     override fun onReload() {
         super.onReload()
         mPointList.clear()
-        getReport().reportState.buildingState.pillarState.pillar_domain?.limitStatePoints?.let {
+        getReport().reportState.buildingState.pillarState.pillar_domain.limitStatePoints.let {
             mPointList.clear()
             mPointList.addAll(it)
         }
@@ -51,7 +51,7 @@ class RisultatiReportFragment : BaseReportFragment() {
     override fun onCompleteClicked(callback: StepperLayout.OnCompleteClickedCallback?) {
 
         mAdapter.results.values.max()?.let {
-            getReport().reportState.result.result = it
+            getReport().reportState.result.result = it.toInt()
         }
         super.onCompleteClicked(callback)
     }
