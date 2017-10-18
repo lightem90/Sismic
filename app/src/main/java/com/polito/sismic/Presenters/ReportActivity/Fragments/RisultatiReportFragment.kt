@@ -50,7 +50,7 @@ class RisultatiReportFragment : BaseReportFragment() {
 
     override fun onCompleteClicked(callback: StepperLayout.OnCompleteClickedCallback?) {
 
-        mAdapter.results.values.max()?.let {
+        mAdapter.results.values.min()?.let {
             getReport().reportState.result.result = it.toInt()
         }
         super.onCompleteClicked(callback)

@@ -9,7 +9,8 @@ import java.util.*
  * Created by it0003971 on 10/10/2017.
  */
 data class PlantFigure(val name: String, val edges: Array<PlantEdge>) : Parcelable {
-    operator fun contains(p: PlantPoint) = edges.count({ it(p) }) % 2 != 0
+    //Denis request: all points available at start (the user can only remove existing ones)
+    operator fun contains(p: PlantPoint) = true//edges.count({ it(p) }) % 2 != 0
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

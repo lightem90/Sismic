@@ -12,10 +12,10 @@ class DangerStateProvider {
         {
             when(value)
             {
-                in Int.MIN_VALUE..10 -> return DangerState.Low
-                in 11..35 -> return DangerState.Normal
-                in 36..50 -> return DangerState.Medium
-                in 51..Int.MAX_VALUE -> return DangerState.High
+                in Int.MIN_VALUE..10 -> return DangerState.High
+                in 11..35 -> return DangerState.Medium
+                in 36..50 -> return DangerState.Normal
+                in 51..Int.MAX_VALUE -> return DangerState.Low
             }
             return DangerState.Default
         }

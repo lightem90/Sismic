@@ -895,7 +895,7 @@ data class PillarDomainGraphPoint(var n: Double, var m: Double) : Parcelable {
     }
 }
 
-data class PillarDomainPoint(var n: Double, var m: Double, var sd: Double, var lambda: Double, var fn: Double, var t1: Double, var label: String, var color: Int) : Parcelable {
+data class PillarDomainPoint(var n: Double, var m: Double, var sd: Double, var lambda: Double, var fh: Double, var t1: Double, var label: String, var color: Int) : Parcelable {
     constructor(source: Parcel) : this(
             source.readDouble(),
             source.readDouble(),
@@ -914,7 +914,7 @@ data class PillarDomainPoint(var n: Double, var m: Double, var sd: Double, var l
         writeDouble(m)
         writeDouble(sd)
         writeDouble(lambda)
-        writeDouble(fn)
+        writeDouble(fh)
         writeDouble(t1)
         writeString(label)
         writeInt(color)

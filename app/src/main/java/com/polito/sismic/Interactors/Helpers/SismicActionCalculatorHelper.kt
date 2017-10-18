@@ -155,7 +155,7 @@ class SismicActionCalculatorHelper(val mCoordinateHelper: ParametersForCoordinat
     }
 
     private fun calculateSpectrumPointListFor(name: String, year: Int, color: Int, ag: Double, f0: Double, tcStar: Double, st: Double, q: Double = 1.0, categoria_sottosuolo: CategoriaSottosuolo = CategoriaSottosuolo.A, higherPrecision: Boolean = false): SpectrumDTO {
-        val td = (4.0 * ag / 9.8) + 1.6
+        val td = (4.0 * ag / 9.81) + 1.6
         val cc = if (categoria_sottosuolo == CategoriaSottosuolo.A) 1.0
                     else categoria_sottosuolo.multiplierCC * Math.pow(tcStar, categoria_sottosuolo.expCC)
         val tc = cc * tcStar

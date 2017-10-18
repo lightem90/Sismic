@@ -22,7 +22,6 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import com.github.mikephil.charting.data.Entry
 import com.polito.sismic.Domain.*
-import android.view.inputmethod.InputMethodManager.HIDE_NOT_ALWAYS
 import android.widget.EditText
 
 
@@ -330,7 +329,7 @@ fun List<PillarDomainPoint>.toParsablePillarLimitStateString(): String {
         sb.append(",")
         sb.append(it.lambda.toString())
         sb.append(",")
-        sb.append(it.fn.toString())
+        sb.append(it.fh.toString())
         sb.append(",")
         sb.append(it.t1.toString())
         sb.append(",")

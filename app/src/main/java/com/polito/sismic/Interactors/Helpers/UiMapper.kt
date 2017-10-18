@@ -124,7 +124,9 @@ class UiMapper {
                     copertura_g2.getParameterValue().toDoubleOrZero(),
                     copertura_qk.getParameterValue().toDoubleOrZero(),
                     qCopertura,
-                    SismicBuildingCalculatorHelper.calculateBuildWeigth(buildingState, qSolaio, qCopertura))
+                    SismicBuildingCalculatorHelper.calculateBuildWeigth(buildingState.takeoverState.numero_piani,
+                            buildingState.takeoverState.area,
+                            qSolaio, qCopertura))
         }
 
         fun createPillarLayoutStateForDomain(magliaStrutturaleReportFragment: MagliaStrutturaleReportFragment, area : Double, pillarCount : Int): PillarLayoutState = with(magliaStrutturaleReportFragment){

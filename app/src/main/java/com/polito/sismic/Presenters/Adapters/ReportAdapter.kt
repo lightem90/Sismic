@@ -2,6 +2,7 @@ package com.polito.sismic.Presenters.Adapters
 
 import android.content.Context
 import android.graphics.Color
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
@@ -24,7 +25,7 @@ class ReportAdapter(val mContext: Context,
                     val longClick: (ReportItemHistory) -> Boolean) :
         RecyclerView.Adapter<ReportAdapter.ViewHolder>() {
 
-    val items = mHistoryInteractor.mReportHistoryItems
+    private val items = mHistoryInteractor.mReportHistoryItems
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder? {
         val v = parent.inflate(R.layout.history_item)
         return ViewHolder(v, mHistoryInteractor, longClick, mContext)
@@ -39,8 +40,8 @@ class ReportAdapter(val mContext: Context,
     }
 
     class ViewHolder(itemView: View,
-                     val mHistoryInteractor : HistoryItemInteractor,
-                     val longClick: (ReportItemHistory) -> Boolean,
+                     private val mHistoryInteractor : HistoryItemInteractor,
+                     private val longClick: (ReportItemHistory) -> Boolean,
                      val mContext: Context) : RecyclerView.ViewHolder(itemView)
     {
         fun bindReport(reportDetails: ReportItemHistory) {
@@ -50,28 +51,17 @@ class ReportAdapter(val mContext: Context,
                 itemView.history_item_title.text = reportDetails.title
                 itemView.history_item_description.text = reportDetails.date.toFormattedString()
                 itemView.history_item_size.text = String.format(mContext.getString(R.string.size_string), reportDetails.size)
-                val dangerState = DangerStateProvider.getDangerStateByValue(reportDetails.value)
 
+                val dangerState = DangerStateProvider.getDangerStateByValue(reportDetails.value)
                 itemView.danger_layout.SetDangerState(dangerState)
                 itemView.history_item_value.text = reportDetails.value.toString()
-                setTextColorByDanger(reportDetails.value, itemView.history_item_value)
+                itemView.history_item_value.setTextColor(ContextCompat.getColor(mContext, dangerState.color))
+
                 itemView.setOnLongClickListener { longClick(this) }
                 itemView.btn_delete_item_history.setOnClickListener {
                     mHistoryInteractor.deleteItemById(reportDetails.id)
                 }
                 itemView.btn_upload_item_history.setOnClickListener { mHistoryInteractor.uploadItem(reportDetails.id, reportDetails.userIdentifier) }
-            }
-        }
-
-        //Per non mettere il mContext qui dentro, altrimenti avrei messo tutto come statico in DAngerStateProvider
-        private fun setTextColorByDanger(danger : Int, textView : TextView)
-        {
-            when(danger)
-            {
-                in Int.MIN_VALUE..10 -> return textView.setTextColor(Color.parseColor("#0099FF"))
-                in 11..35 -> return textView.setTextColor(Color.parseColor("#33CC00"))
-                in 36..50 -> return textView.setTextColor(Color.parseColor("#FF9900"))
-                in 51..Int.MAX_VALUE -> return textView.setTextColor(Color.parseColor("#FF0000"))
             }
         }
 

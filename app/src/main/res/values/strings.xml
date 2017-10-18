@@ -172,7 +172,6 @@
     <string name="no_login">E\' necessario il login per compilare un database</string>
     <string name="rilievi_report_title">Rilievi</string>
     <string name="error_creating_report">Errore nell\'apertura del database</string>
-
     <string name="title_activity_splash_screen">SplashScreen</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
@@ -370,7 +369,7 @@
     <string name="result">%.2f %s</string>
     <string name="report_result_title">INDICI DI VULNERABILITÀ</string>
     <string name="pillar_domain_error">Calcolare il dominio del pilastro</string>
-    <string name="risultati_disclaimer">Come risultato verrà considerato l\'indice di vulnerabilità maggiore</string>
+    <string name="risultati_disclaimer">Come risultato verrà considerato l\'indice di vulnerabilità più pericoloso</string>
     <string name="maglia_strutturale">POSIZIONAMENTO PILASTRI</string>
     <string name="invalid_area">\" - \"</string>
     <string name="fatal_login_error">Fatal error (%d) %s</string>
@@ -378,14 +377,14 @@
     <string name="n_result_format"> Nsd [kN]</string>
     <string name="m_result_format"> Msd [kNm]</string>
     <string name="mrd_result_format"> Mrd [kNm]</string>
-    <string name="result_format">%.3f</string>
+    <string name="result_format">%.4f</string>
     <string name="domain_point_id_label">Indice</string>
     <string name="domain_point_n_label"> N: [kN]</string>
     <string name="domain_point_m_label"> M: [kNm]</string>
     <string name="domain_point_id_value">%d</string>
-    <string name="result_format_sd">Sd(t)[]</string>
-    <string name="result_format_fn">Fn[]</string>
-    <string name="result_format_lambda">λ[]</string>
+    <string name="result_format_sd">Sd(t)[m/s²]</string>
+    <string name="result_format_fn">Fh[kN]</string>
+    <string name="result_format_lambda">λ[-]</string>
     <string name="result_format_t1">T1[s]</string>
     <string name="domain_point_value_format">%.2f</string>
     <string name="domain_point_value_format_high">%.4f</string>
@@ -393,5 +392,6 @@
     <string name="verification_takeover_points_not_present">Non sono presenti punti del rilievo</string>
     <string name="verification_takeover_figure_not_valid">Figura non calcolata</string>
     <string name="verification_no_pillars">Nessun pilastro selezionato</string>
-    <string name="verification_empty_area">L'area di influenza dei pilastri è zero</string>
+    <string name="verification_empty_area">L\'area di influenza dei pilastri è zero</string>
+    <string name="peso_totale">Peso totale [kN] = </string>
 </resources>

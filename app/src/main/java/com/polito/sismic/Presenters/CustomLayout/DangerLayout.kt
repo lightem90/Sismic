@@ -11,13 +11,13 @@ import com.polito.sismic.R
  * Created by Matteo on 31/07/2017.
  */
 
-enum class DangerState
+enum class DangerState(val color : Int)
 {
-    High,
-    Medium,
-    Normal,
-    Low,
-    Default
+    High(R.color.report_danger_high),
+    Medium(R.color.report_danger_medium),
+    Normal(R.color.report_danger_normal),
+    Low(R.color.report_danger_low),
+    Default(-1)
 }
 
 //To add border color according to danger

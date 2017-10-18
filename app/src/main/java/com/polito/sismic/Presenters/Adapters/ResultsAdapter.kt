@@ -49,10 +49,10 @@ class ResultsAdapter(private val mItems: List<StatiLimite>,
                 itemView.n_value.text = String.format(context.getString(R.string.result_format), it.n)
                 itemView.m_value.text = String.format(context.getString(R.string.result_format), it.m )
                 itemView.mrd_value.text = String.format(context.getString(R.string.result_format), mrd.m )
-                itemView.sd_value.text = String.format(context.getString(R.string.domain_point_value_format), it.sd)
-                itemView.fn_value.text = String.format(context.getString(R.string.domain_point_value_format), it.fn)
+                itemView.sd_value.text = String.format(context.getString(R.string.domain_point_value_format_high), it.sd)
+                itemView.fh_value.text = String.format(context.getString(R.string.domain_point_value_format_high), it.fh)
                 itemView.lambda_value.text = String.format(context.getString(R.string.domain_point_value_format), it.lambda)
-                itemView.t1_value.text = String.format(context.getString(R.string.domain_point_value_format), it.t1)
+                itemView.t1_value.text = String.format(context.getString(R.string.domain_point_value_format_high), it.t1)
             }
         }
     }

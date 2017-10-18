@@ -10,6 +10,7 @@ import android.widget.AdapterView
 import com.polito.sismic.Extensions.hideSoftKeyboard
 import com.polito.sismic.Extensions.toDoubleOrZero
 import com.polito.sismic.Extensions.toast
+import com.polito.sismic.Interactors.Helpers.SismicBuildingCalculatorHelper
 import com.polito.sismic.Interactors.Helpers.UiMapper
 import com.polito.sismic.R
 import com.stepstone.stepper.StepperLayout
@@ -135,6 +136,7 @@ class DatiStrutturaliReportFragment : BaseReportFragment() {
     {
         qSolaio = mPesiSolaio[solaio_peso.selectedItemPosition].toDoubleOrZero() + solaio_g2.getParameterValue().toDoubleOrZero() + solaio_qk.getParameterValue().toDoubleOrZero()*0.3
         solaio_q.text = String.format(context.getString(R.string.solaio_q_format), "%.2f".format(qSolaio))
+        updateTotalWeight()
     }
 
     private fun updateCoperturaQ()
@@ -142,6 +144,16 @@ class DatiStrutturaliReportFragment : BaseReportFragment() {
         qCopertura = mPesiCopertura[copertura_peso.selectedItemPosition].toDoubleOrZero() + copertura_g2.getParameterValue().toDoubleOrZero() + copertura_qk.getParameterValue().toDoubleOrZero()*0.3
 
         copertura_q.text = String.format(context.getString(R.string.copertura_q_format), "%.2f".format(qCopertura))
+        updateTotalWeight()
+    }
+
+    private fun updateTotalWeight()
+    {
+        val pesoTotale = SismicBuildingCalculatorHelper.calculateBuildWeigth(getReport().reportState.buildingState.takeoverState.numero_piani,
+                getReport().reportState.buildingState.takeoverState.area,
+                qSolaio, qCopertura)
+
+        peso_totale.setValue("%.2f".format(pesoTotale))
     }
 
     fun getTipoFondazioni(): String {
@@ -188,6 +200,7 @@ class DatiStrutturaliReportFragment : BaseReportFragment() {
     override fun onReload() {
         super.onReload()
         setSolaioVisibility()
+        updateTotalWeight()
     }
 
     private fun setSolaioVisibility()

@@ -19,9 +19,9 @@
                 <corners
                     android:radius="5dip" />
                 <gradient
-                    android:startColor="@color/report_danger_low"
+                    android:endColor="@color/report_danger_low"
                     android:centerColor="@color/report_danger_medium"
-                    android:endColor="@color/report_danger_high" />
+                    android:startColor="@color/report_danger_high" />
             </shape>
         </clip>
     </item>
