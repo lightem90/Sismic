@@ -112,6 +112,10 @@ class RilieviReportFragment : BaseReportFragment(){
         return null
     }
 
+    override fun onNeedReload(): Boolean {
+        return true
+    }
+
     //callback to activity updates domain instance for activity and all existing and future fragments
     override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback?) {
         //Fixes the pillar count with the one that really exists in the graph
