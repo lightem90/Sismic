@@ -58,11 +58,10 @@ class ParametersForCoordinateHelper(val mContext : Context) {
         if (!initialized) return NeighboursNodeSquare.Invalid
         if (x == -1.0 || y == -1.0) return NeighboursNodeSquare.Invalid
         val result = mutableListOf<Triple<String, Double, Int>>()
-        var initIndex = 0
-        //get to the closest point in longitude (not safe)
-        while (mCoordinateArray[initIndex].second < x) {
-            initIndex++
-        }
+
+        //get to the closest point in longitude
+        val initIndex = (0 until mCoordinateArray.size).firstOrNull { mCoordinateArray[it].second >= x } ?: -1
+        if (initIndex == -1) return NeighboursNodeSquare.Invalid
 
         //search left and right from initial index. it stops when the distance from a point is greater than the sum of the closest one
         //the return lists have an index for the map to the point and the distance from the input point
