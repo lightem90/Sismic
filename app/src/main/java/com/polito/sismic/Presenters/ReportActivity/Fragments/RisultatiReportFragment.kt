@@ -11,6 +11,7 @@ import com.polito.sismic.Interactors.Helpers.StatiLimite
 import com.polito.sismic.Presenters.Adapters.ResultsAdapter
 import com.polito.sismic.R
 import com.stepstone.stepper.StepperLayout
+import com.stepstone.stepper.VerificationError
 import kotlinx.android.synthetic.main.risultati_report_layout.*
 
 /**
@@ -48,9 +49,14 @@ class RisultatiReportFragment : BaseReportFragment() {
         results_container.adapter.notifyDataSetChanged()
     }
 
+    override fun verifyStep(): VerificationError? {
+        if (mAdapter.results[StatiLimite.SLV] == null) return VerificationError(context.getString(R.string.slv_not_present))
+        return null
+    }
+
     override fun onCompleteClicked(callback: StepperLayout.OnCompleteClickedCallback?) {
 
-        mAdapter.results.values.min()?.let {
+        mAdapter.results[StatiLimite.SLV]?.let {
             getReport().reportState.result.result = it.toInt()
         }
         super.onCompleteClicked(callback)

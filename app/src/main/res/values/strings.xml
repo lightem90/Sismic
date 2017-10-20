@@ -414,4 +414,5 @@
     <string name="summary_c_uso">Classe d\'uso: %s, %.2f</string>
     <string name="summary_v_nom">Vita nominale: %d [anni]</string>
     <string name="summary_num_piani">Numero piani: %d</string>
+    <string name="slv_not_present">Risultato \"SLV\" non presente</string>
 </resources>
