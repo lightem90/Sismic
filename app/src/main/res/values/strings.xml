@@ -369,7 +369,7 @@
     <string name="result">%.2f %s</string>
     <string name="report_result_title">INDICI DI VULNERABILITÀ</string>
     <string name="pillar_domain_error">Calcolare il dominio del pilastro</string>
-    <string name="risultati_disclaimer">Come risultato verrà considerato l\'indice di vulnerabilità più pericoloso</string>
+    <string name="risultati_disclaimer">Come risultato verrà considerato SLV</string>
     <string name="maglia_strutturale">POSIZIONAMENTO PILASTRI</string>
     <string name="invalid_area">\" - \"</string>
     <string name="fatal_login_error">Fatal error (%d) %s</string>
@@ -384,7 +384,7 @@
     <string name="domain_point_id_value">%d</string>
     <string name="result_format_sd">Sd(t)[m/s²]</string>
     <string name="result_format_fn">Fh[kN]</string>
-    <string name="result_format_ty">Ty[kNm]</string>
+    <string name="result_format_ty">Ty[kN]</string>
     <string name="domain_point_value_format">%.2f</string>
     <string name="domain_point_value_format_high">%.4f</string>
     <string name="pdf_filename_format">verifica_sismica_%s_%s.pdf</string>
