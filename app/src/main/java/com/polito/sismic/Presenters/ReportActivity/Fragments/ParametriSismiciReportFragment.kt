@@ -150,6 +150,7 @@ class ParametriSismiciReportFragment : BaseReportFragment() {
     }
 
     private fun setVitaReale(classeUso: Int) {
+        if (classeUso == -1 || classeUso >= ClasseUso.values().size) return
         var vitaRif = getClasseUsoForIndex(classeUso) * getVitaNominale()
         if (vitaRif <= 30) vitaRif = 30.0
         vita_reale.setValue(vitaRif.toString())
