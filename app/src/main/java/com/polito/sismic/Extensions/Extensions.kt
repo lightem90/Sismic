@@ -310,9 +310,9 @@ fun String.toPillarDomainLimitStateList(): List<PillarDomainPoint> {
                             values[1].toDoubleOrZero(),
                             values[2].toDoubleOrZero(),
                             values[3].toDoubleOrZero(),
-                            values[5].toDoubleOrZero(),
-                            values[6],
-                            values[7].toIntOrZero())
+                            values[4].toDoubleOrZero(),
+                            values[5],
+                            values[6].toIntOrZero())
                 } else null
     }
 }

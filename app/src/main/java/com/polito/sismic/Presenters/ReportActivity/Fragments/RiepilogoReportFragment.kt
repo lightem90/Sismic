@@ -107,7 +107,7 @@ class RiepilogoReportFragment : BaseReportFragment() {
         v_nom.text = String.format(context.getString(R.string.summary_v_nom), sismicState.sismicParametersState.vitaNominale)
         c_uso.text = String.format(context.getString(R.string.summary_c_uso), ClasseUso.values().firstOrNull { it.multiplier == sismicState.sismicParametersState.classeUso }?.toString(), sismicState.sismicParametersState.classeUso)
 
-        cat_top.text = String.format(context.getString(R.string.summary_cat_top), CategoriaTopografica.values().firstOrNull { it.multiplier == sismicState.projectSpectrumState.categoria_topografica }?.toString(), sismicState.projectSpectrumState.categoria_topografica)
+        cat_top.text = String.format(context.getString(R.string.summary_cat_top), CategoriaTopografica.values().firstOrNull { it.multiplier == sismicState.projectSpectrumState.categoria_topografica }?.toString())
         cat_suolo.text = String.format(context.getString(R.string.summary_cat_suolo), sismicState.projectSpectrumState.categoria_suolo)
 
         q.text = String.format(context.getString(R.string.summary_q), sismicState.projectSpectrumState.q0)
