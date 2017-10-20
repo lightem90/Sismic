@@ -252,7 +252,7 @@ class DatabaseMapperHelper {
     }
 
     private fun createSismicForDb(reportId: Int, sismicParametersState: SismicParametersState): DatabaseSection = with(sismicParametersState) {
-        return DatabaseParametriSismici(vitaNominale, classeUso, vitaReale, "", reportId)
+        return DatabaseParametriSismici(vitaNominale, classeUso, vitaRiferimento, "", reportId)
     }
 
     private fun createLocalizationForDb(reportId: Int, localizationState: LocalizationState): DatabaseLocalizationSection {

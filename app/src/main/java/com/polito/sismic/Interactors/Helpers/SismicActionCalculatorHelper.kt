@@ -92,7 +92,7 @@ class SismicActionCalculatorHelper(val mCoordinateHelper: ParametersForCoordinat
                               currentProjectSpectrumState: ProjectSpectrumState? = null,
                               higherPrecision: Boolean = false): MutableList<SpectrumDTO> {
 
-        val vr = if (currentSismicState != null) currentSismicState.vitaReale else sismicState.sismicState.sismicParametersState.vitaReale
+        val vr = if (currentSismicState != null) currentSismicState.vitaRiferimento else sismicState.sismicState.sismicParametersState.vitaRiferimento
 
         var categoria_sottosuolo = if (sismicState.sismicState.projectSpectrumState.categoria_suolo.isEmpty()) CategoriaSottosuolo.A
                 else CategoriaSottosuolo.values().first { it.toString() ==  sismicState.sismicState.projectSpectrumState.categoria_suolo}

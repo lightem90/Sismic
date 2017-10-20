@@ -183,7 +183,7 @@ class UiMapper {
                     reportState.sismicState.sismicParametersState.let {
                         setVitaNominale(it.vitaNominale)
                         classe_parameter.setSelection(getClasseUsoIndexByValue(it.classeUso))
-                        vita_reale.setValue(it.vitaReale.toStringOrEmpty())
+                        vita_reale.setValue(it.vitaRiferimento.toStringOrEmpty())
                     }
                 }
                 is SpettriDiProgettoReportFragment ->

@@ -13,8 +13,7 @@ import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.LineData
 import com.polito.sismic.Domain.ReportMedia
-import com.polito.sismic.Interactors.Helpers.MediaType
-import com.polito.sismic.Interactors.Helpers.StatiLimite
+import com.polito.sismic.Interactors.Helpers.*
 import com.polito.sismic.Presenters.Adapters.ReportImageAdapter
 import com.polito.sismic.Presenters.Adapters.ReportStringAdapter
 import com.polito.sismic.Presenters.Adapters.ReportVideoAdapter
@@ -95,5 +94,32 @@ class RiepilogoReportFragment : BaseReportFragment() {
             data = LineData(domainGraphDataSet.toList())
             invalidate()
         }
+
+        val locState = getReport().reportState.localizationState
+        val buildState = getReport().reportState.buildingState
+        val sismicState = getReport().reportState.sismicState
+
+        address.text = String.format(context.getString(R.string.summary_address), locState.address, locState.comune, locState.region)
+        zona.text = String.format(context.getString(R.string.summary_zona), locState.zone)
+
+        vrif.text = String.format(context.getString(R.string.summary_vr), sismicState.sismicParametersState.vitaRiferimento.toString())
+
+        v_nom.text = String.format(context.getString(R.string.summary_v_nom), sismicState.sismicParametersState.vitaNominale)
+        c_uso.text = String.format(context.getString(R.string.summary_c_uso), ClasseUso.values().firstOrNull { it.multiplier == sismicState.sismicParametersState.classeUso }?.toString(), sismicState.sismicParametersState.classeUso)
+
+        cat_top.text = String.format(context.getString(R.string.summary_cat_top), CategoriaTopografica.values().firstOrNull { it.multiplier == sismicState.projectSpectrumState.categoria_topografica }?.toString(), sismicState.projectSpectrumState.categoria_topografica)
+        cat_suolo.text = String.format(context.getString(R.string.summary_cat_suolo), sismicState.projectSpectrumState.categoria_suolo)
+
+        q.text = String.format(context.getString(R.string.summary_q), sismicState.projectSpectrumState.q0)
+        cdab.text = String.format(context.getString(R.string.summary_cdab), if (sismicState.projectSpectrumState.classe_duttilita) "Alta" else "Bassa")
+
+        h_tot.text = String.format(context.getString(R.string.summary_tot_h), buildState.takeoverState.altezza_totale)
+        n_piani.text = String.format(context.getString(R.string.summary_num_piani), buildState.takeoverState.numero_piani)
+
+        peso_tot.text = String.format(context.getString(R.string.summary_tot_weight), buildState.structuralState.peso_totale)
+        area_tot.text = String.format(context.getString(R.string.summary_tot_area), buildState.takeoverState.area)
+
+        pilastri_tot.text = String.format(context.getString(R.string.summary_pil_cout), buildState.pillarLayoutState.pillarCount)
+        area_infl.text = String.format(context.getString(R.string.summary_area_inf), buildState.pillarLayoutState.area)
     }
 }

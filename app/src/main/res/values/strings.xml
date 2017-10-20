@@ -398,5 +398,20 @@
     <string name="media_riepilogue">MEDIA</string>
     <string name="localization_sismic_riepilogue">LOCALIZZAZIONE E PARAMETRI SISMICI</string>
     <string name="building_riepilogue">DATI EDIFICIO</string>
-    <string name="sismic_state_riepilogue">INFORMAZIONI STATI LIMITE</string>
+    <string name="sismic_state_riepilogue">GRAFICO STATI LIMITE</string>
+    <string name="summary_address">Indirizzo: %s, %s, %s</string>
+    <string name="summary_zona">Zona sismica: %s</string>
+    <string name="summary_vr">Vita di riferimento: %s [anni]</string>
+    <string name="summary_cat_top">Categoria topografica: %s, %.2f</string>
+    <string name="summary_cat_suolo">Categoria suolo: %s</string>
+    <string name="summary_cdab">Classe di duttilità: %s</string>
+    <string name="summary_q">Q: %.2f</string>
+    <string name="summary_tot_weight">Peso totale: %.2f [kN]</string>
+    <string name="summary_tot_h">Altezza totale: %.2f [m]</string>
+    <string name="summary_tot_area">Area totale: %.2f [m²]</string>
+    <string name="summary_pil_cout">Numero pilastri: %d [-]</string>
+    <string name="summary_area_inf">Area influenza pilastro: %.2f [m²]</string>
+    <string name="summary_c_uso">Classe d\'uso: %s, %.2f</string>
+    <string name="summary_v_nom">Vita nominale: %d [anni]</string>
+    <string name="summary_num_piani">Numero piani: %d</string>
 </resources>

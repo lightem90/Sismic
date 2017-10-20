@@ -196,7 +196,7 @@ data class LocalizationState(var latitude: Double,
 
 data class SismicParametersState(var vitaNominale: Int,
                                  var classeUso: Double,
-                                 var vitaReale: Double,
+                                 var vitaRiferimento: Double,
                                  var spectrums: List<SpectrumDTO>) : Parcelable {
     constructor() : this(0, 0.0, 0.0, listOf())
 
@@ -212,7 +212,7 @@ data class SismicParametersState(var vitaNominale: Int,
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
         writeInt(vitaNominale)
         writeDouble(classeUso)
-        writeDouble(vitaReale)
+        writeDouble(vitaRiferimento)
         writeTypedList(spectrums)
     }
 

@@ -12,8 +12,26 @@
             android:id="@+id/address"
             style="@style/TextSummary" />
 
+    </LinearLayout>
+
+
+    <LinearLayout style="@style/TextSummaryContainer">
+
         <TextView
             android:id="@+id/zona"
+            style="@style/TextSummary" />
+
+        <TextView
+            android:id="@+id/c_uso"
+            style="@style/TextSummary" />
+
+    </LinearLayout>
+
+
+    <LinearLayout style="@style/TextSummaryContainer">
+
+        <TextView
+            android:id="@+id/v_nom"
             style="@style/TextSummary" />
 
     </LinearLayout>
@@ -25,12 +43,26 @@
             android:id="@+id/vrif"
             style="@style/TextSummary" />
 
+    </LinearLayout>
+
+
+    <LinearLayout style="@style/TextSummaryContainer">
+
         <TextView
             android:id="@+id/cat_top"
             style="@style/TextSummary" />
 
         <TextView
             android:id="@+id/cat_suolo"
+            style="@style/TextSummary" />
+
+    </LinearLayout>
+
+
+    <LinearLayout style="@style/TextSummaryContainer">
+
+        <TextView
+            android:id="@+id/cdab"
             style="@style/TextSummary" />
 
         <TextView
@@ -43,15 +75,22 @@
         style="@style/sectionTitle"
         android:text="@string/building_riepilogue" />
 
+
     <LinearLayout style="@style/TextSummaryContainer">
 
         <TextView
-            android:id="@+id/peso_tot"
+            android:id="@+id/n_piani"
             style="@style/TextSummary" />
+
 
         <TextView
             android:id="@+id/h_tot"
             style="@style/TextSummary" />
+
+    </LinearLayout>
+
+
+    <LinearLayout style="@style/TextSummaryContainer">
 
         <TextView
             android:id="@+id/area_tot"
@@ -59,6 +98,22 @@
 
         <TextView
             android:id="@+id/pilastri_tot"
+            style="@style/TextSummary" />
+
+    </LinearLayout>
+
+    <LinearLayout style="@style/TextSummaryContainer">
+
+        <TextView
+            android:id="@+id/peso_tot"
+            style="@style/TextSummary" />
+
+    </LinearLayout>
+
+    <LinearLayout style="@style/TextSummaryContainer">
+
+        <TextView
+            android:id="@+id/area_infl"
             style="@style/TextSummary" />
 
     </LinearLayout>
@@ -79,9 +134,9 @@
     <TableLayout
         style="@style/scrollableLayout"
         android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_half_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_half_margin"
+        android:layout_marginTop="@dimen/activity_vertical_half_margin"
         android:orientation="vertical">
 
         <TableRow
