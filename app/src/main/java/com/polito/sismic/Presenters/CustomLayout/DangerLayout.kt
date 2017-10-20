@@ -11,8 +11,7 @@ import com.polito.sismic.R
  * Created by Matteo on 31/07/2017.
  */
 
-enum class DangerState(val color : Int)
-{
+enum class DangerState(val color: Int) {
     High(R.color.report_danger_high),
     Medium(R.color.report_danger_medium),
     Normal(R.color.report_danger_normal),
@@ -37,17 +36,16 @@ class DangerLayout : LinearLayout {
             defStyleRes: Int)
             : super(context, attrs, defStyleAttr, defStyleRes)
 
-    private var mDangerState : DangerState = DangerState.Default
+    private var mDangerState: DangerState = DangerState.Default
     private val STATE_REPORT_DANGER_HIGH = intArrayOf(R.attr.state_report_danger_high)
     private val STATE_REPORT_DANGER_MEDIUM = intArrayOf(R.attr.state_report_danger_medium)
     private val STATE_REPORT_DANGER_NORMAL = intArrayOf(R.attr.state_report_danger_normal)
     private val STATE_REPORT_DANGER_LOW = intArrayOf(R.attr.state_report_danger_low)
 
 
-    fun SetDangerState(state : DangerState)
-    {
+    fun SetDangerState(state: DangerState) {
         mDangerState = state
-        refreshDrawableState();
+        refreshDrawableState()
     }
 
     override fun onCreateDrawableState(extraSpace: Int): IntArray {
@@ -57,7 +55,7 @@ class DangerLayout : LinearLayout {
 
         mDangerState?.let {
             val drawableState = super.onCreateDrawableState(extraSpace + 1)
-            return when(it) {
+            return when (it) {
                 DangerState.High -> pushState(drawableState, STATE_REPORT_DANGER_HIGH, extraSpace)
                 DangerState.Medium -> pushState(drawableState, STATE_REPORT_DANGER_MEDIUM, extraSpace)
                 DangerState.Normal -> pushState(drawableState, STATE_REPORT_DANGER_NORMAL, extraSpace)
@@ -68,8 +66,7 @@ class DangerLayout : LinearLayout {
 
     }
 
-    private fun pushState(drawableState: IntArray, stateToPush: IntArray?, extraSpace: Int) : IntArray
-    {
+    private fun pushState(drawableState: IntArray, stateToPush: IntArray?, extraSpace: Int): IntArray {
         if (stateToPush == null) super.onCreateDrawableState(extraSpace)
         mergeDrawableStates(drawableState, stateToPush)
         return drawableState

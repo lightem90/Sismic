@@ -1,5 +1,6 @@
 package com.polito.sismic.Presenters.ReportActivity.Fragments
 
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.support.annotation.Nullable
@@ -15,6 +16,8 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
+import com.polito.sismic.Domain.PillarDomain
+import com.polito.sismic.Domain.PillarState
 import com.polito.sismic.Extensions.hideSoftKeyboard
 import com.polito.sismic.Interactors.Helpers.UiMapper
 import com.polito.sismic.Interactors.PillarLayoutInteractor
@@ -137,11 +140,16 @@ class MagliaStrutturaleReportFragment : BaseReportFragment(), OnChartValueSelect
         return null
     }
 
+    override fun onNeedReload(): Boolean {
+        return true
+    }
+
     //callback to activity updates domain instance for activity and all existing and future fragments
     override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback?) {
         val numPillars = countPillars()
         getReport().reportState.buildingState.pillarLayoutState = UiMapper.createPillarLayoutStateForDomain(this,
                 getReport().reportState.buildingState.takeoverState.area / numPillars, numPillars)
+        getReport().reportState.buildingState.pillarState.pillar_domain.limitStatePoints =  mPillarLayoutInteractor.calculateLimitStatePointsInGraph(getReport().reportState)
         super.onNextClicked(callback)
     }
 

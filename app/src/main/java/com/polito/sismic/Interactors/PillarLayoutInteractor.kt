@@ -9,10 +9,13 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.github.mikephil.charting.utils.EntryXComparator
+import com.polito.sismic.Domain.PillarDomainPoint
 import com.polito.sismic.Domain.PillarLayoutState
 import com.polito.sismic.Domain.PlantPoint
+import com.polito.sismic.Domain.ReportState
 import com.polito.sismic.Interactors.Helpers.PlantEdge
 import com.polito.sismic.Interactors.Helpers.PlantFigure
+import com.polito.sismic.Interactors.Helpers.SismicBuildingCalculatorHelper
 import com.polito.sismic.R
 import java.util.*
 
@@ -21,6 +24,7 @@ import java.util.*
  */
 class PillarLayoutInteractor(val mContext: Context) {
 
+    private val mSismicBuildingCalculatorHelper : SismicBuildingCalculatorHelper = SismicBuildingCalculatorHelper(mContext)
 
     fun convertListForGraph(pillarLayoutState : PillarLayoutState, figure : PlantFigure?): LineData? {
 
@@ -87,6 +91,10 @@ class PillarLayoutInteractor(val mContext: Context) {
             circleColors = listOf(Color.BLACK)
             lineWidth = 3f
         }
+    }
+
+    fun calculateLimitStatePointsInGraph(reportState: ReportState): List<PillarDomainPoint> {
+        return mSismicBuildingCalculatorHelper.getLimitStatePointsInDomainForPillar(reportState)
     }
 
 

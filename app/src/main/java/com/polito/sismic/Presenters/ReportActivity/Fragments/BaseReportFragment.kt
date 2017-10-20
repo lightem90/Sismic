@@ -1,12 +1,18 @@
 package com.polito.sismic.Presenters.ReportActivity.Fragments
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.github.mikephil.charting.components.YAxis
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineDataSet
+import com.polito.sismic.Domain.PillarDomain
 import com.polito.sismic.Domain.Report
 import com.polito.sismic.Extensions.getReport
 import com.polito.sismic.Extensions.toast
@@ -157,6 +163,52 @@ abstract class BaseReportFragment : Fragment(), BlockingStep {
     override fun onCompleteClicked(callback: StepperLayout.OnCompleteClickedCallback?) {
         mParametersCallback?.onParametersSaveRequest()
         callback!!.complete()
+    }
+
+    protected fun buildPillarDomainForUi(pillarDomain: PillarDomain, addSismicStatePoints: Boolean = false): MutableList<LineDataSet> {
+        val upPointList = mutableListOf<Entry>()
+        pillarDomain.domainPoints.forEach { point ->
+            upPointList.add(Entry(point.n.toFloat(), point.m.toFloat()))
+        }
+
+        val domainGraph = mutableListOf<LineDataSet>()
+
+        if (addSismicStatePoints) {
+            domainGraph.addAll(pillarDomain.limitStatePoints.map {
+                LineDataSet(listOf(Entry(it.n.toFloat(), it.m.toFloat())), it.label).apply {
+                    setDrawCircles(true)
+                    circleRadius = 10f
+                    circleColors = listOf(ContextCompat.getColor(context, it.color))
+                    axisDependency = YAxis.AxisDependency.LEFT
+                }
+            }
+            )
+        }
+
+
+        val UiDomainUp = LineDataSet(upPointList, "").apply {
+            color = Color.BLUE
+            setDrawCircles(false)
+            lineWidth = 3f
+            axisDependency = YAxis.AxisDependency.LEFT
+        }
+
+        //Just ui stuff to show the simmetric
+        val downList = mutableListOf<Entry>()
+        pillarDomain.domainPoints.forEach { point ->
+            downList.add(Entry(point.n.toFloat(), -point.m.toFloat()))
+        }
+
+        val UiDomainDown = LineDataSet(downList, "").apply {
+            color = Color.BLUE
+            setDrawCircles(false)
+            lineWidth = 3f
+            axisDependency = YAxis.AxisDependency.LEFT
+        }
+
+        domainGraph.add(UiDomainUp)
+        domainGraph.add(UiDomainDown)
+        return domainGraph
     }
 }
 

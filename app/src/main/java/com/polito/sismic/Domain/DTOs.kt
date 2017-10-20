@@ -850,8 +850,8 @@ data class PillarState(var classe_calcestruzzo: String,
     }
 }
 
-data class PillarDomain(var domainPoints: List<PillarDomainGraphPoint>,
-                        var limitStatePoints: List<PillarDomainPoint>) : Parcelable {
+data class PillarDomain(val domainPoints: List<PillarDomainGraphPoint>,
+                        var limitStatePoints: List<PillarDomainPoint> = listOf()) : Parcelable {
     constructor(source: Parcel) : this(
             source.createTypedArrayList(PillarDomainGraphPoint.CREATOR),
             source.createTypedArrayList(PillarDomainPoint.CREATOR)

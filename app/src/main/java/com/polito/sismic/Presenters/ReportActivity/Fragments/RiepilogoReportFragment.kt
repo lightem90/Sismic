@@ -1,12 +1,20 @@
 package com.polito.sismic.Presenters.ReportActivity.Fragments
 
+import android.graphics.Color
 import android.os.Bundle
 import android.support.annotation.Nullable
+import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.github.mikephil.charting.components.Legend
+import com.github.mikephil.charting.components.LegendEntry
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.components.YAxis
+import com.github.mikephil.charting.data.LineData
 import com.polito.sismic.Domain.ReportMedia
 import com.polito.sismic.Interactors.Helpers.MediaType
+import com.polito.sismic.Interactors.Helpers.StatiLimite
 import com.polito.sismic.Presenters.Adapters.ReportImageAdapter
 import com.polito.sismic.Presenters.Adapters.ReportStringAdapter
 import com.polito.sismic.Presenters.Adapters.ReportVideoAdapter
@@ -30,6 +38,21 @@ class RiepilogoReportFragment : BaseReportFragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        with(pillar_domain_state_chart)
+        {
+            xAxis.position = XAxis.XAxisPosition.BOTTOM
+            legend.form = Legend.LegendForm.DEFAULT
+            legend.setCustom(listOf(
+                    LegendEntry(context.getString(R.string.dominio_pilastro), Legend.LegendForm.DEFAULT, 8f, 1f, null, Color.BLUE),
+                    LegendEntry(context.getString(R.string.stato_slc), Legend.LegendForm.DEFAULT, 8f, 1f, null, ContextCompat.getColor(context, StatiLimite.SLC.color)),
+                    LegendEntry(context.getString(R.string.stato_slv), Legend.LegendForm.DEFAULT, 8f, 1f, null, ContextCompat.getColor(context, StatiLimite.SLV.color)),
+                    LegendEntry(context.getString(R.string.stato_sld), Legend.LegendForm.DEFAULT, 8f, 1f, null, ContextCompat.getColor(context, StatiLimite.SLD.color)),
+                    LegendEntry(context.getString(R.string.stato_slo), Legend.LegendForm.DEFAULT, 8f, 1f, null, ContextCompat.getColor(context, StatiLimite.SLO.color)),
+                    LegendEntry(context.getString(R.string.stato_mrd), Legend.LegendForm.DEFAULT, 8f, 1f, null, Color.MAGENTA)))
+            description.isEnabled = false
+            getAxis(YAxis.AxisDependency.RIGHT).isEnabled = false
+        }
 
         onReload()
     }
@@ -64,5 +87,13 @@ class RiepilogoReportFragment : BaseReportFragment() {
                 .filter { it.type == MediaType.Audio.toString() }
                 .toMutableList()
         audio_grid.adapter = ReportStringAdapter(mAudioList, activity)
+
+        with(pillar_domain_state_chart)
+        {
+            val domainGraphDataSet = buildPillarDomainForUi(getReport().reportState.buildingState.pillarState.pillar_domain, true)
+
+            data = LineData(domainGraphDataSet.toList())
+            invalidate()
+        }
     }
 }

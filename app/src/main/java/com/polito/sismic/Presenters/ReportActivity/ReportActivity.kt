@@ -104,8 +104,8 @@ class ReportActivity : AppCompatActivity(),
         getLimitStateLines(mReportManager.report.reportState, data)
     }
 
-    override fun onPillarDomainGraphRequest(pillarState: PillarState, reportState: ReportState?): PillarDomain = with(mSismicBuildingInteractor) {
-        return getPillarDomainForGraph(mReportManager.report.reportState, pillarState)
+    override fun onPillarDomainGraphRequest(pillarState: PillarState): PillarDomain = with(mSismicBuildingInteractor) {
+        return getPillarDomainForGraph(pillarState)
     }
 
     //Updates the state for all fragments
@@ -164,7 +164,7 @@ class ReportActivity : AppCompatActivity(),
 
         mUserActionInteractor = UserActionInteractor(reportManager, this, mPermissionHelper)
         mSismicParameterInteractor = SismicActionInteractor(reportManager, this)
-        mSismicBuildingInteractor = SismicBuildingInteractor(reportManager, this)
+        mSismicBuildingInteractor = SismicBuildingInteractor(this)
         stepperLayout.adapter = ReportFragmentsAdapter(supportFragmentManager, this, reportManager)
         fabtoolbar_fab.setOnClickListener { fabtoolbar.show() }
         pic.setOnClickListener { mUserActionInteractor.onActionRequested(UserActionType.PicRequest) }

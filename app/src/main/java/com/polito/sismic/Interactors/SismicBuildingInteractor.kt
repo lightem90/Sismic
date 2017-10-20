@@ -10,18 +10,17 @@ import com.polito.sismic.Interactors.Helpers.SismicBuildingCalculatorHelper
 
 //it uses the other interactor for retrieving the fh for a generic t of the pillar
 //Interactor to calculate the sismic action on the building / pillar
-class SismicBuildingInteractor(val mReportManager: ReportManager,
-                               val mContext: Context){
+class SismicBuildingInteractor(val mContext: Context){
 
     private val mSismicBuildingCalculatorHelper : SismicBuildingCalculatorHelper = SismicBuildingCalculatorHelper(mContext)
     //Static function to call from mappers / binding to UI laye
 
     //calculate the pillar domain and the point inside it
-    fun getPillarDomainForGraph(state: ReportState, data: PillarState) : PillarDomain
+    //non ho i dati per calcolare gli stati limite! (non c'è l'area di influenza o il numero pilastri quando questo viene chiamato...)
+    fun getPillarDomainForGraph(data: PillarState) : PillarDomain
     {
         val domainPoints = mSismicBuildingCalculatorHelper.getPillarDomainForGraph(data)
         //add 4 limitStatePoints, one foreach limit state
-        val limitStatePoints = mSismicBuildingCalculatorHelper.getLimitStatePointsInDomainForPillar(state)
-        return PillarDomain(domainPoints, limitStatePoints)
+        return PillarDomain(domainPoints)
     }
 }

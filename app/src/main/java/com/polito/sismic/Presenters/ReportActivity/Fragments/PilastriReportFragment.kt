@@ -21,13 +21,11 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.polito.sismic.Domain.PillarDomain
 import com.polito.sismic.Domain.PillarDomainGraphPoint
 import com.polito.sismic.Domain.PillarState
-import com.polito.sismic.Domain.ReportState
 import com.polito.sismic.Extensions.hideSoftKeyboard
 import com.polito.sismic.Extensions.toDoubleOrZero
 import com.polito.sismic.Extensions.toast
 import com.polito.sismic.Interactors.Helpers.LivelloConoscenza
 import com.polito.sismic.Interactors.Helpers.SismicBuildingCalculatorHelper
-import com.polito.sismic.Interactors.Helpers.StatiLimite
 import com.polito.sismic.Presenters.Adapters.DomainPointAdapter
 import com.polito.sismic.R
 import com.stepstone.stepper.StepperLayout
@@ -40,7 +38,7 @@ import kotlinx.android.synthetic.main.pilastri_report_layout.*
 class PilastriReportFragment : BaseReportFragment() {
 
     interface PillarDomainGraphRequest {
-        fun onPillarDomainGraphRequest(pillarState: PillarState, reportState: ReportState? = null): PillarDomain
+        fun onPillarDomainGraphRequest(pillarState: PillarState): PillarDomain
     }
 
     private var mPillarDomainGraphRequest: PillarDomainGraphRequest? = null
@@ -228,8 +226,7 @@ class PilastriReportFragment : BaseReportFragment() {
                 context.toast(String.format(resources.getString(R.string.verification_empty_field), armatura_fi.getTitle()))
                 isValid = false
             }
-            if (sezione_hy_parameter.getParameterValue().toDoubleOrZero() == 0.0)
-            {
+            if (sezione_hy_parameter.getParameterValue().toDoubleOrZero() == 0.0) {
                 context.toast(String.format(resources.getString(R.string.verification_zero_field), sezione_hy_parameter.getTitle()))
                 isValid = false
             }
@@ -244,42 +241,9 @@ class PilastriReportFragment : BaseReportFragment() {
                 getReport().reportState.buildingState.pillarState.pillar_domain = it
                 with(pillar_domain_chart)
                 {
-                    val UiPoints = it.limitStatePoints.map {
-                        val lds = LineDataSet(listOf(Entry(it.n.toFloat(), it.m.toFloat())), it.label)
-                        lds.setDrawCircles(true)
-                        lds.circleRadius = 10f
-                        lds.circleColors = listOf(ContextCompat.getColor(context, it.color))
-                        lds.axisDependency = YAxis.AxisDependency.LEFT
-                        lds
-                    }.toMutableList()
+                    val domainGraphDataSet = buildPillarDomainForUi(it)
 
-                    val upPointList = mutableListOf<Entry>()
-                    it.domainPoints.forEach { point ->
-                        upPointList.add(Entry(point.n.toFloat(), point.m.toFloat()))
-                    }
-
-                    val UiDomainUp = LineDataSet(upPointList, "")
-                    UiDomainUp.color = Color.BLUE
-                    UiDomainUp.setDrawCircles(false)
-                    UiDomainUp.lineWidth = 3f
-                    UiDomainUp.axisDependency = YAxis.AxisDependency.LEFT
-
-                    //Just ui stuff to show the simmetric
-                    val downList = mutableListOf<Entry>()
-                    it.domainPoints.forEach { point ->
-                        downList.add(Entry(point.n.toFloat(), -point.m.toFloat()))
-                    }
-
-                    val UiDomainDown = LineDataSet(downList, "")
-                    UiDomainDown.color = Color.BLUE
-                    UiDomainDown.setDrawCircles(false)
-                    UiDomainDown.lineWidth = 3f
-                    UiDomainDown.axisDependency = YAxis.AxisDependency.LEFT
-
-                    UiPoints.add(UiDomainUp)
-                    UiPoints.add(UiDomainDown)
-
-                    data = LineData(UiPoints.toList())
+                    data = LineData(domainGraphDataSet.toList())
                     invalidate()
                 }
 
@@ -294,12 +258,12 @@ class PilastriReportFragment : BaseReportFragment() {
             xAxis.position = XAxis.XAxisPosition.BOTTOM
             legend.form = Legend.LegendForm.DEFAULT
             legend.setCustom(listOf(
-                    LegendEntry(context.getString(R.string.dominio_pilastro), Legend.LegendForm.DEFAULT, 8f, 1f, null, Color.BLUE),
-                    LegendEntry(context.getString(R.string.stato_slc), Legend.LegendForm.DEFAULT, 8f, 1f, null, ContextCompat.getColor(context, StatiLimite.SLC.color)),
-                    LegendEntry(context.getString(R.string.stato_slv), Legend.LegendForm.DEFAULT, 8f, 1f, null, ContextCompat.getColor(context, StatiLimite.SLV.color)),
-                    LegendEntry(context.getString(R.string.stato_sld), Legend.LegendForm.DEFAULT, 8f, 1f, null, ContextCompat.getColor(context, StatiLimite.SLD.color)),
-                    LegendEntry(context.getString(R.string.stato_slo), Legend.LegendForm.DEFAULT, 8f, 1f, null, ContextCompat.getColor(context, StatiLimite.SLO.color)),
-                    LegendEntry(context.getString(R.string.stato_mrd), Legend.LegendForm.DEFAULT, 8f, 1f, null, Color.MAGENTA)))
+                    LegendEntry(context.getString(R.string.dominio_pilastro), Legend.LegendForm.DEFAULT, 8f, 1f, null, Color.BLUE)))
+            //LegendEntry(context.getString(R.string.stato_slc), Legend.LegendForm.DEFAULT, 8f, 1f, null, ContextCompat.getColor(context, StatiLimite.SLC.color)),
+            //LegendEntry(context.getString(R.string.stato_slv), Legend.LegendForm.DEFAULT, 8f, 1f, null, ContextCompat.getColor(context, StatiLimite.SLV.color)),
+            //LegendEntry(context.getString(R.string.stato_sld), Legend.LegendForm.DEFAULT, 8f, 1f, null, ContextCompat.getColor(context, StatiLimite.SLD.color)),
+            //LegendEntry(context.getString(R.string.stato_slo), Legend.LegendForm.DEFAULT, 8f, 1f, null, ContextCompat.getColor(context, StatiLimite.SLO.color)),
+            //LegendEntry(context.getString(R.string.stato_mrd), Legend.LegendForm.DEFAULT, 8f, 1f, null, Color.MAGENTA)))
             description.isEnabled = false
             getAxis(YAxis.AxisDependency.RIGHT).isEnabled = false
         }
@@ -392,7 +356,7 @@ class PilastriReportFragment : BaseReportFragment() {
     }
 
     //callback to activity updates domain instance for activity and all existing and future fragments
-    //this class doesn't use mappers since it modifies the state directly --> do this in every fragment?
+//this class doesn't use mappers since it modifies the state directly --> do this in every fragment?
     override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback?) {
 
         getReport().reportState.buildingState.pillarState.classe_calcestruzzo = calc_classe_parameter.selectedItem.toString()
@@ -405,6 +369,10 @@ class PilastriReportFragment : BaseReportFragment() {
         fixPillarData()
 
         super.onNextClicked(callback)
+    }
+
+    override fun onNeedReload(): Boolean {
+        return true
     }
 
 

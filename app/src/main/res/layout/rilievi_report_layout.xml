@@ -40,12 +40,19 @@
         style="@style/sectionTitle"
         android:text="@string/report_rilievo_interno_title" />
 
+    <TextView
+        android:layout_marginTop="@dimen/activity_vertical_half_margin"
+        android:text="@string/disclaimer_rilievi"
+        android:gravity="center_horizontal"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/plant_point_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:layout_marginTop="@dimen/activity_vertical_margin" />
+        android:layout_marginTop="@dimen/activity_vertical_half_margin" />
 
     <Button
         android:id="@+id/calculate"

@@ -394,4 +394,9 @@
     <string name="verification_no_pillars">Nessun pilastro selezionato</string>
     <string name="verification_empty_area">L\'area di influenza dei pilastri è zero</string>
     <string name="peso_totale">Peso totale [kN] = </string>
+    <string name="disclaimer_rilievi">Attenzione: i punti inseriti devono essere consecutivi.</string>
+    <string name="media_riepilogue">MEDIA</string>
+    <string name="localization_sismic_riepilogue">LOCALIZZAZIONE E PARAMETRI SISMICI</string>
+    <string name="building_riepilogue">DATI EDIFICIO</string>
+    <string name="sismic_state_riepilogue">INFORMAZIONI STATI LIMITE</string>
 </resources>
