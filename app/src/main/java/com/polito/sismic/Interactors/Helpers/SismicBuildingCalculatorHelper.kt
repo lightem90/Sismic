@@ -212,7 +212,7 @@ class SismicBuildingCalculatorHelper(val mContext: Context) {
             val acceleration = spectrum.pointList[forcePointIndex].verticalMiddlePoint(spectrum.pointList[forcePointIndex - 1])
 
             val lambda = if (nPiani < 3) 1.0 else 0.85
-            val force = acceleration * state.buildingState.structuralState.peso_totale * lambda / 9.81
+            val force = acceleration * ((state.buildingState.structuralState.peso_totale * lambda) / 9.81)
             val mPoint = (force / state.buildingState.pillarLayoutState.pillarCount) * (state.buildingState.takeoverState.altezza_totale / 2)
             PillarDomainPoint(nPoint, mPoint, acceleration, lambda, force, t1, spectrum.name, spectrum.color)
         }
