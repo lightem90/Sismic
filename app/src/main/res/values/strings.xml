@@ -384,8 +384,7 @@
     <string name="domain_point_id_value">%d</string>
     <string name="result_format_sd">Sd(t)[m/s²]</string>
     <string name="result_format_fn">Fh[kN]</string>
-    <string name="result_format_lambda">λ[-]</string>
-    <string name="result_format_t1">T1[s]</string>
+    <string name="result_format_ty">Ty[kNm]</string>
     <string name="domain_point_value_format">%.2f</string>
     <string name="domain_point_value_format_high">%.4f</string>
     <string name="pdf_filename_format">verifica_sismica_%s_%s.pdf</string>
@@ -415,4 +414,6 @@
     <string name="summary_v_nom">Vita nominale: %d [anni]</string>
     <string name="summary_num_piani">Numero piani: %d</string>
     <string name="slv_not_present">Risultato \"SLV\" non presente</string>
+    <string name="summary_t1">T1 [s]: %.2f</string>
+    <string name="summary_lambda">λ[-]: %.4f</string>
 </resources>

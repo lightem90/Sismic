@@ -116,6 +116,9 @@ class RiepilogoReportFragment : BaseReportFragment() {
         h_tot.text = String.format(context.getString(R.string.summary_tot_h), buildState.takeoverState.altezza_totale)
         n_piani.text = String.format(context.getString(R.string.summary_num_piani), buildState.takeoverState.numero_piani)
 
+        t1.text = String.format(context.getString(R.string.summary_t1), buildState.takeoverState.t1)
+        lambda.text = String.format(context.getString(R.string.summary_lambda), buildState.takeoverState.lambda)
+
         peso_tot.text = String.format(context.getString(R.string.summary_tot_weight), buildState.structuralState.peso_totale)
         area_tot.text = String.format(context.getString(R.string.summary_tot_area), buildState.takeoverState.area)
 

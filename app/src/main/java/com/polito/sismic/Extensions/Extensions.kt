@@ -305,12 +305,11 @@ fun String.toPillarDomainLimitStateList(): List<PillarDomainPoint> {
             .filter { !it.isEmpty() }
             .mapNotNull { it ->
                 val values = it.split(",")
-                if (values.size == 8) {
+                if (values.size == 7) {
                     PillarDomainPoint(values[0].toDoubleOrZero(),
                             values[1].toDoubleOrZero(),
                             values[2].toDoubleOrZero(),
                             values[3].toDoubleOrZero(),
-                            values[4].toDoubleOrZero(),
                             values[5].toDoubleOrZero(),
                             values[6],
                             values[7].toIntOrZero())
@@ -327,11 +326,9 @@ fun List<PillarDomainPoint>.toParsablePillarLimitStateString(): String {
         sb.append(",")
         sb.append(it.sd.toString())
         sb.append(",")
-        sb.append(it.lambda.toString())
-        sb.append(",")
         sb.append(it.fh.toString())
         sb.append(",")
-        sb.append(it.t1.toString())
+        sb.append(it.ty.toString())
         sb.append(",")
         sb.append(it.label)
         sb.append(",")

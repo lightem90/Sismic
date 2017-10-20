@@ -93,6 +93,20 @@
     <LinearLayout style="@style/TextSummaryContainer">
 
         <TextView
+            android:id="@+id/t1"
+            style="@style/TextSummary" />
+
+
+        <TextView
+            android:id="@+id/lambda"
+            style="@style/TextSummary" />
+
+    </LinearLayout>
+
+
+    <LinearLayout style="@style/TextSummaryContainer">
+
+        <TextView
             android:id="@+id/area_tot"
             style="@style/TextSummary" />
 

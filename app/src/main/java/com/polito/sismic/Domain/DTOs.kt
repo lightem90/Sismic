@@ -659,7 +659,8 @@ data class TakeoverState(var numero_piani: Int,
                          var perimetro: Double,
                          var gravity_center: PlantPoint,
                          var plant_points: List<PlantPoint>,
-                         var figure : PlantFigure? = null) : Parcelable {
+                         var figure : PlantFigure? = null,
+                         var lambda : Double = if (numero_piani < 3) 1.0 else 0.85) : Parcelable {
     constructor() : this(0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, PlantPoint(0.0,0.0), listOf<PlantPoint>())
 
     constructor(source: Parcel) : this(
@@ -895,9 +896,8 @@ data class PillarDomainGraphPoint(var n: Double, var m: Double) : Parcelable {
     }
 }
 
-data class PillarDomainPoint(var n: Double, var m: Double, var sd: Double, var lambda: Double, var fh: Double, var t1: Double, var label: String, var color: Int) : Parcelable {
+data class PillarDomainPoint(var n: Double, var m: Double, var sd: Double, var fh: Double, val ty: Double, var label: String, var color: Int) : Parcelable {
     constructor(source: Parcel) : this(
-            source.readDouble(),
             source.readDouble(),
             source.readDouble(),
             source.readDouble(),
@@ -913,9 +913,8 @@ data class PillarDomainPoint(var n: Double, var m: Double, var sd: Double, var l
         writeDouble(n)
         writeDouble(m)
         writeDouble(sd)
-        writeDouble(lambda)
         writeDouble(fh)
-        writeDouble(t1)
+        writeDouble(ty)
         writeString(label)
         writeInt(color)
     }
