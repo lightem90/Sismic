@@ -14,8 +14,8 @@ import com.polito.sismic.Interactors.Helpers.StatiLimite
 import com.polito.sismic.R
 import kotlinx.android.synthetic.main.close_points_layout.view.*
 import kotlinx.android.synthetic.main.domain_point_item.view.*
+import kotlinx.android.synthetic.main.limit_state_data_layout.view.*
 import kotlinx.android.synthetic.main.period_data_layout.view.*
-import kotlinx.android.synthetic.main.spectrum_data_layout.view.*
 
 class NodeListAdapter(private val mContext: Context, private val mNodeData: List<NeighboursNodeData>)
     : RecyclerView.Adapter<NodeListAdapter.ViewHolder>() {
@@ -93,7 +93,7 @@ class LimitStateAdapter(private val mContext: Context, private val mLimitStateAd
     : RecyclerView.Adapter<LimitStateAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LimitStateAdapter.ViewHolder? {
-        val v = parent.inflate(R.layout.spectrum_data_layout)
+        val v = parent.inflate(R.layout.limit_state_data_layout)
         return LimitStateAdapter.ViewHolder(v, mContext)
     }
 
@@ -111,7 +111,7 @@ class LimitStateAdapter(private val mContext: Context, private val mLimitStateAd
         fun bindPeriodData(periodData: SpectrumDTO) = with(periodData) {
 
             val state = StatiLimite.values().first { it.name == name }
-            itemView.state.text = String.format(mContext.getString(R.string.params_spectrum_state_format), state.name, (state.multiplier * 100).toInt(), "%")
+            itemView.state.text = String.format(mContext.getString(R.string.params_spectrum_state_format_old), state.name, (state.multiplier * 100).toInt(), "%")
             itemView.tc.text    = String.format(mContext.getString(R.string.params_spectrum_format), tc)
             itemView.tb.text    = String.format(mContext.getString(R.string.params_spectrum_format), tb)
             itemView.td.text    = String.format(mContext.getString(R.string.params_spectrum_format), td)
@@ -171,46 +171,3 @@ class DomainPointAdapter(private val mContext: Context, private val mDomainPoint
     }
 }
 
-class SpectrumsDataAdapter(private val mContext: Context, private val mSpectrumsAdapter: List<SpectrumDTO>)
-    : RecyclerView.Adapter<SpectrumsDataAdapter.ViewHolder>() {
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SpectrumsDataAdapter.ViewHolder? {
-        val v = parent.inflate(R.layout.spectrum_data_layout)
-        return SpectrumsDataAdapter.ViewHolder(v, mContext)
-    }
-
-    override fun onBindViewHolder(holder: SpectrumsDataAdapter.ViewHolder, position: Int) {
-        if (position == 0) holder.bindHeader()
-        else holder.bindPeriodData(mSpectrumsAdapter[position - 1])
-    }
-
-    override fun getItemCount(): Int {
-        return mSpectrumsAdapter.size + 1
-    }
-
-    class ViewHolder(itemView: View, val mContext: Context) : RecyclerView.ViewHolder(itemView) {
-
-        fun bindPeriodData(periodData: SpectrumDTO) = with(periodData) {
-
-            val state = StatiLimite.values().first { it.name == name }
-            itemView.state.text = String.format(mContext.resources.getText(R.string.params_spectrum_state_format).toString(), state.name, Math.round((state.multiplier * 100)).toInt(), "%")
-            itemView.tc.text    = String.format(mContext.resources.getText(R.string.params_spectrum_format).toString(), tc)
-            itemView.tb.text    = String.format(mContext.resources.getText(R.string.params_spectrum_format).toString(), tb)
-            itemView.td.text    = String.format(mContext.resources.getText(R.string.params_spectrum_format).toString(), td)
-            itemView.cc.text    = String.format(mContext.resources.getText(R.string.params_spectrum_format).toString(), cc)
-            itemView.ss.text    = String.format(mContext.resources.getText(R.string.params_spectrum_format).toString(), ss)
-            itemView.s.text     = String.format(mContext.resources.getText(R.string.params_spectrum_format).toString(), s)
-        }
-
-        fun bindHeader() {
-            itemView.state.text =   mContext.resources.getText(R.string.state_header)
-            itemView.tc.text =      mContext.resources.getText(R.string.tc_header)
-            itemView.tb.text =      mContext.resources.getText(R.string.tb_header)
-            itemView.td.text =      mContext.resources.getText(R.string.td_header)
-            itemView.cc.text =      mContext.resources.getText(R.string.cc_header)
-            itemView.ss.text =      mContext.resources.getText(R.string.ss_header)
-            itemView.s.text =       mContext.resources.getText(R.string.s_header)
-            itemView.setBackgroundColor(ContextCompat.getColor(mContext, R.color.light_grey))
-        }
-    }
-}

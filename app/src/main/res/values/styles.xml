@@ -229,6 +229,14 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
+    <style name="result_item" parent="TextSummary">
+        <item name="android:gravity">center_horizontal</item>
+    </style>
+
+    <style name="result_item_label" parent="result_item">
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <dimen name="section_value_margin">8dp</dimen>
 
 </resources>

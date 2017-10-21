@@ -25,10 +25,8 @@ import com.polito.sismic.Domain.ProjectSpectrumState
 import com.polito.sismic.Domain.SpectrumDTO
 import com.polito.sismic.Extensions.toEntryList
 import com.polito.sismic.Interactors.Helpers.*
-import com.polito.sismic.Presenters.Adapters.LimitStateAdapter
 import com.polito.sismic.Presenters.Adapters.SpectrumsDataAdapter
 import com.stepstone.stepper.VerificationError
-import kotlinx.android.synthetic.main.info_loc_report_layout.*
 
 
 class SpettriDiProgettoReportFragment : BaseReportFragment() {

@@ -171,7 +171,7 @@
                 android:id="@+id/contact"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_marginTop="@dimen/activity_vertical_margin_double"
                 android:orientation="vertical">
 
                 <TextView
@@ -204,7 +204,6 @@
                     android:background="@color/colorAccent"
                     android:text="@string/send_mail"
                     android:textColor="@color/white" />
-
 
             </LinearLayout>
 

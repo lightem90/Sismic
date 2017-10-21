@@ -2,6 +2,7 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin_double">32dp</dimen>
     <dimen name="activity_horizontal_half_margin">8dp</dimen>
     <dimen name="activity_vertical_half_margin">8dp</dimen>
     <dimen name="activity_report_fab_margin_bottom">72dp</dimen>
@@ -12,4 +13,5 @@
     <dimen name="spinner_padding_horizontal">48dp</dimen>
     <dimen name="plant_item">48dp</dimen>
     <dimen name="report_parameter_vertical_margin">8dp</dimen>
+    <dimen name="spectrum_clickable">36dp</dimen>
 </resources>

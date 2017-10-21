@@ -291,7 +291,9 @@
     <string name="params_format">%.5f</string>
     <string name="params_spectrum_format">%.2f</string>
     <string name="params_spectrum_format_high">%.3f</string>
-    <string name="params_spectrum_state_format">%s (%d %s)</string>
+    <string name="params_spectrum_format_higher">%.4f</string>
+    <string name="params_spectrum_state_format">%s: %d [anni] (%d %s)</string>
+    <string name="params_spectrum_state_format_old">%s (%d %s)</string>
     <string name="state_header">Stato</string>/string>
     <string name="tc_header">TC</string>
     <string name="tb_header">TB</string>
@@ -422,7 +424,16 @@
     <string name="contact_label">Vuoi farci i complimenti, salutarci o segnarlarci un problema? Riempi i campi sottostanti e premi il bottone!</string>
     <string name="oggetto_hint">Oggetto</string>
     <string name="body">Scrivi!</string>
-    <string name="send_mail">Invia!</string>
+    <string name="send_mail">Invia</string>
     <string name="errormail">Specificare oggetto e testo della segnalazione</string>
     <string name="git">Codice disponibile su: https://github.com/lightem90/Sismic</string>
+    <string name="tb_header_spectrum">Tb [s]</string>
+    <string name="tc_header_spectrum">Tc [s]</string>
+    <string name="td_header_spectrum">Td [s]</string>
+    <string name="ag_header_spectrum">Ag [m/s²]</string>
+    <string name="f0_header_spectrum">F0 [-]</string>
+    <string name="tcstar_header_spectrum">Tc* [s]</string>
+    <string name="ss_header_spectrum">Ss [-]</string>
+    <string name="cc_header_spectrum">Cc [-]</string>
+    <string name="st_header_spectrum">St [-]</string>
 </resources>

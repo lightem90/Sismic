@@ -1,49 +1,165 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/activity_vertical_margin"
+    android:layout_marginBottom="@dimen/activity_vertical_half_margin"
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/state"
-        android:layout_weight="2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/spectrum_clickable"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tb"
-        android:layout_weight="1"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/state"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal" />
 
-    <TextView
-        android:id="@+id/tc"
-        android:layout_weight="1"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content" />
+        <View
+            android:id="@+id/bar"
+            android:layout_width="match_parent"
+            android:layout_height="2dp" />
 
-    <TextView
-        android:id="@+id/td"
-        android:layout_weight="1"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content" />
+    </LinearLayout>
 
-    <TextView
-        android:id="@+id/ss"
-        android:layout_weight="1"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:id="@+id/canvas"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/cc"
-        android:layout_weight="1"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/activity_vertical_half_margin"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/s"
-        android:layout_weight="1"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content" />
+            <TextView
+                style="@style/result_item_label"
+                android:text="@string/ag_header_spectrum" />
+
+            <TextView
+                style="@style/result_item_label"
+                android:text="@string/f0_header_spectrum" />
+
+            <TextView
+                style="@style/result_item_label"
+                android:text="@string/tcstar_header_spectrum" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/ag_value"
+                style="@style/result_item" />
+
+            <TextView
+                android:id="@+id/f0_value"
+                style="@style/result_item" />
+
+            <TextView
+                android:id="@+id/tcstar_value"
+                style="@style/result_item" />
+
+        </LinearLayout>
+
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/activity_vertical_half_margin"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/result_item_label"
+            android:text="@string/tb_header_spectrum" />
+
+        <TextView
+            style="@style/result_item_label"
+            android:text="@string/tc_header_spectrum" />
+
+        <TextView
+            style="@style/result_item_label"
+            android:text="@string/td_header_spectrum" />
+
+    </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tb_value"
+                style="@style/result_item" />
+
+            <TextView
+                android:id="@+id/tc_value"
+                style="@style/result_item" />
+
+            <TextView
+                android:id="@+id/td_value"
+                style="@style/result_item" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/activity_vertical_half_margin"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/result_item_label"
+                android:text="@string/ss_header_spectrum" />
+
+            <TextView
+                style="@style/result_item_label"
+                android:text="@string/cc_header_spectrum" />
+
+            <TextView
+                style="@style/result_item_label"
+                android:text="@string/st_header_spectrum" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/ss_value"
+                style="@style/result_item" />
+
+            <TextView
+                android:id="@+id/cc_value"
+                style="@style/result_item" />
+
+            <TextView
+                android:id="@+id/st_value"
+                style="@style/result_item" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
 
 </LinearLayout>

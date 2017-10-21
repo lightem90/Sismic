@@ -58,30 +58,18 @@
 
             <TextView
                 android:id="@+id/n_text"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:text="@string/n_result_format"
-                android:textStyle="bold" />
+                style="@style/result_item_label"
+                android:text="@string/n_result_format" />
 
             <TextView
                 android:id="@+id/m_text"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:text="@string/m_result_format"
-                android:textStyle="bold" />
+                style="@style/result_item_label"
+                android:text="@string/m_result_format" />
 
             <TextView
                 android:id="@+id/mrd_text"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:text="@string/mrd_result_format"
-                android:textStyle="bold" />
+                style="@style/result_item_label"
+                android:text="@string/mrd_result_format"/>
 
         </LinearLayout>
 
@@ -94,24 +82,15 @@
 
             <TextView
                 android:id="@+id/n_value"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_horizontal" />
+                style="@style/result_item" />
 
             <TextView
                 android:id="@+id/m_value"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_horizontal" />
+                style="@style/result_item" />
 
             <TextView
                 android:id="@+id/mrd_value"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_horizontal" />
+                style="@style/result_item" />
 
         </LinearLayout>
 
@@ -125,30 +104,18 @@
 
             <TextView
                 android:id="@+id/sd_label"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:text="@string/result_format_sd"
-                android:textStyle="bold" />
+                style="@style/result_item_label"
+                android:text="@string/result_format_sd" />
 
             <TextView
                 android:id="@+id/fn_label"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:text="@string/result_format_fn"
-                android:textStyle="bold" />
+                style="@style/result_item_label"
+                android:text="@string/result_format_fn" />
 
             <TextView
                 android:id="@+id/ty_label"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:text="@string/result_format_ty"
-                android:textStyle="bold" />
+                style="@style/result_item_label"
+                android:text="@string/result_format_ty" />
 
         </LinearLayout>
 
@@ -161,24 +128,15 @@
 
             <TextView
                 android:id="@+id/sd_value"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_horizontal" />
+                style="@style/result_item" />
 
             <TextView
                 android:id="@+id/fh_value"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_horizontal" />
+                style="@style/result_item" />
 
             <TextView
                 android:id="@+id/ty_value"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_horizontal" />
+                style="@style/result_item" />
 
         </LinearLayout>
 
