@@ -146,6 +146,8 @@
     <string name="google_places_api_key">AIzaSyC2bJwWfNdzFepYUceoSERsRTV3F1tnvng</string>
     <string name="error_parsing_place">Impossibile ricavare informazioni</string>
     <string name="confirm_report_back">Conferma uscita</string>
+    <string name="credits_title">Crediti</string>
+    <string name="credits_string">Applicazione opensource sperimentale a cura di Matteo Liera, con la collaborazione di Denis Zucchini, nata per un progetto di Laurea Magistrale al Politecnico di Torino, grazie al Prof. Barpi e Phd. Luca Ardito.\nIl progetto prevede il censimento e valutazione sismica di tutti gli edifici sul territorio italiano.\nNon si assumono responsabilità.</string>
     <string name="confirm_report_back_message">Proseguendo tutti i dati andranno persi. Continuare?</string>
     <string name="error_saving_file">Errore nel salvataggio file</string>
     <string name="correctly_saving_file">File salvato correttamente</string>
@@ -172,7 +174,7 @@
     <string name="no_login">E\' necessario il login per compilare un database</string>
     <string name="rilievi_report_title">Rilievi</string>
     <string name="error_creating_report">Errore nell\'apertura del database</string>
-    <string name="title_activity_splash_screen">SplashScreen</string>
+    <string name="title_activity_splash_screen">Verifiche</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="report_wizard_title">Report Wizard</string>
@@ -288,6 +290,7 @@
     <string name="tcstar_header">Tc*[s]</string>
     <string name="params_format">%.5f</string>
     <string name="params_spectrum_format">%.2f</string>
+    <string name="params_spectrum_format_high">%.3f</string>
     <string name="params_spectrum_state_format">%s (%d %s)</string>
     <string name="state_header">Stato</string>/string>
     <string name="tc_header">TC</string>
@@ -416,4 +419,10 @@
     <string name="slv_not_present">Risultato \"SLV\" non presente</string>
     <string name="summary_t1">T1: %.4f [s]</string>
     <string name="summary_lambda">λ: %.2f [-]</string>
+    <string name="contact_label">Vuoi farci i complimenti, salutarci o segnarlarci un problema? Riempi i campi sottostanti e premi il bottone!</string>
+    <string name="oggetto_hint">Oggetto</string>
+    <string name="body">Scrivi!</string>
+    <string name="send_mail">Invia!</string>
+    <string name="errormail">Specificare oggetto e testo della segnalazione</string>
+    <string name="git">Codice disponibile su: https://github.com/lightem90/Sismic</string>
 </resources>

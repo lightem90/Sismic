@@ -1049,8 +1049,7 @@ data class UserDetails(val name: String,
                        val email: String,
                        val phone: String,
                        val qualification: String,
-                       val registration: String,
-                       val imageUri: String)
+                       val registration: String)
 
 
 

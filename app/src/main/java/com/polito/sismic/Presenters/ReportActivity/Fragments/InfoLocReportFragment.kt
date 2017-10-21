@@ -168,8 +168,9 @@ class InfoLocReportFragment : BaseReportFragment() {
 
     private fun updateByPlace(place: Place?) {
         if (place != null) {
-            lat_parameter.setParameterValue("%.4f".format(place.latLng.latitude))
-            long_parameter.setParameterValue("%.4f".format(place.latLng.longitude))
+            //with a higher precision the node calculation fails
+            lat_parameter.setParameterValue("%.3f".format(place.latLng.latitude))
+            long_parameter.setParameterValue("%.3f".format(place.latLng.longitude))
 
             askGoogleForPlaceId(place)
         }
@@ -178,15 +179,6 @@ class InfoLocReportFragment : BaseReportFragment() {
     fun updateByLocation(location: Location) {
         lat_parameter.setParameterValue("%.3f".format(location.latitude))
         long_parameter.setParameterValue("%.3f".format(location.longitude))
-        //DEBUG CODE
-        //country_parameter.setParameterValue("italia")
-        //region_parameter.setParameterValue("marche")
-        //province_parameter.setParameterValue("pesaro")
-        //comune_parameter.setParameterValue("pesaro")
-        //address_parameter.setParameterValue("via achilli")
-        //zona_sismica_parameter.setParameterValue("1")
-        //codice_istat_parameter.setParameterValue("2")
-        //cap_parameter.setParameterValue("61122")
     }
 
     private fun askGoogleForPlaceId(place: Place) {
@@ -214,15 +206,14 @@ class InfoLocReportFragment : BaseReportFragment() {
     }
 
 
-    inner class PlaceDetailsTask internal constructor(fragmentView: View, val context: Context) : AsyncTask<Place, Int, JSONObject>()
-    {
-        private var  state_parameter: ParameterReportLayout? = null
-        private var  region_parameter: ParameterReportLayout? = null
-        private var  province_parameter: ParameterReportLayout? = null
-        private var  comune_parameter: ParameterReportLayout? = null
-        private var  address_parameter: ParameterReportLayout? = null
-        private var  cap_parameter: ParameterReportLayout? = null
-        private var  m_dialog : ProgressBar? = null
+    inner class PlaceDetailsTask internal constructor(fragmentView: View, val context: Context) : AsyncTask<Place, Int, JSONObject>() {
+        private var state_parameter: ParameterReportLayout? = null
+        private var region_parameter: ParameterReportLayout? = null
+        private var province_parameter: ParameterReportLayout? = null
+        private var comune_parameter: ParameterReportLayout? = null
+        private var address_parameter: ParameterReportLayout? = null
+        private var cap_parameter: ParameterReportLayout? = null
+        private var m_dialog: ProgressBar? = null
 
         init {
             state_parameter = fragmentView.findViewById(R.id.country_parameter)
@@ -275,8 +266,7 @@ class InfoLocReportFragment : BaseReportFragment() {
         //UI thread
         override fun onPostExecute(result: JSONObject?) {
 
-            if (result == null || result.getString("status").equals("REQUEST_DENIED"))
-            {
+            if (result == null || result.getString("status").equals("REQUEST_DENIED")) {
                 context.toast(R.string.error_parsing_place)
                 m_dialog!!.visibility = View.GONE
                 return super.onPostExecute(result)
@@ -284,11 +274,10 @@ class InfoLocReportFragment : BaseReportFragment() {
 
             val addressComponents = result.getJSONObject("result")?.getJSONArray("address_components")
             if (addressComponents != null) {
-                for(i in 0 until addressComponents.length())
-                {
+                for (i in 0 until addressComponents.length()) {
                     val obj = addressComponents.getJSONObject(i)
                     val typesArray = obj.getJSONArray("types")
-                    for(j in 0 until typesArray.length()) {
+                    for (j in 0 until typesArray.length()) {
                         val type = typesArray.get(j).toString()
                         if (type.equals("country"))
                             state_parameter?.setParameterValue(obj.getString("long_name"))

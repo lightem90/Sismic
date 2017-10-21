@@ -12,20 +12,18 @@ import com.polito.sismic.Extensions.toSpectrumPointList
 //"Static" class, no memory, no states
 class SismicActionCalculatorHelper(val mCoordinateHelper: ParametersForCoordinateHelper) {
 
-
     companion object {
 
         fun calculateQ0(typology: Int, alfa: Double = 1.0, cda: Boolean = true): Double {
-            when (typology) {
-                0 -> return if (cda) 4.5 * alfa else 3 * alfa
-                1 -> return if (cda) 4 * alfa else 3.0
-                2 -> return if (cda) 3.0 else 2.0
-                3 -> return if (cda) 2.0 else 1.5
-                else -> return 0.0
+            return when (typology) {
+                0 -> if (cda) 4.5 * alfa else 3 * alfa
+                1 -> if (cda) 4 * alfa else 3.0
+                2 -> if (cda) 3.0 else 2.0
+                3 -> if (cda) 2.0 else 1.5
+                else -> 0.0
             }
         }
     }
-
 
     fun calculatePeriodsForSquare(nodeSquare: NeighboursNodeSquare): List<PeriodData> {
 

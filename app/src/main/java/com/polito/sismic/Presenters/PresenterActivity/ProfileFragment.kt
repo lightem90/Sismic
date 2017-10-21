@@ -10,6 +10,7 @@ import com.polito.sismic.R
 import kotlinx.android.synthetic.main.profile_fragment.*
 import kotlinx.android.synthetic.main.profile_fragment.view.*
 import org.jetbrains.anko.startActivity
+import org.jetbrains.anko.toast
 
 
 /**
@@ -38,9 +39,21 @@ class ProfileFragment : Fragment() {
             v.et_phone.text = phone
             v.et_qualification.text = qualification
             v.et_register.text = registration
-            v.profile_img.setImageURI(Uri.parse(imageUri))
         }
+
+        v.send_mail.setOnClickListener { if (!oggetto.text.isEmpty() && !body.text.isEmpty()) sendMail() else activity.toast(R.string.errormail)}
         return v
+    }
+
+    private fun sendMail() {
+
+        val intent = Intent(Intent.ACTION_SENDTO)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        intent.type = "text/plain"
+        intent.putExtra(Intent.EXTRA_EMAIL, arrayOf("sismic.polito@gmail.com"))
+        intent.putExtra(Intent.EXTRA_SUBJECT, oggetto.text)
+        intent.putExtra(Intent.EXTRA_TEXT, body.text)
+        activity.startActivity(Intent.createChooser(intent, "Send Email"))
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {

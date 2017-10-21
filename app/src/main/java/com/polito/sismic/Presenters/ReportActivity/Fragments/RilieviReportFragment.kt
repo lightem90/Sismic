@@ -3,7 +3,6 @@ package com.polito.sismic.Presenters.ReportActivity.Fragments
 import android.graphics.Color
 import android.os.Bundle
 import android.support.annotation.Nullable
-import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
@@ -14,11 +13,6 @@ import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.LegendEntry
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
-import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.data.LineDataSet
-import com.github.mikephil.charting.highlight.Highlight
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener
-import com.polito.sismic.Extensions.toDoubleOrZero
 import com.polito.sismic.Interactors.Helpers.UiMapper
 import com.polito.sismic.Interactors.SismicPlantBuildingInteractor
 import com.polito.sismic.Presenters.Adapters.PlantPointsAdapter

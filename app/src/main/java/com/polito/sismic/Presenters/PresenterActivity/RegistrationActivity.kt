@@ -88,8 +88,7 @@ class RegistrationActivity : AppCompatActivity() {
                             mEmail,
                             mPhone,
                             mQualification,
-                            mRegister,
-                            ""), caller)
+                            mRegister), caller)
                     finish()
                 }
                 else -> caller.toast(String.format(caller.getString(R.string.registration_error), returnCode))

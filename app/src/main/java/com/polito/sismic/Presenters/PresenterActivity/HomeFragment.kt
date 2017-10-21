@@ -4,12 +4,13 @@ import android.app.Fragment
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
+import android.text.method.ScrollingMovementMethod
 import android.view.*
-import com.polito.sismic.Domain.Database.ReportDatabaseHelper
-import com.polito.sismic.Interactors.DatabaseInteractor
 import com.polito.sismic.Interactors.Helpers.LoginSharedPreferences
 import com.polito.sismic.Presenters.ReportActivity.ReportActivity
 import com.polito.sismic.R
+import kotlinx.android.synthetic.main.credits.view.*
 import kotlinx.android.synthetic.main.home_fragment.view.*
 
 /**
@@ -54,18 +55,32 @@ class HomeFragment : Fragment() {
         if (item != null) {
             when (item.itemId)
             {
-                //TODO: per debug
                 R.id.profile_info ->
                 {
-                    DatabaseInteractor().cleanDatabase()
                     //for debug
-                    activity.deleteDatabase(ReportDatabaseHelper.DB_NAME)
-                    mHistoryCallback?.onHistoryReloadRequest()
+                    //DatabaseInteractor().cleanDatabase()
+                    //activity.deleteDatabase(ReportDatabaseHelper.DB_NAME)
+                    //mHistoryCallback?.onHistoryReloadRequest()
+                    showDisclaimer()
                     return true
                 }
             }
         }
         return false
+    }
+
+    private fun showDisclaimer() {
+
+        with(activity.layoutInflater.inflate(R.layout.credits, null))
+        {
+            this.text.movementMethod = ScrollingMovementMethod()
+            android.support.v7.app.AlertDialog.Builder(activity)
+                    .setView(this)
+                    .setTitle(com.polito.sismic.R.string.credits_title)
+                .setPositiveButton(android.R.string.yes, { _, _ -> })
+                .show()
+        }
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

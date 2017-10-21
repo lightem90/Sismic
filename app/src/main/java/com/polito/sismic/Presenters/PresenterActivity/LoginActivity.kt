@@ -302,10 +302,8 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
                                 jSonResp.getString("email"),
                                 jSonResp.getString("phone"),
                                 jSonResp.getString("qualification"),
-                                jSonResp.getString("registration"),
-                                //jSonResp.getString("")),
-                                        ""),
-                                caller)
+                                jSonResp.getString("registration"))
+                                , caller)
 
                         caller.startActivity(Intent(caller, PresenterActivity::class.java))
                         caller.finish()

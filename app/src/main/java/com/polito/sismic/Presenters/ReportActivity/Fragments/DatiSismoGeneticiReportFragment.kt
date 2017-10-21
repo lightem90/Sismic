@@ -94,11 +94,9 @@ class DatiSismoGeneticiReportFragment : BaseReportFragment() {
                 reloadGraph()
             }
         }
-
-        reloadGraph()
     }
 
-    fun reloadGraph()
+    private fun reloadGraph()
     {
         with(report_spettrodirisposta_chart)
         {
