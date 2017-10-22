@@ -4,7 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.support.annotation.Nullable
-import android.support.v4.content.ContextCompat
+import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
@@ -18,6 +18,8 @@ import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
+import com.github.mikephil.charting.utils.EntryXComparator
 import com.polito.sismic.Domain.PillarDomain
 import com.polito.sismic.Domain.PillarDomainGraphPoint
 import com.polito.sismic.Domain.PillarState
@@ -31,6 +33,8 @@ import com.polito.sismic.R
 import com.stepstone.stepper.StepperLayout
 import com.stepstone.stepper.VerificationError
 import kotlinx.android.synthetic.main.pilastri_report_layout.*
+import kotlinx.android.synthetic.main.section_pillar_layout.view.*
+import java.util.*
 
 /**
  * Created by Matteo on 30/07/2017.
@@ -267,7 +271,77 @@ class PilastriReportFragment : BaseReportFragment() {
             description.isEnabled = false
             getAxis(YAxis.AxisDependency.RIGHT).isEnabled = false
         }
+
+        view_section.setOnClickListener {
+            if (canViewSection()) {
+                viewPillarSection(sezione_bx_parameter.getParameterValue().toDoubleOrZero(),
+                        sezione_hy_parameter.getParameterValue().toDoubleOrZero(),
+                        sezione_c_parameter.getParameterValue().toDoubleOrZero())
+
+            }
+        }
     }
+
+    private fun canViewSection(): Boolean {
+        val x = sezione_bx_parameter.getParameterValue().toDoubleOrZero()
+        val y = sezione_hy_parameter.getParameterValue().toDoubleOrZero()
+        val c = sezione_c_parameter.getParameterValue().toDoubleOrZero()
+        return x != 0.0 &&
+                y != 0.0 &&
+                c != 0.0 &&
+                c < x / 2 && c < y / 2
+    }
+
+    private fun viewPillarSection(x: Double, y: Double, c: Double) =
+            with(activity.layoutInflater.inflate(R.layout.section_pillar_layout, null))
+    {
+        with(section_pillar_graph)
+        {
+            xAxis.position = XAxis.XAxisPosition.BOTTOM
+            legend.form = Legend.LegendForm.DEFAULT
+            legend.setCustom(listOf(
+                    LegendEntry(context.getString(R.string.section_external), Legend.LegendForm.DEFAULT, 8f, 1f, null, Color.BLACK)))
+            description.isEnabled = false
+            getAxis(YAxis.AxisDependency.RIGHT).isEnabled = false
+            data = LineData(buildSectionLines(x.toFloat(), y.toFloat(), c.toFloat(), activity))
+            invalidate()
+        }
+
+        AlertDialog.Builder(activity)
+                .setView(this)
+                .setTitle(R.string.section_graph_title)
+                .setPositiveButton(R.string.ok, { _, _ -> {} })
+                .show()
+    }
+
+    private fun buildSectionLines(x: Float, y: Float, c: Float, context: Context): List<ILineDataSet>? {
+
+        val external = mutableListOf(buildLineForSection(Entry(0f, 0f), Entry(x, 0f), context),
+                buildLineForSection(Entry(x, 0f), Entry(x, y), context),
+                buildLineForSection(Entry(x, y), Entry(0f, y), context),
+                buildLineForSection(Entry(0f, y), Entry(0f, 0f), context))
+
+        val internal = listOf<LineDataSet>(buildLineForSection(Entry(c, c), Entry(x - c, c), context),
+                buildLineForSection(Entry(x - c, c), Entry(x - c, y - c), context),
+                buildLineForSection(Entry(x - c, y - c), Entry(c, y - c), context),
+                buildLineForSection(Entry(c, y - c), Entry(c, c), context))
+        external.addAll(internal)
+
+        return external.toList()
+    }
+
+    private fun buildLineForSection(s: Entry, e: Entry, context: Context): LineDataSet {
+
+        val entryList = listOf<Entry>(s, e)
+        Collections.sort(entryList, EntryXComparator())
+        return LineDataSet(entryList, "").apply {
+            color = Color.BLACK
+            axisDependency = YAxis.AxisDependency.LEFT
+            setDrawCircles(false)
+            lineWidth = 4f
+        }
+    }
+
 
     private fun fixAs() {
         val numFerri = Math.round(num_armatura.getParameterValue().toDoubleOrZero()).toInt()

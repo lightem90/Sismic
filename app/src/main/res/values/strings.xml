@@ -436,4 +436,7 @@
     <string name="ss_header_spectrum">Ss [-]</string>
     <string name="cc_header_spectrum">Cc [-]</string>
     <string name="st_header_spectrum">St [-]</string>
+    <string name="view_section">Visualizza</string>
+    <string name="section_graph_title">Sezione pilastro</string>
+    <string name="section_external">Sezione esterna</string>
 </resources>
