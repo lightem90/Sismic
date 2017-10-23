@@ -38,7 +38,7 @@ class SpectrumValueFormatter(val xValueFormatter: IAxisValueFormatter = Spectrum
 
     private class SpectrumYValuesFormatter : IAxisValueFormatter {
         override fun getFormattedValue(value: Float, axis: AxisBase?): String {
-            return String.format("%.1f [g]", value)
+            return String.format("%.2f [g]", value)
         }
 
     }
