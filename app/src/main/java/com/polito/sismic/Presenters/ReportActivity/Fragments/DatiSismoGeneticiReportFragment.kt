@@ -20,6 +20,7 @@ import com.polito.sismic.Extensions.toEntryList
 import com.polito.sismic.Interactors.Helpers.UiMapper
 import com.polito.sismic.Presenters.Adapters.NodeListAdapter
 import com.polito.sismic.Presenters.Adapters.PeriodListAdapter
+import com.polito.sismic.Presenters.Helpers.SpectrumValueFormatter
 import com.polito.sismic.R
 import com.stepstone.stepper.StepperLayout
 import kotlinx.android.synthetic.main.dati_sismogenetici_report_layout.*
@@ -77,6 +78,10 @@ class DatiSismoGeneticiReportFragment : BaseReportFragment() {
 
         with(report_spettrodirisposta_chart)
         {
+            val formatter = SpectrumValueFormatter()
+            xAxis.valueFormatter = formatter.xValueFormatter
+            getAxis(YAxis.AxisDependency.LEFT).valueFormatter = formatter.yValueFormatter
+
             xAxis.position = XAxis.XAxisPosition.BOTTOM
             xAxis.axisMaximum = 4.0f
             xAxis.axisMinimum = 0.0f

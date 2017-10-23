@@ -285,7 +285,7 @@
     <string name="altezza_tot">Altezza totale:</string>
     <string name="report_periodi_ritorno_title">PERIODI DI RITORNO</string>
     <string name="year_header">Tr[anni]</string>
-    <string name="ag_header">ag[m/s²]</string>
+    <string name="ag_header">ag[g]</string>
     <string name="f0_header">F0[-]</string>
     <string name="tcstar_header">Tc*[s]</string>
     <string name="params_format">%.5f</string>
@@ -371,7 +371,7 @@
     <string name="pilastri_non_validi">Pilastri rimossi</string>
     <string name="area_pillar_label">Area influenza pilastro:</string>
     <string name="count_pillar_label">Pilastri totali:</string>
-    <string name="result">%.2f %s</string>
+    <string name="result">%.2f%s</string>
     <string name="report_result_title">INDICI DI VULNERABILITÀ</string>
     <string name="pillar_domain_error">Calcolare il dominio del pilastro</string>
     <string name="risultati_disclaimer">Come risultato verrà considerato SLV</string>
@@ -387,7 +387,7 @@
     <string name="domain_point_n_label"> N: [kN]</string>
     <string name="domain_point_m_label"> M: [kNm]</string>
     <string name="domain_point_id_value">%d</string>
-    <string name="result_format_sd">Sd(t)[m/s²]</string>
+    <string name="result_format_sd">Sd(t)[g]</string>
     <string name="result_format_fn">Fh[kN]</string>
     <string name="result_format_ty">Ty[kN]</string>
     <string name="domain_point_value_format">%.2f</string>
@@ -430,7 +430,7 @@
     <string name="tb_header_spectrum">Tb [s]</string>
     <string name="tc_header_spectrum">Tc [s]</string>
     <string name="td_header_spectrum">Td [s]</string>
-    <string name="ag_header_spectrum">Ag [m/s²]</string>
+    <string name="ag_header_spectrum">Ag [g]</string>
     <string name="f0_header_spectrum">F0 [-]</string>
     <string name="tcstar_header_spectrum">Tc* [s]</string>
     <string name="ss_header_spectrum">Ss [-]</string>
@@ -439,4 +439,5 @@
     <string name="view_section">Visualizza</string>
     <string name="section_graph_title">Sezione pilastro</string>
     <string name="section_external">Sezione esterna</string>
+    <string name="result_label">%s\n(I.V. %.2f)</string>
 </resources>

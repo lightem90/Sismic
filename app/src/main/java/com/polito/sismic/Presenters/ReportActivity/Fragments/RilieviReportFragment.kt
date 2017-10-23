@@ -16,6 +16,7 @@ import com.github.mikephil.charting.components.YAxis
 import com.polito.sismic.Interactors.Helpers.UiMapper
 import com.polito.sismic.Interactors.SismicPlantBuildingInteractor
 import com.polito.sismic.Presenters.Adapters.PlantPointsAdapter
+import com.polito.sismic.Presenters.Helpers.TakeoverValueFormatter
 import com.polito.sismic.R
 import com.stepstone.stepper.StepperLayout
 import com.stepstone.stepper.VerificationError
@@ -60,6 +61,10 @@ class RilieviReportFragment : BaseReportFragment(){
 
         with(plant_graph)
         {
+            val formatter = TakeoverValueFormatter()
+            xAxis.valueFormatter = formatter.xValueFormatter
+            getAxis(YAxis.AxisDependency.LEFT).valueFormatter = formatter.yValueFormatter
+
             xAxis.position = XAxis.XAxisPosition.BOTTOM
             legend.form = Legend.LegendForm.DEFAULT
             legend.setCustom(listOf(LegendEntry(context.getString(R.string.rilievo_esterno), Legend.LegendForm.DEFAULT, 8f, 1f, null, Color.BLACK),

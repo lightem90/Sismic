@@ -17,6 +17,7 @@ import com.polito.sismic.Interactors.Helpers.*
 import com.polito.sismic.Presenters.Adapters.ReportImageAdapter
 import com.polito.sismic.Presenters.Adapters.ReportStringAdapter
 import com.polito.sismic.Presenters.Adapters.ReportVideoAdapter
+import com.polito.sismic.Presenters.Helpers.PillarDomainValueFormatter
 import com.polito.sismic.R
 import kotlinx.android.synthetic.main.riepilogo_report_layout.*
 
@@ -40,6 +41,10 @@ class RiepilogoReportFragment : BaseReportFragment() {
 
         with(pillar_domain_state_chart)
         {
+            val formatter = PillarDomainValueFormatter()
+            xAxis.valueFormatter = formatter.xValueFormatter
+            getAxis(YAxis.AxisDependency.LEFT).valueFormatter = formatter.yValueFormatter
+
             xAxis.position = XAxis.XAxisPosition.BOTTOM
             legend.form = Legend.LegendForm.DEFAULT
             legend.setCustom(listOf(

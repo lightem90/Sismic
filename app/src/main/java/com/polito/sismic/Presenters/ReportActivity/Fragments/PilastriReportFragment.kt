@@ -29,6 +29,8 @@ import com.polito.sismic.Extensions.toast
 import com.polito.sismic.Interactors.Helpers.LivelloConoscenza
 import com.polito.sismic.Interactors.Helpers.SismicBuildingCalculatorHelper
 import com.polito.sismic.Presenters.Adapters.DomainPointAdapter
+import com.polito.sismic.Presenters.Helpers.PillarDomainValueFormatter
+import com.polito.sismic.Presenters.Helpers.TakeoverValueFormatter
 import com.polito.sismic.R
 import com.stepstone.stepper.StepperLayout
 import com.stepstone.stepper.VerificationError
@@ -259,6 +261,10 @@ class PilastriReportFragment : BaseReportFragment() {
         }
         with(pillar_domain_chart)
         {
+            val formatter = PillarDomainValueFormatter()
+            xAxis.valueFormatter = formatter.xValueFormatter
+            getAxis(YAxis.AxisDependency.LEFT).valueFormatter = formatter.yValueFormatter
+
             xAxis.position = XAxis.XAxisPosition.BOTTOM
             legend.form = Legend.LegendForm.DEFAULT
             legend.setCustom(listOf(
@@ -297,6 +303,10 @@ class PilastriReportFragment : BaseReportFragment() {
     {
         with(section_pillar_graph)
         {
+            val formatter = TakeoverValueFormatter()
+            xAxis.valueFormatter = formatter.xValueFormatter
+            getAxis(YAxis.AxisDependency.LEFT).valueFormatter = formatter.yValueFormatter
+
             xAxis.position = XAxis.XAxisPosition.BOTTOM
             legend.form = Legend.LegendForm.DEFAULT
             legend.setCustom(listOf(

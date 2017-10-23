@@ -41,16 +41,18 @@ class ResultsAdapter(private val mItems: List<StatiLimite>,
                  mrd: PillarDomainPoint?,
                  context: Context,
                  results: HashMap<StatiLimite, Double>) {
-            itemView.label.text = statoLimite.name
             itemView.label.setTextColor(ContextCompat.getColor(context, statoLimite.color))
             if (mrd == null) return
             val pointForStato = pointsList?.firstOrNull { it.label == statoLimite.name }
             pointForStato?.let {
 
                 val result = (mrd.m / it.m)
-                itemView.value.text = String.format(context.getString(R.string.result), result, context.getString(R.string.percent))
-                itemView.progress.progress = result.toInt()
-                results.put(statoLimite, result)
+                val perc = result * 100
+                val resPerc = if (perc >= 100.0) 100.0 else perc
+                itemView.label.text = String.format(context.getString(R.string.result_label), statoLimite.name, result)
+                itemView.value.text = String.format(context.getString(R.string.result),  resPerc, context.getString(R.string.percent))
+                itemView.progress.progress = resPerc.toInt()
+                results.put(statoLimite, resPerc)
                 itemView.setOnClickListener { hideShowDetails() }
                 itemView.n_value.text = String.format(context.getString(R.string.result_format), it.n)
                 itemView.m_value.text = String.format(context.getString(R.string.result_format), it.m)

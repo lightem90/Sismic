@@ -26,6 +26,7 @@ import com.polito.sismic.Domain.SpectrumDTO
 import com.polito.sismic.Extensions.toEntryList
 import com.polito.sismic.Interactors.Helpers.*
 import com.polito.sismic.Presenters.Adapters.SpectrumsDataAdapter
+import com.polito.sismic.Presenters.Helpers.SpectrumValueFormatter
 import com.stepstone.stepper.VerificationError
 
 
@@ -105,6 +106,10 @@ class SpettriDiProgettoReportFragment : BaseReportFragment() {
 
         with(report_spettrodirisposta_chart)
         {
+            val formatter = SpectrumValueFormatter()
+            xAxis.valueFormatter = formatter.xValueFormatter
+            getAxis(YAxis.AxisDependency.LEFT).valueFormatter = formatter.yValueFormatter
+
             xAxis.position = XAxis.XAxisPosition.BOTTOM
             xAxis.axisMaximum = 4.0f
             xAxis.axisMinimum = 0.0f
@@ -116,14 +121,15 @@ class SpettriDiProgettoReportFragment : BaseReportFragment() {
 
         calculate.setOnClickListener {
 
-            val spectrumsDomain = mReturnTimeRequest?.onSpectrumReturnTimeRequest(UiMapper.createSpectrumStateForDomain(this, getReport().reportState.sismicState.projectSpectrumState.spectrums, getReport().reportState.sismicState.projectSpectrumState.q0))
+            val spectrumsDomain = mReturnTimeRequest?.onSpectrumReturnTimeRequest(UiMapper.createSpectrumStateForDomain(this,
+                    getReport().reportState.sismicState.projectSpectrumState.spectrums, getReport().reportState.sismicState.projectSpectrumState.q0))
             val spectrumsUi = spectrumsDomain?.map {
-                val lds = LineDataSet(it.pointList.toEntryList(), String.format(context.getString(R.string.label_limit_state_format), it.name, it.year))
-                lds.color = ContextCompat.getColor(context, it.color)
-                lds.lineWidth = 2f
-                lds.setDrawCircles(false)
-                lds.axisDependency = YAxis.AxisDependency.LEFT
-                lds
+                LineDataSet(it.pointList.toEntryList(), String.format(context.getString(R.string.label_limit_state_format), it.name, it.year)).apply {
+                    color = ContextCompat.getColor(context, it.color)
+                    lineWidth = 2f
+                    setDrawCircles(false)
+                    axisDependency = YAxis.AxisDependency.LEFT
+                }
             }
 
             spectrumsDomain?.let {
