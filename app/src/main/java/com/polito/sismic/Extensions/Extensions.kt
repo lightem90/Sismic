@@ -269,9 +269,9 @@ fun String.toPlantPointList(): List<PlantPoint> {
 fun List<PlantPoint>.toParsablePlantString(): String {
     val sb = StringBuilder()
     forEach {
-        sb.append(it.x.toString())
+        sb.append(it.x.toPrecisionString())
         sb.append(",")
-        sb.append(it.y.toString())
+        sb.append(it.y.toPrecisionString())
         sb.append(" ")
     }
     return sb.toString()
@@ -317,6 +317,11 @@ fun String.toPillarDomainLimitStateList(): List<PillarDomainPoint> {
     }
 }
 
+fun Double.toPrecisionString() : String
+{
+    return "%.6f".format(this)
+}
+
 fun List<PillarDomainPoint>.toParsablePillarLimitStateString(): String {
     val sb = StringBuilder()
     forEach {
@@ -324,11 +329,11 @@ fun List<PillarDomainPoint>.toParsablePillarLimitStateString(): String {
         sb.append(",")
         sb.append(it.m.toString())
         sb.append(",")
-        sb.append(it.sd.toString())
+        sb.append(it.sd.toPrecisionString())
         sb.append(",")
-        sb.append(it.fh.toString())
+        sb.append(it.fh.toPrecisionString())
         sb.append(",")
-        sb.append(it.ty.toString())
+        sb.append(it.ty.toPrecisionString())
         sb.append(",")
         sb.append(it.label)
         sb.append(",")
@@ -374,29 +379,29 @@ fun List<SpectrumDTO>.toParsableSpectrumDTOString(): String {
         sb.append(",")
         sb.append(it.color.toString())
         sb.append(",")
-        sb.append(it.ag.toString())
+        sb.append(it.ag.toPrecisionString())
         sb.append(",")
-        sb.append(it.f0.toString())
+        sb.append(it.f0.toPrecisionString())
         sb.append(",")
-        sb.append(it.tcStar.toString())
+        sb.append(it.tcStar.toPrecisionString())
         sb.append(",")
-        sb.append(it.ss.toString())
+        sb.append(it.ss.toPrecisionString())
         sb.append(",")
-        sb.append(it.cc.toString())
+        sb.append(it.cc.toPrecisionString())
         sb.append(",")
-        sb.append(it.st.toString())
+        sb.append(it.st.toPrecisionString())
         sb.append(",")
-        sb.append(it.q.toString())
+        sb.append(it.q.toPrecisionString())
         sb.append(",")
-        sb.append(it.s.toString())
+        sb.append(it.s.toPrecisionString())
         sb.append(",")
-        sb.append(it.ni.toString())
+        sb.append(it.ni.toPrecisionString())
         sb.append(",")
-        sb.append(it.tb.toString())
+        sb.append(it.tb.toPrecisionString())
         sb.append(",")
-        sb.append(it.tc.toString())
+        sb.append(it.tc.toPrecisionString())
         sb.append(",")
-        sb.append(it.td.toString())
+        sb.append(it.td.toPrecisionString())
         sb.append(",")
         sb.append(it.pointList.toSpectrumPointString())
         sb.append(" ")
@@ -417,9 +422,9 @@ fun String.toSpectrumPointList(): List<SpectrumPoint> {
 fun List<SpectrumPoint>.toSpectrumPointString(): String {
     val sb = StringBuilder()
     forEach {
-        sb.append(it.x.toString())
+        sb.append(it.x.toPrecisionString())
         sb.append("-")
-        sb.append(it.y.toString())
+        sb.append(it.y.toPrecisionString())
         sb.append("&")
     }
     return sb.toString()
