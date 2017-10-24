@@ -28,8 +28,6 @@ class ParametersForCoordinateHelper(val mContext : Context) {
 
             return dist / 1000 //(KM)
         }
-
-        var QUAD_LUT = intArrayOf(1, 2, 4, 3)
     }
     private val mCsvHelper : CsvHelper = CsvHelper(mContext)
     //just lat/lon
