@@ -8,6 +8,7 @@ import com.polito.sismic.R
 
 enum class CoordinateDatabaseParameters
 {
+    I,
     ID,
     LON,
     LAT,

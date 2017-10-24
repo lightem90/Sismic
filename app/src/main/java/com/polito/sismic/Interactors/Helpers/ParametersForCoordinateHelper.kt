@@ -40,7 +40,7 @@ class ParametersForCoordinateHelper(val mContext : Context) {
     {
         if (initialized) return
         val tmpList = mutableListOf<Triple<String, Double, Double>>()
-        mCsvHelper.readFromRaw(R.raw.database)
+        mCsvHelper.readFromRaw(R.raw.spettri2008)
         {
             mMap.put(it[CoordinateDatabaseParameters.ID.ordinal], it)
             tmpList.add(Triple(it[CoordinateDatabaseParameters.ID.ordinal],

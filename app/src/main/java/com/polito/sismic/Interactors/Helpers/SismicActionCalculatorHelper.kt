@@ -216,10 +216,10 @@ class SismicActionCalculatorHelper(val mCoordinateHelper: ParametersForCoordinat
     private fun calculateSs(ag: Double, f0: Double, cat: CategoriaSottosuolo): Double {
         return when (cat) {
             CategoriaSottosuolo.A -> 1.0
-            CategoriaSottosuolo.B -> 1.4 - 0.40 * f0 * (ag / 9.8)
-            CategoriaSottosuolo.C -> 1.7 - 0.60 * f0 * (ag / 9.8)
-            CategoriaSottosuolo.D -> 2.4 - 1.5 * f0 * (ag / 9.8)
-            CategoriaSottosuolo.E -> 2.0 - 1.10 * f0 * (ag / 9.8)
+            CategoriaSottosuolo.B -> 1.4 - 0.40 * f0 * (ag / 9.86065)
+            CategoriaSottosuolo.C -> 1.7 - 0.60 * f0 * (ag / 9.86065)
+            CategoriaSottosuolo.D -> 2.4 - 1.5 * f0 * (ag / 9.86065)
+            CategoriaSottosuolo.E -> 2.0 - 1.10 * f0 * (ag / 9.86065)
         }
     }
 

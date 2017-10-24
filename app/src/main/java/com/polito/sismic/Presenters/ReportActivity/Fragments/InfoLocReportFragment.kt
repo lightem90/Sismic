@@ -169,16 +169,16 @@ class InfoLocReportFragment : BaseReportFragment() {
     private fun updateByPlace(place: Place?) {
         if (place != null) {
             //with a higher precision the node calculation fails
-            lat_parameter.setParameterValue("%.3f".format(place.latLng.latitude))
-            long_parameter.setParameterValue("%.3f".format(place.latLng.longitude))
+            lat_parameter.setParameterValue("%.4f".format(place.latLng.latitude))
+            long_parameter.setParameterValue("%.4f".format(place.latLng.longitude))
 
             askGoogleForPlaceId(place)
         }
     }
 
     fun updateByLocation(location: Location) {
-        lat_parameter.setParameterValue("%.3f".format(location.latitude))
-        long_parameter.setParameterValue("%.3f".format(location.longitude))
+        lat_parameter.setParameterValue("%.4f".format(location.latitude))
+        long_parameter.setParameterValue("%.4f".format(location.longitude))
     }
 
     private fun askGoogleForPlaceId(place: Place) {
