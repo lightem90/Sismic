@@ -61,7 +61,7 @@ class SismicActionCalculatorHelper(val mCoordinateHelper: ParametersForCoordinat
         }
 
         //0 -> ag 1 -> F0 2 -> Tc*
-        return Triple(sismicDataTriple[0] / 9.80665, sismicDataTriple[1], sismicDataTriple[2])
+        return Triple(sismicDataTriple[0] / 10, sismicDataTriple[1], sismicDataTriple[2])
     }
 
     //sum of each distance - weighted parameter divided by sum of inverse of distance
