@@ -13,13 +13,12 @@ class AESCryptHelper {
 
     companion object {
 
-        private val ALGORITHM = "AES"
-        private val KEY = "verifichesismiche"
-        private val PADDING = "sismic"
+        private val ALGORITHM = "AES/CBC/PKCS5Padding"
+        private val KEY = "seismicsverifies"
 
         fun encrypt(value: String): String {
             val key = generateKey()
-            val cipher = Cipher.getInstance(ALGORITHM, PADDING)
+            val cipher = Cipher.getInstance(ALGORITHM)
             cipher.init(Cipher.ENCRYPT_MODE, key)
             val encryptedByteValue = cipher.doFinal(value.toByteArray(charset("utf-8")))
             return Base64.encodeToString(encryptedByteValue, Base64.DEFAULT)
@@ -28,7 +27,7 @@ class AESCryptHelper {
 
         fun decrypt(value: String): String {
             val key = generateKey()
-            val cipher = Cipher.getInstance(ALGORITHM, PADDING)
+            val cipher = Cipher.getInstance(ALGORITHM)
             cipher.init(Cipher.DECRYPT_MODE, key)
             val decryptedValue64 = Base64.decode(value, Base64.DEFAULT)
             val decryptedByteValue = cipher.doFinal(decryptedValue64)

@@ -35,8 +35,8 @@ class UploadHelper {
 
     inner class UploadReportTask internal constructor(val mContext : Context, val mEmail : String): AsyncTask<String, Double, Pair<Int, String>>() {
 
-        private val SERVER_ADDR_REPORT_UPLOAD = "http://192.168.0.11:5000/sismic/upload_report?"
-        private val SERVER_ADDR_REPORT_FILE_UPLOAD = "http://192.168.0.11:5000/sismic/upload_report_files"
+        private val SERVER_ADDR_REPORT_UPLOAD = "http://natasha.polito.it/seismic/upload_report?"
+        private val SERVER_ADDR_REPORT_FILE_UPLOAD = "http://natasha.polito.it/seismic/upload_report_files"
         private val NOTIFICATION_CHANNEL = "default"
         private val mId : Int = 1
         private var mBuilder: NotificationCompat.Builder = NotificationCompat.Builder(mContext, NOTIFICATION_CHANNEL)

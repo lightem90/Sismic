@@ -250,7 +250,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
                                                    private val mPassword: String,
                                                    private val caller: Activity) : AsyncTask<Void, Void, Pair<Int, JSONObject?>>() {
 
-        private val SERVER_ADDR_lOGIN = "http://192.168.0.11:5000/sismic/login_form?"
+        private val SERVER_ADDR_lOGIN = "http://natasha.polito.it/seismic/login_form?"
         override fun doInBackground(vararg params: Void): Pair<Int, JSONObject?> {
 
             try {
@@ -258,7 +258,8 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
                 sb.append("email=")
                 sb.append(mEmail)
                 sb.append("&secret=")
-                sb.append(AESCryptHelper.encrypt(mPassword))
+                //AESCryptHelper.encrypt(mPassword) in plain for now
+                sb.append(mPassword)
 
                 val urlUse = URL(sb.toString())
                 val conn: HttpURLConnection?

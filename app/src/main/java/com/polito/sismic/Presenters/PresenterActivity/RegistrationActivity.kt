@@ -46,7 +46,7 @@ class RegistrationActivity : AppCompatActivity() {
                                                        private val mPassword: String,
                                                        private val caller: Activity) : AsyncTask<Void, Void, Int>() {
 
-        private val SERVER_ADDR_lOGIN = "http://192.168.0.11:5000/sismic/registration_form?"
+        private val SERVER_ADDR_lOGIN = "http://natasha.polito.it/seismic/registration_form?"
         override fun doInBackground(vararg params: Void): Int {
             LoginSharedPreferences.demoLogin(applicationContext)
             try {
@@ -54,7 +54,8 @@ class RegistrationActivity : AppCompatActivity() {
                 sb.append("email=")
                 sb.append(mEmail)
                 sb.append("&secret=")
-                sb.append(AESCryptHelper.encrypt(mPassword))
+                //AESCryptHelper.encrypt(mPassword) in plain (for now)
+                sb.append(mPassword)
                 sb.append("&name=")
                 sb.append(mName)
                 sb.append("&address=")
