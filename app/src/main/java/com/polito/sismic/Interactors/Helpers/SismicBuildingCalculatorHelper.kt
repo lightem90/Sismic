@@ -206,7 +206,7 @@ class SismicBuildingCalculatorHelper(val mContext: Context) {
 
             val force = acceleration * (state.buildingState.structuralState.peso_totale * lambda) // / 9.80665)
             val ty = force / state.buildingState.pillarLayoutState.pillarCount
-            val mPoint = ty * (state.buildingState.takeoverState.altezza_totale / 2)
+            val mPoint = ty * (state.buildingState.takeoverState.altezza_piano_terra / 2)
             PillarDomainPoint(nPoint, mPoint, acceleration, force, ty, spectrum.name, spectrum.color)
         }
 
