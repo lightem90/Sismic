@@ -1,6 +1,5 @@
 package com.polito.sismic.Interactors.Helpers
 
-//import com.google.gson.GsonBuilder
 
 import android.app.NotificationManager
 import android.content.Context
@@ -14,11 +13,10 @@ import java.net.URL
 import android.app.PendingIntent
 import android.content.Intent
 import android.support.v4.app.TaskStackBuilder
-//import com.google.gson.GsonBuilder
+import com.google.gson.GsonBuilder
 import com.polito.sismic.Extensions.toast
 import com.polito.sismic.Presenters.PresenterActivity.PresenterActivity
 import java.io.DataOutputStream
-import java.io.OutputStreamWriter
 
 
 /**
@@ -29,8 +27,8 @@ class UploadHelper {
     fun upload(context: Context, report : Report)
     {
         //one-line string
-        //val gSon = GsonBuilder().create() // for pretty print feature (the string become veeeery long with .setPrettyPrinting().
-        //UploadReportTask(context, LoginSharedPreferences.getLoggedUser(context).email).execute(gSon.toJson(report))
+        val gSon = GsonBuilder().create() // for pretty print feature (the string become veeeery long with .setPrettyPrinting().
+        UploadReportTask(context, LoginSharedPreferences.getLoggedUser(context).email).execute(gSon.toJson(report))
     }
 
     inner class UploadReportTask internal constructor(val mContext : Context, val mEmail : String): AsyncTask<String, Double, Pair<Int, String>>() {

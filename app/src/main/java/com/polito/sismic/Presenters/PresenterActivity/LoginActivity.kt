@@ -149,12 +149,12 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
             // perform the user login attempt.
             showProgress(true)
             //DEBUG
-            LoginSharedPreferences.demoLogin(applicationContext)
-            startActivity(Intent(this, PresenterActivity::class.java))
-            finish()
+            //LoginSharedPreferences.demoLogin(applicationContext)
+            //startActivity(Intent(this, PresenterActivity::class.java))
+            //finish()
 
-            //mAuthTask = UserLoginTask(emailStr, passwordStr, this)
-            //mAuthTask!!.execute(null as Void?)
+            mAuthTask = UserLoginTask(emailStr, passwordStr, this)
+            mAuthTask!!.execute(null as Void?)
         }
     }
 

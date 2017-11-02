@@ -1,19 +1,13 @@
 package com.polito.sismic.Presenters.PresenterActivity
 
 import android.app.Activity
-import android.content.Intent
 import android.os.AsyncTask
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import com.polito.sismic.Domain.UserDetails
+import android.support.v7.app.AppCompatActivity
 import com.polito.sismic.Extensions.toast
-import com.polito.sismic.Interactors.Helpers.AESCryptHelper
 import com.polito.sismic.Interactors.Helpers.LoginSharedPreferences
 import com.polito.sismic.R
 import kotlinx.android.synthetic.main.activity_registration.*
-import org.json.JSONObject
-import java.io.BufferedReader
-import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
 
@@ -83,13 +77,14 @@ class RegistrationActivity : AppCompatActivity() {
 
             when (returnCode) {
                 200, 201 -> {
-                    LoginSharedPreferences.login(UserDetails(
-                            mName,
-                            mAddress,
-                            mEmail,
-                            mPhone,
-                            mQualification,
-                            mRegister), caller)
+                    //LoginSharedPreferences.login(UserDetails(
+                    //        mName,
+                    //        mAddress,
+                    //        mEmail,
+                    //        mPhone,
+                    //        mQualification,
+                    //        mRegister), caller)
+                    caller.toast(R.string.success_registration)
                     finish()
                 }
                 else -> caller.toast(String.format(caller.getString(R.string.registration_error), returnCode))

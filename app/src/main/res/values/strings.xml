@@ -441,4 +441,5 @@
     <string name="section_external">Sezione esterna</string>
     <string name="result_label">%s\n(I.V. %.2f)</string>
     <string name="result_value">I.V.: %d</string>
+    <string name="success_registration">Registrazione completata con successo</string>
 </resources>
