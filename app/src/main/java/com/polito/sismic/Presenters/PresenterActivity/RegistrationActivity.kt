@@ -4,6 +4,8 @@ import android.app.Activity
 import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.text.TextUtils
+import android.view.View
 import com.polito.sismic.Extensions.toast
 import com.polito.sismic.Interactors.Helpers.LoginSharedPreferences
 import com.polito.sismic.R
@@ -21,14 +23,58 @@ class RegistrationActivity : AppCompatActivity() {
     }
 
     private fun register() {
-        UserRegisterClass(et_email.text.toString(),
-                et_name.text.toString(),
-                et_address.text.toString(),
-                et_phone.text.toString(),
-                et_qualification.text.toString(),
-                et_register.text.toString(),
-                et_password.text.toString(),
-                this).execute()
+
+        // Reset errors.
+        et_email.error = null
+        et_password.error = null
+
+        // Store values at the time of the login attempt.
+        val emailStr = et_email.text.toString()
+        val passwordStr = et_password.text.toString()
+
+        var cancel = false
+        var focusView: View? = null
+
+        // Check for a valid password, if the user entered one.
+        if (TextUtils.isEmpty(passwordStr) || !isPasswordValid(passwordStr)) {
+            et_password.error = getString(R.string.error_invalid_password)
+            focusView = et_password
+            cancel = true
+        }
+
+        // Check for a valid email address.
+        if (TextUtils.isEmpty(emailStr)) {
+            et_email.error = getString(R.string.error_field_required)
+            focusView = et_email
+            cancel = true
+        } else if (!isEmailValid(emailStr)) {
+            et_email.error = getString(R.string.error_invalid_email)
+            focusView = et_email
+            cancel = true
+        }
+
+        if (cancel) {
+            // There was an error; don't attempt login and focus the first
+            // form field with an error.
+            focusView?.requestFocus()
+        } else {
+            UserRegisterClass(et_email.text.toString(),
+                    et_name.text.toString(),
+                    et_address.text.toString(),
+                    et_phone.text.toString(),
+                    et_qualification.text.toString(),
+                    et_register.text.toString(),
+                    et_password.text.toString(),
+                    this).execute()
+        }
+    }
+
+    private fun isEmailValid(email: String): Boolean {
+        return email.contains("@")
+    }
+
+    private fun isPasswordValid(password: String): Boolean {
+        return password.length > 4
     }
 
     inner class UserRegisterClass internal constructor(private val mEmail: String,

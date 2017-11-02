@@ -106,7 +106,7 @@ class ReportListFragment : Fragment() {
         val intent = Intent(activity, ReportActivity::class.java)
         intent.putExtra("editing", true)
         intent.putExtra("report_id", reportDetails.id)
-        intent.putExtra("username", reportDetails.userIdentifier)
+        intent.putExtra("email", reportDetails.userIdentifier)
         activity.startActivityForResult(intent, PresenterActivity.REPORT_ACTIVITY)
         return true
     }

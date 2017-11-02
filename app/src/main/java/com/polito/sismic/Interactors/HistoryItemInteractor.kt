@@ -2,6 +2,7 @@ package com.polito.sismic.Interactors
 
 import android.content.Context
 import com.polito.sismic.Extensions.toast
+import com.polito.sismic.Interactors.Helpers.LoginSharedPreferences
 import com.polito.sismic.Interactors.Helpers.UploadHelper
 import com.polito.sismic.R
 
@@ -22,20 +23,20 @@ class HistoryItemInteractor (val mContext: Context,
                              val mDatabaseInteractor: DatabaseInteractor,
                              val reloadCallback: () -> Unit) {
 
-    val mReportHistoryItems = mDatabaseInteractor.getDetailsForHistory()
+    val mReportHistoryItems = mDatabaseInteractor.getDetailsForHistory(getCurrentUserID())
     val mUploadHelper = UploadHelper()
 
     fun reloadList()
     {
         mReportHistoryItems.clear()
-        mReportHistoryItems.addAll(mDatabaseInteractor.getDetailsForHistory())
+        mReportHistoryItems.addAll(mDatabaseInteractor.getDetailsForHistory(getCurrentUserID()))
         reloadCallback.invoke()
     }
 
     fun reorder(type : ReorderType)
     {
         mReportHistoryItems.clear()
-        val listToSort = mDatabaseInteractor.getDetailsForHistory()
+        val listToSort = mDatabaseInteractor.getDetailsForHistory(getCurrentUserID())
         when(type)
         {
             ReorderType.az -> listToSort.sortBy { reportItemHistory ->  reportItemHistory.title}
@@ -57,6 +58,11 @@ class HistoryItemInteractor (val mContext: Context,
         report?.let {
             mUploadHelper.upload(mContext, it)
         }
+    }
+
+    private fun getCurrentUserID() : String
+    {
+        return LoginSharedPreferences.getLoggedUser(mContext).address
     }
 
 

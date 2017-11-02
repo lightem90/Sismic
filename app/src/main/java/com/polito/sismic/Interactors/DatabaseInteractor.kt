@@ -9,6 +9,7 @@ import com.polito.sismic.Domain.Report
 import com.polito.sismic.Domain.ReportDetails
 import com.polito.sismic.Domain.ReportItemHistory
 import com.polito.sismic.Extensions.*
+import com.polito.sismic.Interactors.Helpers.LoginSharedPreferences
 import org.jetbrains.anko.db.SqlOrderDirection
 import org.jetbrains.anko.db.insert
 import org.jetbrains.anko.db.select
@@ -22,6 +23,7 @@ import kotlin.collections.HashMap
 
 class DatabaseInteractor(private val reportDatabaseHelper: ReportDatabaseHelper = ReportDatabaseHelper.instance,
                          private val dataMapper: DatabaseDataMapper = DatabaseDataMapper()) {
+
     //Creates the entry in the db for the current (new) report
     fun createReportDetailsForUser(userID: String,
                                    title: String = "",
@@ -227,11 +229,11 @@ class DatabaseInteractor(private val reportDatabaseHelper: ReportDatabaseHelper 
     }
 
     //maps to dto for history
-    fun getDetailsForHistory(): MutableList<ReportItemHistory> = reportDatabaseHelper.use {
+    fun getDetailsForHistory(userID: String): MutableList<ReportItemHistory> = reportDatabaseHelper.use {
 
-        val invalidReportsDetailsRequest = "${ReportTable.COMMITTED} = 1"
+        val validReportsDetailsRequest = "${ReportTable.USERID} = ? AND ${ReportTable.COMMITTED} = 1"
         val reports = select(ReportTable.NAME)
-                .whereSimple(invalidReportsDetailsRequest)
+                .whereSimple(validReportsDetailsRequest, userID)
                 .orderBy(ReportTable.ID)
                 .parseList { DatabaseReportDetails(HashMap(it)) }
 

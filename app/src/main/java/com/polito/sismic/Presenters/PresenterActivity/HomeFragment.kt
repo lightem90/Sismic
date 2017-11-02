@@ -38,11 +38,11 @@ class HomeFragment : Fragment() {
         }
     }
 
-    fun startReportActivity()
+    private fun startReportActivity()
     {
         val intent = Intent(activity, ReportActivity::class.java)
         val userDetails = LoginSharedPreferences.getLoggedUser(activity)
-        intent.putExtra("username", userDetails.name)
+        intent.putExtra("email", userDetails.email)
         activity.startActivityForResult(intent, PresenterActivity.REPORT_ACTIVITY)
     }
 

@@ -57,12 +57,12 @@ class ReportActivity : AppCompatActivity(),
     }
 
     private fun checkLogin(): String {
-        val userName = intent.getStringExtra("username")
-        if (userName == null || userName.isEmpty()) {
+        val userID = intent.getStringExtra("email")
+        if (userID == null || userID.isEmpty()) {
             toast(R.string.no_login)
             finish()
         }
-        return userName
+        return userID
     }
 
     //User requested help to input coordinates

@@ -123,7 +123,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
         var focusView: View? = null
 
         // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(passwordStr) && !isPasswordValid(passwordStr)) {
+        if (TextUtils.isEmpty(passwordStr) || !isPasswordValid(passwordStr)) {
             password.error = getString(R.string.error_invalid_password)
             focusView = password
             cancel = true
@@ -280,13 +280,11 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
                         Log.d("json", obj.toString())
                         return conn.responseCode to obj
                     }
-                    else -> conn.responseCode to null
+                    else -> return conn.responseCode to null
                 }
             } catch (e: InterruptedException) {
                 return 500 to null
             }
-
-            return -1 to null
         }
 
 
