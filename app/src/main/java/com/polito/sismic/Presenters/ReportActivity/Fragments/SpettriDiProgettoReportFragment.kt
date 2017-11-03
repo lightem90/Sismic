@@ -63,18 +63,20 @@ class SpettriDiProgettoReportFragment : BaseReportFragment() {
 
         categoria_classe_duttilita_parameter_cda.setOnCheckedChangeListener { _, flag ->
             if (flag) {
+                categoria_classe_duttilita_parameter_cda.isClickable = false
+
                 categoria_classe_duttilita_parameter_cdb.isChecked = false
-            } else {
-                categoria_classe_duttilita_parameter_cda.isClickable = true
+                categoria_classe_duttilita_parameter_cdb.isClickable = true
             }
             updateMoltiplicatoreVisibility(categoria_tipologia_parameter.selectedItemPosition)
         }
 
         categoria_classe_duttilita_parameter_cdb.setOnCheckedChangeListener { _, flag ->
             if (flag) {
+                categoria_classe_duttilita_parameter_cdb.isClickable = false
+
                 categoria_classe_duttilita_parameter_cda.isChecked = false
-            } else {
-                categoria_classe_duttilita_parameter_cdb.isClickable = true
+                categoria_classe_duttilita_parameter_cda.isClickable = true
             }
             updateMoltiplicatoreVisibility(categoria_tipologia_parameter.selectedItemPosition)
         }

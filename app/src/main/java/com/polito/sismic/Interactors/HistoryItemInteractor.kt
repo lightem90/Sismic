@@ -62,7 +62,7 @@ class HistoryItemInteractor (val mContext: Context,
 
     private fun getCurrentUserID() : String
     {
-        return LoginSharedPreferences.getLoggedUser(mContext).address
+        return LoginSharedPreferences.getLoggedUser(mContext).email
     }
 
 

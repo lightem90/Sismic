@@ -10,6 +10,7 @@ import android.widget.TextView
 import com.polito.sismic.Domain.ReportItemHistory
 import com.polito.sismic.Extensions.inflate
 import com.polito.sismic.Extensions.toFormattedString
+import com.polito.sismic.Extensions.toast
 import com.polito.sismic.Interactors.DangerStateProvider
 import com.polito.sismic.Interactors.HistoryItemInteractor
 import com.polito.sismic.R
@@ -62,6 +63,7 @@ class ReportAdapter(val mContext: Context,
                     mHistoryInteractor.deleteItemById(reportDetails.id)
                 }
                 itemView.btn_upload_item_history.setOnClickListener { mHistoryInteractor.uploadItem(reportDetails.id, reportDetails.userIdentifier) }
+                itemView.btn_print_item_history.setOnClickListener { mContext.toast(R.string.error_not_supported) }
             }
         }
 
