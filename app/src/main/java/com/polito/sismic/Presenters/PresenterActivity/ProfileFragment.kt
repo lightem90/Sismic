@@ -47,7 +47,7 @@ class ProfileFragment : Fragment() {
 
     private fun sendMail() {
 
-        val intent = Intent(Intent.ACTION_SENDTO)
+        val intent = Intent(Intent.ACTION_SEND)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         intent.type = "text/plain"
         intent.putExtra(Intent.EXTRA_EMAIL, arrayOf("sismic.polito@gmail.com"))
